@@ -24,7 +24,7 @@ def login():
     else:
         return redirect('/login')
 
-
+#git
 @app.route('/')
 def index():
     user = session.get('user')
