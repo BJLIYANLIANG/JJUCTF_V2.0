@@ -2,7 +2,7 @@ from flask import Flask
 from flask import render_template
 from  flask import request
 from  flask import session,redirect
-
+from jjuctf.mysqld import Mysqld
 app = Flask(__name__)
 app.secret_key = '905008'  #session key
 app.debug = True
@@ -14,7 +14,13 @@ def login():
     if request.method == 'GET':
         return render_template('login.html')
     if request.method == 'POST':
-        if request.form.get('username') == 'hsm':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        if username == '' or password == '':  #检查用户名和密码是否为空
+            return redirect('/', )
+        checkuser = Mysqld()
+        result = checkuser.checkUser(username,password)  #对用户表进行操作，检查登录
+        if result == 1:
             session['user'] = request.form.get('username')
             # session['user']
             result  = "登录成功"
