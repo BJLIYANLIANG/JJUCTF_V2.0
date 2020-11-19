@@ -28,12 +28,8 @@ def login():
 @app.route('/')
 def index():
     user = session.get('user')
-    if user :
-        return render_template('index.html')
-        # print(user)
-        # redirect('/login',name=)
-    # if session.get('user') ==
-    # print(session.get('user'))
+    if user :  #如果登录成功
+        return render_template('index.html',name=user)
     return render_template('login.html')
 
 if __name__ == '__main__':
