@@ -7,8 +7,8 @@
     <br>
     <br>
     <br>
-    <h1> 疫情追踪</h1>
-<h3>实时报道</h3>
+    <h1> Ajax测试</h1>
+<h3>ajax</h3>
 <button>点我</button>
 </div>
 <script>
@@ -18,7 +18,7 @@
             type:"post",
             data:{"name":"李四","score":99},
             success:function (d) {
-                $("h1").html("武汉加油"+d)
+                $("h1").html("ajax请求成功："+d)
             },
             error:function () {
                 alert("发送请求失败")
