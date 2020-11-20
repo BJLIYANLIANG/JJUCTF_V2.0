@@ -5,7 +5,10 @@
     <title>register</title>
 </head>
 <body>
-<form method="post" action="login">
+{% if message %}
+    <script language="JavaScript"> alert("{{ message}}")</script>
+{% endif %}
+<form method="post" action="register">
   帐号： <input type="text" name="username"><br>
     电子邮箱： <input type="text" name="email"><br>
     密码：<input type="password" name="password"> <br>

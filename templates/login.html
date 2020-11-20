@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>JJUCTF-login</title>
-    <script language="JavaScript">
-
-    </script>
+{% if message %}
+    <script language="JavaScript"> alert("{{ message}}")</script>
+{% endif %}
 </head>
 <body>
 <h1>jjuctf</h1>
