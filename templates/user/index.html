@@ -1,11 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>JJUCTF 网络安全靶场</title>
-    <link rel="stylesheet" href="/static/css/bootstrap.css">
-</head>
-<body>
 {% include 'user/header.html' %}
-</body>
-</html>
+<script src="/static/js/jquery-3.5.1.min.js"></script>
+    {% if message %}
+    <script language="JavaScript"> alert("{{ message}}")</script>
+{% endif %}
+<div class="container" >
+    <br>
+    <br>
+    <br>
+    <h1> 疫情追踪</h1>
+<h3>实时报道</h3>
+<button>点我</button>
+</div>
+<script>
+    $('button').click(function (){
+        $.ajax({
+            url:"/ajax",
+            type:"post",
+            data:{"name":"李四","score":99},
+            success:function (d) {
+                $("h1").html("武汉加油"+d)
+            },
+            error:function () {
+                alert("发送请求失败")
+            }
+            }
+        )
+    })
+</script>
+{% include'user/footer.html' %}

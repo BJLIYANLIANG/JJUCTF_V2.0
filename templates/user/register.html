@@ -1,0 +1,36 @@
+<html>
+<header>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    {% if message %}
+    <script language="JavaScript"> alert("{{ message}}")</script>
+{% endif %}
+</header>
+<body>
+
+<div class="container">
+    <form method="POST" taction="/regiser">
+        <div class="form-signin">
+          <h2 class="form-signin-heading" style="text-align: center">注册</h2>
+            <!-- class="sr-only"将label标签隐藏 -->
+
+            <input type="text" class="form-control"  placeholder="用户名" name="username">
+            <br>
+
+            <input type="password" class="form-control"  placeholder="密码" name="password">
+            <br>
+
+            <input type="email" class="form-control" placeholder="邮箱" name="email">
+{#            <label for="exampleInputUsername" class="sr-only">手机</label>#}
+{#            <input type="tel" class="form-control" id="exampleInputPhone" placeholder="手机">#}
+{#            <div class="checkbox">#}
+{#                <label>#}
+{#                    <!--<input type="checkbox">#}
+{#                    记住密码-->#}
+{#                </label>#}
+{#            </div>#}
+            <br>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+        </div>
+    </form>
+</div>
+{% include "user/footer.html" %}

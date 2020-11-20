@@ -10,10 +10,18 @@ app.secret_key = '905008'  #session 密钥
 app.debug = True
 
 
+@app.route('/')
+def index():
+    if session.get("user"):
+        return render_template("user/index.html")
+    else:
+        return render_template("user/login.html")
 @app.route('/login',methods=['GET','POST'])
 def login():
+    if session.get("user"):
+        return render_template("user/index.html")
     if request.method == 'GET':
-        return render_template('login.html')
+        return render_template('user/login.html')
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
@@ -28,57 +36,67 @@ def login():
             session['user'] = request.form.get('username')
 
 
-            return redirect('/user/index')
+            return redirect('/')
         else:
             return redirect('/login')
     else:
         return redirect('/login')
 
 
-@app.route('/register',methods=['GET','POST'])
-def register():
-    if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
-        useremail = request.form.get('email')
-        Checkinnput.checkUserString(username=username,password=password,useremail=useremail)  #检查用户输入的字符串
-        adduser = Mysqld()
-        if adduser.checkUserRegister(username=username) == 1:
-            return render_template("register.html",message="用户已经注册过!")
-
-        result = adduser.addUser(userName=username,userEmail=useremail,userPassword=password)
-        if result == 1:
-            return render_template("login.html",message="注册成功！")
-    return render_template("register.html")
-
+@app.route('/ajax',methods=['POST'])
+def ajax():
+    return "hello world"
 
 
 @app.route('/')
-def index():
-    user = session.get('user')
-    if user :  #如果登录成功
-        return render_template('index.html',name=user)
-    return render_template('login.html')
-
-@app.route('/user/<path:index>')
-def userIndex(index):
+def userIndex():
     user = session.get('user')
     if user :  #如果登录成功
         return render_template('user/index.html',name=user)
-    return render_template('login.html')
+    return render_template('user/login.html')
 
-@app.route('/user/<path:challenge>')
-def challenge(challenge):
+
+@app.route('/challenges')
+def userchallenge(challenge):
     user = session.get('user')
-    # return "hello"
     if user:
         return render_template("user/challenge.html")
     return redirect('/')
-    # return render_template("user/challenge.html")
-@app.route('/path/<path:subpath>')
-def show_subpath(subpath):
-    # show the subpath after /path/
-    return 'Subpath %s' % escape(subpath)
+
+
+@app.route('/register',methods=['POST','GET'])
+def userRegister():
+    if request.method != 'POST':
+        return render_template("user/register.html")
+    else:
+        username = request.form.get('username')
+        password = request.form.get('password')
+        useremail = request.form.get('email')
+        print(useremail,password,useremail)
+        # if useremail=='' or password == '' or useremail == '':
+        #     return render_template("")
+        checkstr = Checkinnput()
+        result = checkstr.checkUserString(username=username,password=password,useremail=useremail)  #检查用户输入的字符串
+        if result == 0 :
+            return render_template("user/register.html",message="提交异常，请重新输入")
+        adduser = Mysqld()
+        if adduser.checkUserRegister(username=username) == 1:
+            return render_template("user/register.html",message="用户已经注册过!")
+
+        result = adduser.addUser(userName=username,userEmail=useremail,userPassword=password)
+        if result == 1:
+            print("111")
+            return render_template("user/login.html",message="注册成功！")
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return render_template("user/login.html",message="退出帐号成功，请重新登录")
+
+@app.route("/settings")
+def setting():
+    return render_template("user/index.html")
+
 
 if __name__ == '__main__':
     app.run()

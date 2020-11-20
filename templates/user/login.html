@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JJUCTF-login</title>
+   <link rel="stylesheet" href="/static/css/bootstrap.css">
+    {% if message %}
+    <script language="JavaScript"> alert("{{ message}}")</script>
+{% endif %}
+</head>
+<body>
+<h1 style="text-align: center">JJUCTF</h1>
+<div class="container">
+    <form method="post" action="/login">
+  帐号： <input type="text" name="username" class="form-control"><br>
+    密码：<input type="password" name="password" class="form-control"> <br>
+    <input  type="submit" value="登录" class="btn btn-lg btn-primary btn-block" >
+        <br>
+        <a href="/register"> <input id="register" class="btn btn-lg btn-primary btn-block" type="button" value="注册" ></a>
+</form>
+</div>
+</body>
+</html>
