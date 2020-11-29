@@ -40,6 +40,8 @@ class Mysqld:
         showinfo = self.cursor
         showinfo.execute("select * from userlogin where user_name=")
         return self.cursor.fetchall()
+    # 通过选择challenge_list表来
+    def select
 # a = Mysqld()
 # aa  = a.addUser(userName="user1",userEmail="sadfds@gmail.com",userPassword="123456")
 # print(aa)

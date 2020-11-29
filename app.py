@@ -4,18 +4,13 @@ from  flask import request
 from  flask import session,redirect,escape
 from datetime import timedelta
 from jjuctf.mysqld import Mysqld
+from flask import url_for
 from jjuctf.Checkinput import Checkinnput
 app = Flask(__name__)
 app.secret_key = '905008'  #session 密钥
 app.debug = True
 
 
-@app.route('/')
-def index():
-    if session.get("user"):
-        return render_template("user/index.html")
-    else:
-        return render_template("user/login.html")
 @app.route('/login',methods=['GET','POST'])
 def login():
     if session.get("user"):
@@ -48,12 +43,13 @@ def ajax():
     return "hello world"
 
 
+
 @app.route('/')
 def userIndex():
     user = session.get('user')
     if user :  #如果登录成功
-        return render_template('user/index.html',name=user)
-    return render_template('user/login.html')
+        return render_template("user/index.html",username=user)
+    return render_template('user/login.html',username="11")
 
 
 @app.route('/challenges')
@@ -62,6 +58,12 @@ def userchallenge(challenge):
     if user:
         return render_template("user/challenge.html")
     return redirect('/')
+
+
+@app.route('/ranks')
+def ranks():
+    user = session.get('user')
+    return render_template("user/ranks.html",username=user)
 
 
 @app.route('/register',methods=['POST','GET'])

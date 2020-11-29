@@ -1,30 +1,296 @@
-{% include 'user/header.html' %}
-<script src="/static/js/jquery-3.5.1.min.js"></script>
-    {% if message %}
-    <script language="JavaScript"> alert("{{ message}}")</script>
-{% endif %}
-<div class="container" >
-    <br>
-    <br>
-    <br>
-    <h1> Ajax测试</h1>
-<h3>ajax</h3>
-<button>点我</button>
-</div>
-<script>
-    $('button').click(function (){
-        $.ajax({
-            url:"/ajax",
-            type:"post",
-            data:{"name":"李四","score":99},
-            success:function (d) {
-                $("h1").html("ajax请求成功："+d)
-            },
-            error:function () {
-                alert("发送请求失败")
-            }
-            }
-        )
-    })
-</script>
+{% include'user/header.html' %}
+<div class="row col-md-12 jumbotron">
+        <h1>
+            JJUCTF
+        </h1>
+        <p>
+            由jjuctf团队搭建的网络安全靶场
+        </p>
+    </div>
+
+
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <h3>
+               WEB
+            </h3>
+        </div>
+    </div>
+
+    <div class="row clearfix">
+        <div class="col-md-3 column border_contain"  >
+            <h2>
+                UploadMe
+            </h2>
+            <p>
+                文件上传
+            </p>
+            <p>
+                <a class="btn" href="#"></a>
+
+<!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
+            <!-- 按钮触发模态框 -->
+            <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
+                挑战
+            </button>
+        </div>
+        <div class="col-md-3 column border_contain"  >
+            <h2>
+                UploadMe
+            </h2>
+            <p>
+                文件上传
+            </p>
+            <p>
+                <a class="btn" href="#"></a>
+
+                <!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
+                <!-- 按钮触发模态框 -->
+                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
+                    挑战
+                </button>
+        </div>
+
+        <div class="col-md-3 column border_contain"  >
+            <h2>
+                UploadMe
+            </h2>
+            <p>
+                文件上传
+            </p>
+            <p>
+                <a class="btn" href="#"></a>
+
+                <!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
+                <!-- 按钮触发模态框 -->
+                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
+                    挑战
+                </button>
+        </div>
+
+        <div class="col-md-3 column border_contain"  >
+            <h2>
+                UploadMe
+            </h2>
+            <p>
+                文件上传
+            </p>
+            <p>
+                <a class="btn" href="#"></a>
+
+                <!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
+                <!-- 按钮触发模态框 -->
+                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
+                    挑战
+                </button>
+        </div>
+
+
+        <div class="row clearfix">
+            <div class="col-md-12  column  ">
+<!--                <p > MISC</p>-->
+                <h3 class="">MISC</h3>
+
+            </div>
+        </div>
+
+
+        <div class="col-md-3 column border_contain"  >
+            <h2>
+                UploadMe
+            </h2>
+            <p>
+                文件上传
+            </p>
+            <p>
+                <a class="btn" href="#"></a>
+
+                <!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
+                <!-- 按钮触发模态框 -->
+                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
+                    挑战
+                </button>
+        </div>
+
+
+
+        <div class="col-md-3 column border_contain"  >
+            <h2>
+                UploadMe
+            </h2>
+            <p>
+                文件上传
+            </p>
+            <p>
+                <a class="btn" href="#"></a>
+
+                <!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
+                <!-- 按钮触发模态框 -->
+                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
+                    挑战
+                </button>
+        </div>
+
+
+
+        <div class="col-md-3 column border_contain"  >
+            <h2>
+                UploadMe
+            </h2>
+            <p>
+                文件上传
+            </p>
+            <p>
+                <a class="btn" href="#"></a>
+
+                <!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
+                <!-- 按钮触发模态框 -->
+                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
+                    挑战
+                </button>
+        </div>
+
+
+
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <h3>
+                    Crypto
+                </h3>
+            </div>
+        </div>
+
+
+        <div class="col-md-3 column border_contain"  >
+            <h2>
+                UploadMe
+            </h2>
+            <p>
+                文件上传
+            </p>
+            <p>
+                <a class="btn" href="#"></a>
+
+                <!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
+                <!-- 按钮触发模态框 -->
+                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
+                    挑战
+                </button>
+        </div>
+
+
+        <div class="col-md-3 column border_contain"  >
+            <h2>
+                UploadMe
+            </h2>
+            <p>
+                文件上传
+            </p>
+            <p>
+                <a class="btn" href="#"></a>
+
+                <!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
+                <!-- 按钮触发模态框 -->
+                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
+                    挑战
+                </button>
+        </div>
+        <div class="col-md-3 column border_contain"  >
+            <h2>
+                UploadMe
+            </h2>
+            <p>
+                文件上传
+            </p>
+            <p>
+                <a class="btn" href="#"></a>
+
+                <!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
+                <!-- 按钮触发模态框 -->
+                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
+                    挑战
+                </button>
+
+        </div>
+
+
+
+    </div>
+
+
+
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        UploadMe
+                    </h4>
+                </div>
+
+                <div class="modal-body container">
+                        <div class="row row-no-gutters">
+                            <div class="col-md-12">
+                                <h2> UploadMe</h2>
+                            </div>
+
+                            <div class="col-md-12 text-success font_Size">
+                                init:this an init.
+                            </div>
+                            <div class="row row-no-gutters  font_Size">
+                                <div class="col-md-12 col-lg-12  ">
+                                  <button type="button " class="btn btn-primary" > 点击开启实例</button>
+                                </div>
+                            </div>
+                            <div class="row row-no-gutters font_Size ">
+                                <div class="col-md-12">题目附件:</div>
+                                <a class="col-md-2 col-lg-1 modal_marger">附件1</a>
+                                <a class="col-md-2 col-lg-1 modal_marger">附件2</a>
+                                <a class="col-md-2 col-lg-1 modal_marger">附件3</a>
+
+                            </div>
+                            <div class="row row-no-gutters font_Size">
+                                <div class="input-group col-md-12">
+                                    <input   type="text" autocomplete="off" placeholder="flag.." >
+                                </div>
+                                <div class="col-md-12 ">
+                                    <button class="btn btn-primary">
+                                        提交
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+ </div>  <!--container-->
 {% include'user/footer.html' %}
+
+
+
+
+
+
+{##}
+{#<script>#}
+{#    $('button').click(function (){#}
+{#        $.ajax({#}
+{#            url:"/ajax",#}
+{#            type:"post",#}
+{#            data:{"name":"李四","score":99},#}
+{#            success:function (d) {#}
+{#                $("h1").html("ajax请求成功："+d)#}
+{#            },#}
+{#            error:function () {#}
+{#                alert("发送请求失败")#}
+{#            }#}
+{#            }#}
+{#        )#}
+{#    })#}
+{#</script>#}
