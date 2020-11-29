@@ -53,12 +53,20 @@ class Mysqld:
 
         return showinfo.fetchall()
 
+    def selectUserNum(self,):  #查询用户数
+        showinfo = self.cursor
+        sql = "select * from userlogin"
+        showinfo.execute(sql)
+        # print(showinfo.fetchall())
+
+        return showinfo.fetchall()
+
 
 # a = Mysqld()
 # aa  = a.addUser(userName="user1",userEmail="sadfds@gmail.com",userPassword="123456")
 # print(aa)
 a = Mysqld()
-b = a.selectinfo(0)
+b = a.selectUserNum()
 print(b)
 # for i in a:
 #     print(i)

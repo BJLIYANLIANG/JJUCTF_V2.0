@@ -40,7 +40,7 @@ def login():
 
 @app.route('/ajax',methods=['POST'])
 def ajax():
-    return "hello world"
+    return "1"
 
 
 
@@ -65,7 +65,10 @@ def userchallenge(challenge):
 @app.route('/ranks')
 def ranks():
     user = session.get('user')
-    return render_template("user/ranks.html",username=user)
+    sqlcheck = Mysqld()
+    GetChallengeList = sqlcheck.selectinfo(0)
+    GetUserNum = sqlcheck.selectUserNum()
+    return render_template("user/ranks.html",username=user,ChallengeList=GetChallengeList,userNum=GetUserNum,a=1)
 
 
 @app.route('/register',methods=['POST','GET'])
@@ -101,7 +104,12 @@ def logout():
 def setting():
     return render_template("user/index.html")
 
+@app.route("/checkflag",methods=["POST"])
+def checkflag():
+
+    return request.form.get("flag")
 
 if __name__ == '__main__':
     app.run()
+
 

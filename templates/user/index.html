@@ -1,4 +1,26 @@
 {% include'user/header.html' %}
+<script>
+    function postflag(flagid,id){
+        var a = document.getElementById(id.substring(1)).value;
+        $.ajax({
+                url: "/ajax",
+                type: "post",
+                data: {"flag": a},
+                success: function (d) {
+                    if (d == "1") {
+                        alert("回答正确！");
+                        $(flagid).html("回答正确");
+
+                    }},
+             error:function () {
+
+                alert("发送请求失败");
+            }
+
+            }
+        )
+}
+</script>
 <div class="row col-md-12 jumbotron">
         <h1>
             JJUCTF
@@ -55,13 +77,17 @@
                                 <a class="col-md-2 col-lg-1 modal_marger" href="static/{{ i[9] }}">附件1</a>
                             </div>
                                {% endif %}
-                            <div class="row row-no-gutters font_Size modal_marger">
-                                <div class="input-group col-md-12 modal_marger">
-                                    <input   type="text" autocomplete="off" placeholder="flag.." >
-                                </div>
-                                <div class="col-md-12 modal_marger">
-                                    <button class="btn btn-primary">提交</button>
-                                </div>
+
+
+                            <div class="row row-no-gutters font_Size modal_marger" id="flag{{ i[0] }}" >
+
+                                    <div class="input-group col-md-12 modal_marger">
+                                    <input  id="flag{{ i[0] }}1" type="text" name="flag" autocomplete="off" placeholder="flag.." >
+                                    </div>
+                                    <div class="col-md-12 modal_marger">
+                                    <button type="submit" class="btn btn-primary" onclick="postflag('#flag{{ i[0] }}','#flag{{ i[0] }}1')">提交</button>
+                                    </div>
+
                             </div>
                         </div>
                 </div>
@@ -81,21 +107,20 @@
 
 
     <div class="row clearfix">
-        {% if challengeResult %}
-        {% for i in challengeResult %}
-        {% if i[4]==1 %}
+      {% if challengeResult %}
+    {% for i in challengeResult %}
+    {% if i[4]==1 %}
 
         <div class="col-md-3 column border_contain"  >
             <h2>{{ i[1] }}</h2>
             <p>{{ i[3] }}</p>
             <p>
-
                 <a class="btn" href="#"></a>
             <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#{{ i[0] }}">
                 挑战
             </button>
         </div>
-                   <!-- 模态框（Modal） -->
+            <!-- 模态框（Modal） -->
     <div class="modal fade" id="{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -122,13 +147,15 @@
                                 <a class="col-md-2 col-lg-1 modal_marger" href="static/{{ i[9] }}">附件1</a>
                             </div>
                                {% endif %}
-                            <div class="row row-no-gutters font_Size modal_marger">
-                                <div class="input-group col-md-12 modal_marger">
-                                    <input   type="text" autocomplete="off" placeholder="flag.." >
-                                </div>
-                                <div class="col-md-12 modal_marger">
-                                    <button class="btn btn-primary">提交</button>
-                                </div>
+                            <div class="row row-no-gutters font_Size modal_marger" id="flag{{ i[0] }}" >
+
+                                    <div class="input-group col-md-12 modal_marger">
+                                    <input  id="flag{{ i[0] }}1" type="text" name="flag" autocomplete="off" placeholder="flag.." >
+                                    </div>
+                                    <div class="col-md-12 modal_marger">
+                                    <button type="submit" class="btn btn-primary" onclick="postflag('#flag{{ i[0] }}','#flag{{ i[0] }}1')">提交</button>
+                                    </div>
+
                             </div>
                         </div>
                 </div>
@@ -136,8 +163,7 @@
             </div><!-- /.modal-content -->
         </div>
     </div> <!-- /.modal -->
-
-        {% endif  %}
+    {% endif  %}
     {% endfor %}
     {% endif %}
     </div>
@@ -155,7 +181,7 @@
     <div class="row clearfix">
     {% if challengeResult %}
     {% for i in challengeResult %}
-        {% if i[4]==2 %}
+    {% if i[4]==2 %}
 
         <div class="col-md-3 column border_contain"  >
             <h2>{{ i[1] }}</h2>
@@ -166,8 +192,7 @@
                 挑战
             </button>
         </div>
-
-                               <!-- 模态框（Modal） -->
+            <!-- 模态框（Modal） -->
     <div class="modal fade" id="{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -194,13 +219,15 @@
                                 <a class="col-md-2 col-lg-1 modal_marger" href="static/{{ i[9] }}">附件1</a>
                             </div>
                                {% endif %}
-                            <div class="row row-no-gutters font_Size modal_marger">
-                                <div class="input-group col-md-12 modal_marger">
-                                    <input   type="text" autocomplete="off" placeholder="flag.." >
-                                </div>
-                                <div class="col-md-12 modal_marger">
-                                    <button class="btn btn-primary">提交</button>
-                                </div>
+                            <div class="row row-no-gutters font_Size modal_marger" id="flag{{ i[0] }}" >
+
+                                    <div class="input-group col-md-12 modal_marger">
+                                    <input  id="flag{{ i[0] }}1" type="text" name="flag" autocomplete="off" placeholder="flag.." >
+                                    </div>
+                                    <div class="col-md-12 modal_marger">
+                                    <button type="submit" class="btn btn-primary" onclick="postflag('#flag{{ i[0] }}','#flag{{ i[0] }}1')">提交</button>
+                                    </div>
+
                             </div>
                         </div>
                 </div>
@@ -208,8 +235,7 @@
             </div><!-- /.modal-content -->
         </div>
     </div> <!-- /.modal -->
-
-        {% endif  %}
+    {% endif  %}
     {% endfor %}
     {% endif %}
     </div>
@@ -223,9 +249,9 @@
         </div>
     </div>
     <div class="row clearfix">
-    {% if challengeResult %}
+     {% if challengeResult %}
     {% for i in challengeResult %}
-        {% if i[4]==3 %}
+    {% if i[4]==3 %}
 
         <div class="col-md-3 column border_contain"  >
             <h2>{{ i[1] }}</h2>
@@ -236,8 +262,7 @@
                 挑战
             </button>
         </div>
-
-                               <!-- 模态框（Modal） -->
+            <!-- 模态框（Modal） -->
     <div class="modal fade" id="{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -264,13 +289,15 @@
                                 <a class="col-md-2 col-lg-1 modal_marger" href="static/{{ i[9] }}">附件1</a>
                             </div>
                                {% endif %}
-                            <div class="row row-no-gutters font_Size modal_marger">
-                                <div class="input-group col-md-12 modal_marger">
-                                    <input   type="text" autocomplete="off" placeholder="flag.." >
-                                </div>
-                                <div class="col-md-12 modal_marger">
-                                    <button class="btn btn-primary">提交</button>
-                                </div>
+                            <div class="row row-no-gutters font_Size modal_marger" id="flag{{ i[0] }}" >
+
+                                    <div class="input-group col-md-12 modal_marger">
+                                    <input  id="flag{{ i[0] }}1" type="text" name="flag" autocomplete="off" placeholder="flag.." >
+                                    </div>
+                                    <div class="col-md-12 modal_marger">
+                                    <button type="submit" class="btn btn-primary" onclick="postflag('#flag{{ i[0] }}','#flag{{ i[0] }}1')">提交</button>
+                                    </div>
+
                             </div>
                         </div>
                 </div>
@@ -278,7 +305,7 @@
             </div><!-- /.modal-content -->
         </div>
     </div> <!-- /.modal -->
-        {% endif  %}
+    {% endif  %}
     {% endfor %}
     {% endif %}
     </div>
@@ -293,7 +320,7 @@
     <div class="row clearfix">
     {% if challengeResult %}
     {% for i in challengeResult %}
-        {% if i[4]==4 %}
+    {% if i[4]==4 %}
 
         <div class="col-md-3 column border_contain"  >
             <h2>{{ i[1] }}</h2>
@@ -304,7 +331,7 @@
                 挑战
             </button>
         </div>
-                               <!-- 模态框（Modal） -->
+            <!-- 模态框（Modal） -->
     <div class="modal fade" id="{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -331,13 +358,15 @@
                                 <a class="col-md-2 col-lg-1 modal_marger" href="static/{{ i[9] }}">附件1</a>
                             </div>
                                {% endif %}
-                            <div class="row row-no-gutters font_Size modal_marger">
-                                <div class="input-group col-md-12 modal_marger">
-                                    <input   type="text" autocomplete="off" placeholder="flag.." >
-                                </div>
-                                <div class="col-md-12 modal_marger">
-                                    <button class="btn btn-primary">提交</button>
-                                </div>
+                            <div class="row row-no-gutters font_Size modal_marger" id="flag{{ i[0] }}" >
+
+                                    <div class="input-group col-md-12 modal_marger">
+                                    <input  id="flag{{ i[0] }}1" type="text" name="flag" autocomplete="off" placeholder="flag.." >
+                                    </div>
+                                    <div class="col-md-12 modal_marger">
+                                    <button type="submit" class="btn btn-primary" onclick="postflag('#flag{{ i[0] }}','#flag{{ i[0] }}1')">提交</button>
+                                    </div>
+
                             </div>
                         </div>
                 </div>
@@ -345,7 +374,7 @@
             </div><!-- /.modal-content -->
         </div>
     </div> <!-- /.modal -->
-        {% endif  %}
+    {% endif  %}
     {% endfor %}
     {% endif %}
     </div>
@@ -362,21 +391,3 @@
 
 
 
-
-{##}
-{#<script>#}
-{#    $('button').click(function (){#}
-{#        $.ajax({#}
-{#            url:"/ajax",#}
-{#            type:"post",#}
-{#            data:{"name":"李四","score":99},#}
-{#            success:function (d) {#}
-{#                $("h1").html("ajax请求成功："+d)#}
-{#            },#}
-{#            error:function () {#}
-{#                alert("发送请求失败")#}
-{#            }#}
-{#            }#}
-{#        )#}
-{#    })#}
-{#</script>#}
