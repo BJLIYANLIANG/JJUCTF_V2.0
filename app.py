@@ -33,6 +33,7 @@ def login():
 
             return redirect('/')
         else:
+
             return redirect('/login')
     else:
         return redirect('/login')

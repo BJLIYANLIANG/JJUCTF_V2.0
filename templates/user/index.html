@@ -10,7 +10,15 @@
                     if (d == "1") {
                         alert("回答正确！");
                         $(flagid).html("回答正确");
+                        $(flagid).attr("name","回答正确");
+                        var aa = "#flag-"+id.substring(10)
+                        alert(aa)
+                        $(aa).attr("class","col-md-3 column border_contain color");
 
+
+                    }
+                    else{
+                        alert("回答错误")
                     }},
              error:function () {
 
@@ -41,7 +49,7 @@
     {% for i in challengeResult %}
     {% if i[4]==0 %}
 
-        <div class="col-md-3 column border_contain"  >
+        <div class="col-md-3 column border_contain" id="flag-{{ i[0] }}" >
             <h2>{{ i[1] }}</h2>
             <p>{{ i[3] }}</p>
             <p>
@@ -82,10 +90,10 @@
                             <div class="row row-no-gutters font_Size modal_marger" id="flag{{ i[0] }}" >
 
                                     <div class="input-group col-md-12 modal_marger">
-                                    <input  id="flag{{ i[0] }}1" type="text" name="flag" autocomplete="off" placeholder="flag.." >
+                                    <input  id="flagcheck{{ i[0] }}" type="text" name="flag" autocomplete="off" placeholder="flag.." >
                                     </div>
                                     <div class="col-md-12 modal_marger">
-                                    <button type="submit" class="btn btn-primary" onclick="postflag('#flag{{ i[0] }}','#flag{{ i[0] }}1')">提交</button>
+                                    <button type="submit" class="btn btn-primary" onclick="postflag('#flag{{ i[0] }}','#flagcheck{{ i[0] }}')">提交</button>
                                     </div>
 
                             </div>
