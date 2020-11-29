@@ -31,6 +31,7 @@ class Mysqld:
     def checkUserRegister(self,username):
         sql = 'select user_name from userlogin where user_name="%s" '%(username)
         self.cursor.execute(sql)
+        # print(sql)
         a = self.cursor.fetchall()
         if a:
             return 1  #如果用户已经注册，那么返回1
@@ -40,12 +41,27 @@ class Mysqld:
         showinfo = self.cursor
         showinfo.execute("select * from userlogin where user_name=")
         return self.cursor.fetchall()
+
+
     # 通过选择challenge_list表来
-    def select
+    def selectinfo(self,type):
+        showinfo = self.cursor
+        sql = "select * from challenge_list where challenge_type=%d"%(type)
+        sql = "select * from challenge_list"
+        showinfo.execute(sql)
+
+
+        return showinfo.fetchall()
+
+
 # a = Mysqld()
 # aa  = a.addUser(userName="user1",userEmail="sadfds@gmail.com",userPassword="123456")
 # print(aa)
-
+a = Mysqld()
+b = a.selectinfo(0)
+print(b)
+# for i in a:
+#     print(i)
 
 
 

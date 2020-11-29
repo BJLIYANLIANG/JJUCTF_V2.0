@@ -48,7 +48,9 @@ def ajax():
 def userIndex():
     user = session.get('user')
     if user :  #如果登录成功
-        return render_template("user/index.html",username=user)
+        getChallenge_listByType = Mysqld()
+        challengeResult = getChallenge_listByType.selectinfo(0)
+        return render_template("user/index.html",username=user,challengeResult=challengeResult)
     return render_template('user/login.html',username="11")
 
 

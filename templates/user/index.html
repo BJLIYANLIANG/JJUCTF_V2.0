@@ -7,215 +7,142 @@
             由jjuctf团队搭建的网络安全靶场
         </p>
     </div>
-
-
-    <div class="row clearfix">
+<div class="row clearfix">
         <div class="col-md-12 column">
             <h3>
                WEB
             </h3>
         </div>
     </div>
-
     <div class="row clearfix">
+    {% if challengeResult %}
+    {% for i in challengeResult %}
+    {% if i[4]==0 %}
+
         <div class="col-md-3 column border_contain"  >
-            <h2>
-                UploadMe
-            </h2>
-            <p>
-                文件上传
-            </p>
+            <h2>{{ i[1] }}</h2>
+            <p>{{ i[3] }}</p>
             <p>
                 <a class="btn" href="#"></a>
-
-<!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
-            <!-- 按钮触发模态框 -->
             <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
                 挑战
             </button>
         </div>
-        <div class="col-md-3 column border_contain"  >
-            <h2>
-                UploadMe
-            </h2>
-            <p>
-                文件上传
-            </p>
-            <p>
-                <a class="btn" href="#"></a>
-
-                <!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
-                <!-- 按钮触发模态框 -->
-                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
-                    挑战
-                </button>
-        </div>
-
-        <div class="col-md-3 column border_contain"  >
-            <h2>
-                UploadMe
-            </h2>
-            <p>
-                文件上传
-            </p>
-            <p>
-                <a class="btn" href="#"></a>
-
-                <!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
-                <!-- 按钮触发模态框 -->
-                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
-                    挑战
-                </button>
-        </div>
-
-        <div class="col-md-3 column border_contain"  >
-            <h2>
-                UploadMe
-            </h2>
-            <p>
-                文件上传
-            </p>
-            <p>
-                <a class="btn" href="#"></a>
-
-                <!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
-                <!-- 按钮触发模态框 -->
-                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
-                    挑战
-                </button>
-        </div>
-
-
+    {% endif  %}
+    {% endfor %}
+    {% endif %}
+    </div>
         <div class="row clearfix">
             <div class="col-md-12  column  ">
-<!--                <p > MISC</p>-->
                 <h3 class="">MISC</h3>
-
             </div>
         </div>
 
 
-        <div class="col-md-3 column border_contain"  >
-            <h2>
-                UploadMe
-            </h2>
-            <p>
-                文件上传
-            </p>
-            <p>
-                <a class="btn" href="#"></a>
-
-                <!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
-                <!-- 按钮触发模态框 -->
-                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
-                    挑战
-                </button>
-        </div>
-
-
+    <div class="row clearfix">
+        {% if challengeResult %}
+        {% for i in challengeResult %}
+        {% if i[4]==1 %}
 
         <div class="col-md-3 column border_contain"  >
-            <h2>
-                UploadMe
-            </h2>
+            <h2>{{ i[1] }}</h2>
+            <p>{{ i[3] }}</p>
             <p>
-                文件上传
-            </p>
-            <p>
+
                 <a class="btn" href="#"></a>
-
-                <!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
-                <!-- 按钮触发模态框 -->
-                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
-                    挑战
-                </button>
+            <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
+                挑战
+            </button>
         </div>
-
-
-
-        <div class="col-md-3 column border_contain"  >
-            <h2>
-                UploadMe
-            </h2>
-            <p>
-                文件上传
-            </p>
-            <p>
-                <a class="btn" href="#"></a>
-
-                <!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
-                <!-- 按钮触发模态框 -->
-                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
-                    挑战
-                </button>
-        </div>
-
-
-
-        <div class="row clearfix">
-            <div class="col-md-12 column">
-                <h3>
-                    Crypto
-                </h3>
-            </div>
-        </div>
-
-
-        <div class="col-md-3 column border_contain"  >
-            <h2>
-                UploadMe
-            </h2>
-            <p>
-                文件上传
-            </p>
-            <p>
-                <a class="btn" href="#"></a>
-
-                <!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
-                <!-- 按钮触发模态框 -->
-                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
-                    挑战
-                </button>
-        </div>
-
-
-        <div class="col-md-3 column border_contain"  >
-            <h2>
-                UploadMe
-            </h2>
-            <p>
-                文件上传
-            </p>
-            <p>
-                <a class="btn" href="#"></a>
-
-                <!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
-                <!-- 按钮触发模态框 -->
-                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
-                    挑战
-                </button>
-        </div>
-        <div class="col-md-3 column border_contain"  >
-            <h2>
-                UploadMe
-            </h2>
-            <p>
-                文件上传
-            </p>
-            <p>
-                <a class="btn" href="#"></a>
-
-                <!--            </p> <button type="button" class="btn btn-primary btn-default btn-block">挑战</button>-->
-                <!-- 按钮触发模态框 -->
-                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
-                    挑战
-                </button>
-
-        </div>
-
-
-
+        {% endif  %}
+    {% endfor %}
+    {% endif %}
     </div>
+
+
+
+
+   <div class="row clearfix">
+        <div class="col-md-12 column">
+            <h3>
+               Crypto
+            </h3>
+        </div>
+    </div>
+    <div class="row clearfix">
+    {% if challengeResult %}
+    {% for i in challengeResult %}
+        {% if i[4]==2 %}
+
+        <div class="col-md-3 column border_contain"  >
+            <h2>{{ i[1] }}</h2>
+            <p>{{ i[3] }}</p>
+            <p>
+                <a class="btn" href="#"></a>
+            <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
+                挑战
+            </button>
+        </div>
+        {% endif  %}
+    {% endfor %}
+    {% endif %}
+    </div>
+
+
+   <div class="row clearfix">
+        <div class="col-md-12 column">
+            <h3>
+               Reverse
+            </h3>
+        </div>
+    </div>
+    <div class="row clearfix">
+    {% if challengeResult %}
+    {% for i in challengeResult %}
+        {% if i[4]==3 %}
+
+        <div class="col-md-3 column border_contain"  >
+            <h2>{{ i[1] }}</h2>
+            <p>{{ i[3] }}</p>
+            <p>
+                <a class="btn" href="#"></a>
+            <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
+                挑战
+            </button>
+        </div>
+        {% endif  %}
+    {% endfor %}
+    {% endif %}
+    </div>
+
+   <div class="row clearfix">
+        <div class="col-md-12 column">
+            <h3>
+               Pwn
+            </h3>
+        </div>
+    </div>
+    <div class="row clearfix">
+    {% if challengeResult %}
+    {% for i in challengeResult %}
+        {% if i[4]==4 %}
+
+        <div class="col-md-3 column border_contain"  >
+            <h2>{{ i[1] }}</h2>
+            <p>{{ i[3] }}</p>
+            <p>
+                <a class="btn" href="#"></a>
+            <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
+                挑战
+            </button>
+        </div>
+        {% endif  %}
+    {% endfor %}
+    {% endif %}
+    </div>
+
+
+
 
 
 

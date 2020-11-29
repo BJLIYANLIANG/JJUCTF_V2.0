@@ -1,13 +1,7 @@
-<html>
-<header>
-    <link rel="stylesheet" href="/static/css/bootstrap.css">
+{% include 'user/header.html' %}
     {% if message %}
     <script language="JavaScript"> alert("{{ message}}")</script>
 {% endif %}
-</header>
-<body>
-
-<div class="container">
     <form method="POST" taction="/regiser">
         <div class="form-signin">
           <h2 class="form-signin-heading" style="text-align: center">注册</h2>
@@ -32,5 +26,4 @@
             <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
         </div>
     </form>
-</div>
 {% include "user/footer.html" %}

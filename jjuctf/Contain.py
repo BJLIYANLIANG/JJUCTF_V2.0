@@ -21,7 +21,12 @@ class Contain:
 #
 
 # insert into challenge_list
-#   (challenge_name,challenge_type,challenge_score,challenge_hint,docker_flag,docker_path,challenge_flag)
-#   values("easyPython",0,50,"SSTI漏洞",1,"EasyPython",0);
+#   (challenge_name,challenge_type,challenge_score,challenge_hint,docker_flag,challenge_flag)
+#   values("easyPython",0,50,"SSTI漏洞",0,0),("easymisc",1,100,"简单的misc",0,0);
 #
 # id dchallengename type challenge  flag dockerpath
+
+#
+# insert into challenge_list
+#   (challenge_name,challenge_type,challenge_score,challenge_hint,docker_flag,challenge_flag)
+#   values("easycrypto",3,50,"简单逆向",0,0),("easypwn",1,100,"简单的PWN",4,0);
