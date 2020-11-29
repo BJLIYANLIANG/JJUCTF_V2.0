@@ -24,10 +24,51 @@
             <p>{{ i[3] }}</p>
             <p>
                 <a class="btn" href="#"></a>
-            <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
+            <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#{{ i[0] }}">
                 挑战
             </button>
         </div>
+            <!-- 模态框（Modal） -->
+    <div class="modal fade" id="{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">{{ i[1] }}</h4>
+                </div>
+                <div class="modal-body container">
+                        <div class="row row-no-gutters modal_marger">
+{#                            <div class="col-md-12">#}
+{#                                <h2> {{ i[1] }}</h2>#}
+{#                            </div>#}
+                            <div class="col-md-12 text-success font_Size">
+                                Hint:{{ i[3] }}
+                            </div>
+                            <div class="row row-no-gutters  font_Size modal_marger">
+                                <div class="col-md-12 col-lg-12  ">
+                                  <button type="button " class="btn btn-primary" > 点击开启实例</button>
+                                </div>
+                            </div>
+                           {% if i[9] %}
+                                <div class="row row-no-gutters font_Size modal_marger ">
+                                <div class="col-md-12 col-lg-12">题目附件:</div>
+                                <a class="col-md-2 col-lg-1 modal_marger" href="static/{{ i[9] }}">附件1</a>
+                            </div>
+                               {% endif %}
+                            <div class="row row-no-gutters font_Size modal_marger">
+                                <div class="input-group col-md-12 modal_marger">
+                                    <input   type="text" autocomplete="off" placeholder="flag.." >
+                                </div>
+                                <div class="col-md-12 modal_marger">
+                                    <button class="btn btn-primary">提交</button>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div>
+    </div> <!-- /.modal -->
     {% endif  %}
     {% endfor %}
     {% endif %}
@@ -50,10 +91,52 @@
             <p>
 
                 <a class="btn" href="#"></a>
-            <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
+            <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#{{ i[0] }}">
                 挑战
             </button>
         </div>
+                   <!-- 模态框（Modal） -->
+    <div class="modal fade" id="{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">{{ i[1] }}</h4>
+                </div>
+                <div class="modal-body container">
+                        <div class="row row-no-gutters modal_marger">
+{#                            <div class="col-md-12">#}
+{#                                <h2> {{ i[1] }}</h2>#}
+{#                            </div>#}
+                            <div class="col-md-12 text-success font_Size">
+                                Hint:{{ i[3] }}
+                            </div>
+                            <div class="row row-no-gutters  font_Size modal_marger">
+                                <div class="col-md-12 col-lg-12  ">
+                                  <button type="button " class="btn btn-primary" > 点击开启实例</button>
+                                </div>
+                            </div>
+                           {% if i[9] %}
+                                <div class="row row-no-gutters font_Size modal_marger ">
+                                <div class="col-md-12 col-lg-12">题目附件:</div>
+                                <a class="col-md-2 col-lg-1 modal_marger" href="static/{{ i[9] }}">附件1</a>
+                            </div>
+                               {% endif %}
+                            <div class="row row-no-gutters font_Size modal_marger">
+                                <div class="input-group col-md-12 modal_marger">
+                                    <input   type="text" autocomplete="off" placeholder="flag.." >
+                                </div>
+                                <div class="col-md-12 modal_marger">
+                                    <button class="btn btn-primary">提交</button>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div>
+    </div> <!-- /.modal -->
+
         {% endif  %}
     {% endfor %}
     {% endif %}
@@ -79,10 +162,53 @@
             <p>{{ i[3] }}</p>
             <p>
                 <a class="btn" href="#"></a>
-            <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
+            <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#{{ i[0] }}">
                 挑战
             </button>
         </div>
+
+                               <!-- 模态框（Modal） -->
+    <div class="modal fade" id="{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">{{ i[1] }}</h4>
+                </div>
+                <div class="modal-body container">
+                        <div class="row row-no-gutters modal_marger">
+{#                            <div class="col-md-12">#}
+{#                                <h2> {{ i[1] }}</h2>#}
+{#                            </div>#}
+                            <div class="col-md-12 text-success font_Size">
+                                Hint:{{ i[3] }}
+                            </div>
+                            <div class="row row-no-gutters  font_Size modal_marger">
+                                <div class="col-md-12 col-lg-12  ">
+                                  <button type="button " class="btn btn-primary" > 点击开启实例</button>
+                                </div>
+                            </div>
+                           {% if i[9] %}
+                                <div class="row row-no-gutters font_Size modal_marger ">
+                                <div class="col-md-12 col-lg-12">题目附件:</div>
+                                <a class="col-md-2 col-lg-1 modal_marger" href="static/{{ i[9] }}">附件1</a>
+                            </div>
+                               {% endif %}
+                            <div class="row row-no-gutters font_Size modal_marger">
+                                <div class="input-group col-md-12 modal_marger">
+                                    <input   type="text" autocomplete="off" placeholder="flag.." >
+                                </div>
+                                <div class="col-md-12 modal_marger">
+                                    <button class="btn btn-primary">提交</button>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div>
+    </div> <!-- /.modal -->
+
         {% endif  %}
     {% endfor %}
     {% endif %}
@@ -106,10 +232,52 @@
             <p>{{ i[3] }}</p>
             <p>
                 <a class="btn" href="#"></a>
-            <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
+            <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#{{ i[0] }}">
                 挑战
             </button>
         </div>
+
+                               <!-- 模态框（Modal） -->
+    <div class="modal fade" id="{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">{{ i[1] }}</h4>
+                </div>
+                <div class="modal-body container">
+                        <div class="row row-no-gutters modal_marger">
+{#                            <div class="col-md-12">#}
+{#                                <h2> {{ i[1] }}</h2>#}
+{#                            </div>#}
+                            <div class="col-md-12 text-success font_Size">
+                                Hint:{{ i[3] }}
+                            </div>
+                            <div class="row row-no-gutters  font_Size modal_marger">
+                                <div class="col-md-12 col-lg-12  ">
+                                  <button type="button " class="btn btn-primary" > 点击开启实例</button>
+                                </div>
+                            </div>
+                           {% if i[9] %}
+                                <div class="row row-no-gutters font_Size modal_marger ">
+                                <div class="col-md-12 col-lg-12">题目附件:</div>
+                                <a class="col-md-2 col-lg-1 modal_marger" href="static/{{ i[9] }}">附件1</a>
+                            </div>
+                               {% endif %}
+                            <div class="row row-no-gutters font_Size modal_marger">
+                                <div class="input-group col-md-12 modal_marger">
+                                    <input   type="text" autocomplete="off" placeholder="flag.." >
+                                </div>
+                                <div class="col-md-12 modal_marger">
+                                    <button class="btn btn-primary">提交</button>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div>
+    </div> <!-- /.modal -->
         {% endif  %}
     {% endfor %}
     {% endif %}
@@ -132,10 +300,51 @@
             <p>{{ i[3] }}</p>
             <p>
                 <a class="btn" href="#"></a>
-            <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#myModal">
+            <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#{{ i[0] }}">
                 挑战
             </button>
         </div>
+                               <!-- 模态框（Modal） -->
+    <div class="modal fade" id="{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">{{ i[1] }}</h4>
+                </div>
+                <div class="modal-body container">
+                        <div class="row row-no-gutters modal_marger">
+{#                            <div class="col-md-12">#}
+{#                                <h2> {{ i[1] }}</h2>#}
+{#                            </div>#}
+                            <div class="col-md-12 text-success font_Size">
+                                Hint:{{ i[3] }}
+                            </div>
+                            <div class="row row-no-gutters  font_Size modal_marger">
+                                <div class="col-md-12 col-lg-12  ">
+                                  <button type="button " class="btn btn-primary" > 点击开启实例</button>
+                                </div>
+                            </div>
+                           {% if i[9] %}
+                                <div class="row row-no-gutters font_Size modal_marger ">
+                                <div class="col-md-12 col-lg-12">题目附件:</div>
+                                <a class="col-md-2 col-lg-1 modal_marger" href="static/{{ i[9] }}">附件1</a>
+                            </div>
+                               {% endif %}
+                            <div class="row row-no-gutters font_Size modal_marger">
+                                <div class="input-group col-md-12 modal_marger">
+                                    <input   type="text" autocomplete="off" placeholder="flag.." >
+                                </div>
+                                <div class="col-md-12 modal_marger">
+                                    <button class="btn btn-primary">提交</button>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+
+            </div><!-- /.modal-content -->
+        </div>
+    </div> <!-- /.modal -->
         {% endif  %}
     {% endfor %}
     {% endif %}
@@ -146,57 +355,7 @@
 
 
 
-    <!-- 模态框（Modal） -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        &times;
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">
-                        UploadMe
-                    </h4>
-                </div>
 
-                <div class="modal-body container">
-                        <div class="row row-no-gutters">
-                            <div class="col-md-12">
-                                <h2> UploadMe</h2>
-                            </div>
-
-                            <div class="col-md-12 text-success font_Size">
-                                init:this an init.
-                            </div>
-                            <div class="row row-no-gutters  font_Size">
-                                <div class="col-md-12 col-lg-12  ">
-                                  <button type="button " class="btn btn-primary" > 点击开启实例</button>
-                                </div>
-                            </div>
-                            <div class="row row-no-gutters font_Size ">
-                                <div class="col-md-12">题目附件:</div>
-                                <a class="col-md-2 col-lg-1 modal_marger">附件1</a>
-                                <a class="col-md-2 col-lg-1 modal_marger">附件2</a>
-                                <a class="col-md-2 col-lg-1 modal_marger">附件3</a>
-
-                            </div>
-                            <div class="row row-no-gutters font_Size">
-                                <div class="input-group col-md-12">
-                                    <input   type="text" autocomplete="off" placeholder="flag.." >
-                                </div>
-                                <div class="col-md-12 ">
-                                    <button class="btn btn-primary">
-                                        提交
-                                    </button>
-                                </div>
-                            </div>
-
-                        </div>
-                </div>
-
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
- </div>  <!--container-->
 {% include'user/footer.html' %}
 
 
