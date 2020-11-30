@@ -66,11 +66,20 @@ class Mysqld:
 # aa  = a.addUser(userName="user1",userEmail="sadfds@gmail.com",userPassword="123456")
 # print(aa)
 a = Mysqld()
-b = a.selectUserNum()
+b = a.selectinfo(0)
 print(b)
+a1 = []
+for i in b:
+    if i[4] == 0:
+        a1.append(i)
+print(a1)
+print(a1[0][2])
 # for i in a:
 #     print(i)
 
 
+# 队号 用户  分数
+#
+# 队号 解体数量
 
 
