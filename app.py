@@ -1,10 +1,9 @@
 from flask import Flask
 from flask import render_template
 from  flask import request
-from  flask import session,redirect,escape
+from  flask import session,redirect
 from datetime import timedelta
 from jjuctf.mysqld import Mysqld
-from flask import url_for
 from jjuctf.Checkinput import Checkinnput
 app = Flask(__name__)
 app.secret_key = '905008'  #session 密钥
@@ -18,6 +17,7 @@ def login():
     if request.method == 'GET':
         return render_template('user/login.html')
     if request.method == 'POST':
+        
         username = request.form.get('username')
         password = request.form.get('password')
 
