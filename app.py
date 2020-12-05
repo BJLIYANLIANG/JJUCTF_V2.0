@@ -24,7 +24,7 @@ def login():
         if username == '' or password == '':  #检查用户名和密码是否为空
             return render_template("user/login.html",message="用户名或密码不能为空")
         checkuser = Mysqld()
-        result = checkuser.checkUser(username,password)  #对用户表进行操作，检查登录
+        result = checkuser.checkuser(username,password) #对用户表进行操作，检查登录
         if result == 1:
             session.permanent = True  #设置session为永久的
             app.permanent_session_lifetime = timedelta(minutes=20)  # 设置session到期时间，单位分钟
@@ -78,22 +78,36 @@ def userRegister():
     if request.method != 'POST':
         return render_template("user/register.html")
     else:
+        uid = request.form.get('uid')
         username = request.form.get('username')
-        password = request.form.get('password')
-        useremail = request.form.get('email')
-        print(useremail,password,useremail)
+        realname = request.form.get('realname')
+        email = request.form.get('email')
+        mobile = request.form.get('mobile')
+        class_id = request.form.get('classid')
+        passwd = request.form.get('passwd')
+        passwd2 = request.form.get('passwd2')
+
+
+        # print(useremail,password,useremail)
         # if useremail=='' or password == '' or useremail == '':
         #     return render_template("")
-        checkstr = Checkinnput()
-        result = checkstr.checkUserString(username=username,password=password,useremail=useremail)  #检查用户输入的字符串
-        if result == 0 :
+        # checkstr = Checkinnput()
+        resultEmpty = 0
+        # result = checkstr.checkUserString(username=username,password=passwd,useremail=email,)  #检查用户输入的字符串
+        if passwd2 == '' or passwd == '' or username == '' or email == '' or mobile == '' or uid == '' or realname == ''  or class_id == '':
+            resultEmpty = 1
+
+        if passwd != passwd2:
+            return render_template("user/register.html",message="两次输入的密码不同，请重新输入")
+
+        if resultEmpty == 1:
             return render_template("user/register.html",message="提交异常，请重新输入")
         adduser = Mysqld()
         if adduser.checkUserRegister(username=username) == 1:
             return render_template("user/register.html",message="用户已经注册过!")
-
-        result = adduser.addUser(userName=username,userEmail=useremail,userPassword=password)
-        if result == 1:
+        result1 = adduser.adduser(uid,username,realname,passwd,email,mobile,int(class_id),'',0)
+        # result = adduser.addUser(userName=username,userEmail=useremail,userPassword=password)
+        if result1 == 1:
             return render_template("user/login.html",message="注册成功！")
 
 
@@ -126,6 +140,7 @@ def exams():
     if user:
         return render_template("user/exam.html",username=user,headerType="exam")
     else:
+
         return render_template("user/login.html")
 
 

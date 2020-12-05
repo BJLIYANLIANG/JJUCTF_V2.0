@@ -1,0 +1,20 @@
+     .border_contain{
+            /*border:*/
+            border: 1px solid green;
+            margin: 4px;
+        }
+
+        .modal_marger{
+            margin: 4px;
+        }
+
+        .font_Size{
+            font-size: 20px;
+        }
+        body {
+        /*background-color: #122b40;*/
+        /*    background: #122b40;*/
+        }
+        .container{
+            /*background-color: #122b40;*/
+        }
