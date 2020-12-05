@@ -1,0 +1,5 @@
+gunicorn
+gevent
+flask
+pymysql
+

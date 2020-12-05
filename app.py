@@ -51,8 +51,8 @@ def challenge():
     if user :  #如果登录成功
         getChallenge_listByType = Mysqld()
         challengeResult = getChallenge_listByType.selectinfo(0)
-        return render_template("user/challenge.html",username=user,challengeResult=challengeResult)
-    return render_template('user/login.html',username="11")
+        return render_template("user/challenge.html",username=user,headerType="challenge",challengeResult=challengeResult)
+    return render_template('user/login.html',username="未登录")
 # index
 # ctf解题模式
 @app.route('/')
@@ -62,25 +62,18 @@ def index():
         getChallenge_listByType = Mysqld()
         challengeResult = getChallenge_listByType.selectinfo(0)
         return render_template("user/index.html",username=user,challengeResult=challengeResult)
-    return render_template('user/index.html')
-# practice
-
-@app.route('/challenges')
-def userchallenge(challenge):
-    user = session.get('user')
-    if user:
-        return render_template("user/challenge.html")
-    return redirect('/')
-
+    return render_template('user/index.html',headerType="index")
 
 @app.route('/ranks')
 def ranks():
     user = session.get('user')
-    sqlcheck = Mysqld()
-    GetChallengeList = sqlcheck.selectinfo(0)
-    GetUserNum = sqlcheck.selectUserNum()
-    return render_template("user/ranks.html",username=user,ChallengeList=GetChallengeList,userNum=GetUserNum,a=1)
-
+    if user:
+        sqlcheck = Mysqld()
+        GetChallengeList = sqlcheck.selectinfo(0)
+        GetUserNum = sqlcheck.selectUserNum()  #查数据库将排行榜数据传到template中，目前是测试阶段，使用的是用户表
+        return render_template("user/ranks.html",username=user,headerType="rank",ChallengeList=GetChallengeList,userNum=GetUserNum,a=1)
+    else:
+        return render_template("user/login.html")
 
 @app.route('/register',methods=['POST','GET'])
 def userRegister():
@@ -103,36 +96,40 @@ def userRegister():
 
         result = adduser.addUser(userName=username,userEmail=useremail,userPassword=password)
         if result == 1:
-            print("111")
             return render_template("user/login.html",message="注册成功！")
+
 
 @app.route("/logout")
 def logout():
     session.clear()
     return render_template("user/login.html",message="退出帐号成功，请重新登录")
 
+
 @app.route('/awd')
 def awd():
     user = session.get('user')
-    sqlcheck = Mysqld()
-    GetChallengeList = sqlcheck.selectinfo(0)
-    GetUserNum = sqlcheck.selectUserNum()
-    return render_template("user/awd.html",username=user)
+    if user:
+        return render_template("user/awd.html",username=user,headerType="awd")
+    else:
+        return render_template("user/login.html")
+
 
 @app.route('/practice')
 def practice():
     user = session.get('user')
-    sqlcheck = Mysqld()
-    GetChallengeList = sqlcheck.selectinfo(0)
-    GetUserNum = sqlcheck.selectUserNum()
-    return render_template("user/pratices.html",username=user)
+    if user:
+        return render_template("user/pratices.html",username=user,headerType="practice")
+    else:
+        return render_template("user/login.html")
+
 @app.route('/exams')
 def exams():
     user = session.get('user')
-    sqlcheck = Mysqld()
-    GetChallengeList = sqlcheck.selectinfo(0)
-    GetUserNum = sqlcheck.selectUserNum()
-    return render_template("user/exam.html",username=user)
+    if user:
+        return render_template("user/exam.html",username=user,headerType="exam")
+    else:
+        return render_template("user/login.html")
+
 
 @app.route("/settings")
 def setting():
@@ -140,8 +137,9 @@ def setting():
 
 @app.route("/checkflag",methods=["POST"])
 def checkflag():
-
     return request.form.get("flag")
+
+
 
 if __name__ == '__main__':
     app.run()
