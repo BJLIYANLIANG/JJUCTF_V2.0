@@ -1,0 +1,290 @@
+{% include "user/header.html" %}
+
+    <div class="row col-md-12 jumbotron">
+        <h1>
+            JJUCTF
+        </h1>
+        <p>
+            由jjuctf团队搭建的网络安全靶场
+        </p>
+    </div>
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <h3>
+                WEB
+            </h3>
+        </div>
+    </div>
+    <div class="row clearfix">
+
+
+
+
+        <div class="col-md-3 column border_contain" id="flag-1" >
+            <h2>easyPython</h2>
+            <p>SSTI漏洞</p>
+            <p>
+                <a class="btn" href="#"></a>
+                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#1">
+                    挑战
+                </button>
+        </div>
+        <!-- 模态框（Modal） -->
+        <div class="modal fade modal_fix" id="1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">easyPython</h4>
+                    </div>
+                    <div class="modal-body container">
+                        <div class="row row-no-gutters modal_marger">
+
+
+
+                            <div class="col-md-12 text-success font_Size">
+                                Hint:SSTI漏洞
+                            </div>
+                            <div class="row row-no-gutters  font_Size modal_marger">
+                                <div class="col-md-12 col-lg-12  ">
+                                    <button type="button " class="btn btn-primary" > 点击开启实例</button>
+                                </div>
+                            </div>
+
+
+
+                            <div class="row row-no-gutters font_Size modal_marger" id="flag1" >
+
+                                <div class="input-group col-md-12 modal_marger">
+                                    <input  id="flagcheck1" type="text" name="flag" autocomplete="off" placeholder="flag.." >
+                                </div>
+                                <div class="col-md-12 modal_marger">
+                                    <button type="submit" class="btn btn-primary" onclick="postflag('#flag1','#flagcheck1')">提交</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /.modal-content -->
+            </div>
+        </div> <!-- /.modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="col-md-3 column border_contain" id="flag-10" >
+            <h2>easyWeb</h2>
+            <p>easyWEB</p>
+            <p>
+                <a class="btn" href="#"></a>
+                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#10">
+                    挑战
+                </button>
+        </div>
+        <!-- 模态框（Modal） -->
+        <div class="modal fade modal_fix" id="10" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">easyWeb</h4>
+                    </div>
+                    <div class="modal-body container">
+                        <div class="row row-no-gutters modal_marger">
+
+
+
+                            <div class="col-md-12 text-success font_Size">
+                                Hint:easyWEB
+                            </div>
+                            <div class="row row-no-gutters  font_Size modal_marger">
+                                <div class="col-md-12 col-lg-12  ">
+                                    <button type="button " class="btn btn-primary" > 点击开启实例</button>
+                                </div>
+                            </div>
+
+
+
+                            <div class="row row-no-gutters font_Size modal_marger" id="flag10" >
+
+                                <div class="input-group col-md-12 modal_marger">
+                                    <input  id="flagcheck10" type="text" name="flag" autocomplete="off" placeholder="flag.." >
+                                </div>
+                                <div class="col-md-12 modal_marger">
+                                    <button type="submit" class="btn btn-primary" onclick="postflag('#flag10','#flagcheck10')">提交</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /.modal-content -->
+            </div>
+        </div> <!-- /.modal -->
+
+
+
+    </div>
+    <div class="row clearfix">
+        <div class="col-md-12  column  ">
+            <h3 class="">MISC</h3>
+        </div>
+    </div>
+
+
+    <div class="row clearfix">
+
+
+
+
+
+
+        <div class="col-md-3 column border_contain"  >
+            <h2>easymisc</h2>
+            <p>简单的misc</p>
+            <p>
+                <a class="btn" href="#"></a>
+                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#3">
+                    挑战
+                </button>
+        </div>
+        <!-- 模态框（Modal） -->
+        <div class="modal fade modal_fix" id="3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">easymisc</h4>
+                    </div>
+                    <div class="modal-body container">
+                        <div class="row row-no-gutters modal_marger">
+
+
+
+                            <div class="col-md-12 text-success font_Size">
+                                Hint:简单的misc
+                            </div>
+                            <div class="row row-no-gutters  font_Size modal_marger">
+                                <div class="col-md-12 col-lg-12  ">
+                                    <button type="button " class="btn btn-primary" > 点击开启实例</button>
+                                </div>
+                            </div>
+
+                            <div class="row row-no-gutters font_Size modal_marger" id="flag3" >
+
+                                <div class="input-group col-md-12 modal_marger">
+                                    <input  id="flag31" type="text" name="flag" autocomplete="off" placeholder="flag.." >
+                                </div>
+                                <div class="col-md-12 modal_marger">
+                                    <button type="submit" class="btn btn-primary" onclick="postflag('#flag3','#flag31')">提交</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div><!-- /.modal-content -->
+            </div>
+        </div> <!-- /.modal -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <h3>
+                Crypto
+            </h3>
+        </div>
+    </div>
+    <div class="row clearfix">
+
+
+
+
+
+
+
+
+        <div class="col-md-3 column border_contain"  >
+            <h2>easycrypto</h2>
+            <p>简单逆向</p>
+            <p>
+                <a class="btn" href="#"></a>
+                <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#4">
+                    挑战
+                </button>
+        </div>
+        <!-- 模态框（Modal） -->
+        <div class="modal fade modal_fix" id="4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">easycrypto</h4>
+                    </div>
+                    <div class="modal-body container "  >
+                        <div class="row row-no-gutters modal_marger" >
+
+
+
+                            <div class="col-md-12 col-lg-12 text-success font_Size" >
+                                Hint:简单逆向
+                            </div>
+                        </div>
+
+                        <div class="row row-no-gutters  font_Size modal_marger" >
+                            <div class="col-md-12 col-lg-12 col-sm-12"   >
+                                <button type="button " class="btn btn-primary" style="text-align: center" > 点击开启实例</button>
+                            </div>
+                        </div>
+
+                        <div class="row row-no-gutters font_Size modal_marger ">
+
+                        </div>
+                        <div class="row row-no-gutters font_Size modal_marger" id="flag4" style="height:20%" >
+
+                            <div class="input-group col-md-12 modal_marger">
+                                <input  id="flag41" type="text" name="flag" autocomplete="off" placeholder="flag.." >
+                            </div>
+                            <div class="col-md-12 modal_marger">
+                                <button type="submit" class="btn btn-primary" onclick="postflag('#flag4','#flag41')">提交</button>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div><!-- /.modal-content -->
+            </div>
+        </div> <!-- /.modal -->
+
+    </div>
+
+
+{% include "user/footer.html" %}

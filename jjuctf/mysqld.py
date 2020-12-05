@@ -1,9 +1,9 @@
 import pymysql
 class Mysqld:
     def __init__(self):
-        server = "127.0.0.1"
-        user = "root"
-        password = "905008"
+        server = "101.200.138.126"
+        user = "jjuctf"
+        password = "ibJdJc6tXdRfmaRL"
         self.conn = pymysql.connect(server, user, password, database="jjuctf")  # 连接到jjuctf数据库
         self.cursor = self.conn.cursor()  #执行方法
     def addUser(self,userName,userEmail,userPassword):
@@ -60,20 +60,25 @@ class Mysqld:
         # print(showinfo.fetchall())
 
         return showinfo.fetchall()
-
-
+    def select_target(self):
+        showinfo = self.cursor
+        sql = "SELECT * FROM `target`"
+        showinfo.execute(sql)
+        return showinfo.fetchall()
 # a = Mysqld()
 # aa  = a.addUser(userName="user1",userEmail="sadfds@gmail.com",userPassword="123456")
 # print(aa)
 a = Mysqld()
-b = a.selectinfo(0)
-print(b)
-a1 = []
+b = a.select_target()
+# print(b)
 for i in b:
-    if i[4] == 0:
-        a1.append(i)
-print(a1)
-print(a1[0][2])
+    print(i)
+# a1 = []
+# for i in b:
+#     if i[4] == 0:
+#         a1.append(i)
+# print(a1)
+# print(a1[0][2])
 # for i in a:
 #     print(i)
 
