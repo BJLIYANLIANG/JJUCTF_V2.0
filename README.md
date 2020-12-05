@@ -2,12 +2,15 @@
 ## 简述
 JJUCTF是一个网络安全靶场，可以提供添加容器(Docker)，用户管理，使用WEB作为前端页面，python作为后端页面
 ## 技术栈：
-虚拟化：Docker
-后端编程语言：Python
-后端框架：Flask
-数据库：Mysql
-前端UI:Bootstrap
-前端js框架:Vue.js
+- 虚拟化：Docker
+- 后端编程语言：Python
+- WSGI :gunicron
+- 负载均衡：Nginx
+- 后端框架：Flask
+- 数据库：Mysql
+- 前端UI:Bootstrap
+- js框架:Vue.js
+
 
 
 
