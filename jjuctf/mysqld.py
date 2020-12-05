@@ -68,11 +68,11 @@ class Mysqld:
 # a = Mysqld()
 # aa  = a.addUser(userName="user1",userEmail="sadfds@gmail.com",userPassword="123456")
 # print(aa)
-a = Mysqld()
-b = a.select_target()
-# print(b)
-for i in b:
-    print(i)
+# a = Mysqld()
+# b = a.select_target()
+# # print(b)
+# for i in b:
+#     print(i)
 # a1 = []
 # for i in b:
 #     if i[4] == 0:

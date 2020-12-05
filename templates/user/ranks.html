@@ -6,16 +6,20 @@
 {#           <div class="panel-heading">#}
 {#               排行榜#}
 {#           </div>#}
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.0.0/dist/echarts.min.js">
 
+</script>
+<div id="main" style="width: 600px;height:400px;"></div>
            <!-- Table -->
            <table class="table table-bordered">
                <thead>
                <tr>
                    <th>排名</th>
-                   <th>用户</th>
+                   <th>队伍名</th>
                    {% for i in ChallengeList %}
                        <th>{{ i[1] }}</th>
                    {% endfor %}
+               <th>总分</th>
                </tr>
                </thead>
            <tbody>
@@ -26,12 +30,86 @@
                    {% for j in ChallengeList %}
                    <td>0</td>
                    {% endfor  %}
+               <td>0</td>
                </tr>
            {% endfor %}
            </tbody>
            </table>
 {#       </div>#}
 {#   </div>#}
+
+
+<script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        var option = {
+    title: {
+        text: '战绩'
+    },
+    tooltip: {
+        trigger: 'axis'
+    },
+    legend: {
+        data: ['hsm', 'llz', 'user', 'admin1', 'admin']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['8:00', '8:30', '9:00', '9:30', '10:00', '10:30', '11:00']
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+        {
+            name: 'hsm',
+            type: 'line',
+            stack: '总量',
+            data: [100, 150, 300, 400, 400, 600, 700]
+        },
+        {
+            name: 'llz',
+            type: 'line',
+            stack: '总量',
+            data: [0, 100, 150, 150, 200, 400, 500]
+        },
+        {
+            name: 'user',
+            type: 'line',
+            stack: '总量',
+            data: [0, 0, 0, 0, 50, 150, 200]
+        },
+        {
+            name: 'admin1',
+            type: 'line',
+            stack: '总量',
+            data: [100, 100, 200, 450, 750, 750, 750]
+        },
+        {
+            name: 'admin',
+            type: 'line',
+            stack: '总量',
+            data: [100, 100, 100, 300, 350, 350, 350]
+        }
+    ]
+};
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
 
 
 {##}

@@ -1,7 +1,4 @@
 {% include 'user/header.html' %}
-    {% if message %}
-    <script language="JavaScript"> alert("{{ message}}")</script>
-{% endif %}
     <form method="post" action="/login">
   <input placeholder="帐号" type="text" name="username" class="form-control"><br>
     <input placeholder="密码" type="password" name="password" class="form-control"> <br>
@@ -9,6 +6,4 @@
         <br>
         <a href="/register"> <input id="register" class="btn btn-lg btn-primary btn-block" type="button" value="注册" ></a>
 </form>
-</body>
-
-</html>
+{% include "user/footer.html" %}

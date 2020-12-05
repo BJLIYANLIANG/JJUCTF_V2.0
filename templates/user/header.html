@@ -19,6 +19,9 @@
   {#overflow-y:hidden;#}
 {#            禁用滚动条#}
 }
+
+
+
     </style>
     <meta charset="UTF-8">
     <script src="/static/js/jquery-3.5.1.min.js"></script>
@@ -74,3 +77,6 @@
         </nav>
     </div>
 
+  {% if message %}
+    <script language="JavaScript"> alert("{{ message}}")</script>
+{% endif %}

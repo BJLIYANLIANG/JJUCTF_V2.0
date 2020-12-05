@@ -22,19 +22,16 @@ def login():
         password = request.form.get('password')
 
         if username == '' or password == '':  #检查用户名和密码是否为空
-            return redirect('/', )
+            return render_template("user/login.html",message="用户名或密码不能为空")
         checkuser = Mysqld()
         result = checkuser.checkUser(username,password)  #对用户表进行操作，检查登录
         if result == 1:
             session.permanent = True  #设置session为永久的
             app.permanent_session_lifetime = timedelta(minutes=20)  # 设置session到期时间，单位分钟
             session['user'] = request.form.get('username')
-
-
             return redirect('/')
         else:
-
-            return redirect('/login')
+            return render_template("user/login.html",message="帐号或密码错误")
     else:
         return redirect('/login')
 
@@ -52,10 +49,11 @@ def challenge():
         getChallenge_listByType = Mysqld()
         challengeResult = getChallenge_listByType.selectinfo(0)
         return render_template("user/challenge.html",username=user,headerType="challenge",challengeResult=challengeResult)
-    return render_template('user/login.html',username="未登录")
+    return render_template('user/login.html')
 # index
 # ctf解题模式
 @app.route('/')
+@app.route('/index')
 def index():
     user = session.get('user')
     if user :  #如果登录成功

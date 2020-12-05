@@ -17,7 +17,7 @@
                         $(flagid).html("回答正确");
                         $(flagid).attr("name","回答正确");
                         var aa = "#flag-"+id.substring(10)
-                        alert(aa)
+                        {#alert(aa)#}
                         $(aa).attr("class","col-md-3 column border_contain color");
 
 
@@ -55,7 +55,15 @@
     {% if i[4]==0 %}
 
         <div class="col-md-3 column border_contain" id="flag-{{ i[0] }}" >
-            <h2>{{ i[1] }}</h2>
+{#            <h2>{{ i[1] }}</h2>#}
+            <div class="row">
+                <h2 class="col-lg-8">
+                  {{ i[1] }}
+                </h2>
+                <h2 class="col-lg-4">
+                    <p style="color: #2aabd2">200</p>
+                </h2>
+            </div>
             <p>{{ i[3] }}</p>
             <p>
                 <a class="btn" href="#"></a>
@@ -125,7 +133,14 @@
     {% if i[4]==1 %}
 
         <div class="col-md-3 column border_contain"  >
-            <h2>{{ i[1] }}</h2>
+           <div class="row">
+                <h2 class="col-lg-8">
+                  {{ i[1] }}
+                </h2>
+                <h2 class="col-lg-4">
+                    <p style="color: #2aabd2">300</p>
+                </h2>
+            </div>
             <p>{{ i[3] }}</p>
             <p>
                 <a class="btn" href="#"></a>
@@ -197,7 +212,14 @@
     {% if i[4]==2 %}
 
         <div class="col-md-3 column border_contain"  >
-            <h2>{{ i[1] }}</h2>
+            <div class="row">
+                <h2 class="col-lg-8">
+                  {{ i[1] }}
+                </h2>
+                <h2 class="col-lg-4">
+                    <p style="color: #2aabd2">200</p>
+                </h2>
+            </div>
             <p>{{ i[3] }}</p>
             <p>
                 <a class="btn" href="#"></a>
@@ -271,7 +293,14 @@
     {% if i[4]==3 %}
 
         <div class="col-md-3 column border_contain"  >
-            <h2>{{ i[1] }}</h2>
+           <div class="row">
+                <h2 class="col-lg-8">
+                  {{ i[1] }}
+                </h2>
+                <h2 class="col-lg-4">
+                    <p style="color: #2aabd2">150</p>
+                </h2>
+            </div>
             <p>{{ i[3] }}</p>
             <p>
                 <a class="btn" href="#"></a>
@@ -340,7 +369,14 @@
     {% if i[4]==4 %}
 
         <div class="col-md-3 column border_contain"  >
-            <h2>{{ i[1] }}</h2>
+            <div class="row">
+                <h2 class="col-lg-8">
+                  {{ i[1] }}
+                </h2>
+                <h2 class="col-lg-4">
+                    <p style="color: #2aabd2">100</p>
+                </h2>
+            </div>
             <p>{{ i[3] }}</p>
             <p>
                 <a class="btn" href="#"></a>
