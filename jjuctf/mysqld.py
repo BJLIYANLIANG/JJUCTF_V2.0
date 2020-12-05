@@ -7,8 +7,6 @@ class Mysqld:
         self.conn = pymysql.connect(server, user, password, database="jjuctf")  # 连接到jjuctf数据库
         self.cursor = self.conn.cursor()  #执行方法
 
-
-
     # 增加用户
     def adduser(self,user_id,user_name,real_name,password,email,mobile,class_id,user_photo,role):
         sql = 'insert into user (user_id,real_name,role,status,password,email,mobile,class_id,user_photo,user_name) ' \
