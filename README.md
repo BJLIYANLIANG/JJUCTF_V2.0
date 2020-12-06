@@ -20,6 +20,9 @@ JJUCTF是一个网络安全靶场，可以提供添加容器(Docker)，用户管
 - js框架:Vue.js
 
 
+## 搭建
+1. pip install -r requirement.txt
+2. gunicorn -w 2 -b 0.0.0.0:8080   app:app
 
 
 ## 设计功能：
