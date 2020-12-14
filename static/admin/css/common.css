@@ -1,0 +1,575 @@
+@charset "UTF-8";
+/*$sideMenu: (
+        background: #4ec3ff,
+        menuItemBg: #5095FE,
+        subMenuItemBg: ''
+);*/
+html, body {
+  height: 100%; }
+
+body {
+  font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti, "Microsoft YaHei"; }
+
+ul, li {
+  margin: 0;
+  padding: 0; }
+
+xmp {
+  font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+  white-space: pre-wrap;
+  background-color: transparent;
+  border-radius: 0;
+  padding: 0;
+  font-size: inherit;
+  color: #333;
+  margin: 0; }
+
+/** ============== 网站整体布局设置 ============== **/
+.navbar .navbar-header {
+  float: left; }
+
+.navbar .navbar-sidebar-toggle {
+  float: left;
+  font-size: 25px;
+  line-height: 50px;
+  margin-left: 10px;
+  margin-right: 15px;
+  cursor: pointer; }
+
+.navbar .navbar-end {
+  float: right; }
+  .navbar .navbar-end .dropdown {
+    display: inline-block; }
+  .navbar .navbar-end .dropdown-toggle {
+    padding: 4px 12px;
+    background-color: transparent;
+    margin-top: 2px; }
+
+.navbar .nav-notifications {
+  height: 48px;
+  float: left;
+  margin-right: 10px; }
+  .navbar .nav-notifications .btn-group {
+    display: block;
+    height: 100%;
+    float: left; }
+  .navbar .nav-notifications .btn-noti {
+    background-color: transparent;
+    height: 100%;
+    position: relative;
+    padding: 0 20px; }
+    .navbar .nav-notifications .btn-noti .badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-size: 10px;
+      line-height: 10px;
+      padding: 3px 5px; }
+
+@media screen and (max-width: 500px) {
+  .navbar .nav-notifications {
+    display: none; } }
+
+.wrapper {
+  position: relative;
+  /*overflow: hidden;*/
+  padding-top: 51px;
+  height: 100%;
+  /*padding-bottom: 45px;*/
+  background-color: #17232c;
+  overflow-x: hidden;
+  overflow-y: auto; }
+
+.sidebar-menu {
+  position: absolute;
+  display: block;
+  float: left;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  /*border-right: 1px solid map_get($sideMenu, 'background');*/
+  padding-top: 54px;
+  padding-bottom: 35px;
+  width: 240px;
+  /*background-color: #1c2b36;*/
+  height: 100%;
+  transition: left .5s ease;
+  -webkit-transition: left .5s ease;
+  -moz-transition: left .5s ease;
+  -ms-transition: left .5s ease;
+  -o-transition: left .5s ease; }
+  .sidebar-menu .menu-list {
+    list-style: none; }
+    .sidebar-menu .menu-list a {
+      color: white; }
+    .sidebar-menu .menu-list > .menu-item {
+      position: relative;
+      overflow: hidden; }
+      .sidebar-menu .menu-list > .menu-item > a {
+        position: relative;
+        display: block;
+        height: 40px;
+        line-height: 40px;
+        overflow: hidden;
+        padding: 0 10px;
+        transition: background-color .3s ease;
+        -webkit-transition: background-color .3s ease;
+        -moz-transition: background-color .3s ease;
+        -ms-transition: background-color .3s ease;
+        -o-transition: background-color .3s ease; }
+        .sidebar-menu .menu-list > .menu-item > a:before {
+          visibility: hidden;
+          opacity: 0;
+          content: ' ';
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          width: 5px;
+          height: 100%;
+          border-left: 5px solid #4ec3ff; }
+        .sidebar-menu .menu-list > .menu-item > a > i {
+          margin: 0 1em; }
+        .sidebar-menu .menu-list > .menu-item > a:focus {
+          text-decoration: none; }
+        .sidebar-menu .menu-list > .menu-item > a:hover {
+          text-decoration: none;
+          background-color: #37424F; }
+        .sidebar-menu .menu-list > .menu-item > a:hover:before {
+          visibility: visible;
+          opacity: 1; }
+        .sidebar-menu .menu-list > .menu-item > a:hover i {
+          color: #7ca0bb; }
+      .sidebar-menu .menu-list > .menu-item.actived > a {
+        background-color: #37424F; }
+      .sidebar-menu .menu-list > .menu-item.actived > a:before {
+        visibility: visible;
+        opacity: 1; }
+      .sidebar-menu .menu-list > .menu-item.actived > .sub-menu-list {
+        height: auto; }
+    .sidebar-menu .menu-list .sub-menu-list {
+      height: 0;
+      transition: height 0.3s; }
+      .sidebar-menu .menu-list .sub-menu-list > .sub-menu-item > a {
+        display: block;
+        width: 100%;
+        /*height: 30px;
+          line-height: 30px;*/
+        height: 35px;
+        line-height: 35px;
+        text-align: center;
+        position: relative; }
+      .sidebar-menu .menu-list .sub-menu-list > .sub-menu-item > a:hover:before {
+        display: block;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        border-left: 5px solid red;
+        width: 5px;
+        content: ' '; }
+  .sidebar-menu.collapsed {
+    width: 60px; }
+    .sidebar-menu.collapsed .menu-list .menu-item {
+      overflow: visible; }
+    .sidebar-menu.collapsed .menu-list .sub-menu-list {
+      position: absolute;
+      left: 60px;
+      top: 0;
+      background-color: #1c2b36;
+      width: 180px;
+      overflow: hidden;
+      margin-left: 15px;
+      transition: all 0.3s; }
+    .sidebar-menu.collapsed .menu-list .menu-item.actived > .sub-menu-list {
+      padding: 10px 0;
+      margin-left: 0; }
+
+.main-container {
+  position: relative;
+  margin-left: 240px;
+  min-height: 100%;
+  background-color: #f5f5f5;
+  right: 0;
+  left: 0;
+  transition: left .5s ease;
+  -webkit-transition: left .5s ease;
+  -moz-transition: left .5s ease;
+  -ms-transition: left .5s ease;
+  -o-transition: left .5s ease; }
+  .main-container > .padding {
+    background-color: #f5f5f5; }
+  .main-container.stretched {
+    margin-left: 60px; }
+
+@media screen and (max-width: 600px) {
+  .main-container {
+    margin-left: 0;
+    left: 240px; }
+    .main-container.stretched {
+      margin-left: 0;
+      left: 0;
+      z-index: 900; } }
+
+.main-footer {
+  color: #ccc;
+  text-align: center;
+  padding: 15px 0; }
+  .main-footer p {
+    margin-bottom: 0; }
+
+.scroll-to-top {
+  position: fixed;
+  width: 45px;
+  height: 45px;
+  background-color: #2baab1;
+  color: white;
+  bottom: 60px;
+  text-align: center;
+  line-height: 45px;
+  cursor: pointer;
+  right: -60px;
+  transition: right 0.3s;
+  z-index: 1000; }
+  .scroll-to-top:hover {
+    background-color: #0f0f0f; }
+  .scroll-to-top.shown {
+    right: 30px; }
+
+/** ============== 网站整体布局设置 ============== **/
+/** ============== 覆盖Bootstrap中的样式 ============== **/
+/**
+* 路径导航
+*/
+.breadcrumb {
+  border-radius: 0;
+  background-color: white;
+  margin-bottom: 10px; }
+
+.input-group .input-group-addon {
+  border-radius: 0; }
+
+pre,
+.alert,
+.form-control,
+.btn,
+.panel,
+.panel-heading,
+.modal .modal-content,
+.panel-group .panel,
+.nav-tabs > li > a,
+.nav-pills > li > a,
+.img-thumbnail,
+.list-group-item:first-child,
+.list-group-item:last-child {
+  border-radius: 0; }
+
+/**
+* 下拉菜单
+*/
+.dropdown-menu {
+  border-radius: 0; }
+
+/**
+* 分页
+*/
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover,
+.pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+  background-color: #4ec3ff;
+  border-color: #4ec3ff; }
+
+.pagination > li:first-child > a, .pagination > li:first-child > span,
+.pagination > li:last-child > a, .pagination > li:last-child > span {
+  border-radius: 0; }
+
+/**
+* 徽章
+*/
+.badge {
+  background-color: #4ec3ff; }
+  .badge.badge-terques {
+    background-color: #6ccac9; }
+  .badge.badge-yellow {
+    background-color: #f8d347; }
+  .badge.badge-red {
+    background-color: #ff6c60; }
+
+/**
+* 标签页
+*/
+.tab-content {
+  padding: 20px 10px; }
+
+/**
+* 胶囊式标签页
+*/
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus,
+.dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
+  background-color: #4ec3ff; }
+
+/** ============== 覆盖Bootstrap中的样式 ============== **/
+/** ============== 覆盖插件中的样式 ============== **/
+.daterangepicker .input-mini,
+.daterangepicker .input-mini.active {
+  border-radius: 0; }
+
+/** ============== 覆盖插件中的样式 ============== **/
+/** ============== 基于Bootstrap中的样式组件定义 ============== **/
+.input-group-img .input-group-addon {
+  padding: 0;
+  height: 40px; }
+  .input-group-img .input-group-addon img {
+    min-height: 100%;
+    min-width: 100%;
+    height: 38px; }
+
+.table.table-center {
+  text-align: center; }
+  .table.table-center > thead > tr > th {
+    text-align: center; }
+
+.table.table-middle > thead > tr > th,
+.table.table-middle > tbody > tr > th,
+.table.table-middle > tfoot > tr > th,
+.table.table-middle > thead > tr > td,
+.table.table-middle > tbody > tr > td,
+.table.table-middle > tfoot > tr > td {
+  vertical-align: middle; }
+
+/** ============== 基于Bootstrap中的样式组件定义 ============== **/
+/** ============== 网站公共样式定义 ============== **/
+.padding {
+  padding: 15px; }
+
+/* 分割线 */
+.separator-10 {
+  display: block;
+  width: 100%;
+  height: 10px; }
+
+.separator-20 {
+  display: block;
+  width: 100%;
+  height: 20px; }
+
+.separator-30 {
+  display: block;
+  width: 100%;
+  height: 20px; }
+
+.separator-50 {
+  display: block;
+  width: 100%;
+  height: 50px; }
+
+/** ============== 网站公共样式定义 ============== **/
+/** ============== 网站的逻辑样式定义 ============== **/
+/* 动画加载效果 */
+.loader {
+  text-align: center;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  min-height: 300px; }
+
+.loader-01 {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  animation: loader_01 5s infinite linear; }
+
+.loader-01 span {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  background: red;
+  display: block;
+  animation: loader_01_span 1s infinite linear; }
+  .loader-01 span:nth-child(1) {
+    background: #2ecc71; }
+  .loader-01 span:nth-child(2) {
+    left: 22px;
+    background: #9b59b6;
+    animation-delay: .2s; }
+  .loader-01 span:nth-child(3) {
+    top: 22px;
+    background: #3498db;
+    animation-delay: .4s; }
+  .loader-01 span:nth-child(4) {
+    top: 22px;
+    left: 22px;
+    background: #f1c40f;
+    animation-delay: .6s; }
+
+@keyframes loader_01 {
+  0% {
+    transform: rotate(0deg); }
+  50% {
+    transform: rotate(180deg); }
+  100% {
+    transform: rotate(360deg); } }
+
+@keyframes loader_01_span {
+  0% {
+    transform: scale(1); }
+  50% {
+    transform: scale(0.5); }
+  100% {
+    transform: scale(1); } }
+
+/* 盒子 */
+.box {
+  background-color: white;
+  /*border: 1px solid #ddd;*/
+  margin-bottom: 20px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  /*min-height: 200px;*/
+  overflow: auto;
+  /*&.box-fixed {
+    position: fixed;
+  }*/ }
+  .box > .heading {
+    /*padding: 20px 20px 20px 0;*/
+    border-bottom: 1px solid #ddd; }
+    .box > .heading > .title {
+      border-left: 5px solid #4ec3ff;
+      padding-left: 2em;
+      font-size: 14px;
+      margin: 20px 20px 20px 0; }
+      .box > .heading > .title .link-right {
+        float: right; }
+      .box > .heading > .title .box-toggle {
+        float: right;
+        cursor: pointer; }
+  .box.box-tabs-inline > .heading {
+    border-bottom: 0;
+    padding-top: 10px;
+    position: relative;
+    overflow: hidden; }
+    .box.box-tabs-inline > .heading .nav {
+      padding-left: 20px; }
+    .box.box-tabs-inline > .heading .box-toggle {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      cursor: pointer; }
+  .box.box-tabs-inline .tab-content {
+    padding: 0; }
+  .box > .box-inner {
+    padding: 20px;
+    overflow: hidden;
+    transition: all 0.3s; }
+  .box.collapsed > .box-inner {
+    height: 0;
+    padding: 0;
+    overflow: hidden; }
+
+/**
+* 盒子中的块标签
+*/
+.box-label-block {
+  background-color: #fff;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  height: 100px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  overflow: hidden; }
+  .box-label-block.theme .symbol {
+    background-color: #4ec3ff; }
+  .box-label-block.cyellow .symbol {
+    background-color: #f8d347; }
+  .box-label-block.terques .symbol {
+    background-color: #6ccac9; }
+  .box-label-block.cred .symbol {
+    background-color: #ff6c60; }
+  .box-label-block:hover .symbol {
+    width: 0; }
+  .box-label-block:hover .content {
+    border-radius: 4px;
+    border-left-color: #ccc;
+    width: 100%; }
+  .box-label-block .symbol {
+    width: 45%;
+    border-radius: 4px 0 0 4px;
+    text-align: center;
+    float: left;
+    height: 100%;
+    line-height: 100px;
+    color: white;
+    font-size: 45px;
+    transition: all 0.3s; }
+  .box-label-block .content {
+    width: 55%;
+    text-align: center;
+    float: left;
+    height: 100%;
+    border-left: 1px solid transparent;
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-radius: 0 4px 4px 0;
+    color: #c6cad6;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding: 10px;
+    transition: all 0.3s; }
+    .box-label-block .content .title {
+      margin: 0;
+      font-weight: bold;
+      padding-bottom: 5px; }
+    .box-label-block .content p {
+      margin: 0;
+      padding: 0;
+      font-size: 16px; }
+
+/* 全选复选框，以及对应的子复选框 */
+input[type=checkbox].all-cb, input[type=checkbox].child-cb {
+  width: 16px;
+  height: 16px; }
+
+/* 搜索表单样式（无label） */
+.form-search {
+  margin-bottom: 10px;
+  overflow: hidden; }
+  .form-search .col-md-2, .form-search .col-sm-4, .form-search .col-xs-12 {
+    /*padding: 0;
+    margin-right: 5px;*/
+    margin-bottom: 8px;
+    padding: 0 10px; }
+  .form-search label {
+    margin-right: 5px; }
+  .form-search .form-group {
+    margin-bottom: 0; }
+  .form-search .form-group,
+  .form-search .form-control {
+    width: 100%; }
+  .form-search .btn-search {
+    margin-right: 10px; }
+
+/* 搜索表单样式（有label） */
+.form-label-search {
+  margin-bottom: 10px;
+  overflow: hidden; }
+  .form-label-search .control-label {
+    margin-right: 5px; }
+  .form-label-search .form-group {
+    margin-right: 8px;
+    margin-bottom: 8px; }
+
+/** ============== 网站的逻辑样式定义 ============== **/
+/** ============== 网站的插件样式定义 ============== **/
+/** ============== 网站的插件样式定义 ============== **/

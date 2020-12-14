@@ -88,10 +88,7 @@ def userRegister():
         passwd2 = request.form.get('passwd2')
 
 
-        # print(useremail,password,useremail)
-        # if useremail=='' or password == '' or useremail == '':
-        #     return render_template("")
-        # checkstr = Checkinnput()
+
         resultEmpty = 0
         # result = checkstr.checkUserString(username=username,password=passwd,useremail=email,)  #检查用户输入的字符串
         if passwd2 == '' or passwd == '' or username == '' or email == '' or mobile == '' or uid == '' or realname == ''  or class_id == '':
@@ -106,15 +103,16 @@ def userRegister():
         if adduser.checkUserRegister(username=username) == 1:
             return render_template("user/register.html",message="用户已经注册过!")
         result1 = adduser.adduser(uid,username,realname,passwd,email,mobile,int(class_id),'',0)
-        # result = adduser.addUser(userName=username,userEmail=useremail,userPassword=password)
         if result1 == 1:
             return render_template("user/login.html",message="注册成功！")
+
 
 
 @app.route("/logout")
 def logout():
     session.clear()
     return render_template("user/login.html",message="退出帐号成功，请重新登录")
+
 
 
 @app.route('/awd')
@@ -153,6 +151,17 @@ def checkflag():
     return request.form.get("flag")
 
 
+
+@app.route("/adminlogin")
+def adminlogin():
+    return render_template("admin/login.html")
+@app.route("/admin")
+def adminIndex():
+    return render_template("admin/index.html")
+
+@app.route("/userman")
+def userman():
+    return render_template("admin/useradmin.html")
 
 if __name__ == '__main__':
     app.run()
