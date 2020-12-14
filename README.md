@@ -1,6 +1,7 @@
 # JJUCTF网络安全靶场
 ## 简述
-JJUCTF是一个网络安全靶场，可以提供添加容器(Docker)，用户管理，使用WEB作为前端页面，python作为后端页面
+JJUCTF是一个网络安全靶场，可以提供添加容器(Docker)，用户管理，使用WEB作为前端页面，后端开发使用Python flask框架
+### 前端
 - index
 ![](static/image/readme/index.png)
 - challenge
@@ -9,6 +10,8 @@ JJUCTF是一个网络安全靶场，可以提供添加容器(Docker)，用户管
 ![](static/image/readme/AWD.png)
 - rank
 ![](static/image/readme/rank.png)
+### 后端
+![](static/image/readme/admin_index.png)
 ## 技术栈：
 - 虚拟化：Docker
 - 后端编程语言：Python
