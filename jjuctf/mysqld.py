@@ -96,15 +96,15 @@ class Mysqld:
 # print(a1[0][2])
 # for i in a:
 #     print(i)
-
-a = Mysqld()
+#
+# a = Mysqld()
 # b = a.addadmin("20180201420","hsm","贺述明","905008","905008677@qq.com","18579266908",1861,"")
 # print(b)
 # print(str(a))
 # b = a.checkUser("HSM","905008")
-# b = a.showuser()
-b = a.checkuser("hsm","905008")
-print(b)
+# # b = a.showuser()
+# b = a.checkuser("hsm","905008")
+# print(b)
 # print(b)
 # 队号 用户  分数
 # 队号 解体数量

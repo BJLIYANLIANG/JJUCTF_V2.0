@@ -163,6 +163,34 @@ def adminIndex():
 def userman():
     return render_template("admin/useradmin.html")
 
+
+# upload_ctf_contain
+@app.route("/upload_ctf_contain")
+def upload_ctf_contain():
+    return render_template("admin/upload_ctf.html")
+
+@app.route("/upload_awd_contain")
+def upload_awd_contain():
+    return render_template("admin/upload_awd.html")
+
+# man_target_ctf
+@app.route("/man_target_ctf")
+def man_target_ctf():
+    return render_template("admin/man_target_ctf.html")
+
+# man_target_awd
+@app.route("/man_target_awd")
+def man_target_awd():
+    return render_template("admin/man_target_awd.html")
+
+@app.route("/man_user")
+def man_user():
+    return render_template("admin/man_user.html")
+
+@app.route("/man_admin")
+def man_admin():
+    return render_template("admin/man_admin.html")
+
 if __name__ == '__main__':
     app.run()
 

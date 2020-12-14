@@ -29,57 +29,16 @@
         </div>
 
         <div class="navbar-end">
-            <div class="nav-notifications">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-noti" data-toggle="dropdown">
-                        <i class="fa fa-envelope fa-lg"></i>
-                        <span class="badge badge-terques">5</span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-noti" data-toggle="dropdown">
-                        <i class="fa fa-bell fa-lg"></i>
-                        <span class="badge badge-yellow">3</span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                    </ul>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-noti" data-toggle="dropdown">
-                        <i class="fa fa-comments fa-lg"></i>
-                        <span class="badge badge-red">2</span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                    </ul>
-                </div>
-            </div>
-
             <div class="dropdown">
                 <button class="btn btn-default dropdown-toggle" type="button" id="navbar-dropdownmenu" data-toggle="dropdown">
-                    <img src="./images/avatar-mini.jpg" alt="Admin">
-                    管理员
-                    <span class="caret"></span>
+{#                    <img src="static/image/1.jpg" alt="Admin">#}
+
+                    管理员HSM
+{#                    <span class="caret"></span>#}
                 </button>
                 <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="navbar-dropdownmenu">
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="#">设置</a></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="login.html">退出登录</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="logout">退出登录</a></li>
                 </ul>
             </div>
         </div>
@@ -97,31 +56,22 @@
             <li class="menu-item">
                 <a href="javascript:void(0)"><i class="fa fa-cube" aria-hidden="true"></i>用户管理</a>
                 <ul class="sub-menu-list">
-                    <li class="sub-menu-item"><a href="userman">参赛选手</a></li>
-                    <li class="sub-menu-item"><a href="animate.html">管理员</a></li>
+                    <li class="sub-menu-item"><a href="man_user">参赛选手</a></li>
+                    <li class="sub-menu-item"><a href="man_admin">管理员</a></li>
                 </ul>
             </li>
             <li class="menu-item">
                 <a href="javascript:void(0)"><i class="fa fa-key" aria-hidden="true"></i>靶场管理</a>
                 <ul class="sub-menu-list">
-                    <li class="sub-menu-item"><a href="jq-plugin.html">CTF靶场</a></li>
-                    <li class="sub-menu-item"><a href="plugin.html">AWD靶场</a></li>
+                    <li class="sub-menu-item"><a href="man_target_ctf">CTF靶场</a></li>
+                    <li class="sub-menu-item"><a href="man_target_awd">AWD靶场</a></li>
                 </ul>
             </li>
             <li class="menu-item">
-                <a href="javascript:void(0)"><i class="fa fa-book" aria-hidden="true"></i>上传题目</a>
+                <a href="javascript:void(0)"><i class="fa fa-book" aria-hidden="true"></i>上传靶场</a>
                 <ul class="sub-menu-list">
-                    <li class="sub-menu-item"><a href="inbox.html">CTF题目</a></li>
-                    <li class="sub-menu-item"><a href="table.html">AWD题目</a></li>
-                </ul>
-            </li>
-            <li class="menu-item">
-                <a href="javascript:void(0)"><i class="fa fa-tag" aria-hidden="true"></i>更多页面 <span class="badge">4</span></a>
-                <ul class="sub-menu-list">
-                    <li class="sub-menu-item"><a href="blank.html">空白页面</a></li>
-                    <li class="sub-menu-item"><a href="login.html">登录页面</a></li>
-                    <li class="sub-menu-item"><a href="jump.html">跳转页面</a></li>
-                    <li class="sub-menu-item"><a href="404.html">404页面</a></li>
+                    <li class="sub-menu-item"><a href="upload_ctf_contain">CTF题目</a></li>
+                    <li class="sub-menu-item"><a href="upload_awd_contain">AWD题目</a></li>
                 </ul>
             </li>
             <li class="menu-item">
@@ -135,7 +85,7 @@
             <li class="separator-30"></li>
 
             <li class="menu-item">
-                <a href="login.html"><i class="fa fa-sign-out" aria-hidden="true"></i>安全退出</a>
+                <a href="#"><i class="fa fa-sign-out" aria-hidden="true"></i>安全退出</a>
             </li>
 
         </ul>
