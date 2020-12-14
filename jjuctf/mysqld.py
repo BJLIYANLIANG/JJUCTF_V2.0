@@ -69,7 +69,7 @@ class Mysqld:
     # 查询用户数
     def selectUserNum(self,):
         showinfo = self.cursor
-        sql = "select * from userlogin"
+        sql = "select * from user"
         showinfo.execute(sql)
         # print(showinfo.fetchall())
         return showinfo.fetchall()
