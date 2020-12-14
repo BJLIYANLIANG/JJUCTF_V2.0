@@ -4,11 +4,142 @@
             <ol class="breadcrumb">
                 <li class="active">首页</li>
             </ol>
-            <div class="box">
-                <div class="heading">
-                    <h3 class="title">提醒<a href="inbox.html" class="link-right">更多>></a></h3>
-                </div>
-            </div>
+        </div>
+
+         <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="width: 100%;height:400px;"></div>
+    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+      function randomData() {
+    now = new Date(+now + oneDay);
+    value = value + Math.random() * 21 - 10;
+    return {
+        name: now.toString(),
+        value: [
+            [now.getFullYear(), now.getMonth() + 1, now.getDate()].join('/'),
+            Math.round(value)
+        ]
+    };
+}
+
+var data = [];
+var now = +new Date(2020, 9, 3);
+var oneDay = 24 * 3600 * 1000;
+var value = Math.random() * 1000;
+for (var i = 0; i < 1000; i++) {
+    data.push(randomData());
+}
+
+var option = {
+    title: {
+        text: '流量监控'
+    },
+    tooltip: {
+        trigger: 'axis',
+        formatter: function (params) {
+            params = params[0];
+            var date = new Date(params.name);
+            return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
+        },
+        axisPointer: {
+            animation: false
+        }
+    },
+    xAxis: {
+        type: 'time',
+        splitLine: {
+            show: false
+        }
+    },
+    yAxis: {
+        type: 'value',
+        boundaryGap: [0, '100%'],
+        splitLine: {
+            show: true
+        }
+    },
+    series: [{
+        name: '模拟数据',
+        type: 'line',
+        showSymbol: false,
+        hoverAnimation: false,
+        data: data
+    }]
+};
+
+setInterval(function () {
+
+    for (var i = 0; i < 5; i++) {
+        data.shift();
+        data.push(randomData());
+    }
+
+    myChart.setOption({
+        series: [{
+            data: data
+        }]
+    });
+}, 1000);
+
+
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+<hr>
+
+        <div id="echart2" style="width: 100%;height: 400px"></div>
+        <script>
+             var myChart1 = echarts.init(document.getElementById('echart2'));
+            var option = {
+    title: {
+        text: '网络靶场题型占比',
+        subtext: 'JJUCTF',
+        left: 'center'
+    },
+    tooltip: {
+        trigger: 'item',
+        formatter: '{a} <br/>{b} : {c} ({d}%)'
+    },
+    legend: {
+        orient: 'vertical',
+        left: 'left',
+        data: ['WEB', 'MISC', 'Crypto', 'Pwn', 'Reverse']
+    },
+    series: [
+        {
+            name: '访问来源',
+            type: 'pie',
+            radius: '55%',
+            center: ['50%', '60%'],
+            data: [
+                {value: 335, name: 'WEB'},
+                {value: 310, name: 'MISC'},
+                {value: 234, name: 'Crypto'},
+                {value: 135, name: 'Pwn'},
+                {value: 1548, name: 'Reverse'}
+            ],
+            emphasis: {
+                itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                }
+            }
+        }
+    ]
+};
+
+
+ myChart1.setOption(option);
+        </script>
+
+
         </div>
     </div>
+
 {% include "admin/footer.html" %}
