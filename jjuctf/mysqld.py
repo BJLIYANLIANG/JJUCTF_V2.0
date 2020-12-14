@@ -80,6 +80,18 @@ class Mysqld:
         sql = "SELECT * FROM `target`"
         showinfo.execute(sql)
         return showinfo.fetchall()
+
+    # 检查admin登录用户
+    def checkAdminLogin(self,username,password):
+        sql = 'select admin_id from admin where admin_name="%s" and admin_password=md5("%s")' % (username, password)
+        self.cursor.execute(sql)
+        print(sql)
+        a = self.cursor.fetchall()
+        if a:
+            return 1
+        else:
+            return -1
+
 # a = Mysqld()
 # aa  = a.addUser(userName="user1",userEmail="sadfds@gmail.com",userPassword="123456")
 # print(aa)

@@ -7,7 +7,7 @@
         </div>
 
          <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-    <div id="main" style="width: 100%;height:400px;"></div>
+    <div class="padding" id="main" style="width: 100%;height:400px;"></div>
     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main'));
@@ -92,7 +92,7 @@ setInterval(function () {
     </script>
 <hr>
 
-        <div id="echart2" style="width: 100%;height: 400px"></div>
+        <div class="padding" id="echart2" style="width: 100%;height: 400px"></div>
         <script>
              var myChart1 = echarts.init(document.getElementById('echart2'));
             var option = {

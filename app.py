@@ -75,7 +75,7 @@ def ranks():
 
 @app.route('/register',methods=['POST','GET'])
 def userRegister():
-    if request.method != 'POST':
+    if request.method != 'POST':   #用户不是使用
         return render_template("user/register.html")
     else:
         uid = request.form.get('uid')
@@ -87,12 +87,14 @@ def userRegister():
         passwd = request.form.get('passwd')
         passwd2 = request.form.get('passwd2')
 
-
+        def eheck(passwd,):  #这个函数用来代替下面的代码验证字符串
+            pass
 
         resultEmpty = 0
         # result = checkstr.checkUserString(username=username,password=passwd,useremail=email,)  #检查用户输入的字符串
         if passwd2 == '' or passwd == '' or username == '' or email == '' or mobile == '' or uid == '' or realname == ''  or class_id == '':
             resultEmpty = 1
+
 
         if passwd != passwd2:
             return render_template("user/register.html",message="两次输入的密码不同，请重新输入")
@@ -152,12 +154,46 @@ def checkflag():
 
 
 
+
 @app.route("/adminlogin")
 def adminlogin():
     return render_template("admin/login.html")
+
+
+# 检查admin登录情况
+@app.route("/checkAdminLogin",methods=["POST"])
+def checkAdminLogin():
+    if session.get("admin"):
+        return render_template("admin/index.html")
+    if request.method == 'GET':
+        #如果是GET方法请求的，那么重新登录
+        return render_template('admin/login.html')
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+        if username == '' or password == '':  # 检查用户名和密码是否为空
+            return render_template("admin/login.html", message="用户名或密码不能为空")
+        checkuser = Mysqld()
+        result = checkuser.checkAdminLogin(username, password)  # 对用户表进行操作，检查登录
+        if result == 1:
+            session.permanent = True  # 设置session为永久的
+            app.permanent_session_lifetime = timedelta(minutes=20)  # 设置session到期时间，单位分钟
+            session['admin'] = request.form.get('username')
+            return redirect('/admin')
+        else:
+            return render_template("admin/login.html", message="帐号或密码错误")
+    else:
+        return redirect('/login')
+
+
 @app.route("/admin")
 def adminIndex():
-    return render_template("admin/index.html")
+    admin = session.get('admin')
+    if admin:
+        return render_template("admin/index.html")
+    else:
+        return render_template("admin/login.html")
+
 
 @app.route("/userman")
 def userman():
@@ -190,6 +226,13 @@ def man_user():
 @app.route("/man_admin")
 def man_admin():
     return render_template("admin/man_admin.html")
+
+
+@app.route("/adminLogout")
+def adminLogout():
+    session.clear()
+    return render_template("admin/login.html",message="退出帐号成功，请重新登录")
+
 
 if __name__ == '__main__':
     app.run()

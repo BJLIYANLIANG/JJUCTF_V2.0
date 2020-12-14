@@ -38,12 +38,12 @@
                 <h3><a href="#">JJUCTF</a>-后台登录</h3>
                 <h4 class="text-left" style="border-left: 5px solid #4ec3ff">&nbsp;&nbsp;登录</h4>
             </div>
-            <form class="form-sign-in" method="post" action="admincheck">
+            <form class="form-sign-in" method="post" action="checkAdminLogin">
                 <div class="form-group">
-                    <input type="text" name="admin" class="form-control" placeholder="账号">
+                    <input type="text" name="username" class="form-control" placeholder="账号">
                 </div>
                 <div class="form-group">
-                    <input type="password" name="passwd" class="form-control" placeholder="密码">
+                    <input type="password" name="password" class="form-control" placeholder="密码">
                 </div>
 
 {#                <div class="input-group input-group-img">#}
@@ -73,4 +73,7 @@
         </div><!-- ./sign-in-inner -->
     </div>
 </body>
+{% if message %}
+    <script language="JavaScript"> alert("{{ message}}")</script>
+{% endif %}
 </html>
