@@ -252,6 +252,9 @@ def run_target_table():
     else:
         return render_template("admin/login.html")
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return "404 -- Not Found Any Source！！！",404
 
 if __name__ == '__main__':
     app.run()

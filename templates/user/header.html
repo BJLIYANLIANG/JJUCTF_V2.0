@@ -36,12 +36,15 @@
                         <li {% if headerType == "rank" %} class="active" {% endif %}><a href="/ranks">排行榜{% if headerType == "rank" %}<span class="sr-only">(current)</span> {% endif %}</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                     <li><a href="#">队伍管理</a></li>
+
+                    <li><a href="/admin">后台管理</a></li>
+
                            {% if username %}
-                        <li><a href="#">{{ username }}</a></li>
-                        <li><a href="logout">退出</a></li>
+                                <li><a href="#">队伍管理</a></li>
+                                <li><a href="#">{{ username }}</a></li>
+                                <li><a href="/logout">退出</a></li>
                            {% else %}
-                               <li><a href="login">登录</a></li>
+                               <li><a href="/login">登录</a></li>
                            {% endif %}
                     </ul>
                 </div>
