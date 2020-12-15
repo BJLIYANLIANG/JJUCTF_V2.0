@@ -20,30 +20,18 @@
            	<div class="form-group">
 					 <label for="exampleInputEmail1">题目分值</label><input type="text" class="form-control" id="exampleInputEmail1" />
 				</div>
-            <div class="form-group">
-                 <label for="exampleInputEmail1">题目类型</label>
-           	<div class="btn-group dropdown" id="dropdown">
-
-		  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-		    Web <span class="caret"></span>
-		  </button>
-		  <input type="hidden" name="hidedrop_1" id="hidedrop_1" value="Web" />
-		  <ul class="dropdown-menu">
-		    <li><a href="#">Web</a></li>
-		    <li role="separator" class="divider"></li>
-		    <li><a href="#">Misc</a></li>
-		    <li role="separator" class="divider"></li>
-		    <li><a href="#">Pwn</a></li>
-		    <li role="separator" class="divider"></li>
-		    <li><a href="#">Crypto</a></li>
-              <li role="separator" class="divider"></li>
-		    <li><a href="#">Reverse</a></li>
-		  </ul>
+   <div class="form-group">
+       <label for="exampleInputEmail1">题目类型</label>
+       <div class="btn-group dropdown" id="dropdown">
+		  <select class="form-group form-control">
+			<option>WEB</option>
+			<option>MISC</option>
+			<option>Reverse</option>
+			<option>Pwn</option>
+			<option>Crypto</option>
+          </select>
 		</div>
-            </div>
-{#				<div class="form-group">#}
-{#					 <label for="exampleInputPassword1">题目属性</label><input type="text" class="form-control" id="exampleInputPassword1" />#}
-{#				</div>#}
+   </div>
 				<div class="form-group">
 					 <label for="exampleInputFile">容器上传</label><input type="file" id="exampleInputFile" />
 					<p class="help-block">

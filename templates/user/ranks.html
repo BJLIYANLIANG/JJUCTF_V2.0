@@ -9,32 +9,74 @@
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.0.0/dist/echarts.min.js">
 
 </script>
-<div id="main" style="width: 100%;height:400px;"></div>
+<div class="row ">
+    <div class="col-md-8 col-md-offset-2">
+        <div id="main"  style="width: 100%;height:400px;"></div>
+    </div>
+
+</div>
            <!-- Table -->
+
+<div class="row" >
+     <div class="col-md-8 col-md-offset-2">
+           <div class="table">
            <table class="table table-bordered">
-               <thead>
+               <thead class="table-bordered">
                <tr>
                    <th>排名</th>
-                   <th>队伍名</th>
-                   {% for i in ChallengeList %}
-                       <th>{{ i[1] }}</th>
-                   {% endfor %}
-               <th>总分</th>
+                   <th>战队</th>
+               <th>解题数量</th>
+                   <th>积分</th>
                </tr>
                </thead>
            <tbody>
-           {% for i in userNum %}
                <tr>
-                   <td>{{ a }}</td>
-                   <td>{{ i[1] }}</td>
-                   {% for j in ChallengeList %}
-                   <td>0</td>
-                   {% endfor  %}
-               <td>0</td>
+                   <td>1</td>
+                   <td>JJUSEC</td>
+                   <td>10</td>
+                   <td>1000</td>
                </tr>
-           {% endfor %}
+               <tr>
+                    <td>2</td>
+                   <td>JJUSEC2</td>
+                   <td>9</td>
+                   <td>900</td>
+               </tr>
+               <tr>
+                    <td>2</td>
+                   <td>JJUSEC2</td>
+                   <td>9</td>
+                   <td>900</td>
+               </tr>
+                <tr>
+                    <td>2</td>
+                   <td>JJUSEC2</td>
+                   <td>9</td>
+                   <td>900</td>
+               </tr>
+                <tr>
+                    <td>2</td>
+                   <td>JJUSEC2</td>
+                   <td>9</td>
+                   <td>900</td>
+               </tr>
+               <tr>
+                    <td>2</td>
+                   <td>JJUSEC2</td>
+                   <td>9</td>
+                   <td>900</td>
+               </tr>
+                <tr>
+                    <td>2</td>
+                   <td>JJUSEC2</td>
+                   <td>9</td>
+                   <td>900</td>
+               </tr>
            </tbody>
            </table>
+       </div>
+     </div>
+</div>
 {#       </div>#}
 {#   </div>#}
 

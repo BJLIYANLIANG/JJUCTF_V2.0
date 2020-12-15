@@ -24,6 +24,7 @@ def login():
         if username == '' or password == '':  #检查用户名和密码是否为空
             return render_template("user/login.html",message="用户名或密码不能为空")
         checkuser = Mysqld()
+
         result = checkuser.checkuser(username,password) #对用户表进行操作，检查登录
         if result == 1:
             session.permanent = True  #设置session为永久的
@@ -240,6 +241,17 @@ def run_target_import():
         return render_template("admin/run_target_import.html")
     else:
         return render_template("admin/login.html")
+
+
+# run_target_table
+@app.route("/run_target_table")
+def run_target_table():
+    admin = session.get('admin')
+    if admin:
+        return render_template("admin/run_target_table.html")
+    else:
+        return render_template("admin/login.html")
+
 
 if __name__ == '__main__':
     app.run()
