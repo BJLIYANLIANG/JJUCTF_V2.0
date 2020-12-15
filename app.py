@@ -233,6 +233,13 @@ def adminLogout():
     session.clear()
     return render_template("admin/login.html",message="退出帐号成功，请重新登录")
 
+@app.route("/run_target_import")
+def run_target_import():
+    admin = session.get('admin')
+    if admin:
+        return render_template("admin/run_target_import.html")
+    else:
+        return render_template("admin/login.html")
 
 if __name__ == '__main__':
     app.run()

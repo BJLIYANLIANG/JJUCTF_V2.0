@@ -1,7 +1,7 @@
      .border_contain{
             /*border:*/
-            border: 1px solid green;
-            margin: 4px;
+            border: 2px solid green;
+            margin: 10px;
         }
 
         .modal_marger{
