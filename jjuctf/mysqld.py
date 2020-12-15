@@ -91,36 +91,3 @@ class Mysqld:
             return 1
         else:
             return -1
-
-# a = Mysqld()
-# aa  = a.addUser(userName="user1",userEmail="sadfds@gmail.com",userPassword="123456")
-# print(aa)
-# a = Mysqld()
-# b = a.select_target()
-# # print(b)
-# for i in b:
-#     print(i)
-# a1 = []
-# for i in b:
-#     if i[4] == 0:
-#         a1.append(i)
-# print(a1)
-# print(a1[0][2])
-# for i in a:
-#     print(i)
-#
-# a = Mysqld()
-# b = a.addadmin("20180201420","hsm","贺述明","905008","905008677@qq.com","18579266908",1861,"")
-# print(b)
-# print(str(a))
-# b = a.checkUser("HSM","905008")
-# # b = a.showuser()
-# b = a.checkuser("hsm","905008")
-# print(b)
-# print(b)
-# 队号 用户  分数
-# 队号 解体数量
-
-
-# select user_name,role from user where user_name="hsm" and password=md5("905008")
-#
