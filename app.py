@@ -4,6 +4,8 @@ from  flask import request
 from  flask import session,redirect
 from datetime import timedelta
 from jjuctf.mysqld import Mysqld
+
+
 from jjuctf.Checkinput import Checkinnput
 app = Flask(__name__)
 app.secret_key = '905008'  #session 密钥
@@ -261,6 +263,10 @@ def page_not_found(error):
 @app.route("/test")
 def test():
     return render_template('user/test.html')
+
+
+
+
 if __name__ == '__main__':
     app.run()
 

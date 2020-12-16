@@ -20,7 +20,10 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+        <a class="nav-link" href="/">态势感知</a>
+      </li>
       <li class="nav-item active">
         <a class="nav-link" href="/challenges">CTF答题 <span class="sr-only">(current)</span></a>
       </li>
@@ -49,8 +52,8 @@
                                </ul>
                                </li>
                            {% else %}
-                               <li><a href="/login">登录</a></li>
-                               <li><a href="/register">注册</a></li>
+                               <li class="nav-item"><a class="nav-link" href="/login">登录</a></li>
+                               <li class="nav-item"><a class="nav-link" href="/register">注册</a></li>
                            {% endif %}
 
       </ul>
