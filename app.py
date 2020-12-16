@@ -254,8 +254,13 @@ def run_target_table():
 
 @app.errorhandler(404)
 def page_not_found(error):
+    user = session.get('user')
+    if user:
+        return render_template("404.html",username=user), 404
     return render_template("404.html"),404
-
+@app.route("/test")
+def test():
+    return render_template('user/test.html')
 if __name__ == '__main__':
     app.run()
 

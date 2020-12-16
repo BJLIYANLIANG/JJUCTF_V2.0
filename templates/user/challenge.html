@@ -35,7 +35,7 @@
 }
 </script>
 
-<div  style="text-align: center;">
+<div  class="row justify-content-center bg-light " style="text-align: center;">
     <div class="row col-md-12 clearfix jumbotron "  style="display: inline-block;float: none;">
       <div>
             <h1>
@@ -51,9 +51,11 @@
 
 <div class="row clearfix" >
         <div class="col-md-12 column">
-            <h3>
+            <h3 >
                WEB
             </h3>
+{#            <table>das</table>#}
+{#            <span class="label label-success" style="font-size: 20px">WEB</span>#}
         </div>
     </div>
     <div class="row clearfix">
@@ -129,7 +131,8 @@
     </div>
         <div class="row clearfix">
             <div class="col-md-12  column  ">
-                <h3 class="">MISC</h3>
+{#                <h3 class="">MISC</h3>#}
+                <span class="label label-success" style="font-size: 20px">MISC</span>
             </div>
         </div>
 
@@ -208,17 +211,17 @@
 
    <div class="row clearfix">
         <div class="col-md-12 column">
-            <h3>
-               Crypto
-            </h3>
+{#            <h3>#}
+{#               Crypto#}
+{#            </h3>#}
+            <span class="label label-success" style="font-size: 20px;"> Crypto</span>
         </div>
     </div>
-    <div class="row clearfix">
+    <div class="row clearfix " >
     {% if challengeResult %}
     {% for i in challengeResult %}
     {% if i[4]==2 %}
-
-        <div class="col-md-2 column border_contain"  >
+        <div class="col-md-2 column border_contain "  >
             <div class="row">
                 <h2 class="col-md-8">
                   {{ i[1] }}
@@ -289,9 +292,10 @@
 
    <div class="row clearfix">
         <div class="col-md-12 column">
-            <h3>
-               Reverse
-            </h3>
+{#            <h3>#}
+{#               Reverse#}
+{#            </h3>#}
+            <span class="label label-success" style="font-size: 20px"> Reverse</span>
         </div>
     </div>
     <div class="row clearfix">
@@ -365,9 +369,10 @@
 
    <div class="row clearfix">
         <div class="col-md-12 column">
-            <h3>
-               Pwn
-            </h3>
+{#            <h3>#}
+{#               Pwn#}
+{#            </h3>#}
+             <span class="label label-success" style="font-size: 20px"> Pwn</span>
         </div>
     </div>
     <div class="row clearfix">

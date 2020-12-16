@@ -10,51 +10,37 @@
    <link rel="stylesheet" href="static/css/bootstrap.min.css">
     <script src="static/js/bootstrap.min.js"></script>
        <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
-{#    <link rel="stylesheet" href="css/bootstrap.min.css">#}
     <title>JJUCTF</title>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="/">JJUCTF</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
 
-<div  class="container-fluid" >
-    <div class="row clearfix">
-         <nav class=" navbar navbar-default " >
-                  <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/index">JJUCTF</a>
-{#                          <a class="navbar-brand" href="#">#}
-{#                        <img alt="Brand" style="max-width:100px;margin-top:-7px;" src="https://www.hsm.cool/usr/uploads/2020/07/3375162998.jpeg">#}
-{#                        </a>#}
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/challenges">CTF答题 <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/awd">AWD攻防</a>
+      </li>
 
-                </div>
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="text-align: center;">
-                   <ul class="nav navbar-nav" style="display: inline-block;float: none;font-size: 18px">
-{#                        <li  {% if headerType == "practice" %} class="active" {% endif %}><a href="/practice">CTF-练习{% if headerType == "practice" %}<span class="sr-only">(current)</span> {% endif %}</a></li>#}
-{#                        <li {% if headerType == "exam" %} class="active" {% endif %}><a href="/exams">Exams{% if headerType == "exam" %}<span class="sr-only">(current)</span> {% endif %}</a></li>#}
-                        <li {% if headerType == "challenge" %} class="active" {% endif %}><a href="/challenges">CTF答题{% if headerType == "challenfe" %}<span class="sr-only">(current)</span> {% endif %}</a></li>
-                        <li {% if headerType == "awd" %} class="active" {% endif %}><a href="/awd">AWD攻防演练{% if headerType == "awd" %}<span class="sr-only">(current)</span> {% endif %}</a></li>
-                        <li {% if headerType == "rank" %} class="active" {% endif %}><a href="/ranks">排行榜{% if headerType == "rank" %}<span class="sr-only">(current)</span> {% endif %}</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
+      <li class="nav-item">
+        <a class="nav-link" href="/ranks">排行榜</a>
+      </li>
+    </ul>
+     <ul class="nav navbar-nav  navbar-right ml-auto">
 
 
                            {% if username %}
-                                <li><a href="#"></a></li>
-{#                                <li><a href="/user?user=">{{ username }}</a></li>#}
                                <li class="dropdown ">
-
-{#                                 <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" >#}
-{#                               asdfsadf#}
-{#                                </button>#}
-
                                <a class="dropdown-toggle" data-toggle="dropdown" style="color: #2e6da4">
-                                   <img class="img-circle figure-img" style="width: 20%;height: 20%" src="https://www.hsm.cool/usr/uploads/2020/07/3375162998.jpeg" alt="Admin"><b>{{ username }}</b><span class="caret"></span>
+                                   <img class="card-img img-circle "style="width: 2em;height: 100%"  src="https://www.hsm.cool/usr/uploads/2020/07/3375162998.jpeg" alt="User">
+                                  {{ username }}<span class="caret"></span>
                                </a>
-
                                    <ul class="dropdown-menu dropdown-menu-md-right">
                                     <li class="dropdown-item"><a href="#">队伍管理</a></li>
                                     <li class="dropdown-item"><a href="#">个人设置</a></li>
@@ -62,17 +48,22 @@
                                     <li class="dropdown-item"><a href="/logout">退出帐号</a></li>
                                </ul>
                                </li>
-{#                                <li><a href="/logout">退出</a></li>#}
                            {% else %}
                                <li><a href="/login">登录</a></li>
                                <li><a href="/register">注册</a></li>
                            {% endif %}
 
-                    </ul>
-                </div>
+      </ul>
+  </div>
+</nav>
 
-        </nav>
-    </div>
+
+
+
+<div  class="container-fluid" >
+
+
+
 {#警告信息#}
   {% if message %}
     <script language="JavaScript"> alert("{{ message}}")</script>
