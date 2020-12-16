@@ -37,11 +37,25 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
 
-                    <li><a href="/admin">后台管理</a></li>
+
                            {% if username %}
-                                <li><a href="#">队伍管理</a></li>
-                                <li><a href="/user?user=">{{ username }}</a></li>
-                                <li><a href="/logout">退出</a></li>
+                                <li><a href="#"></a></li>
+{#                                <li><a href="/user?user=">{{ username }}</a></li>#}
+                               <li class="dropdown ">
+
+{#                                 <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" >#}
+{#                               asdfsadf#}
+{#                                </button>#}
+
+                               <a class="dropdown-toggle" data-toggle="dropdown">{{ username }}</a>
+                               <ul class="dropdown-menu dropdown-menu-md-right">
+                                    <li class="dropdown-item"><a href="#">队伍管理</a></li>
+                                    <li class="dropdown-item"><a href="#">个人设置</a></li>
+                                     <li class="dropdown-item"><a href="/admin">后台管理</a></li>
+                                    <li class="dropdown-item"><a href="/logout">退出帐号</a></li>
+                               </ul>
+                               </li>
+{#                                <li><a href="/logout">退出</a></li>#}
                            {% else %}
                                <li><a href="/login">登录</a></li>
                                <li><a href="/register">注册</a></li>
