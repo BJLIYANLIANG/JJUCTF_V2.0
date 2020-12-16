@@ -1,4 +1,6 @@
 import pymysql
+import jjuctf.config
+
 class Mysqld:
     def __init__(self):
         server = "101.200.138.126"
