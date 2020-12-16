@@ -26,6 +26,10 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="/index">JJUCTF</a>
+{#                          <a class="navbar-brand" href="#">#}
+{#                        <img alt="Brand" style="max-width:100px;margin-top:-7px;" src="https://www.hsm.cool/usr/uploads/2020/07/3375162998.jpeg">#}
+{#                        </a>#}
+
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="text-align: center;">
                    <ul class="nav navbar-nav" style="display: inline-block;float: none;font-size: 18px">
@@ -47,8 +51,11 @@
 {#                               asdfsadf#}
 {#                                </button>#}
 
-                               <a class="dropdown-toggle" data-toggle="dropdown">{{ username }}</a>
-                               <ul class="dropdown-menu dropdown-menu-md-right">
+                               <a class="dropdown-toggle" data-toggle="dropdown" style="color: #2e6da4">
+                                   <img class="img-circle figure-img" style="width: 20%;height: 20%" src="https://www.hsm.cool/usr/uploads/2020/07/3375162998.jpeg" alt="Admin"><b>{{ username }}</b><span class="caret"></span>
+                               </a>
+
+                                   <ul class="dropdown-menu dropdown-menu-md-right">
                                     <li class="dropdown-item"><a href="#">队伍管理</a></li>
                                     <li class="dropdown-item"><a href="#">个人设置</a></li>
                                      <li class="dropdown-item"><a href="/admin">后台管理</a></li>
