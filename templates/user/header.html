@@ -38,15 +38,15 @@
                     <ul class="nav navbar-nav navbar-right">
 
                     <li><a href="/admin">后台管理</a></li>
-
                            {% if username %}
                                 <li><a href="#">队伍管理</a></li>
-                                <li><a href="#">{{ username }}</a></li>
+                                <li><a href="/user?user=">{{ username }}</a></li>
                                 <li><a href="/logout">退出</a></li>
                            {% else %}
                                <li><a href="/login">登录</a></li>
-                               <li><a href="/">注册</a></li>
+                               <li><a href="/register">注册</a></li>
                            {% endif %}
+
                     </ul>
                 </div>
 
