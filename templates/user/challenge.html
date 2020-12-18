@@ -1,5 +1,5 @@
 {% include'user/header.html' %}
-<div  class="container-fluid" >
+<div  class="container" >
 <style>
     .modal_fix{
     top: 22%;
@@ -47,9 +47,7 @@
         </p>
       </div>
     </div>
-
 </div>
-
 <div class="row clearfix" >
         <div class="col-md-12 column">
             <h3 >
@@ -64,7 +62,7 @@
     {% for i in challengeResult %}
     {% if i[4]==0 %}
 
-        <div class="col-md-2 column border_contain" id="flag-{{ i[0] }}" >
+        <div class="col-md-3 column border_contain" id="flag-{{ i[0] }}" >
 {#            <h2>{{ i[1] }}</h2>#}
             <div class="row">
                 <h2 class="col-lg-8">
@@ -132,8 +130,8 @@
     </div>
         <div class="row clearfix">
             <div class="col-md-12  column  ">
-{#                <h3 class="">MISC</h3>#}
-                <span class="label label-success" style="font-size: 20px">MISC</span>
+                <h3 class="">MISC</h3>
+{#                <span class="label label-success" style="font-size: 20px">MISC</span>#}
             </div>
         </div>
 
@@ -143,7 +141,7 @@
     {% for i in challengeResult %}
     {% if i[4]==1 %}
 
-        <div class="col-md-2 column border_contain"  >
+        <div class="col-md-3 column border_contain"  >
            <div class="row">
                 <h2 class="col-lg-8">
                   {{ i[1] }}
@@ -212,17 +210,17 @@
 
    <div class="row clearfix">
         <div class="col-md-12 column">
-{#            <h3>#}
-{#               Crypto#}
-{#            </h3>#}
-            <span class="label label-success" style="font-size: 20px;"> Crypto</span>
+            <h3>
+               Crypto
+            </h3>
+{#            <span class="label label-success" style="font-size: 20px;"> Crypto</span>#}
         </div>
     </div>
     <div class="row clearfix " >
     {% if challengeResult %}
     {% for i in challengeResult %}
     {% if i[4]==2 %}
-        <div class="col-md-2 column border_contain "  >
+        <div class="col-md-3 column border_contain "  >
             <div class="row">
                 <h2 class="col-md-8">
                   {{ i[1] }}
@@ -293,10 +291,10 @@
 
    <div class="row clearfix">
         <div class="col-md-12 column">
-{#            <h3>#}
-{#               Reverse#}
-{#            </h3>#}
-            <span class="label label-success" style="font-size: 20px"> Reverse</span>
+            <h3>
+               Reverse
+            </h3>
+{#            <span class="label label-success" style="font-size: 20px"> Reverse</span>#}
         </div>
     </div>
     <div class="row clearfix">
@@ -304,7 +302,7 @@
     {% for i in challengeResult %}
     {% if i[4]==3 %}
 
-        <div class="col-md-2 column border_contain"  >
+        <div class="col-md-3 column border_contain"  >
            <div class="row">
                 <h2 class="col-lg-8">
                   {{ i[1] }}
@@ -370,10 +368,10 @@
 
    <div class="row clearfix">
         <div class="col-md-12 column">
-{#            <h3>#}
-{#               Pwn#}
-{#            </h3>#}
-             <span class="label label-success" style="font-size: 20px"> Pwn</span>
+            <h3>
+               Pwn
+            </h3>
+{#             <span class="label label-success" style="font-size: 20px"> Pwn</span>#}
         </div>
     </div>
     <div class="row clearfix">
@@ -381,7 +379,7 @@
     {% for i in challengeResult %}
     {% if i[4]==4 %}
 
-        <div class="col-md-2 column border_contain"  >
+        <div class="col-md-3 column border_contain"  >
             <div class="row">
                 <h2 class="col-lg-8">
                   {{ i[1] }}
