@@ -15,6 +15,8 @@ JJUCTF是一个网络安全靶场，可以提供添加容器(Docker)，用户管
 ![](static/image/readme/admin_login.png)
 管理员页面
 ![](static/image/readme/admin_index.png)
+upload
+![](static/image/readme/admin_upload.png)
 ## 技术栈：
 - 虚拟化：Docker
 - 后端编程语言：Python
