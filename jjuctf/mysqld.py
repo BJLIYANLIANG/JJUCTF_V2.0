@@ -3,9 +3,9 @@ import jjuctf.config
 
 class Mysqld:
     def __init__(self):
-        server = "101.200.138.126"
+        server = "localhost"
         user = "jjuctf"
-        password = "ibJdJc6tXdRfmaRL"  #数据库密码，宝塔面板
+        password = "jjuctf"  #数据库密码，宝塔面板
         self.conn = pymysql.connect(server, user, password, database="jjuctf")  # 连接到jjuctf数据库
         self.cursor = self.conn.cursor()  #执行方法
 

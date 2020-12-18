@@ -51,7 +51,7 @@ def challenge():
     if user :  #如果登录成功
         getChallenge_listByType = Mysqld()
         challengeResult = getChallenge_listByType.selectinfo(0)
-        return render_template("user/challenge.html",username=user,headerType="challenge",challengeResult=challengeResult)
+        return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult)
     return render_template('user/login.html')
 # index
 # ctf解题模式
@@ -62,7 +62,7 @@ def index():
     if user :  #如果登录成功
         getChallenge_listByType = Mysqld()
         challengeResult = getChallenge_listByType.selectinfo(0)
-        return render_template("user/index.html",username=user,challengeResult=challengeResult)
+        return render_template("user/index.html",username=user,headerType="index",challengeResult=challengeResult)
     return render_template('user/index.html',headerType="index")
 
 @app.route('/ranks')
@@ -72,7 +72,7 @@ def ranks():
         sqlcheck = Mysqld()
         GetChallengeList = sqlcheck.selectinfo(0)
         GetUserNum = sqlcheck.selectUserNum()  #查数据库将排行榜数据传到template中，目前是测试阶段，使用的是用户表
-        return render_template("user/ranks.html",username=user,headerType="rank",ChallengeList=GetChallengeList,userNum=GetUserNum,a=1)
+        return render_template("user/ranks.html",username=user,headerType="ranks",ChallengeList=GetChallengeList,userNum=GetUserNum,a=1)
     else:
         return render_template("user/login.html")
 
@@ -119,12 +119,32 @@ def logout():
     return render_template("user/login.html",message="退出帐号成功，请重新登录")
 
 
-
+# AWD模块
 @app.route('/awd')
 def awd():
     user = session.get('user')
     if user:
         return render_template("user/awd.html",username=user,headerType="awd")
+    else:
+        return render_template("user/login.html")
+
+
+# 用户设置
+@app.route('/setting',methods=['GET'])
+def userSetting():
+    user = session.get('user')
+    if user:
+        username = request.args.get('user')
+        return render_template("user/setting.html",username=username,headerType="userSetting")
+    else:
+        return render_template("user/login.html")
+# 队伍设置
+@app.route('/group',methods=['GET'])
+def groupSetting():
+    user = session.get('user')
+    if user:
+        username = request.args.get('user')
+        return render_template("user/group.html",username=username,headerType="userSetting")
     else:
         return render_template("user/login.html")
 
