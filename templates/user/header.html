@@ -14,9 +14,6 @@
     <title>JJUCTF</title>
 </head>
 <body>
-
-
-
 <nav style="background-color: #333" class="navbar navbar-expand-lg navbar-light bg-light"  >
   <a class="navbar-brand" href="/">JJUCTF</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,9 +25,6 @@
 {#        <li class="nav-item">#}
 {#        <a class="nav-link" href="/">态势感知</a>#}
 {#      </li>#}
-
-
-
      {% if headerType == 'index' %}
             <li class="nav-item active">
         <a class="nav-link" href="/">态势感知<span class="sr-only">(current)</span></a>
@@ -40,8 +34,6 @@
         <a class="nav-link" href="/">态势感知</a>
       </li>
         {% endif %}
-
-
       {% if headerType == 'challenges' %}
             <li class="nav-item active">
         <a class="nav-link" href="/challenges">CTF答题<span class="sr-only">(current)</span></a>
@@ -72,11 +64,8 @@
         <a class="nav-link" href="/ranks">排行榜</a>
       </li>
         {% endif %}
-
     </ul>
      <ul class="nav navbar-nav  navbar-right ml-auto">
-
-
                            {% if username %}
                                <li class="dropdown ">
                                <a class="dropdown-toggle" data-toggle="dropdown" style="color: #2e6da4">
@@ -94,7 +83,6 @@
                                <li class="nav-item"><a class="nav-link" href="/login">登录</a></li>
                                <li class="nav-item"><a class="nav-link" href="/register">注册</a></li>
                            {% endif %}
-
       </ul>
   </div>
 </nav>
