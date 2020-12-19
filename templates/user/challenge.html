@@ -206,7 +206,7 @@
     </div>
 
 
-
+{#------------------------fix end-------------------#}
 
    <div class="row clearfix">
         <div class="col-md-12 column">
@@ -232,25 +232,26 @@
             <p>{{ i[3] }}</p>
             <p>
                 <a class="btn" href="#"></a>
-            <button class="btn btn-primary btn-default btn-block" data-toggle="modal" data-target="#{{ i[0] }}">
+            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal{{ i[0] }}">
                 挑战
             </button>
         </div>
             <!-- 模态框（Modal） -->
-    <div class="modal fade modal_fix" id="{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+    <div class="modal fade modal_fix" id="modal{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">{{ i[1] }}</h4>
+
+                    <h4 class="modal-title" id=" myModalLabel">{{ i[1] }}</h4>
+                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
-                <div class="modal-body container "  >
-                        <div class="row row-no-gutters modal_marger" >
-{#                            <div class="col-md-12">#}
-{#                                <h2> {{ i[1] }}</h2>#}
-{#                            </div>#}
-                            <div class="col-md-12 text-success font_Size" >
+
+                <div class="modal-body ">
+                        <div class="row">
+                            <div class="row row-no-gutters modal_marger" >
+                                <div class="col-md-12 text-success font_Size" >
                                 Hint:{{ i[3] }}
+                                </div>
                             </div>
                         </div>
 
@@ -259,7 +260,6 @@
                                   <button type="button " class="btn btn-primary" style="text-align: center" > 点击开启实例</button>
                                 </div>
                         </div>
-
                         <div class="row row-no-gutters font_Size modal_marger ">
                         {% if i[9] %}
                                 <div class="col-md-12">题目附件:</div>
@@ -268,18 +268,14 @@
                                {% endif %}
                         </div>
                         <div class="row row-no-gutters font_Size modal_marger" id="flag{{ i[0] }}" style="height:20%" >
-
                                     <div class="input-group col-md-12 modal_marger">
-                                    <input  id="flag{{ i[0] }}1" type="text" name="flag" autocomplete="off" placeholder="flag.." >
+                                        <input  id="flag{{ i[0] }}1" type="text" name="flag" autocomplete="off" placeholder="flag.." >
                                     </div>
                                     <div class="col-md-12 modal_marger">
-                                    <button type="submit" class="btn btn-primary" onclick="postflag('#flag{{ i[0] }}','#flag{{ i[0] }}1')">提交</button>
+                                        <button type="submit" class="btn btn-primary" onclick="postflag('#flag{{ i[0] }}','#flag{{ i[0] }}1')">提交</button>
                                     </div>
-
                         </div>
-
                 </div>
-
             </div><!-- /.modal-content -->
         </div>
     </div> <!-- /.modal -->
@@ -288,7 +284,7 @@
     {% endif %}
     </div>
 
-
+{#------------------------fix end-------------------#}
    <div class="row clearfix">
         <div class="col-md-12 column">
             <h3>

@@ -130,14 +130,16 @@ def awd():
 
 
 # 用户设置
-@app.route('/setting',methods=['GET'])
-def userSetting():
+@app.route('/user',methods=['GET'])
+def user():
     user = session.get('user')
     if user:
         username = request.args.get('user')
-        return render_template("user/setting.html",username=username,headerType="userSetting")
+        return render_template("user/user.html",username=username,headerType=username)
     else:
         return render_template("user/login.html")
+
+
 # 队伍设置
 @app.route('/group',methods=['GET'])
 def groupSetting():
@@ -170,6 +172,9 @@ def exams():
 @app.route("/settings")
 def setting():
     return render_template("user/index.html")
+
+
+
 
 @app.route("/checkflag",methods=["POST"])
 def checkflag():
@@ -217,7 +222,7 @@ def adminIndex():
     else:
         return render_template("admin/login.html")
 
-
+# admin 用户管理路由
 @app.route("/userman")
 def userman():
     return render_template("admin/useradmin.html")
@@ -250,11 +255,13 @@ def man_user():
 def man_admin():
     return render_template("admin/man_admin.html")
 
-
+#管理员登录退出
 @app.route("/adminLogout")
 def adminLogout():
     session.clear()
     return render_template("admin/login.html",message="退出帐号成功，请重新登录")
+
+
 
 @app.route("/run_target_import")
 def run_target_import():
@@ -274,12 +281,14 @@ def run_target_table():
     else:
         return render_template("admin/login.html")
 
+# 404错误
 @app.errorhandler(404)
 def page_not_found(error):
     user = session.get('user')
     if user:
         return render_template("404.html",username=user), 404
     return render_template("404.html"),404
+# 测试页面
 @app.route("/test")
 def test():
     return render_template('user/test.html')
