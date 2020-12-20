@@ -32,9 +32,9 @@
            <h3>个人战绩</h3>
         </div>
     </div>
-    <div class="row" style="height: 30rem">
-        <div id="scorechart" class="col-md-6"  style="width: 50%;height: 100%"></div>
-        <div id="scorelist" class="col-md-6" style="width: 50%;height: 100%"></div>
+    <div class="row" style="background-color: #111b29" >
+        <div class="col-md-6 col-sm-12"><div id="scorechart" style="width: 100%;height: 30rem"></div></div>
+        <div class="col-md-6 col-sm-12"> <div id="scorelist" style="width: 100%;height: 30rem"></div></div>
     </div>
 </div>
 <script>
@@ -43,7 +43,7 @@
         backgroundColor: '#111b29',
         color: ['#3D91F7', '#61BE67'],
         tooltip: {
-          show: false // 弹层数据去掉
+          show: true // 弹层数据去掉
         },
         radar: {
           center: ['50%', '55%'], // 外圆的位置
