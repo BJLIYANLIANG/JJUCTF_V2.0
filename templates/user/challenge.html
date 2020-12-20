@@ -118,10 +118,8 @@
         <div class="row clearfix">
             <div class="col-md-12  column  ">
                 <h3 class="">MISC</h3>
-{#                <span class="label label-success" style="font-size: 20px">MISC</span>#}
             </div>
         </div>
-
     <div class="row clearfix " >
     {% if challengeResult %}
     {% for i in challengeResult %}
@@ -150,7 +148,6 @@
                     <h4 class="modal-title" id=" myModalLabel">{{ i[1] }}</h4>
                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
-
                 <div class="modal-body ">
                         <div class="row row-no-gutters font_Size modal_marger ">
                              <div class="col-md-12">解题人数:<span class="modal_marger">0</span></div>
@@ -176,16 +173,8 @@
                 </div>
             </div><!-- /.modal-content -->
         </div>
-    </div> <!-- /.modal -->
-    {% endif  %}
-    {% endfor %}
-    {% endif %}
+    </div> <!-- /.modal -->{% endif  %}{% endfor %}{% endif %}
     </div>
-
-
-
-{#------------------------fix end-------------------#}
-
    <div class="row clearfix">
         <div class="col-md-12 column">
             <h3>
@@ -213,7 +202,6 @@
            </div>
         </div>
         </div>
-
             <!-- 模态框（Modal） -->
     <div class="modal fade modal_fix" id="modal{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
@@ -253,8 +241,6 @@
     {% endfor %}
     {% endif %}
     </div>
-
-{#------------------------fix end-------------------#}
    <div class="row clearfix">
         <div class="col-md-12 column">
             <h3>
@@ -290,7 +276,6 @@
                     <h4 class="modal-title" id=" myModalLabel">{{ i[1] }}</h4>
                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
-
                 <div class="modal-body ">
                         <div class="row row-no-gutters font_Size modal_marger ">
                              <div class="col-md-12">解题人数:<span class="modal_marger">0</span></div>
