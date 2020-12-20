@@ -1,19 +1,25 @@
 {% include 'user/header.html' %}
 <div class="container-fluid" >
+    <div class="row">
+      <div class="col-md-12">  <h3>个人信息</h3>
+      </div>
+    </div>
     <div class="row" >
         <div class="col-md-1">
                 <div style=" background-size: cover;">
-                   <img class="img-circle"style="width: 4rem;height: 4rem"  src="https://www.hsm.cool/usr/uploads/2020/07/3375162998.jpeg" alt="User">
+                   <img class="img-circle"style="width: 3rem;height: 3rem"  src="https://www.hsm.cool/usr/uploads/2020/07/3375162998.jpeg" alt="User">
                 </div>
         </div>
         <div class="col-md-4">
             <div>
-{#                <img class="card-img img-circle btn-group "style="width: 3rem;height: 10px"  src="https://www.hsm.cool/usr/uploads/2020/07/3375162998.jpeg" alt="User">#}
+{#                <img class="card-img img-circle btn-group "style="width: 3rem;height: 3rem"  src="https://www.hsm.cool/usr/uploads/2020/07/3375162998.jpeg" alt="User">#}
 {#                <button class="btn btn-primary" >更改头像</button>#}
-                <div class="" >
-                    <h3 class="h3">{{ username }}</h3>
-
-                        <div >ID:<span>71734</span></div>
+                <div class="text-center text-success" >
+                    <div>用户名:{{ username }}</div>
+                    <div >ID:<span>71734</span></div>
+                     <div >学院:<span>信息学院</span></div>
+                     <div >学号:<span>20180201420</span></div>
+                     <div >擅长<span>WEB</span></div>
                 </div>
             </div>
         </div>
@@ -23,7 +29,7 @@
     </div>
     <div class="row" >
         <div class="col-md-12">
-           <h2> 战绩</h2>
+           <h3>个人战绩</h3>
         </div>
     </div>
     <div class="row" style="height: 30rem">
