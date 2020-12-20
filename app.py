@@ -72,7 +72,7 @@ def ranks():
         sqlcheck = Mysqld()
         GetChallengeList = sqlcheck.selectinfo(0)
         GetUserNum = sqlcheck.selectUserNum()  #查数据库将排行榜数据传到template中，目前是测试阶段，使用的是用户表
-        return render_template("user/ranks.html",username=user,headerType="ranks",ChallengeList=GetChallengeList,userNum=GetUserNum,a=1)
+        return render_template("user/ranks.html",username=user,headerType="rank",ChallengeList=GetChallengeList,userNum=GetUserNum,a=1)
     else:
         return render_template("user/login.html")
 
