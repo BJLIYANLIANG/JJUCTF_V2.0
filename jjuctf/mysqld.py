@@ -59,12 +59,11 @@ class Mysqld:
 
 
     # 通过选择challenge_list表来
-    def selectinfo(self,type):
+    def showChallengeList(self):
         showinfo = self.cursor
-        sql = "select * from challenge_list where challenge_type=%d"%(type)
+        # sql = "select * from challenge_list where challenge_type=%d"%(type)
         sql = "select * from challenge_list"
         showinfo.execute(sql)
-
 
         return showinfo.fetchall()
 
@@ -93,3 +92,8 @@ class Mysqld:
             return 1
         else:
             return -1
+
+
+a = Mysqld()
+b = a.showChallengeList()
+print(b)

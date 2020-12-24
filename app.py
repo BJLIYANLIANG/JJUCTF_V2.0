@@ -39,20 +39,18 @@ def login():
         return redirect('/login')
 
 
-@app.route('/ajax',methods=['POST'])
-def ajax():
-    return "1"
-
-
 # ctf解题模式
 @app.route('/challenges')
 def challenge():
     user = session.get('user')
     if user :  #如果登录成功
-        getChallenge_listByType = Mysqld()
-        challengeResult = getChallenge_listByType.selectinfo(0)
-        return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult)
+        getChallengeListByType = Mysqld()
+        challengeResult = getChallengeListByType.showChallengeList()
+        # 0为web 以此类推
+        return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult,)
     return render_template('user/login.html')
+
+
 # index
 # ctf解题模式
 @app.route('/')
@@ -61,7 +59,7 @@ def index():
     user = session.get('user')
     if user :  #如果登录成功
         getChallenge_listByType = Mysqld()
-        challengeResult = getChallenge_listByType.selectinfo(0)
+        challengeResult = getChallenge_listByType.showChallengeList()
         return render_template("user/index.html",username=user,headerType="index",challengeResult=challengeResult)
     return render_template('user/index.html',headerType="index")
 
@@ -70,7 +68,7 @@ def ranks():
     user = session.get('user')
     if user:
         sqlcheck = Mysqld()
-        GetChallengeList = sqlcheck.selectinfo(0)
+        GetChallengeList = sqlcheck.showChallengeList(0)
         GetUserNum = sqlcheck.selectUserNum()  #查数据库将排行榜数据传到template中，目前是测试阶段，使用的是用户表
         return render_template("user/ranks.html",username=user,headerType="rank",ChallengeList=GetChallengeList,userNum=GetUserNum,a=1)
     else:
@@ -294,6 +292,14 @@ def test():
     return render_template('user/test.html')
 
 
+
+@app.route('/checkCtfFlag',methods=['POST'])
+def checkCtfFlag():
+    flag = request.form.get('flag')
+    if flag:
+        return "1"
+    else:
+        return "0"
 
 if __name__ == '__main__':
     app.run()

@@ -9,11 +9,11 @@
     function postflag(flagid,id){
         var a = document.getElementById(id.substring(1)).value;
         $.ajax({
-                url: "/ajax",
+                url: "/checkCtfFlag",
                 type: "post",
                 data: {"flag": a},
-                success: function (d) {
-                    if (d == "1") {
+                success: function (result) {
+                    if (result == "1") {
                         alert("回答正确！");
                         $(flagid).html("回答正确");
                         $(flagid).attr("name","回答正确");
@@ -63,12 +63,12 @@
             <div class="card " style="background-color:#A9A9A9;color: #ffffff;font-size: 17px" >
                 <div class="card-header ">
                     <div class="card-group" style="float: left"><b>{{ i[1] }}</b></div>
-                    <div class="card-group" style="float: right;color:#191970;font-size: 20px">400</div>
+                    <div class="card-group" style="float: right;color:#191970;font-size: 20px">{{ i[2] }}</div>
                 </div>
            <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">{{ i[3] }}</div>
-                    <div class="col-md-12">答题人数:0</div>
+                    <div class="col-md-12"><span class="text-success">{{ i[9] }}支队伍答对</span></div>
                 </div>
                <p></p>
                 <button class="btn btn-primary btn-lg btn-block" style="background-color: #696969;border-color: #696969" data-toggle="modal" data-target="#modal{{ i[0] }}">挑战</button>
@@ -86,11 +86,13 @@
 
                 <div class="modal-body ">
                         <div class="row row-no-gutters font_Size modal_marger ">
-                             <div class="col-md-12">解题人数:<span class="modal_marger">0</span></div>
+                             <div class="col-md-12">答对人数:<span class="modal_marger">{{ i[9] }}</span></div>
                             <div class="col-md-12">题目名称:<span class="modal_marger">{{ i[1] }}</span></div>
                              <div class="col-md-12">题目描述:<span class="modal_marger" href="static/">{{ i[3] }}</span></div>
-                            <div class="col-md-12">题目附件:<a class="modal_marger" href="static/">附件1</a></div>
-
+                        {% if i[7]==1 %}
+                            <div class="col-md-12">题目附件:<a class="modal_marger" href="{{ i[8] }}">附件1</a></div>
+                            {% endif %}
+{% if i[5] == 1 %}
                               <div class="col-md-12">
                                  <div class="card" style="width: 100%;">
                                      <div class="card-body ">
@@ -99,6 +101,7 @@
                                      </div>
                                  </div>
                              </div>
+    {% endif %}
                         </div>
                         <div class="row row-no-gutters font_Size modal_marger" id="flag{{ i[0] }}" style="height:20%" >
                                     <div class="input-group col-md-12 modal_marger btn-group">
@@ -120,7 +123,9 @@
                 <h3 class="">MISC</h3>
             </div>
         </div>
-    <div class="row clearfix " >
+
+
+   <div class="row clearfix " >
     {% if challengeResult %}
     {% for i in challengeResult %}
     {% if i[4]==1 %}
@@ -128,19 +133,19 @@
             <div class="card " style="background-color:#A9A9A9;color: #ffffff;font-size: 17px" >
                 <div class="card-header ">
                     <div class="card-group" style="float: left"><b>{{ i[1] }}</b></div>
-                    <div class="card-group" style="float: right;color:#191970;font-size: 20px">400</div>
+                    <div class="card-group" style="float: right;color:#191970;font-size: 20px">{{ i[2] }}</div>
                 </div>
            <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">{{ i[3] }}</div>
-                    <div class="col-md-12">答题人数:0</div>
+                    <div class="col-md-12"><span class="text-success">{{ i[9] }}支队伍答对</span></div>
                 </div>
                <p></p>
                 <button class="btn btn-primary btn-lg btn-block" style="background-color: #696969;border-color: #696969" data-toggle="modal" data-target="#modal{{ i[0] }}">挑战</button>
            </div>
         </div>
         </div>
-            <!-- 模态框（Modal） -->
+           <!-- 模态框（Modal） -->
     <div class="modal fade modal_fix" id="modal{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
             <div class="modal-content">
@@ -148,13 +153,16 @@
                     <h4 class="modal-title" id=" myModalLabel">{{ i[1] }}</h4>
                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
+
                 <div class="modal-body ">
                         <div class="row row-no-gutters font_Size modal_marger ">
-                             <div class="col-md-12">解题人数:<span class="modal_marger">0</span></div>
+                             <div class="col-md-12">答对人数:<span class="modal_marger">{{ i[9] }}</span></div>
                             <div class="col-md-12">题目名称:<span class="modal_marger">{{ i[1] }}</span></div>
                              <div class="col-md-12">题目描述:<span class="modal_marger" href="static/">{{ i[3] }}</span></div>
-                            <div class="col-md-12">题目附件:<a class="modal_marger" href="static/">附件1</a></div>
-
+                        {% if i[7]==1 %}
+                            <div class="col-md-12">题目附件:<a class="modal_marger" href="{{ i[8] }}">附件1</a></div>
+                            {% endif %}
+{% if i[5] == 1 %}
                               <div class="col-md-12">
                                  <div class="card" style="width: 100%;">
                                      <div class="card-body ">
@@ -163,6 +171,7 @@
                                      </div>
                                  </div>
                              </div>
+    {% endif %}
                         </div>
                         <div class="row row-no-gutters font_Size modal_marger" id="flag{{ i[0] }}" style="height:20%" >
                                     <div class="input-group col-md-12 modal_marger btn-group">
@@ -173,8 +182,17 @@
                 </div>
             </div><!-- /.modal-content -->
         </div>
-    </div> <!-- /.modal -->{% endif  %}{% endfor %}{% endif %}
+    </div> <!-- /.modal -->
+    {% endif  %}
+    {% endfor %}
+    {% endif %}
     </div>
+
+
+
+
+
+
    <div class="row clearfix">
         <div class="col-md-12 column">
             <h3>
@@ -190,19 +208,19 @@
             <div class="card " style="background-color:#A9A9A9;color: #ffffff;font-size: 17px" >
                 <div class="card-header ">
                     <div class="card-group" style="float: left"><b>{{ i[1] }}</b></div>
-                    <div class="card-group" style="float: right;color:#191970;font-size: 20px">400</div>
+                    <div class="card-group" style="float: right;color:#191970;font-size: 20px">{{ i[2] }}</div>
                 </div>
            <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">{{ i[3] }}</div>
-                    <div class="col-md-12">答题人数:0</div>
+                    <div class="col-md-12"><span class="text-success">{{ i[9] }}支队伍答对</span></div>
                 </div>
                <p></p>
                 <button class="btn btn-primary btn-lg btn-block" style="background-color: #696969;border-color: #696969" data-toggle="modal" data-target="#modal{{ i[0] }}">挑战</button>
            </div>
         </div>
         </div>
-            <!-- 模态框（Modal） -->
+           <!-- 模态框（Modal） -->
     <div class="modal fade modal_fix" id="modal{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
             <div class="modal-content">
@@ -213,11 +231,13 @@
 
                 <div class="modal-body ">
                         <div class="row row-no-gutters font_Size modal_marger ">
-                             <div class="col-md-12">解题人数:<span class="modal_marger">0</span></div>
+                             <div class="col-md-12">答对人数:<span class="modal_marger">{{ i[9] }}</span></div>
                             <div class="col-md-12">题目名称:<span class="modal_marger">{{ i[1] }}</span></div>
                              <div class="col-md-12">题目描述:<span class="modal_marger" href="static/">{{ i[3] }}</span></div>
-                            <div class="col-md-12">题目附件:<a class="modal_marger" href="static/">附件1</a></div>
-
+                        {% if i[7]==1 %}
+                            <div class="col-md-12">题目附件:<a class="modal_marger" href="{{ i[8] }}">附件1</a></div>
+                            {% endif %}
+{% if i[5] == 1 %}
                               <div class="col-md-12">
                                  <div class="card" style="width: 100%;">
                                      <div class="card-body ">
@@ -226,6 +246,7 @@
                                      </div>
                                  </div>
                              </div>
+    {% endif %}
                         </div>
                         <div class="row row-no-gutters font_Size modal_marger" id="flag{{ i[0] }}" style="height:20%" >
                                     <div class="input-group col-md-12 modal_marger btn-group">
@@ -241,6 +262,10 @@
     {% endfor %}
     {% endif %}
     </div>
+
+
+
+
    <div class="row clearfix">
         <div class="col-md-12 column">
             <h3>
@@ -248,7 +273,7 @@
             </h3>
         </div>
     </div>
-    <div class="row clearfix " >
+      <div class="row clearfix " >
     {% if challengeResult %}
     {% for i in challengeResult %}
     {% if i[4]==3 %}
@@ -256,19 +281,19 @@
             <div class="card " style="background-color:#A9A9A9;color: #ffffff;font-size: 17px" >
                 <div class="card-header ">
                     <div class="card-group" style="float: left"><b>{{ i[1] }}</b></div>
-                    <div class="card-group" style="float: right;color:#191970;font-size: 20px">400</div>
+                    <div class="card-group" style="float: right;color:#191970;font-size: 20px">{{ i[2] }}</div>
                 </div>
            <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">{{ i[3] }}</div>
-                    <div class="col-md-12">答题人数:0</div>
+                    <div class="col-md-12"><span class="text-success">{{ i[9] }}支队伍答对</span></div>
                 </div>
                <p></p>
                 <button class="btn btn-primary btn-lg btn-block" style="background-color: #696969;border-color: #696969" data-toggle="modal" data-target="#modal{{ i[0] }}">挑战</button>
            </div>
         </div>
         </div>
-                     <!-- 模态框（Modal） -->
+           <!-- 模态框（Modal） -->
     <div class="modal fade modal_fix" id="modal{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
             <div class="modal-content">
@@ -276,13 +301,16 @@
                     <h4 class="modal-title" id=" myModalLabel">{{ i[1] }}</h4>
                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
+
                 <div class="modal-body ">
                         <div class="row row-no-gutters font_Size modal_marger ">
-                             <div class="col-md-12">解题人数:<span class="modal_marger">0</span></div>
+                             <div class="col-md-12">答对人数:<span class="modal_marger">{{ i[9] }}</span></div>
                             <div class="col-md-12">题目名称:<span class="modal_marger">{{ i[1] }}</span></div>
                              <div class="col-md-12">题目描述:<span class="modal_marger" href="static/">{{ i[3] }}</span></div>
-                            <div class="col-md-12">题目附件:<a class="modal_marger" href="static/">附件1</a></div>
-
+                        {% if i[7]==1 %}
+                            <div class="col-md-12">题目附件:<a class="modal_marger" href="{{ i[8] }}">附件1</a></div>
+                            {% endif %}
+{% if i[5] == 1 %}
                               <div class="col-md-12">
                                  <div class="card" style="width: 100%;">
                                      <div class="card-body ">
@@ -291,6 +319,7 @@
                                      </div>
                                  </div>
                              </div>
+    {% endif %}
                         </div>
                         <div class="row row-no-gutters font_Size modal_marger" id="flag{{ i[0] }}" style="height:20%" >
                                     <div class="input-group col-md-12 modal_marger btn-group">
@@ -306,6 +335,10 @@
     {% endfor %}
     {% endif %}
     </div>
+
+
+
+
 
    <div class="row clearfix">
         <div class="col-md-12 column">
@@ -314,7 +347,7 @@
             </h3>
         </div>
     </div>
-     <div class="row clearfix " >
+      <div class="row clearfix " >
     {% if challengeResult %}
     {% for i in challengeResult %}
     {% if i[4]==4 %}
@@ -322,20 +355,19 @@
             <div class="card " style="background-color:#A9A9A9;color: #ffffff;font-size: 17px" >
                 <div class="card-header ">
                     <div class="card-group" style="float: left"><b>{{ i[1] }}</b></div>
-                    <div class="card-group" style="float: right;color:#191970;font-size: 20px">400</div>
+                    <div class="card-group" style="float: right;color:#191970;font-size: 20px">{{ i[2] }}</div>
                 </div>
            <div class="card-body">
                 <div class="row">
                     <div class="col-md-12">{{ i[3] }}</div>
-                    <div class="col-md-12">答题人数:0</div>
+                    <div class="col-md-12"><span class="text-success">{{ i[9] }}支队伍答对</span></div>
                 </div>
                <p></p>
                 <button class="btn btn-primary btn-lg btn-block" style="background-color: #696969;border-color: #696969" data-toggle="modal" data-target="#modal{{ i[0] }}">挑战</button>
            </div>
         </div>
         </div>
-            <!-- 模态框（Modal） -->
-    <!-- 模态框（Modal） -->
+           <!-- 模态框（Modal） -->
     <div class="modal fade modal_fix" id="modal{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
         <div class="modal-dialog">
             <div class="modal-content">
@@ -346,11 +378,13 @@
 
                 <div class="modal-body ">
                         <div class="row row-no-gutters font_Size modal_marger ">
-                             <div class="col-md-12">解题人数:<span class="modal_marger">0</span></div>
+                             <div class="col-md-12">答对人数:<span class="modal_marger">{{ i[9] }}</span></div>
                             <div class="col-md-12">题目名称:<span class="modal_marger">{{ i[1] }}</span></div>
                              <div class="col-md-12">题目描述:<span class="modal_marger" href="static/">{{ i[3] }}</span></div>
-                            <div class="col-md-12">题目附件:<a class="modal_marger" href="static/">附件1</a></div>
-
+                        {% if i[7]==1 %}
+                            <div class="col-md-12">题目附件:<a class="modal_marger" href="{{ i[8] }}">附件1</a></div>
+                            {% endif %}
+{% if i[5] == 1 %}
                               <div class="col-md-12">
                                  <div class="card" style="width: 100%;">
                                      <div class="card-body ">
@@ -359,6 +393,7 @@
                                      </div>
                                  </div>
                              </div>
+    {% endif %}
                         </div>
                         <div class="row row-no-gutters font_Size modal_marger" id="flag{{ i[0] }}" style="height:20%" >
                                     <div class="input-group col-md-12 modal_marger btn-group">
@@ -374,6 +409,7 @@
     {% endfor %}
     {% endif %}
     </div>
+
 
 
 
