@@ -68,7 +68,7 @@ def ranks():
     user = session.get('user')
     if user:
         sqlcheck = Mysqld()
-        GetChallengeList = sqlcheck.showChallengeList(0)
+        GetChallengeList = sqlcheck.showChallengeList()
         GetUserNum = sqlcheck.selectUserNum()  #查数据库将排行榜数据传到template中，目前是测试阶段，使用的是用户表
         return render_template("user/ranks.html",username=user,headerType="rank",ChallengeList=GetChallengeList,userNum=GetUserNum,a=1)
     else:
@@ -115,6 +115,11 @@ def userRegister():
 def logout():
     session.clear()
     return render_template("user/login.html",message="退出帐号成功，请重新登录")
+
+
+
+
+
 
 
 # AWD模块
@@ -268,6 +273,9 @@ def run_target_import():
         return render_template("admin/run_target_import.html")
     else:
         return render_template("admin/login.html")
+
+
+
 
 
 # run_target_table

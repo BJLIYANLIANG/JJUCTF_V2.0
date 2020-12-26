@@ -64,7 +64,6 @@ class Mysqld:
         # sql = "select * from challenge_list where challenge_type=%d"%(type)
         sql = "select * from challenge_list"
         showinfo.execute(sql)
-
         return showinfo.fetchall()
 
     # 查询用户数
