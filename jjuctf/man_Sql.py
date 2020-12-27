@@ -36,6 +36,8 @@ class Mysqld:
         else:
             return -1
 
+
+
     #查看整个用户表
     def showuser(self):
         sql = "select * from user"
@@ -59,15 +61,38 @@ class Mysqld:
 
 
     # 通过选择challenge_list表来
-    def showChallengeList(self):
+    def showChallengeList(self,user):
+        userId = self.selectUserId(user)
         showinfo = self.cursor
         # sql = "select * from challenge_list where challenge_type=%d"%(type)
-        sql = "select * from challenge_list"
+        # sql = "select * from challenge_list"
+        # sql = "select * from challenge_list  as a left join user_challenge_list as b on a.challenge_id = b.challenge_id;"
+        sql = 'select a.challenge_id,a.challenge_name,a.challenge_score,a.challenge_hint,a.challenge_type,a.docker_flag,a.docker_path,a.challenge_flag,a.challenge_file,a.solved_num,b.score from challenge_list  as a left join (select * from user_challenge_list where user_id="%s") as b on a.challenge_id = b.challenge_id;'%(userId)
         showinfo.execute(sql)
         return showinfo.fetchall()
 
+    # 这个是用在CTF答题界面中的CTF分类选项中的
+    def showChallengeNum(self):
+        #用来查看不同类型的题目量
+        sql = 'select type,num from challenge_type_num';
+        show_challenge_num = self.cursor
+        show_challenge_num.execute(sql)
+        return show_challenge_num.fetchall()
+
+
+
+    def selectGroupInfoByUser(self,user):
+        group_id = self.selectGroupByusername(user)
+        if group_id:
+            sql = 'select * from user_group where group_id="%s"'%(group_id)
+            exec = self.cursor
+            exec.execute(sql)
+            return exec.fetchall()
+        else:
+            return 0
+
     # 查询用户数
-    def selectUserNum(self,):
+    def selectUserNum(self,user):
         showinfo = self.cursor
         sql = "select * from user"
         showinfo.execute(sql)
@@ -92,7 +117,39 @@ class Mysqld:
         else:
             return -1
 
+    def selectUserChallengeDockerAllby(self):
+        sql = "select a.challenge_id,a.challenge_name,a.challenge_score,a.challenge_hint,a.challenge_type,a.docker_flag,a.docker_path,a.challenge_flag,a.challenge_file,a.solved_num,b.score from challenge_list  as a left join (select * from user_challenge_list where user_id=15) as b on a.challenge_id = b.challenge_id;"
+        self.cursor.execute(sql)
+        print(sql)
+        a = self.cursor.fetchall()
+        print(a)
+
+    # 通过用户名查用户id
+    def selectUserId(self,user):
+        sql = 'select id from user where user_name="%s"'%(user)
+        self.cursor.execute(sql)
+        result = self.cursor.fetchall()
+        if result:
+            return result[0][0]
+        return 0
+    # 通过用户名查队伍名
+    def selectGroupByusername(self,user):
+        sql = 'select group_id from user where user_name="%s"'%(user)
+        self.cursor.execute(sql)
+        result = self.cursor.fetchall()
+        if result:
+            return result[0][0]
+        else:
+            return 0
+
 
 a = Mysqld()
-b = a.showChallengeList()
-print(b)
+b = a.selectUserChallengeDockerAllby()
+c = a.selectUserId('hsm')
+d = a.selectGroupInfoByUser('hsm')
+# c = a.showChallengeList()
+# d = a.showChallengeNum()
+# print(c)f
+# print(b)
+
+print(d)

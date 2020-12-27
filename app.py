@@ -3,7 +3,7 @@ from flask import render_template
 from  flask import request
 from  flask import session,redirect
 from datetime import timedelta
-from jjuctf.mysqld import Mysqld
+from jjuctf.man_Sql import Mysqld
 
 
 from jjuctf.Checkinput import Checkinnput
@@ -45,10 +45,15 @@ def challenge():
     user = session.get('user')
     if user :  #如果登录成功
         getChallengeListByType = Mysqld()
-        challengeResult = getChallengeListByType.showChallengeList()
+        challengeResult = getChallengeListByType.showChallengeList(user)
+        challengeNum = getChallengeListByType.showChallengeNum()
+        groupInfo = getChallengeListByType.selectGroupInfoByUser(user)[0]
+        print(groupInfo)
         # 0为web 以此类推
-        return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult,)
+        return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult,examNum=challengeNum,groupInfo=groupInfo)
     return render_template('user/login.html')
+
+
 
 
 # index
@@ -58,9 +63,7 @@ def challenge():
 def index():
     user = session.get('user')
     if user :  #如果登录成功
-        getChallenge_listByType = Mysqld()
-        challengeResult = getChallenge_listByType.showChallengeList()
-        return render_template("user/index.html",username=user,headerType="index",challengeResult=challengeResult)
+        return render_template("user/index.html",username=user,headerType="index")
     return render_template('user/index.html',headerType="index")
 
 @app.route('/ranks')
@@ -68,8 +71,10 @@ def ranks():
     user = session.get('user')
     if user:
         sqlcheck = Mysqld()
-        GetChallengeList = sqlcheck.showChallengeList()
+        GetChallengeList = sqlcheck.showChallengeList(user)
+        # GetGroupInfo  = sqlcheck.
         GetUserNum = sqlcheck.selectUserNum()  #查数据库将排行榜数据传到template中，目前是测试阶段，使用的是用户表
+
         return render_template("user/ranks.html",username=user,headerType="rank",ChallengeList=GetChallengeList,userNum=GetUserNum,a=1)
     else:
         return render_template("user/login.html")
@@ -231,10 +236,13 @@ def userman():
     return render_template("admin/useradmin.html")
 
 
+
 # upload_ctf_contain
 @app.route("/upload_ctf_contain")
 def upload_ctf_contain():
     return render_template("admin/upload_ctf.html")
+
+
 
 @app.route("/upload_awd_contain")
 def upload_awd_contain():
@@ -265,7 +273,7 @@ def adminLogout():
     return render_template("admin/login.html",message="退出帐号成功，请重新登录")
 
 
-
+# 靶场导入
 @app.route("/run_target_import")
 def run_target_import():
     admin = session.get('admin')
@@ -273,8 +281,6 @@ def run_target_import():
         return render_template("admin/run_target_import.html")
     else:
         return render_template("admin/login.html")
-
-
 
 
 
@@ -287,6 +293,8 @@ def run_target_table():
     else:
         return render_template("admin/login.html")
 
+
+
 # 404错误
 @app.errorhandler(404)
 def page_not_found(error):
@@ -294,12 +302,13 @@ def page_not_found(error):
     if user:
         return render_template("404.html",username=user), 404
     return render_template("404.html"),404
+
+
+
 # 测试页面
 @app.route("/test")
 def test():
     return render_template('user/test.html')
-
-
 
 @app.route('/checkCtfFlag',methods=['POST'])
 def checkCtfFlag():
@@ -311,6 +320,7 @@ def checkCtfFlag():
 
 if __name__ == '__main__':
     app.run()
+
 
 
 

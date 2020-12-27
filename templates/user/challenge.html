@@ -14,8 +14,6 @@
                         var aa = "#flag-"+id.substring(10)
                         {#alert(aa)#}
                         $(aa).attr("class","col-md-3 column border_contain color");
-
-
                     }
                     else{
                         alert("回答错误")
@@ -39,13 +37,13 @@
     <div class="row">
         <div class="col-md-3">
             <div class="card ">
-                <div class="card-header">战队名:JJUSEC</div>
+                <div class="card-header">战队名:{{ groupInfo[1] }}</div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-12">战队token：<span style="color: red">432141328491237421jk1</span></div>
-                        <div class="col-md-12">战队排名：1154</div>
-                        <div class="col-md-12">解题数量：1</div>
-                        <div class="col-md-12">得分：9</div>
+                        <div class="col-md-12">战队token：<span style="color: red">{{ groupInfo[2] }}</span></div>
+                        <div class="col-md-12">战队排名：{{ groupInfo[5] }}</div>
+                        <div class="col-md-12">解题数量：{{ groupInfo[3] }}</div>
+                        <div class="col-md-12">得分：{{ groupInfo[4] }}</div>
                         <br>
                         <br>
                         <br>
@@ -60,11 +58,20 @@
               <div class="card ">
                   <div class="card-header">比赛公告</div>
                   <div class="card-body">
-                      <div class="row">
-                          <span>1. 【最新】14:35 babyLWE更新附件，请重新下载。14:27 friendlyRE更新附件，请重新下载。</span><br>
-                          <span>2.  本届赛事期间，请大家留意裁判人员的电话（尾号2710），并积极配合，如果以任何理由拒接，无法沟通以及不配合裁判质询要求，将进行禁赛处理。比赛期间禁止以任何形式进行跨队交流，一起维护公平、清朗的竞赛环境。</span><br>
-                          <span>3. 比赛时间：2020年12月26日10：00-18：00</span><br>
-                          <span>4. 本次比赛进行严格的作弊审查制度，所有破坏比赛公平性的行为一经发现确认，将取消比赛成绩。</span>
+                      <div class="row" >
+                         <div class="col-md-12">
+                             <div style="overflow-y:auto;height: 10rem;width: 100%">
+                                 <span>1. 【最新】14:35 babyLWE更新附件，请重新下载。14:27 friendlyRE更新附件，请重新下载。</span><br>
+                                 <span>2. 本届赛事期间，请大家留意裁判人员的电话（尾号2710），并积极配合，如果以任何理由拒接，无法沟通以及不配合裁判质询要求，将进行禁赛处理。比赛期间禁止以任何形式进行跨队交流，一起维护公平、清朗的竞赛环境。</span><br>
+                                 <span>3. 比赛时间：2020年12月26日10：00-18：00</span><br>
+                                 <span>4. 注意：请选手时刻关注比赛公告，大赛执行规则以比赛公告为准。</span><br>
+                                 <span>5. 积分模式：动态积分模式（即每道题目的分值将根据解出队伍的数量动态变化），前3血没有额外奖励。</span><br>
+                                 <span>6. 选手在解题过程中，如遇到需要输入token的题目，请使用本队伍的唯一token（在平台左上角处），该token为队伍的唯一标识，随便乱输视该payload为无效。请各参赛者妥善保护好本队伍token信息，输入其他队伍的token，两队同时将被视为作弊处理。</span><br>
+                                 <span>7. 关于Docker容器下发的题目：每个队伍同时只能下发一个容器，下发新容器会释放之前已下发的容器。请由成功申请下发容器的队员，用自己的账号提交flag。容器下发后，如访问不到地址请稍候重试刷新，如果提示错误可稍后再重新申请下发。</span><br>
+                                 <span>8. Writeup提交时间：请前40名队伍在比赛结束后6小时内，即12月27日00:00前，提交每道赛题详细的解题报告（WriteUp）。经组委会审核后，确定各参赛队最终得分和排名。逾期提交或不提交视为放弃本次比赛排名。</span><br>
+                                 <span>9. 本次比赛进行严格的作弊审查制度，所有破坏比赛公平性的行为一经发现确认，将取消比赛成绩。</span><br>
+                             </div>
+                         </div>
                       </div>
                   </div>
               </div>
@@ -126,11 +133,9 @@
         <div class="col-md-2">
              <div class="list-group" >
                  <a href="#"  class="list-group-item list-group-item-action list-group-item-dark " disabled  data-toggle="pill">比赛题目</a>
-                 <a href="#web"  class="list-group-item list-group-item-action"  data-toggle="pill">Web <span class="badge badge-success">2</span></a>
-                 <a class="list-group-item list-group-item-action" href="#misc"  data-toggle="pill">Misc <span class="badge badge-success">1</span></a>
-                 <a class="list-group-item list-group-item-action" href="#crypto"  data-toggle="pill">Crypto <span class="badge badge-success">1</span></a>
-                 <a class="list-group-item list-group-item-action" href="#reverse"  data-toggle="pill">Reverse <span class="badge badge-success">2</span></a>
-                 <a class="list-group-item list-group-item-action" href="#pwn" data-toggle="pill">Pwn <span class="badge badge-success">1</span></a>
+                 {% for typeNum in examNum %}
+                 <a class="list-group-item list-group-item-action" href="#{{ typeNum[0] }}" data-toggle="pill">{{ typeNum[0] }} <span class="badge badge-success">{{ typeNum[1] }}</span></a>
+                 {% endfor %}
              </div>
         </div>
         <div class="col-md-7">
@@ -138,7 +143,7 @@
 <!-- 选项卡面板 -->
         <div  class="tab-content">
 {#    web#}
-        <div class="tab-pane fade in active" id="web" >
+        <div class="tab-pane fade in active" id="Web" >
             <div class="row" style="border-color: #1c2b36;border: 0.5rem">
              {% if challengeResult %}
                  {% for i in challengeResult %}
@@ -155,7 +160,11 @@
                         <div class="col-md-12"><span class="text-success">{{ i[9] }}支队伍答对</span></div>
                     </div>
                     <p></p>
+                        {% if i[10] %}
+                            <button class="btn btn-success btn-lg btn-block" style="border-color: #696969" data-toggle="modal" data-target="#modal{{ i[0] }}">已解答</button>
+                           {% else %}
                     <button class="btn btn-primary btn-lg btn-block" style="background-color: #696969;border-color: #696969" data-toggle="modal" data-target="#modal{{ i[0] }}">挑战</button>
+                   {% endif %}
                     </div>
                 </div>
             </div>
@@ -172,7 +181,11 @@
                     <div class="row row-no-gutters font_Size modal_marger"  style="height:10%" >
 
                             <div class="col-md-6" style="color: #6A5ACD">分值:<span style="" class="modal_marger">{{ i[2] }}</span></div>
+                        {% if i[10] %}
+                            <div class="col-md-6 col-md-auto"><span  class="text-success modal_marger ">已解答</span></div>
+                        {% else %}
                             <div class="col-md-6 col-md-auto"><span style="color: red" class="modal_marger ">未解答</span></div>
+                            {% endif %}
                         <div class="col-md-12" style="font-size: 0.7rem">
                             <strong  title="欢迎妹子打电话"><span>第一名</span>：欢迎妹子打电话</strong>
 
@@ -197,10 +210,17 @@
                         {% endif %}
                         </div>
                         <div class="row row-no-gutters font_Size modal_marger" id="flag{{ i[0] }}" style="height:20%" >
+                            {% if i[10] %}
+                                  <div>
+                                      <a class="text-success">已解答，获得{{ i[10] }}分</a>
+                                  </div>
+                                {% else %}
                                     <div class="input-group col-md-12 modal_marger btn-group">
                                         <input  id="flag{{ i[0] }}1" type="text" name="flag" autocomplete="off" placeholder="flag.." >
                                         <button type="submit"  class="btn btn-dark  " onclick="postflag('#flag{{ i[0] }}','#flag{{ i[0] }}1')">提交</button>
                                     </div>
+                                {% endif %}
+
                         </div>
                 </div>
             </div><!-- /.modal-content -->
@@ -213,7 +233,7 @@
          </div>   {# 结束row #}
     </div>
 {#    misc#}
-    <div class="tab-pane fade" id="misc">
+    <div class="tab-pane fade" id="Misc">
         <div class="row">
              {% if challengeResult %}
                  {% for i in challengeResult %}
@@ -289,7 +309,7 @@
          </div>   {# 结束row #}
 
     </div>
-    <div class="tab-pane fade" id="reverse">
+    <div class="tab-pane fade" id="Reverse">
         <div class="row">
              {% if challengeResult %}
                  {% for i in challengeResult %}
@@ -364,7 +384,7 @@
              {#模态框#}
          </div>   {# 结束row #}
     </div>
-    <div class="tab-pane fade" id="crypto">
+    <div class="tab-pane fade" id="Crypto">
         <div class="row">
              {% if challengeResult %}
                  {% for i in challengeResult %}
@@ -439,7 +459,7 @@
              {#模态框#}
          </div>   {# 结束row #}
     </div>
-    <div class="tab-pane fade" id="pwn">
+    <div class="tab-pane fade" id="Pwn">
         <div class="row">
              {% if challengeResult %}
                  {% for i in challengeResult %}
