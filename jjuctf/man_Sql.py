@@ -142,14 +142,53 @@ class Mysqld:
         else:
             return 0
 
+# ===============后台-start===============
+    def addAdmin(self,name,email,mobile,passwd):
+        sql = 'insert into admin (admin_name,admin_email,admin_mobile,admin_password) values("%s","%s","%s",md5("%s"))'%(name,email,mobile,passwd)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+        except:
+            self.conn.rollback()
+        self.conn.close()
+        print(sql)
+        result = self.cursor.fetchall()
 
+        print(result)
+        return result
+    def selectAdminList(self):
+        sql = 'select admin_id,admin_name,admin_email,admin_mobile from admin'
+        self.cursor.execute(sql)
+        result = self.cursor.fetchall()
+        if result:
+            return result
+        return 0
+
+    def selectUserList(self):
+        sql = 'select id,user_name,real_name,class_id,email,mobile from user'
+        self.cursor.execute(sql)
+        result = self.cursor.fetchall()
+        if result:
+            return result
+        return 0
+
+
+# ===============后台-end===============
+
+
+
+# ===============user-start===============
+
+# ===============user-end===============
 a = Mysqld()
 b = a.selectUserChallengeDockerAllby()
 c = a.selectUserId('hsm')
 d = a.selectGroupInfoByUser('hsm')
+e = a.selectUserList()
+f = a.addAdmin("admin1","admin@qq.com","123456","admin1")
 # c = a.showChallengeList()
 # d = a.showChallengeNum()
 # print(c)f
 # print(b)
 
-print(d)
+print(e)

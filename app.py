@@ -122,11 +122,6 @@ def logout():
     return render_template("user/login.html",message="退出帐号成功，请重新登录")
 
 
-
-
-
-
-
 # AWD模块
 @app.route('/awd')
 def awd():
@@ -222,6 +217,11 @@ def checkAdminLogin():
         return redirect('/login')
 
 
+
+# ============================后台=================================
+
+
+# 后台首页
 @app.route("/admin")
 def adminIndex():
     admin = session.get('admin')
@@ -230,17 +230,48 @@ def adminIndex():
     else:
         return render_template("admin/login.html")
 
-# admin 用户管理路由
-@app.route("/userman")
-def userman():
-    return render_template("admin/useradmin.html")
+# # admin 用户管理路由
+# @app.route("/userman")
+# def userman():
+#     admin = session.get('admin')
+#     if admin:
+#         return render_template("admin/useradmin.html")
+#     else:
+#         return render_template("admin/login.html")
+
+
+
+# 添加管理员
+@app.route("/add_admin")
+@app.route("/add_admin",methods=['POST'])
+def add_admin():
+    admin = session.get('admin')
+    if admin:
+        if request.method != 'POST':
+            return render_template("admin/addAdmin.html")
+        elif request.method == 'POST':
+            name = request.form.get('name')
+            passwd  = request.form.get('passwd')
+            email = request.form.get('email')
+            mobile = request.form.get('mobile')
+            addAdmin = Mysqld()
+            result  = addAdmin.addAdmin(name,email,mobile,passwd)
+            if result:
+                return render_template("admin/man_admin.html",message="成功添加记录")
+        return  render_template("admin/addAdmin.html")
+    else:
+        return render_template("admin/login.html")
 
 
 
 # upload_ctf_contain
 @app.route("/upload_ctf_contain")
 def upload_ctf_contain():
-    return render_template("admin/upload_ctf.html")
+    admin = session.get('admin')
+    if admin:
+        return render_template("admin/upload_ctf.html")
+    else:
+        return render_template("admin/login.html")
 
 
 
@@ -258,13 +289,23 @@ def man_target_ctf():
 def man_target_awd():
     return render_template("admin/man_target_awd.html")
 
+
+
+
 @app.route("/man_user")
 def man_user():
-    return render_template("admin/man_user.html")
+    manAdmin = Mysqld()
+    userList = manAdmin.selectUserList()
+    return render_template("admin/man_user.html",userList=userList)
 
 @app.route("/man_admin")
+
 def man_admin():
-    return render_template("admin/man_admin.html")
+    manAdmin = Mysqld()
+    adminList = manAdmin.selectAdminList()
+    if adminList:
+        return render_template("admin/man_admin.html",adminList=adminList)
+    return "404"
 
 #管理员登录退出
 @app.route("/adminLogout")
@@ -294,6 +335,7 @@ def run_target_table():
         return render_template("admin/login.html")
 
 
+#==================404=====================
 
 # 404错误
 @app.errorhandler(404)
@@ -305,7 +347,7 @@ def page_not_found(error):
 
 
 
-# 测试页面
+# ===============函数====================
 @app.route("/test")
 def test():
     return render_template('user/test.html')

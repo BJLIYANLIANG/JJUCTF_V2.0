@@ -1,5 +1,6 @@
 {% include "admin/header.html" %}
 
+
     <div class="main-container">
         <div class="padding">
             <nav class="breadcrumb">
@@ -32,6 +33,8 @@
                 </tr>
                 </thead>
                 <tbody>
+
+                {% for i in adminList %}
                 <tr>
                     <td class="center">
                         <label>
@@ -40,11 +43,11 @@
                         </label>
                     </td>
                     <td>
-                        <a href="#">1</a>
+                        <a href="#">{{ i[0] }}</a>
                     </td>
-                    <td>HSM</td>
-                    <td class="hidden-480">905008677@qq.com</td>
-                    <td>18579266908</td>
+                    <td>{{ i[1] }}</td>
+                    <td class="hidden-480">{{ i[2] }}</td>
+                    <td>{{ i[3] }}</td>
                     <td class="hidden-480">
                         <span class="label label-sm label-success">正常</span>
                     </td>
@@ -66,13 +69,14 @@
 
                     </td>
                 </tr>
+                {% endfor %}
                 </tbody>
             </table>
 
              <div >
-                 <input  type="button" value="新增用户" id="addBtn" data-toggle="modal" οnclick="targetAddUser()" class="btn btn-success  btn-sm" data-backdrop="false">
-                 <input  type="button" value="修改用户" id="editBtn" data-toggle="modal" class="btn btn-success  btn-sm" οnclick="editUser()" data-backdrop="false">
-                 <input  type="button" value="删除用户" id="deleteBtn" data-toggle="modal" class="btn btn-danger btn-sm" οnclick="deleteModel()">
+                 <a href="/add_admin"><input  type="button" value="新增用户" id="addBtn"  class="btn btn-success  btn-sm" data-backdrop="false"></a>
+                 <a><input  type="button" value="修改用户" id="editBtn"  class="btn btn-success  btn-sm"  data-backdrop="false"></a>
+                 <a><input  type="button" value="删除用户" id="deleteBtn" class="btn btn-danger btn-sm"></a>
              </div>
         </div>
     </div>
