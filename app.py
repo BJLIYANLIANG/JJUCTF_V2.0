@@ -263,7 +263,6 @@ def add_admin():
         return render_template("admin/login.html")
 
 
-
 # upload_ctf_contain
 @app.route("/upload_ctf_contain")
 def upload_ctf_contain():
@@ -282,8 +281,14 @@ def upload_awd_contain():
 # man_target_ctf
 @app.route("/man_target_ctf")
 def man_target_ctf():
-    return render_template("admin/man_target_ctf.html")
-
+    admin = session.get('admin')
+    if admin:
+        connectsql = Mysqld()
+        ctfList  = connectsql.selectCTFList()
+        print(ctfList)
+        return render_template("admin/man_target_ctf.html",ctfList=ctfList)
+    else:
+        return render_template("admin/login.html")
 # man_target_awd
 @app.route("/man_target_awd")
 def man_target_awd():

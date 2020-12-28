@@ -18,7 +18,7 @@
                             <span class="lbl"></span>
                         </label>
                     </th>
-                    <th>容器ID</th>
+                    <th>靶场ID</th>
                     <th>题目名称</th>
                     <th>题目类型</th>
                     <th>Hint</th>
@@ -32,6 +32,8 @@
                 </tr>
                 </thead>
                 <tbody>
+                {% for j in ctfList %}
+
                 <tr>
                     <td class="center">
                         <label>
@@ -39,11 +41,22 @@
                             <span class="lbl"></span>
                         </label>
                     </td>
-                    <td>34214121231</td>
-                    <td>EasyPython</td>
+                    <td>{{ j[0] }}</td>
+                    <td>{{ j[1] }}</td>
+{#                    <td>WEB</td>#}
+                    {% if j[4]==0 %}
                     <td>WEB</td>
-                    <td>SSTI漏洞</td>
-                    <td>100</td>
+                        {% elif j[4] == 1  %}
+                        <td>Misc</td>
+                        {% elif j[4] == 2  %}
+                        <td>Crypto</td>
+                        {% elif j[4] == 3  %}
+                        <td>Reverse</td>
+                        {% elif j[4] == 4  %}
+                        <td>Pwn</td>
+                    {% endif %}
+                    <td>{{ j[3] }}</td>
+                    <td>{{ j[2] }}</td>
                     <td>是</td>
                     <td>EasyPython</td>
                     <td>无</td>
@@ -57,16 +70,11 @@
                             <button class="btn btn-xs btn-info">
                                 <i class="icon-edit bigger-120">修改题目</i>
                             </button>
-{#                            <button class="btn btn-xs btn-danger">#}
-{#                                <i class="icon-trash bigger-120">修改信息</i>#}
-{#                            </button>#}
-{#                            <button class="btn btn-xs btn-warning">#}
-{#                                <i class="icon-flag bigger-120">修改密码</i>#}
-{#                            </button>#}
                         </div>
 
                     </td>
                 </tr>
+{% endfor %}
                 </tbody>
             </table>
 

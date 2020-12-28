@@ -64,9 +64,6 @@ class Mysqld:
     def showChallengeList(self,user):
         userId = self.selectUserId(user)
         showinfo = self.cursor
-        # sql = "select * from challenge_list where challenge_type=%d"%(type)
-        # sql = "select * from challenge_list"
-        # sql = "select * from challenge_list  as a left join user_challenge_list as b on a.challenge_id = b.challenge_id;"
         sql = 'select a.challenge_id,a.challenge_name,a.challenge_score,a.challenge_hint,a.challenge_type,a.docker_flag,a.docker_path,a.challenge_flag,a.challenge_file,a.solved_num,b.score from challenge_list  as a left join (select * from user_challenge_list where user_id="%s") as b on a.challenge_id = b.challenge_id;'%(userId)
         showinfo.execute(sql)
         return showinfo.fetchall()
@@ -116,13 +113,13 @@ class Mysqld:
             return 1
         else:
             return -1
-
-    def selectUserChallengeDockerAllby(self):
-        sql = "select a.challenge_id,a.challenge_name,a.challenge_score,a.challenge_hint,a.challenge_type,a.docker_flag,a.docker_path,a.challenge_flag,a.challenge_file,a.solved_num,b.score from challenge_list  as a left join (select * from user_challenge_list where user_id=15) as b on a.challenge_id = b.challenge_id;"
-        self.cursor.execute(sql)
-        print(sql)
-        a = self.cursor.fetchall()
-        print(a)
+    #
+    # def selectUserChallengeDockerAllby(self):
+    #     sql = "select a.challenge_id,a.challenge_name,a.challenge_score,a.challenge_hint,a.challenge_type,a.docker_flag,a.docker_path,a.challenge_flag,a.challenge_file,a.solved_num,b.score from challenge_list  as a left join (select * from user_challenge_list where user_id=15) as b on a.challenge_id = b.challenge_id;"
+    #     self.cursor.execute(sql)
+    #     print(sql)
+    #     a = self.cursor.fetchall()
+    #     print(a)
 
     # 通过用户名查用户id
     def selectUserId(self,user):
@@ -171,8 +168,11 @@ class Mysqld:
         if result:
             return result
         return 0
-
-
+    def selectCTFList(self):
+        sql = 'select challenge_id,challenge_name,challenge_score,challenge_hint,challenge_type,docker_flag,docker_path,challenge_flag,challenge_file,solved_num from challenge_list'
+        self.cursor.execute(sql)
+        result = self.cursor.fetchall()
+        return  result
 # ===============后台-end===============
 
 
@@ -180,15 +180,11 @@ class Mysqld:
 # ===============user-start===============
 
 # ===============user-end===============
-a = Mysqld()
-b = a.selectUserChallengeDockerAllby()
-c = a.selectUserId('hsm')
-d = a.selectGroupInfoByUser('hsm')
-e = a.selectUserList()
-f = a.addAdmin("admin1","admin@qq.com","123456","admin1")
-# c = a.showChallengeList()
-# d = a.showChallengeNum()
-# print(c)f
+# a = Mysqld()
+# b = a.selectCTFList()
+# # c = a.showChallengeList()
+# # d = a.showChallengeNum()
+# # print(c)f
+# # print(b)
+#
 # print(b)
-
-print(e)
