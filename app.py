@@ -4,9 +4,8 @@ from  flask import request
 from  flask import session,redirect
 from datetime import timedelta
 from jjuctf.man_Sql import Mysqld
-
-
-from jjuctf.Checkinput import Checkinnput
+from jjuctf.Check import Check
+import time
 app = Flask(__name__)
 app.secret_key = '905008'  #session 密钥
 app.debug = True
@@ -181,8 +180,25 @@ def setting():
 
 
 
+# 检查CTF答题模式flag是否正确
 @app.route("/checkflag",methods=["POST"])
 def checkflag():
+    # 检查flag需要ctf_id这个参数
+    user = session.get("user")
+    flag = request.form.get('flag')
+    ctf_id = request.form.get('ctf_id')
+    if flag and ctf_id :
+        checkflag = Check()
+        result = checkflag.checkflag(user,ctf_id,flag)
+        #如果result为1则正确，0为不正确
+        if result == 1:
+            adduserscore = Mysqld()
+            group_id = adduserscore.selectGroupByusername(user)
+            (ctfType,score) = adduserscore.selectCtfTypeAndScoreByChallenge_id(ctf_id)
+            date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            user_id = adduserscore.selectUseridByUsername(user)
+            result = adduserscore.addUserScore(user,group_id,ctfType,ctf_id,user_id,score,date)
+            return render_template("user/challenge.html",message="回答正确")
     return request.form.get("flag")
 
 
@@ -289,7 +305,12 @@ def upload_ctf_contain():
 
 @app.route("/upload_awd_contain")
 def upload_awd_contain():
-    return render_template("admin/upload_awd.html")
+    admin = session.get('admin')
+    if admin:
+        return render_template("admin/upload_awd.html")
+    else:
+        return render_template("admin/login.html")
+
 
 # man_target_ctf
 @app.route("/man_target_ctf")
@@ -379,6 +400,7 @@ def checkCtfFlag():
         return "1"
     else:
         return "0"
+
 
 if __name__ == '__main__':
     app.run()

@@ -65,7 +65,7 @@ class Mysqld:
         userId = self.selectUserId(user)
         showinfo = self.cursor
         groupid = self.selectGroupByusername(user)
-        sql = 'select a.challenge_id,a.challenge_name,a.challenge_score,a.challenge_hint,a.challenge_type,a.docker_flag,a.docker_path,a.challenge_flag,a.challenge_file,a.solved_num,b.score,c.docker_status,c.docker_info from challenge_list as a left join (select * from user_challenge_list where group_id="%s") as b  on a.challenge_id = b.challenge_id left join (select * from user_ctf_docker_list where group_id="%s") as c on a.challenge_id=c.challenge_id;'%(groupid,groupid)
+        sql = 'select a.challenge_id,a.challenge_name,a.challenge_score,a.challenge_hint,a.challenge_type,a.docker_flag,a.docker_path,a.challenge_flag,a.challenge_file,a.solved_num,b.score,c.docker_status,c.docker_info,b.group_id from challenge_list as a left join (select * from user_challenge_list where group_id="%s") as b  on a.challenge_id = b.challenge_id left join (select * from user_ctf_docker_list where group_id="%s") as c on a.challenge_id=c.challenge_id;'%(groupid,groupid)
         # sql = 'select a.challenge_id,a.challenge_name,a.challenge_score,a.challenge_hint,a.challenge_type,a.docker_flag,a.docker_path,a.challenge_flag,a.challenge_file,a.solved_num,b.score,a.docker_status,a.docker_info from challenge_list  as a left join (select * from user_challenge_list where user_id="%s") as b on a.challenge_id = b.challenge_id;'%(userId)
         print(sql)
         showinfo.execute(sql)
@@ -135,6 +135,26 @@ class Mysqld:
         else:
             return 0
 
+    def selectCtfTypeAndScoreByChallenge_id(self,ctf_id):
+        # adduserscore.addUserScore(user, group_id, ctfType, ctf_id, user_id, score, date)
+        sql = 'select challenge_type,challenge_score from challenge_list where challenge_id="%s"'%(ctf_id)
+        self.cursor.execute(sql)
+        result = self.cursor.fetchall()[0]
+        if result:
+            type = result[0]
+            score = result[1]
+            return type,score
+        else:
+            return 0
+    def selectUseridByUsername(self,user):
+        sql = 'select id from user where user_name="%s"'%(user)
+        self.cursor.execute(sql)
+        result = self.cursor.fetchall()[0][0]
+        if result:
+            return result
+        return 0
+
+
 
     def selectUserNotice(self):
         sql = 'select id,info,date from user_notice'
@@ -171,11 +191,38 @@ class Mysqld:
         if result:
             return result
         return 0
-    def selectCTFList(self):
-        sql = 'select challenge_id,challenge_name,challenge_score,challenge_hint,challenge_type,docker_flag,docker_path,challenge_flag,challenge_file,solved_num from challenge_list as a left join '
+
+
+    # def selectCTFList(self):
+    #     sql = 'select challenge_id,challenge_name,challenge_score,challenge_hint,challenge_type,docker_flag,docker_path,challenge_flag,challenge_file,solved_num from challenge_list as a left join '
+    #     self.cursor.execute(sql)
+    #     result = self.cursor.fetchall()
+    #     return  result
+
+
+
+    def checkFalg(self,group_id,flag,challenge_id):
+        # print(challenge_id)
+        # sql1 = 'select group_id,cd'
+        sql = 'select * from user_ctf_flag where group_id=%d and flag="%s" and challenge_id=%d'%(group_id,flag,challenge_id)
+        # print(sql)
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
-        return  result
+        return result
+
+    def addUserScore(self,user, group_id, ctfType, ctf_id, user_id, score, date):
+        sql = 'insert into user_challenge_list (group_id,type,challenge_id,user_id,score,date)values(%d,%d,%d,%d,%d,%s)'%(group_id,ctfType,ctf_id,user_id,score,date)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            self.conn.close()
+            return 1
+
+        except:
+            self.conn.rollback()
+            self.conn.close()
+            return 0
+
 # ===============后台-end===============
 
 
@@ -184,11 +231,11 @@ class Mysqld:
 
 # ===============user-end===============
 a = Mysqld()
-b = a.selectUserNotice()
-print(b)
-c = a.showChallengeList('hsm')
+# b = a.selectUserNotice()
+# print(b)
+c = a.selectUseridByUsername('hsm')
 # # d = a.showChallengeNum()
 print(c)
-# # print(b)
-#
+# print(b)
+
 # print(b)
