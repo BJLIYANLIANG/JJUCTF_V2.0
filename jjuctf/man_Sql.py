@@ -64,7 +64,10 @@ class Mysqld:
     def showChallengeList(self,user):
         userId = self.selectUserId(user)
         showinfo = self.cursor
-        sql = 'select a.challenge_id,a.challenge_name,a.challenge_score,a.challenge_hint,a.challenge_type,a.docker_flag,a.docker_path,a.challenge_flag,a.challenge_file,a.solved_num,b.score from challenge_list  as a left join (select * from user_challenge_list where user_id="%s") as b on a.challenge_id = b.challenge_id;'%(userId)
+        groupid = self.selectGroupByusername(user)
+        sql = 'select a.challenge_id,a.challenge_name,a.challenge_score,a.challenge_hint,a.challenge_type,a.docker_flag,a.docker_path,a.challenge_flag,a.challenge_file,a.solved_num,b.score,c.docker_status,c.docker_info from challenge_list as a left join (select * from user_challenge_list where group_id="%s") as b  on a.challenge_id = b.challenge_id left join (select * from user_ctf_docker_list where group_id="%s") as c on a.challenge_id=c.challenge_id;'%(groupid,groupid)
+        # sql = 'select a.challenge_id,a.challenge_name,a.challenge_score,a.challenge_hint,a.challenge_type,a.docker_flag,a.docker_path,a.challenge_flag,a.challenge_file,a.solved_num,b.score,a.docker_status,a.docker_info from challenge_list  as a left join (select * from user_challenge_list where user_id="%s") as b on a.challenge_id = b.challenge_id;'%(userId)
+        print(sql)
         showinfo.execute(sql)
         return showinfo.fetchall()
 
@@ -77,7 +80,7 @@ class Mysqld:
         return show_challenge_num.fetchall()
 
 
-
+        #查看队伍信息
     def selectGroupInfoByUser(self,user):
         group_id = self.selectGroupByusername(user)
         if group_id:
@@ -113,13 +116,6 @@ class Mysqld:
             return 1
         else:
             return -1
-    #
-    # def selectUserChallengeDockerAllby(self):
-    #     sql = "select a.challenge_id,a.challenge_name,a.challenge_score,a.challenge_hint,a.challenge_type,a.docker_flag,a.docker_path,a.challenge_flag,a.challenge_file,a.solved_num,b.score from challenge_list  as a left join (select * from user_challenge_list where user_id=15) as b on a.challenge_id = b.challenge_id;"
-    #     self.cursor.execute(sql)
-    #     print(sql)
-    #     a = self.cursor.fetchall()
-    #     print(a)
 
     # 通过用户名查用户id
     def selectUserId(self,user):
@@ -138,6 +134,13 @@ class Mysqld:
             return result[0][0]
         else:
             return 0
+
+
+    def selectUserNotice(self):
+        sql = 'select id,info,date from user_notice'
+        self.cursor.execute(sql)
+        result = self.cursor.fetchall()
+        return result
 
 # ===============后台-start===============
     def addAdmin(self,name,email,mobile,passwd):
@@ -169,7 +172,7 @@ class Mysqld:
             return result
         return 0
     def selectCTFList(self):
-        sql = 'select challenge_id,challenge_name,challenge_score,challenge_hint,challenge_type,docker_flag,docker_path,challenge_flag,challenge_file,solved_num from challenge_list'
+        sql = 'select challenge_id,challenge_name,challenge_score,challenge_hint,challenge_type,docker_flag,docker_path,challenge_flag,challenge_file,solved_num from challenge_list as a left join '
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
         return  result
@@ -180,11 +183,12 @@ class Mysqld:
 # ===============user-start===============
 
 # ===============user-end===============
-# a = Mysqld()
-# b = a.selectCTFList()
-# # c = a.showChallengeList()
+a = Mysqld()
+b = a.selectUserNotice()
+print(b)
+c = a.showChallengeList('hsm')
 # # d = a.showChallengeNum()
-# # print(c)f
+print(c)
 # # print(b)
 #
 # print(b)

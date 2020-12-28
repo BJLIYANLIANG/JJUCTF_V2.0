@@ -61,15 +61,16 @@
                       <div class="row" >
                          <div class="col-md-12">
                              <div style="overflow-y:auto;height: 10rem;width: 100%">
-                                 <span>1. 【最新】14:35 babyLWE更新附件，请重新下载。14:27 friendlyRE更新附件，请重新下载。</span><br>
-                                 <span>2. 本届赛事期间，请大家留意裁判人员的电话（尾号2710），并积极配合，如果以任何理由拒接，无法沟通以及不配合裁判质询要求，将进行禁赛处理。比赛期间禁止以任何形式进行跨队交流，一起维护公平、清朗的竞赛环境。</span><br>
-                                 <span>3. 比赛时间：2020年12月26日10：00-18：00</span><br>
-                                 <span>4. 注意：请选手时刻关注比赛公告，大赛执行规则以比赛公告为准。</span><br>
-                                 <span>5. 积分模式：动态积分模式（即每道题目的分值将根据解出队伍的数量动态变化），前3血没有额外奖励。</span><br>
-                                 <span>6. 选手在解题过程中，如遇到需要输入token的题目，请使用本队伍的唯一token（在平台左上角处），该token为队伍的唯一标识，随便乱输视该payload为无效。请各参赛者妥善保护好本队伍token信息，输入其他队伍的token，两队同时将被视为作弊处理。</span><br>
-                                 <span>7. 关于Docker容器下发的题目：每个队伍同时只能下发一个容器，下发新容器会释放之前已下发的容器。请由成功申请下发容器的队员，用自己的账号提交flag。容器下发后，如访问不到地址请稍候重试刷新，如果提示错误可稍后再重新申请下发。</span><br>
-                                 <span>8. Writeup提交时间：请前40名队伍在比赛结束后6小时内，即12月27日00:00前，提交每道赛题详细的解题报告（WriteUp）。经组委会审核后，确定各参赛队最终得分和排名。逾期提交或不提交视为放弃本次比赛排名。</span><br>
-                                 <span>9. 本次比赛进行严格的作弊审查制度，所有破坏比赛公平性的行为一经发现确认，将取消比赛成绩。</span><br>
+                                 <ol>
+                                     {% for i in userNotic %}
+                                     <li>{{ i[1] }}</li>
+                                     {% endfor %}
+{#                                      <li>本届赛事期间，请大家留意裁判人员的电话（尾号2710），并积极配合，如果以任何理由拒接，无法沟通以及不配合裁判质询要求，将进行禁赛处理。比赛期间禁止以任何形式进行跨队交流，一起维护公平、清朗的竞赛环境。</li>#}
+{#                                      <li>比赛时间：2020年12月26日10：00-18：00</li>#}
+{#                                      <li>注意：请选手时刻关注比赛公告，大赛执行规则以比赛公告为准。</li>#}
+{#                                      <li>积分模式：动态积分模式（即每道题目的分值将根据解出队伍的数量动态变化），前3血没有额外奖励。</li>#}
+{#                                     <li>选手在解题过程中，如遇到需要输入token的题目，请使用本队伍的唯一token（在平台左上角处），该token为队伍的唯一标识，随便乱输视该payload为无效。请各参赛者妥善保护好本队伍token信息，输入其他队伍的token，两队同时将被视为作弊处理。</li>#}
+                                 </ol>
                              </div>
                          </div>
                       </div>
@@ -198,7 +199,7 @@
                         {% if i[7]==1 %}
                             <div class="col-md-12">题目附件:<a class="modal_marger" href="{{ i[8] }}">附件1</a></div>
                             {% endif %}
-                        {% if i[5] == 1 %}
+                        {% if i[5] == 1 and i[11] == None %}
                               <div class="col-md-12">
                                  <div class="card" style="width: 100%;">
                                      <div class="card-body ">
@@ -208,6 +209,17 @@
                                  </div>
                              </div>
                         {% endif %}
+                         {% if i[5] == 1 and i[11] == 1 %}
+                            <div class="col-md-12">
+                                 <div class="card" style="width: 100%;">
+                                     <div class="card-body ">
+{#                                         <h5 class="card-title text-center">{{ i[12] }}</h5>#}
+                                         <a href="{{ i[12] }}" target="_blank" class="">{{ i[12] }}</a>
+                                         <button class="btn btn-success">还剩5:00</button>
+                                     </div>
+                                 </div>
+                             </div>
+                             {% endif %}
                         </div>
                         <div class="row row-no-gutters font_Size modal_marger" id="flag{{ i[0] }}" style="height:20%" >
                             {% if i[10] %}

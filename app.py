@@ -48,9 +48,11 @@ def challenge():
         challengeResult = getChallengeListByType.showChallengeList(user)
         challengeNum = getChallengeListByType.showChallengeNum()
         groupInfo = getChallengeListByType.selectGroupInfoByUser(user)[0]
+        userNotice = getChallengeListByType.selectUserNotice()
         print(groupInfo)
         # 0为web 以此类推
-        return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult,examNum=challengeNum,groupInfo=groupInfo)
+        return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult,
+                               examNum=challengeNum,groupInfo=groupInfo,userNotic=userNotice)
     return render_template('user/login.html')
 
 
@@ -188,7 +190,18 @@ def checkflag():
 
 @app.route("/adminlogin")
 def adminlogin():
-    return render_template("admin/login.html")
+    if session.get("admin"):
+        return render_template("admin/login.html")
+    return render_template('admin/login.html')
+
+
+@app.route("/admin_notice")
+def admin_notice():
+    if session.get("admin"):
+        selectUserNotice = Mysqld()
+        userNotice = selectUserNotice.selectUserNotice()
+        return render_template("admin/admin_notice.html",userNotice=userNotice)
+    return render_template('admin/login.html')
 
 
 # 检查admin登录情况
@@ -349,6 +362,8 @@ def page_not_found(error):
     if user:
         return render_template("404.html",username=user), 404
     return render_template("404.html"),404
+
+
 
 
 
