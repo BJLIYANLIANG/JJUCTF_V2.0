@@ -16,10 +16,13 @@
 {#                <button class="btn btn-primary" >更改头像</button>#}
                 <div class="text-center text-success" >
                     <div>用户名:{{ username }}</div>
-                    <div >ID:<span>71734</span></div>
-                     <div >学院:<span>信息学院</span></div>
-                     <div >学号:<span>20180201420</span></div>
-                     <div >擅长<span>WEB</span></div>
+                    <div >ID:<span>{{ userinfo[0] }}</span></div>
+                    <div >学号:<span>{{ userinfo[1] }}</span></div>
+                    <div >真实姓名:<span>{{ userinfo[2] }}</span></div>
+                    <div >班级:<span>{{ userinfo[7] }}</span></div>
+                    <div >邮箱:<span>{{ userinfo[5] }}</span></div>
+                    <div >电话:<span>{{ userinfo[6] }}</span></div>
+                    <div >队伍信息:<span>{{ usergroupinfo[1] }}</span></div>
                 </div>
             </div>
         </div>

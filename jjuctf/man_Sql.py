@@ -10,10 +10,8 @@ class Mysqld:
         self.cursor = self.conn.cursor()  #执行方法
 
     # 增加用户
-    def adduser(self,user_id,user_name,real_name,password,email,mobile,class_id,user_photo,role):
-        sql = 'insert into user (user_id,real_name,role,status,password,email,mobile,class_id,user_photo,user_name) ' \
-              'values ("%s","%s","%d","%d",md5("%s"),"%s","%s","%d","%s","%s")'\
-              %(user_id,real_name,role,0,password,email,mobile,class_id,user_photo,user_name)
+    def adduser(self,user_name,password,email):
+        sql = 'insert into user (role,password,email,user_name) values ("%d",md5("%s"),"%s","%s")'%(0,password,email,user_name)
         print(sql)
         #当role为1时表示管理员，0为普通用户，status后面再说
         try:
@@ -81,13 +79,14 @@ class Mysqld:
 
 
         #查看队伍信息
-    def selectGroupInfoByUser(self,user):
+    def selectGroupInfoByUsername(self,user):
         group_id = self.selectGroupByusername(user)
         if group_id:
+            sql1 = 'select group_id,sum(score) from user_challenge_list  group_id;'
             sql = 'select * from user_group where group_id="%s"'%(group_id)
             exec = self.cursor
             exec.execute(sql)
-            return exec.fetchall()
+            return exec.fetchall()[0]
         else:
             return 0
 
@@ -98,6 +97,14 @@ class Mysqld:
         showinfo.execute(sql)
         # print(showinfo.fetchall())
         return showinfo.fetchall()
+    # 查询用户信息
+    def selectUserInfo(self,user):
+        sql = 'select id,user_id,real_name,role,status,email,mobile,class_id,user_photo,group_id from user where user_name="%s"'%(user)
+        showinfo = self.cursor
+        showinfo.execute(sql)
+        # print(showinfo.fetchall())
+        return showinfo.fetchall()[0]
+
 
     # 查看所有靶机
     def select_target(self):
@@ -146,6 +153,7 @@ class Mysqld:
             return type,score
         else:
             return 0
+
     def selectUseridByUsername(self,user):
         sql = 'select id from user where user_name="%s"'%(user)
         self.cursor.execute(sql)
@@ -155,7 +163,7 @@ class Mysqld:
         return 0
 
 
-
+    #ctf公告
     def selectUserNotice(self):
         sql = 'select id,info,date from user_notice'
         self.cursor.execute(sql)
@@ -231,16 +239,6 @@ class Mysqld:
 # ===============user-start===============
 
 # ===============user-end===============
-# a = Mysqld()
-# b = a.selectUserNotice()
-# print(b)
-# date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-#
-# c = a.addUserScore('hsm',2,2,3,15,100,str(date))
-# print(c)
-# # d = a.showChallengeNum()
-# print(c)
-
-# print(b)
-
-# print(b)
+a = Mysqld()
+b = a.selectUserInfo('hsm')
+print(b)

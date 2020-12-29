@@ -46,9 +46,10 @@ def challenge():
         getChallengeListByType = Mysqld()
         challengeResult = getChallengeListByType.showChallengeList(user)
         challengeNum = getChallengeListByType.showChallengeNum()
-        groupInfo = getChallengeListByType.selectGroupInfoByUser(user)[0]
+        groupInfo = getChallengeListByType.selectGroupInfoByUsername(user)
+        # print(groupInfo)
         userNotice = getChallengeListByType.selectUserNotice()
-        print(groupInfo)
+        # print(userNotice)
         # 0为web 以此类推
         return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult,
                                examNum=challengeNum,groupInfo=groupInfo,userNotic=userNotice)
@@ -102,7 +103,6 @@ def userRegister():
         if passwd2 == '' or passwd == '' or username == '' or email == '' or mobile == '' or uid == '' or realname == ''  or class_id == '':
             resultEmpty = 1
 
-
         if passwd != passwd2:
             return render_template("user/register.html",message="两次输入的密码不同，请重新输入")
 
@@ -111,7 +111,7 @@ def userRegister():
         adduser = Mysqld()
         if adduser.checkUserRegister(username=username) == 1:
             return render_template("user/register.html",message="用户已经注册过!")
-        result1 = adduser.adduser(uid,username,realname,passwd,email,mobile,int(class_id),'',0)
+        result1 = adduser.adduser(username,passwd,email)
         if result1 == 1:
             return render_template("user/login.html",message="注册成功！")
 
@@ -133,13 +133,19 @@ def awd():
         return render_template("user/login.html")
 
 
-# 用户设置
+# 用户个人设置
 @app.route('/user',methods=['GET'])
 def user():
     user = session.get('user')
     if user:
         username = request.args.get('user')
-        return render_template("user/user.html",username=username,headerType=username)
+        mysql = Mysqld()
+        userinfo = mysql.selectUserInfo(user)
+        print(userinfo)
+        usergroupinfo = mysql.selectGroupInfoByUsername(user)
+        print(usergroupinfo)
+        # print(usergroup)
+        return render_template("user/user.html",username=username,headerType=username,userinfo=userinfo,usergroupinfo=usergroupinfo)
     else:
         return render_template("user/login.html")
 
@@ -150,6 +156,7 @@ def groupSetting():
     user = session.get('user')
     if user:
         username = request.args.get('user')
+
         return render_template("user/group.html",username=username,headerType="userSetting")
     else:
         return render_template("user/login.html")
@@ -262,15 +269,6 @@ def adminIndex():
         return render_template("admin/index.html")
     else:
         return render_template("admin/login.html")
-
-# # admin 用户管理路由
-# @app.route("/userman")
-# def userman():
-#     admin = session.get('admin')
-#     if admin:
-#         return render_template("admin/useradmin.html")
-#     else:
-#         return render_template("admin/login.html")
 
 
 

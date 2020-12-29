@@ -13,17 +13,44 @@
        <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
     <title>JJUCTF</title>
 </head>
+<style>
+{#    body {#}
+{##}
+{#  background-image: url("/static/image/bg1.jpg");#}
+{##}
+{#  background-position: center 0;#}
+{##}
+{#  background-repeat: no-repeat;#}
+{##}
+{#  background-attachment: fixed;#}
+{##}
+{#  background-size: cover;#}
+{##}
+{#  -webkit-background-size: cover;#}
+{##}
+{#  -o-background-size: cover;#}
+{##}
+{#  -moz-background-size: cover;#}
+{##}
+{#  -ms-background-size: cover;#}
+{##}
+    {#nav{filter:alpha(Opacity=80);-moz-opacity:0.9;opacity: 0.99;}#}
+    {#div{filter:alpha(Opacity=100);-moz-opacity:1;opacity: 0.99;}#}
+    body{
+        background-color: 	#FFFAFA;
+    }
+</style>
 <body  >
-<nav  class="navbar navbar-expand-lg navbar-light bg-light"  >
-  <a class="navbar-brand" href="/">JJUCTF</a>
+<nav  class="navbar navbar-expand-lg navbar-light bg-light" >
+  <a class="navbar-brand" href="/" >JJUCTF</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav ml-auto">{% if headerType == 'index' %}
+  <div class="collapse navbar-collapse" id="navbarSupportedContent" >
+    <ul class="navbar-nav ml-auto" >{% if headerType == 'index' %}
             <li class="nav-item active">
-        <a class="nav-link" href="/">态势感知<span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/" >态势感知<span class="sr-only">(current)</span></a>
       </li>{% else %}
              <li class="nav-item">
         <a class="nav-link" href="/">态势感知</a>
@@ -70,5 +97,6 @@
 {#警告信息#}{% if message %}
     <script language="JavaScript"> alert("{{ message}}")</script>
 {% endif %}
+
 
 
