@@ -11,6 +11,9 @@ class Check:
         if len(username) < 5 or len(password) < 5 or len(useremail) < 5:
             return 0
         return 1
+
+
+
     # 检查flag是否正确
     def checkflag(self,user,challenge_id,flag):
         # ctf_id就是CTF靶场id

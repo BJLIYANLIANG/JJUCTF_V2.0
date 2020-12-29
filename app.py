@@ -74,7 +74,7 @@ def ranks():
         sqlcheck = Mysqld()
         GetChallengeList = sqlcheck.showChallengeList(user)
         # GetGroupInfo  = sqlcheck.
-        GetUserNum = sqlcheck.selectUserNum()  #查数据库将排行榜数据传到template中，目前是测试阶段，使用的是用户表
+        GetUserNum = sqlcheck.selectUserNum(user)  #查数据库将排行榜数据传到template中，目前是测试阶段，使用的是用户表
 
         return render_template("user/ranks.html",username=user,headerType="rank",ChallengeList=GetChallengeList,userNum=GetUserNum,a=1)
     else:
@@ -181,12 +181,13 @@ def setting():
 
 
 # 检查CTF答题模式flag是否正确
-@app.route("/checkflag",methods=["POST"])
-def checkflag():
+# 通过ajax验证
+@app.route("/checkCtfFlag",methods=["POST"])
+def checkCtfFlag():
     # 检查flag需要ctf_id这个参数
     user = session.get("user")
     flag = request.form.get('flag')
-    ctf_id = request.form.get('ctf_id')
+    ctf_id = int(request.form.get('ctf_id'))
     if flag and ctf_id :
         checkflag = Check()
         result = checkflag.checkflag(user,ctf_id,flag)
@@ -195,11 +196,14 @@ def checkflag():
             adduserscore = Mysqld()
             group_id = adduserscore.selectGroupByusername(user)
             (ctfType,score) = adduserscore.selectCtfTypeAndScoreByChallenge_id(ctf_id)
+            print(ctfType)
+            print(score)
             date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
             user_id = adduserscore.selectUseridByUsername(user)
             result = adduserscore.addUserScore(user,group_id,ctfType,ctf_id,user_id,score,date)
-            return render_template("user/challenge.html",message="回答正确")
-    return request.form.get("flag")
+            print(result)
+            return "1"
+    return "0"
 
 
 
@@ -393,13 +397,13 @@ def page_not_found(error):
 def test():
     return render_template('user/test.html')
 
-@app.route('/checkCtfFlag',methods=['POST'])
-def checkCtfFlag():
-    flag = request.form.get('flag')
-    if flag:
-        return "1"
-    else:
-        return "0"
+# @app.route('/checkCtfFlag',methods=['POST'])
+# def checkCtfFlag():
+#     flag = request.form.get('flag')
+#     if flag:
+#         return "1"
+#     else:
+#         return "0"
 
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 import pymysql
 import jjuctf.config
-
+import time
 class Mysqld:
     def __init__(self):
         server = "localhost"
@@ -211,8 +211,9 @@ class Mysqld:
         return result
 
     def addUserScore(self,user, group_id, ctfType, ctf_id, user_id, score, date):
-        sql = 'insert into user_challenge_list (group_id,type,challenge_id,user_id,score,date)values(%d,%d,%d,%d,%d,%s)'%(group_id,ctfType,ctf_id,user_id,score,date)
+        sql = 'insert into user_challenge_list (group_id,type,challenge_id,user_id,score,date)values(%d,%d,%d,%d,%d,"%s")'%(group_id,ctfType,ctf_id,user_id,score,date)
         try:
+            print(sql)
             self.cursor.execute(sql)
             self.conn.commit()
             self.conn.close()
@@ -230,12 +231,16 @@ class Mysqld:
 # ===============user-start===============
 
 # ===============user-end===============
-a = Mysqld()
+# a = Mysqld()
 # b = a.selectUserNotice()
 # print(b)
-c = a.selectUseridByUsername('hsm')
+# date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+#
+# c = a.addUserScore('hsm',2,2,3,15,100,str(date))
+# print(c)
 # # d = a.showChallengeNum()
-print(c)
+# print(c)
+
 # print(b)
 
 # print(b)

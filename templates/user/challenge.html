@@ -1,19 +1,24 @@
 {% include'user/header.html' %}
 <script>
-    function postflag(flagid,id){
-        var a = document.getElementById(id.substring(1)).value;
+    function postflag(ctf_id,id){
+        var a = document.getElementById(id).value;
+        var ctf_id = ctf_id
+        {#alert()#}
+        {#alert(ctf_id)#}
         $.ajax({
                 url: "/checkCtfFlag",
                 type: "post",
-                data: {"flag": a},
+                data: {"flag": a,"ctf_id":ctf_id},
                 success: function (result) {
                     if (result == "1") {
                         alert("回答正确！");
-                        $(flagid).html("回答正确");
-                        $(flagid).attr("name","回答正确");
-                        var aa = "#flag-"+id.substring(10)
+                        window.location.reload()
+                        {#$(flagid).html("回答正确");#}
+
+                        {#$(flagid).attr("name","回答正确");#}
+                        {#var aa = "#flag-"+id.substring(10)#}
                         {#alert(aa)#}
-                        $(aa).attr("class","col-md-3 column border_contain color");
+                        {#$(aa).attr("class","col-md-3 column border_contain color");#}
                     }
                     else{
                         alert("回答错误")
@@ -189,7 +194,6 @@
                             {% endif %}
                         <div class="col-md-12" style="font-size: 0.7rem">
                             <strong  title="欢迎妹子打电话"><span>第一名</span>：欢迎妹子打电话</strong>
-
                         </div>
                     </div>
                         <div class="row row-no-gutters font_Size modal_marger ">
@@ -213,7 +217,6 @@
                             <div class="col-md-12">
                                  <div class="card" style="width: 100%;">
                                      <div class="card-body ">
-{#                                         <h5 class="card-title text-center">{{ i[12] }}</h5>#}
                                          <a href="{{ i[12] }}" target="_blank" class="">{{ i[12] }}</a>
                                          <button class="btn btn-success">还剩5:00</button>
                                      </div>
@@ -221,15 +224,15 @@
                              </div>
                              {% endif %}
                         </div>
-                        <div class="row row-no-gutters font_Size modal_marger" id="flag{{ i[0] }}" style="height:20%" >
+                        <div class="row row-no-gutters font_Size modal_marger" id="div{{ i[0] }}" style="height:20%" >
                             {% if i[10] %}
                                   <div>
                                       <a class="text-success">已解答，获得{{ i[10] }}分</a>
                                   </div>
                                 {% else %}
                                     <div class="input-group col-md-12 modal_marger btn-group">
-                                        <input  id="flag{{ i[0] }}1" type="text" name="flag" autocomplete="off" placeholder="flag.." >
-                                        <button type="submit"  class="btn btn-dark  " onclick="postflag('#flag{{ i[0] }}','#flag{{ i[0] }}1')">提交</button>
+                                        <input  id="flag{{ i[0] }}" type="text" name="flag"  autocomplete="off" placeholder="flag.." >
+                                        <button type="submit"  class="btn btn-dark  " onclick="postflag('{{ i[0] }}','flag{{ i[0] }}')">提交</button>
                                     </div>
                                 {% endif %}
 
