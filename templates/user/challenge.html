@@ -2,7 +2,7 @@
 <script>
     function postflag(ctf_id,id){
         var a = document.getElementById(id).value;
-        var ctf_id = ctf_id
+        var ctf_id = ctf_id;
         {#alert()#}
         {#alert(ctf_id)#}
         $.ajax({
@@ -13,12 +13,6 @@
                     if (result == "1") {
                         alert("回答正确！");
                         window.location.reload()
-                        {#$(flagid).html("回答正确");#}
-
-                        {#$(flagid).attr("name","回答正确");#}
-                        {#var aa = "#flag-"+id.substring(10)#}
-                        {#alert(aa)#}
-                        {#$(aa).attr("class","col-md-3 column border_contain color");#}
                     }
                     else{
                         alert("回答错误")
@@ -46,9 +40,10 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-12">战队token：<span style="color: red">{{ groupInfo[2] }}</span></div>
-                        <div class="col-md-12">战队排名：{{ groupInfo[5] }}</div>
-                        <div class="col-md-12">解题数量：{{ groupInfo[3] }}</div>
-                        <div class="col-md-12">得分：{{ groupInfo[4] }}</div>
+                         <div class="col-md-12">队伍简介：{{ groupInfo[3] }}</div>
+                        <div class="col-md-12">战队排名：110</div>
+                        <div class="col-md-12">解题数量：2</div>
+                        <div class="col-md-12">得分：50</div>
                         <br>
                         <br>
                         <br>

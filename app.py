@@ -45,6 +45,7 @@ def challenge():
     if user :  #如果登录成功
         getChallengeListByType = Mysqld()
         challengeResult = getChallengeListByType.showChallengeList(user)
+        # print(challengeResult)
         challengeNum = getChallengeListByType.showChallengeNum()
         groupInfo = getChallengeListByType.selectGroupInfoByUsername(user)
         # print(groupInfo)
@@ -113,7 +114,7 @@ def userRegister():
             return render_template("user/register.html",message="用户已经注册过!")
         result1 = adduser.adduser(username,passwd,email)
         if result1 == 1:
-            return render_template("user/login.html",message="注册成功！")
+            return render_template("user/login.html",message="注册成功，请到队伍管理添加队伍！")
 
 
 
@@ -141,9 +142,9 @@ def user():
         username = request.args.get('user')
         mysql = Mysqld()
         userinfo = mysql.selectUserInfo(user)
-        print(userinfo)
+        # print(userinfo)
         usergroupinfo = mysql.selectGroupInfoByUsername(user)
-        print(usergroupinfo)
+        # print(usergroupinfo)
         # print(usergroup)
         return render_template("user/user.html",username=username,headerType=username,userinfo=userinfo,usergroupinfo=usergroupinfo)
     else:
@@ -156,8 +157,13 @@ def groupSetting():
     user = session.get('user')
     if user:
         username = request.args.get('user')
+        mysql = Mysqld()
+        userinfo = mysql.selectUserInfo(user)
 
-        return render_template("user/group.html",username=username,headerType="userSetting")
+        groupinfo = mysql.selectGroupInfoByUsername(user)
+        print(groupinfo)
+        # print(userinfo)
+        return render_template("user/group.html",username=username,headerType="userSetting",userinfo=userinfo,groupinfo=groupinfo)
     else:
         return render_template("user/login.html")
 
@@ -201,15 +207,16 @@ def checkCtfFlag():
         #如果result为1则正确，0为不正确
         if result == 1:
             adduserscore = Mysqld()
-            group_id = adduserscore.selectGroupByusername(user)
-            (ctfType,score) = adduserscore.selectCtfTypeAndScoreByChallenge_id(ctf_id)
-            print(ctfType)
-            print(score)
-            date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            user_id = adduserscore.selectUseridByUsername(user)
-            result = adduserscore.addUserScore(user,group_id,ctfType,ctf_id,user_id,score,date)
-            print(result)
-            return "1"
+            group_id = adduserscore.selectGroupInfoByUsername(user)
+            if group_id!=0:
+                (ctfType,score) = adduserscore.selectCtfTypeAndScoreByChallenge_id(ctf_id)
+            # print(ctfType)
+            # print(score)
+                date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+                user_id = adduserscore.selectUseridByUsername(user)
+                result = adduserscore.addUserScore(user,group_id,ctfType,ctf_id,user_id,score,date)
+            # print(result)
+                return "1"
     return "0"
 
 
@@ -321,7 +328,7 @@ def man_target_ctf():
     if admin:
         connectsql = Mysqld()
         ctfList  = connectsql.selectCTFList()
-        print(ctfList)
+        # print(ctfList)
         return render_template("admin/man_target_ctf.html",ctfList=ctfList)
     else:
         return render_template("admin/login.html")
@@ -395,13 +402,39 @@ def page_not_found(error):
 def test():
     return render_template('user/test.html')
 
-# @app.route('/checkCtfFlag',methods=['POST'])
-# def checkCtfFlag():
-#     flag = request.form.get('flag')
-#     if flag:
-#         return "1"
-#     else:
-#         return "0"
+
+@app.route("/create_group",methods=['POST'])
+def create_group():
+    user = session.get('user')
+    if user:
+        groupName = request.form.get('groupname')
+        groupInfo = request.form.get('groupinfo')
+        mysql = Mysqld()
+        userId = mysql.selectUserIdByUserName(user)
+        if userId:
+            addgroup = mysql.addGroup(groupName, groupInfo)
+            if addgroup == 1:
+                groupinfo = mysql.selectGrouInfoByGroupName(groupName)
+                print(groupinfo)
+                group_id = groupinfo[0]
+                print(group_id)
+                print(userId)
+                if group_id != 0:
+                    print("id:",end='')
+                    # print(groupid)
+                    addusergrouplistResult = mysql.addUser_group_list(group_id,userId,1)
+                    if addusergrouplistResult==1:
+                        return "1"
+                    else:
+                        return "0"
+                else:
+                    return "0"
+            else:
+                return "0"
+        else:
+            return "0"
+    else:
+        return "0"
 
 
 if __name__ == '__main__':

@@ -1,25 +1,28 @@
 import pymysql
-import jjuctf.config
+import hashlib
+from flask import session
+from jjuctf.config import Config
+config = Config()
 import time
 class Mysqld:
     def __init__(self):
-        server = "localhost"
-        user = "jjuctf"
-        password = "jjuctf"  #数据库密码，宝塔面板
-        self.conn = pymysql.connect(server, user, password, database="jjuctf")  # 连接到jjuctf数据库
+        server = config.serverIp
+        user = config.user
+        password = config.password  #数据库密码，宝塔面板
+        self.conn = pymysql.connect(server, user, password, config.database)  # 连接到jjuctf数据库
         self.cursor = self.conn.cursor()  #执行方法
-
+        # self.mysqlclose = self.conn.close()
     # 增加用户
     def adduser(self,user_name,password,email):
         sql = 'insert into user (role,password,email,user_name) values ("%d",md5("%s"),"%s","%s")'%(0,password,email,user_name)
-        print(sql)
+        # print(sql)
         #当role为1时表示管理员，0为普通用户，status后面再说
         try:
             self.cursor.execute(sql)
             self.conn.commit()
         except:
             print("Error for insert to sql")
-            print(sql)
+            # print(sql)
             return -1
 
         return 1
@@ -27,7 +30,7 @@ class Mysqld:
     def checkuser(self,username,password):
         sql  = 'select user_name from user where user_name="%s" and password=md5("%s")'%(username,password)
         self.cursor.execute(sql)
-        print(sql)
+        # print(sql)
         a = self.cursor.fetchall()
         if a:
             return 1
@@ -60,12 +63,12 @@ class Mysqld:
 
     # 通过选择challenge_list表来
     def showChallengeList(self,user):
-        userId = self.selectUserId(user)
+        userId = self.selectUserIdByUserName(user)
         showinfo = self.cursor
-        groupid = self.selectGroupByusername(user)
+        groupid = self.selectGroupidByusername(user)
         sql = 'select a.challenge_id,a.challenge_name,a.challenge_score,a.challenge_hint,a.challenge_type,a.docker_flag,a.docker_path,a.challenge_flag,a.challenge_file,a.solved_num,b.score,c.docker_status,c.docker_info,b.group_id from challenge_list as a left join (select * from user_challenge_list where group_id="%s") as b  on a.challenge_id = b.challenge_id left join (select * from user_ctf_docker_list where group_id="%s") as c on a.challenge_id=c.challenge_id;'%(groupid,groupid)
         # sql = 'select a.challenge_id,a.challenge_name,a.challenge_score,a.challenge_hint,a.challenge_type,a.docker_flag,a.docker_path,a.challenge_flag,a.challenge_file,a.solved_num,b.score,a.docker_status,a.docker_info from challenge_list  as a left join (select * from user_challenge_list where user_id="%s") as b on a.challenge_id = b.challenge_id;'%(userId)
-        print(sql)
+        # print(sql)
         showinfo.execute(sql)
         return showinfo.fetchall()
 
@@ -78,32 +81,134 @@ class Mysqld:
         return show_challenge_num.fetchall()
 
 
+
+
+
+
+
+# ========================group start========================
         #查看队伍信息
     def selectGroupInfoByUsername(self,user):
-        group_id = self.selectGroupByusername(user)
-        if group_id:
-            sql1 = 'select group_id,sum(score) from user_challenge_list  group_id;'
-            sql = 'select * from user_group where group_id="%s"'%(group_id)
-            exec = self.cursor
-            exec.execute(sql)
-            return exec.fetchall()[0]
-        else:
+        try :
+            group_id = self.selectGroupidByusername(user)
+            if group_id:
+                # print("group_id:"+str(group_id))
+            # sql = 'select a.group_id,a.name,a.info,b.role from user_group as a left join user_group_list as b on a.group_id = b.group_id and b.user_id=%d'%()
+                sql = 'select group_id,name,token,info from user_group where group_id="%s"'%(group_id)
+                # print(sql)
+                exec = self.cursor
+                exec.execute(sql)
+                return exec.fetchall()[0]
             return 0
+        except:
+            return 0
+
+# 通过用户名查队伍id
+    def selectGroupidByusername(self, user):
+        userid = self.selectUserIdByUserName(user)
+        sql = 'select group_id from user_group_list where user_id="%d"'%(userid)
+        # print(sql)
+        # sql = 'select b.group_id from user as a  join user_group_list as b on a.id=b.user_id and a.user_name="%s";' % (
+        #     user)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()[0]
+            if result:
+                return result
+            else:
+                return 0
+        except:
+            return 0
+# # 增加队
+    def addGroup(self,name,info):
+        key = Config().tokenKey
+        token = hashlib.md5((name+key).encode('utf-8')).hexdigest()
+
+        a = self.selectGrouInfoByGroupName(name)
+
+        if a:
+            return 0
+        sql = 'insert into user_group (name,info,token) values ("%s","%s","%s")' % (name,info,token)
+
+        try:
+
+            self.cursor.execute(sql)
+            self.conn.commit()
+            # self.conn.close()
+            return 1
+        except:
+            self.conn.rollback()
+            # self.conn.close()
+            return 0
+
+
+
+    def addUser_group_list(self,group_id,user_id,role):
+        sql = 'insert into user_group_list (group_id,user_id,role) values (%d,%d,%d)' % (group_id, user_id,role)
+
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            # self.conn.close()
+            return 1
+
+        except:
+            self.conn.rollback()
+            # self.conn.close()
+            return 0
+
+
+    def selectGrouInfoByGroupName(self,groupname):
+        sql = 'select group_id,name,token,info from user_group where name="%s";'%(groupname)
+        try:
+
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()[0]
+            return result
+        except:
+            return 0
+
+
+# ========================group end========================
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     # 查询用户数
     def selectUserNum(self,user):
         showinfo = self.cursor
         sql = "select * from user"
         showinfo.execute(sql)
-        # print(showinfo.fetchall())
+
         return showinfo.fetchall()
+
+
     # 查询用户信息
     def selectUserInfo(self,user):
-        sql = 'select id,user_id,real_name,role,status,email,mobile,class_id,user_photo,group_id from user where user_name="%s"'%(user)
+        sql = 'select id,user_id,real_name,role,status,email,mobile,class_id,user_photo from user where user_name="%s"'%(user)
         showinfo = self.cursor
-        showinfo.execute(sql)
-        # print(showinfo.fetchall())
-        return showinfo.fetchall()[0]
+        try:
+            showinfo.execute(sql)
+            return showinfo.fetchall()[0]
+        except:
+            return 0
+
 
 
     # 查看所有靶机
@@ -117,7 +222,7 @@ class Mysqld:
     def checkAdminLogin(self,username,password):
         sql = 'select admin_id from admin where admin_name="%s" and admin_password=md5("%s")' % (username, password)
         self.cursor.execute(sql)
-        print(sql)
+
         a = self.cursor.fetchall()
         if a:
             return 1
@@ -125,22 +230,15 @@ class Mysqld:
             return -1
 
     # 通过用户名查用户id
-    def selectUserId(self,user):
+    def selectUserIdByUserName(self,user):
         sql = 'select id from user where user_name="%s"'%(user)
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
         if result:
             return result[0][0]
         return 0
-    # 通过用户名查队伍名
-    def selectGroupByusername(self,user):
-        sql = 'select group_id from user where user_name="%s"'%(user)
-        self.cursor.execute(sql)
-        result = self.cursor.fetchall()
-        if result:
-            return result[0][0]
-        else:
-            return 0
+
+
 
     def selectCtfTypeAndScoreByChallenge_id(self,ctf_id):
         # adduserscore.addUserScore(user, group_id, ctfType, ctf_id, user_id, score, date)
@@ -154,13 +252,6 @@ class Mysqld:
         else:
             return 0
 
-    def selectUseridByUsername(self,user):
-        sql = 'select id from user where user_name="%s"'%(user)
-        self.cursor.execute(sql)
-        result = self.cursor.fetchall()[0][0]
-        if result:
-            return result
-        return 0
 
 
     #ctf公告
@@ -179,10 +270,10 @@ class Mysqld:
         except:
             self.conn.rollback()
         self.conn.close()
-        print(sql)
+
         result = self.cursor.fetchall()
 
-        print(result)
+
         return result
     def selectAdminList(self):
         sql = 'select admin_id,admin_name,admin_email,admin_mobile from admin'
@@ -207,21 +298,18 @@ class Mysqld:
     #     result = self.cursor.fetchall()
     #     return  result
 
-
-
     def checkFalg(self,group_id,flag,challenge_id):
-        # print(challenge_id)
-        # sql1 = 'select group_id,cd'
         sql = 'select * from user_ctf_flag where group_id=%d and flag="%s" and challenge_id=%d'%(group_id,flag,challenge_id)
         # print(sql)
         self.cursor.execute(sql)
+
         result = self.cursor.fetchall()
         return result
 
     def addUserScore(self,user, group_id, ctfType, ctf_id, user_id, score, date):
         sql = 'insert into user_challenge_list (group_id,type,challenge_id,user_id,score,date)values(%d,%d,%d,%d,%d,"%s")'%(group_id,ctfType,ctf_id,user_id,score,date)
         try:
-            print(sql)
+
             self.cursor.execute(sql)
             self.conn.commit()
             self.conn.close()
@@ -236,9 +324,17 @@ class Mysqld:
 
 
 
+
+
 # ===============user-start===============
 
-# ===============user-end===============
-a = Mysqld()
-b = a.selectUserInfo('hsm')
-print(b)
+
+
+# # ===============user-end===============
+
+
+
+# a = Mysqld()
+# b = a.checkFalg(2,"flag{jjuctf}",1)
+# print(b)
+# checkFalg(self,group_id,flag,challenge_id)
