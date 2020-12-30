@@ -28,30 +28,20 @@
                             <table class="table table-center "  >
                             <thead>
                                 <tr class="table-primary">
-                                <th >序号</th>
                                 <th>队员名称</th>
                                 <th>职位</th>
                             </tr>
+                                {% for i in groupList %}
                             <tr class="table-info">
-                                <td>1</td>
-                                <td>hsm</td>
+                                <td>{{ i[0] }}</td>
+                                {% if i[1]==0 %}
+                                <td>队员</td>
+
+                            {% else %}
                                 <td>队长</td>
+                            {% endif %}
                             </tr>
-                            <tr class="table-info">
-                                <td>2</td>
-                                <td>JJUSEC2</td>
-                                <td>队员</td>
-                            </tr>
-                            <tr class="table-info">
-                                <td>2</td>
-                                <td>JJUSEC2</td>
-                                <td>队员</td>
-                            </tr>
-                            <tr class="table-info">
-                                <td>2</td>
-                                <td>JJUSEC2</td>
-                                <td>队员</td>
-                            </tr>
+                            {% endfor %}
                         </thead>
                         </table>
                 </div>

@@ -168,7 +168,14 @@ class Mysqld:
         except:
             return 0
 
-
+    def selectUserGroupList(self,group_id):
+        sql = 'select a.user_name,b.role from user as a inner join (select * from user_group_list where group_id=%d) as b on a.id=b.user_id;'%(group_id)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+        except:
+            return 0
 # ========================group end========================
 
 
@@ -334,7 +341,9 @@ class Mysqld:
 
 
 
-# a = Mysqld()
+a = Mysqld()
+b = a.selectUserGroupList(2)
+print(b)
 # b = a.checkFalg(2,"flag{jjuctf}",1)
 # print(b)
 # checkFalg(self,group_id,flag,challenge_id)

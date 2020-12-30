@@ -159,13 +159,22 @@ def groupSetting():
         username = request.args.get('user')
         mysql = Mysqld()
         userinfo = mysql.selectUserInfo(user)
-
         groupinfo = mysql.selectGroupInfoByUsername(user)
+        print(user)
         print(groupinfo)
+        #
+        if groupinfo:
+            groupList = mysql.selectUserGroupList(groupinfo[0])
+            print(groupList)
         # print(userinfo)
-        return render_template("user/group.html",username=username,headerType="userSetting",userinfo=userinfo,groupinfo=groupinfo)
+            return render_template("user/group.html",username=username,headerType="userSetting",userinfo=userinfo,groupinfo=groupinfo,groupList=groupList)
+        else:
+            return render_template("user/group.html",username=username,headerType="userSetting",userinfo=userinfo,groupinfo=groupinfo)
+
     else:
         return render_template("user/login.html")
+
+
 
 
 @app.route('/practice')
