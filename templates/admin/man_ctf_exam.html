@@ -1,0 +1,148 @@
+{% include "admin/header.html" %}
+
+    <div class="main-container">
+        <div class="padding">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="admin">首页</a>
+                <a class="breadcrumb-item" href="#ctf_man">CTF管理</a>
+                <span class="breadcrumb-item active">题目</span>
+            </nav>
+        </div>
+{#            table#}
+      <div class="padding">
+          <table id="sample-table-1" class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th class="center">
+                        <label>
+                            <input type="checkbox" class="ace" />
+                            <span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th>题目ID</th>
+                    <th>题目状态</th>
+                    <th>题目名称</th>
+                    <th>题目类型</th>
+                    <th>描述</th>
+                    <th>分值</th>
+                    <th>flag类型</th>
+                    <th>基本flag</th>
+                    <th>附件地址</th>
+                    <th>Docker地址</th>
+                    <th>创建时间</th>
+                    <th>创建者ID</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in ctf_exam %}
+                <tr>
+                    <td class="center">
+                        <label>
+                            <input type="checkbox" class="ace" />
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                    <td>{{ i[0] }}</td>
+                    {% if i[14]==0 %}
+                 <td>未开</td>
+                {% else %}
+                <td>已开</td>
+                {% endif %}
+                    <td>{{ i[3] }}</td>
+                    {% if i[2]==0 %}
+                    <td>Web</td>
+                    {% elif i[2]==1 %}
+                    <td>Misc</td>
+                    {% elif i[2]==2 %}
+                    <td>Crypto</td>
+                    {% elif i[2]==3 %}
+                    <td>Reverse</td>
+                    {% elif i[2]==4 %}
+                    <td>Pwn</td>
+                    {% endif %}
+                    <td>{{ i[4] }}</td>
+                    <td>{{ 5 }}</td>{# 分值#}
+                {% if i[6]==0 %}
+                <td>静态</td>
+                     <td>{{ i[7] }}</td>
+                {% else %}
+                <td>动态</td>
+                    <td>{{ i[7] }}</td>
+                {% endif %}
+                    {% if i[8]==1 %}
+                    <td>{{ i[9] }}</td>
+                {% else %}
+                 <td>无</td>
+                {% endif %}
+                 {% if i[10]==1%}
+                    <td>{{ i[11] }}</td>
+                {% else %}
+                 <td>无</td>
+                {% endif %}
+                    <td>{{ i[12] }}</td>
+                    <td>{{ i[1] }}</td>
+                    <td>
+                         <div class="btn-group">
+                            <button type="button" class="btn  btn-success" onclick="openInstance({{ i[0] }})">
+                              启动实例
+                            </button>
+                            <button type="button" class="btn btn-info" onclick="fix_ctf_exam({{ i[0] }})">
+                             修改题目
+                            </button>
+                              <button type="button" class="btn btn-xs  btn-danger" onclick="delete_ctf_exam({{ i[0] }})">
+                                删除题目
+                            </button>
+                        </div>
+
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+      </div>
+
+    <!-- 模态框 -->
+
+
+    </div>
+
+<script>
+    function openInstance(id){
+        alert(id);
+        alert("开启成功");
+        {#var a = document.getElementById(id).value;#}
+        {#$.ajax({#}
+        {#        url: "/checkCtfFlag",#}
+        {#        type: "post",#}
+        {#        data: {"flag": a,"ctf_id":ctf_id},#}
+        {#        success: function (result) {#}
+        {#            if (result == "1") {#}
+        {#                alert("回答正确！");#}
+        {#                window.location.reload()#}
+        {#            }#}
+        {#            else{#}
+        {#                alert("回答错误")#}
+        {#            }},#}
+        {#     error:function () {#}
+        {##}
+        {#        alert("发送请求失败");#}
+        {#    }#}
+        {##}
+        {#    }#}
+        {#)#}
+
+    };
+    function fix_ctf_exam(id){
+        alert(id);
+        alert("修改成功成功");
+
+    };
+
+    function delete_ctf_exam(id) {
+        alert(id);
+        alert("删除成功");
+    }
+</script>
+
+   {% include "admin/footer.html" %}

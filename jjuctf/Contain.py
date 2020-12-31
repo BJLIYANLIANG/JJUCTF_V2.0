@@ -19,6 +19,9 @@ class Contain:
         print(a.readlines())
     def stopContain(self):
         pass
+
+
+
 #
 b = Contain()
 b.startContain("EasyPython")

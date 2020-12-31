@@ -44,7 +44,7 @@ def challenge():
     user = session.get('user')
     if user :  #如果登录成功
         getChallengeListByType = Mysqld()
-        challengeResult = getChallengeListByType.showChallengeList(user)
+        challengeResult = getChallengeListByType.selectChallengeListByUserName(user)
         # print(challengeResult)
         challengeNum = getChallengeListByType.showChallengeNum()
         groupInfo = getChallengeListByType.selectGroupInfoByUsername(user)
@@ -55,7 +55,6 @@ def challenge():
         return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult,
                                examNum=challengeNum,groupInfo=groupInfo,userNotic=userNotice)
     return render_template('user/login.html')
-
 
 
 
@@ -212,7 +211,7 @@ def checkCtfFlag():
     ctf_id = int(request.form.get('ctf_id'))
     if flag and ctf_id :
         checkflag = Check()
-        result = checkflag.checkflag(user,ctf_id,flag)
+        result = checkflag.checkflag(user,flag,checkflag)
         #如果result为1则正确，0为不正确
         if result == 1:
             adduserscore = Mysqld()
@@ -310,6 +309,8 @@ def add_admin():
         return render_template("admin/login.html")
 
 
+
+
 # upload_ctf_contain
 @app.route("/upload_ctf_contain")
 def upload_ctf_contain():
@@ -330,15 +331,14 @@ def upload_awd_contain():
         return render_template("admin/login.html")
 
 
-# man_target_ctf
-@app.route("/man_target_ctf")
+# CTF实例
+@app.route("/man_ctf_instance")
 def man_target_ctf():
     admin = session.get('admin')
     if admin:
         connectsql = Mysqld()
-        ctfList  = connectsql.selectCTFList()
-        # print(ctfList)
-        return render_template("admin/man_target_ctf.html",ctfList=ctfList)
+        ctfList  = connectsql.selectCtfInstanceList()
+        return render_template("admin/man_ctf_instance.html", ctfList=ctfList)
     else:
         return render_template("admin/login.html")
 # man_target_awd
@@ -346,9 +346,26 @@ def man_target_ctf():
 def man_target_awd():
     return render_template("admin/man_target_awd.html")
 
+# CTF题目列表
+@app.route("/man_ctf_exam")
+def man_ctf_exam():
+    admin = session.get('admin')
+    if admin:
+        mysql = Mysqld()
+        ctf_exam = mysql.selectctf_exam()
+        return render_template("admin/man_ctf_exam.html",ctf_exam=ctf_exam)
+    else:
+        return render_template("admin/login.html")
 
-
-
+# 创建CTF实例
+# 如果是静态flag的话，只需要创建一个实例为所有队伍使用就行
+@app.route("/create_ctf_instance",methods=['POST'])
+def create_ctf_instance():
+    admin = session.get('admin')
+    if admin:
+        ctf_exam_id = request.form.get('ctf_exam_id')
+        mysql  = Mysqld()
+        mysql.selectctf_exam()
 @app.route("/man_user")
 def man_user():
     manAdmin = Mysqld()
@@ -407,6 +424,9 @@ def page_not_found(error):
 
 
 # ===============函数====================
+
+
+
 @app.route("/test")
 def test():
     return render_template('user/test.html')

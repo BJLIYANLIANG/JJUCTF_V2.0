@@ -1,6 +1,5 @@
 import pymysql
 import hashlib
-from flask import session
 from jjuctf.config import Config
 config = Config()
 import time
@@ -62,15 +61,18 @@ class Mysqld:
 
 
     # 通过选择challenge_list表来
-    def showChallengeList(self,user):
-        userId = self.selectUserIdByUserName(user)
-        showinfo = self.cursor
-        groupid = self.selectGroupidByusername(user)
-        sql = 'select a.challenge_id,a.challenge_name,a.challenge_score,a.challenge_hint,a.challenge_type,a.docker_flag,a.docker_path,a.challenge_flag,a.challenge_file,a.solved_num,b.score,c.docker_status,c.docker_info,b.group_id from challenge_list as a left join (select * from user_challenge_list where group_id="%s") as b  on a.challenge_id = b.challenge_id left join (select * from user_ctf_docker_list where group_id="%s") as c on a.challenge_id=c.challenge_id;'%(groupid,groupid)
-        # sql = 'select a.challenge_id,a.challenge_name,a.challenge_score,a.challenge_hint,a.challenge_type,a.docker_flag,a.docker_path,a.challenge_flag,a.challenge_file,a.solved_num,b.score,a.docker_status,a.docker_info from challenge_list  as a left join (select * from user_challenge_list where user_id="%s") as b on a.challenge_id = b.challenge_id;'%(userId)
-        # print(sql)
-        showinfo.execute(sql)
-        return showinfo.fetchall()
+    def selectChallengeListByUserName(self,user):
+        try:
+            showinfo = self.cursor
+            groupid = self.selectGroupidByusername(user)
+            sql = 'select a.id,a.name,a.score,a.hint,a.type,a.docker_flag,a.docker_info,a.file_flag,a.file_path,a.score,a.date,b.solved from challenge_list where group_id=%d'%(groupid)
+            showinfo.execute(sql)
+            return showinfo.fetchall()
+        except:
+            return 0
+
+
+
 
     # 这个是用在CTF答题界面中的CTF分类选项中的
     def showChallengeNum(self):
@@ -181,22 +183,6 @@ class Mysqld:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     # 查询用户数
     def selectUserNum(self,user):
         showinfo = self.cursor
@@ -299,20 +285,26 @@ class Mysqld:
         return 0
 
 
-    # def selectCTFList(self):
-    #     sql = 'select challenge_id,challenge_name,challenge_score,challenge_hint,challenge_type,docker_flag,docker_path,challenge_flag,challenge_file,solved_num from challenge_list as a left join '
-    #     self.cursor.execute(sql)
-    #     result = self.cursor.fetchall()
-    #     return  result
+    def selectCtfInstanceList(self):
+        sql = 'select group_id,id,ctf_exam_id,name,score,hint,type,docker_flag,docker_info,file_flag,file_path,flag,date from challenge_list'
+        print(sql)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return  result
+        except:
+            return 0
+
 
     def checkFalg(self,group_id,flag,challenge_id):
-        sql = 'select * from user_ctf_flag where group_id=%d and flag="%s" and challenge_id=%d'%(group_id,flag,challenge_id)
+        sql = 'select * from challenge_list where group_id=%d and flag="%s" and id=%d'%(group_id,flag,challenge_id)
         # print(sql)
-        self.cursor.execute(sql)
-
-        result = self.cursor.fetchall()
-        return result
-
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+        except:
+            return 0
     def addUserScore(self,user, group_id, ctfType, ctf_id, user_id, score, date):
         sql = 'insert into user_challenge_list (group_id,type,challenge_id,user_id,score,date)values(%d,%d,%d,%d,%d,"%s")'%(group_id,ctfType,ctf_id,user_id,score,date)
         try:
@@ -327,6 +319,40 @@ class Mysqld:
             self.conn.close()
             return 0
 
+
+        #user_score_list表
+    def addUserScoreList(self,uid,gid,challenge_id,score):
+        date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        sql = ''
+        #答题成功后添加到这个表中
+
+        #如果开放了一个实例，那么产生动态flag
+    def openChallenge(self,challenge_id):
+        pass
+
+    def selectctf_exam(self):
+        sql = ' SELECT id,own_id,type,name,hint,base_score,flag_type,base_flag,file_flag,file_path,docker_flag,docker_path,create_time,info,status FROM `ctf_exam`;'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+#返回类型: ((1, 13,0, ' easyPython', 'easyPython', 50, 0, 'flag{xxxxx123}', 0, None, 0, 'easyPython', datetime.datetime(2020, 12, 1, 0, 0), None,0),)
+        except:
+            return 0
+
+    def selectctf_examByctf_exam_Id(self,id):
+        sql = ' SELECT id,own_id,type,name,hint,base_score,flag_type,base_flag,file_flag,file_path,docker_flag,docker_path,create_time,info,status FROM `ctf_exam` where id=%d;'%(id)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            return result
+        # (1, 13, 0, ' easyPython', 'easyPython', 50, 0, 'flag{xxxxx123}', 0, None, 1, 'easyPython',datetime.datetime(2020, 12, 1, 0, 0), None, 0)
+        except:
+            return 0
+
+    def selectUserScoreList(self):
+
+        pass
 # ===============后台-end===============
 
 
@@ -342,8 +368,15 @@ class Mysqld:
 
 
 a = Mysqld()
-b = a.selectUserGroupList(2)
-print(b)
+# b = a.selectUserGroupList(2)
+# print(b)
 # b = a.checkFalg(2,"flag{jjuctf}",1)
 # print(b)
+#   def checkFalg(self,group_id,flag,challenge_id):
+# aa = a.showChallengeList('hsm')
+aa = a.selectChallengeListByUserName('hsm')
+print(aa)
+
+
+
 # checkFalg(self,group_id,flag,challenge_id)
