@@ -14,25 +14,9 @@ class Check:
 
 
     # 检查flag是否正确
-    def checkflag(self,user,flag,challenge_id):
-        # ctf_id就是CTF靶场id
-        a = Mysqld()
-        group_id = a.selectGroupInfoByUsername(user)
-        # print(group_id)
-        if group_id:
-            groupid = group_id[0]
-            # print(groupid)
-            result  = a.checkFalg(groupid,flag,challenge_id)
-        # result = 1
-            if result:
-                return 1
-            else:
-                return 0
-        else:
-            return 0
 
-
-a = Check()
-b = a.checkflag('test123',"flag{jjuctf}",1)
-print(b)
+#
+# a = Check()
+# b = a.checkflag('test123',"flag{jjuctf}",1)
+# print(b)
 # print(b)

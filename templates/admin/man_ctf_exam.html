@@ -109,28 +109,27 @@
 
 <script>
     function openInstance(id){
-        alert(id);
-        alert("开启成功");
+        {#alert(id);#}
         {#var a = document.getElementById(id).value;#}
-        {#$.ajax({#}
-        {#        url: "/checkCtfFlag",#}
-        {#        type: "post",#}
-        {#        data: {"flag": a,"ctf_id":ctf_id},#}
-        {#        success: function (result) {#}
-        {#            if (result == "1") {#}
-        {#                alert("回答正确！");#}
-        {#                window.location.reload()#}
-        {#            }#}
-        {#            else{#}
-        {#                alert("回答错误")#}
-        {#            }},#}
-        {#     error:function () {#}
-        {##}
-        {#        alert("发送请求失败");#}
-        {#    }#}
-        {##}
-        {#    }#}
-        {#)#}
+        $.ajax({
+                url: "/create_ctf_instance",
+                type: "post",
+                data: {"ctf_exam_id":id},
+                success: function (result) {
+                    if (result == "1") {
+                        alert("开启成功");
+                        window.location.reload()
+                    }
+                    else{
+                        alert("开启题目实况错误！")
+                    }},
+             error:function () {
+
+                alert("发送请求失败");
+            }
+
+            }
+        )
 
     };
     function fix_ctf_exam(id){

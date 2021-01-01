@@ -44,8 +44,10 @@ def challenge():
     user = session.get('user')
     if user :  #如果登录成功
         getChallengeListByType = Mysqld()
+        #获取CTf实例列表
         challengeResult = getChallengeListByType.selectChallengeListByUserName(user)
-        # print(challengeResult)
+        print("challengeResult:",end='')
+        print(challengeResult)
         challengeNum = getChallengeListByType.showChallengeNum()
         groupInfo = getChallengeListByType.selectGroupInfoByUsername(user)
         # print(groupInfo)
@@ -201,6 +203,7 @@ def setting():
 
 
 
+
 # 检查CTF答题模式flag是否正确
 # 通过ajax验证
 @app.route("/checkCtfFlag",methods=["POST"])
@@ -209,23 +212,48 @@ def checkCtfFlag():
     user = session.get("user")
     flag = request.form.get('flag')
     ctf_id = int(request.form.get('ctf_id'))
-    if flag and ctf_id :
-        checkflag = Check()
-        result = checkflag.checkflag(user,flag,checkflag)
-        #如果result为1则正确，0为不正确
-        if result == 1:
-            adduserscore = Mysqld()
-            group_id = adduserscore.selectGroupInfoByUsername(user)
-            if group_id!=0:
-                (ctfType,score) = adduserscore.selectCtfTypeAndScoreByChallenge_id(ctf_id)
-            # print(ctfType)
-            # print(score)
-                date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-                user_id = adduserscore.selectUseridByUsername(user)
-                result = adduserscore.addUserScore(user,group_id,ctfType,ctf_id,user_id,score,date)
-            # print(result)
-                return "1"
-    return "0"
+    print(ctf_id)
+    print(flag)
+    if user:
+        if flag and ctf_id :
+            # ctf_id就是CTF靶场id
+                # 没创建一个题目都会创建一个或者多个ctf_id,静态flag只需要创建一个id即可
+            a = Mysqld()
+            result = a.checkFalg(flag, ctf_id)
+            # result = 1
+            #如果result为1则正确，0为不正确
+            print(result)
+
+            if result == 1:
+                mysql = Mysqld()
+                group_id = mysql.selectGroupInfoByUsername(user)[0]
+                print(group_id)
+                if group_id != 0:
+                    (ctfType,score) = mysql.selectCtfTypeAndScoreByChallenge_id(ctf_id)
+                    print(ctfType,score)
+                    date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+                    print(date)
+                    print(user)
+                    # mysql1 = Mysqld()
+                    user_id = mysql.selectUserIdByUserName(user)
+                    # user_id = mysql.selectUseridByUsername(user)
+                    # print(user_id)
+                    # print(user_id)
+                        # 插入到得分表中
+                    adduserscore_result = mysql.addUserScore(group_id,ctfType,ctf_id,user_id,score,date)
+                    print(adduserscore_result)
+                    if adduserscore_result==1:
+                        return "1"
+                    else:
+                        return "0"
+                else:
+                    return "0"
+            else:
+                return "0"
+        else:
+            return "0"
+    else:
+        return "0"
 
 
 
@@ -331,6 +359,8 @@ def upload_awd_contain():
         return render_template("admin/login.html")
 
 
+
+
 # CTF实例
 @app.route("/man_ctf_instance")
 def man_target_ctf():
@@ -358,14 +388,25 @@ def man_ctf_exam():
         return render_template("admin/login.html")
 
 # 创建CTF实例
+#通过ajax实现,所以返回类型一定要是字符串
 # 如果是静态flag的话，只需要创建一个实例为所有队伍使用就行
 @app.route("/create_ctf_instance",methods=['POST'])
 def create_ctf_instance():
     admin = session.get('admin')
     if admin:
-        ctf_exam_id = request.form.get('ctf_exam_id')
+        ctf_exam_id = int(request.form.get('ctf_exam_id'))
+
         mysql  = Mysqld()
-        mysql.selectctf_exam()
+        ctf_exam_info = mysql.selectctf_examByctf_exam_Id(ctf_exam_id)
+        if ctf_exam_info[6] == 0:  #[6]为flag类型为静态flag
+            result  = mysql.add_user_challenge_list(0,ctf_exam_id)
+            if result == 1:
+                return "1"
+            else:
+                print("create_ctf_instance函数插入错误!")
+                return "0"
+    else:
+        return "0"
 @app.route("/man_user")
 def man_user():
     manAdmin = Mysqld()
@@ -426,12 +467,15 @@ def page_not_found(error):
 # ===============函数====================
 
 
-
+# 没啥用测试用的
 @app.route("/test")
 def test():
     return render_template('user/test.html')
 
 
+
+
+# 创建队伍
 @app.route("/create_group",methods=['POST'])
 def create_group():
     user = session.get('user')
