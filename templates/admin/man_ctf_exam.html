@@ -10,8 +10,8 @@
         </div>
 {#            table#}
         <div class="padding">
-            <div>
-                <input  type="button" value="新增题目" id="addBtn" data-toggle="modal" οnclick="targetAddUser()" class="btn btn-success  btn-sm" data-backdrop="false">
+            <div class="btn-group">
+                <input  type="button" value="新增题目"  id="add_exam" class="btn btn-success " >
 {#                <input  type="button" value="修改用户" id="editBtn" data-toggle="modal" class="btn btn-success  btn-sm" οnclick="editUser()" data-backdrop="false">#}
 {#                <input  type="button" value="删除用户" id="deleteBtn" data-toggle="modal" class="btn btn-danger btn-sm" οnclick="deleteModel()">#}
             </div>
@@ -146,29 +146,38 @@
 
     function delete_ctf_exam(id) {
         var a = confirm("确定要删除吗?");
-        if(a==true){
-             $.ajax({
+        if (a == true) {
+            $.ajax({
                 url: "/delete_ctf_exam",
                 type: "post",
-                data: {"ctf_exam_id":id},
+                data: {"ctf_exam_id": id},
                 success: function (result) {
                     if (result == "1") {
                         alert("删除成功");
                         window.location.reload()
-                    }
-                    else{
+                    } else {
                         alert("删除题目错误！")
-                    }},
-             error:function () {
-                alert("发送请求失败");
-            }
+                    }
+                },
+                error: function () {
+                    alert("发送请求失败");
+                }
             })
-        }
-        else {
+        } else {
             alert("删除失败");
         }
 
-    }
+    };
+    $(document).ready(function(){
+        $("#add_exam").click(function (){
+            window.location.href = '/man_ctf_add_exam';
+  })
+
+});
+
+    {% if message %}
+        alert("{{ message }}");
+    {% endif %}
 </script>
 
    {% include "admin/footer.html" %}

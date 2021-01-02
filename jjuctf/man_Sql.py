@@ -290,6 +290,7 @@ class Mysqld:
 
 
         return result
+
     def selectAdminList(self):
         sql = 'select admin_id,admin_name,admin_email,admin_mobile from admin'
         self.cursor.execute(sql)
@@ -297,6 +298,23 @@ class Mysqld:
         if result:
             return result
         return 0
+
+    # 通过管理员名字查管理员id
+    def selectAdminIdByAdminName(self,name):
+        sql =  'select admin_id from admin where admin_name="%s"'%(name)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()[0]
+            if result:
+                # 返回一个整数
+                return result
+            return 0
+        except:
+            print("查找管理员id失败,请检查函数:selectAdminIdByAdminName!")
+            return 0
+
+
+
 
     def selectUserList(self):
         sql = 'select id,user_name,real_name,class_id,email,mobile from user'
@@ -430,6 +448,18 @@ class Mysqld:
             self.conn.close()
             print("删除数据表失败!")
             return 0
+    def delUserCtfInstanceById(self,id):
+        sql = 'delete from challenge_list where id=%d'%(id)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            self.conn.close()
+            return 1
+        except:
+            self.conn.rollback()
+            self.conn.close()
+            print("删除数据表失败!")
+            return 0
 
     def addUserCtfExam(self,own_id,type,name,hint,base_score,status,flag_type,base_flag,file_flag,file_path,docker_flag,docker_path,info):
         create_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
@@ -458,6 +488,7 @@ class Mysqld:
 
 
 # # ===============user-end===============
-# a = Mysqld()
+a = Mysqld()
 # b = a.addUserCtfExam(12,0,"testWEB","this hint",100,0,0,"flag{helloworld}",1,"https://www.hsm.cool",0,0,"this is test!")
+# b = a.selectAdminIdByAdminName('hsm')
 # print(b)

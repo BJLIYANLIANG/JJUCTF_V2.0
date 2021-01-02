@@ -1,14 +1,22 @@
-from flask import Flask
+from flask import Flask,url_for
 from flask import render_template
-from  flask import request
+from  flask import request,flash
 from  flask import session,redirect
 from datetime import timedelta
 from jjuctf.man_Sql import Mysqld
+from werkzeug.utils import secure_filename
+import os
 from jjuctf.Check import Check
 import time
 app = Flask(__name__)
 app.secret_key = '905008'  #session 密钥
 app.debug = True
+
+
+# 常量
+app.config['UPLOAD_FOLDER'] = 'static/'
+
+
 
 
 @app.route('/login',methods=['GET','POST'])
@@ -388,6 +396,67 @@ def man_ctf_exam():
     else:
         return render_template("admin/login.html")
 
+
+# CTF操作
+# 添加CTF题目
+# {#own_id,type,name,hint,base_score,status,flag_type,base_flag,file_flag,file_path,docker_flag,docker_path,info#}
+@app.route("/man_ctf_add_exam",methods=["POST","GET"])
+def man_ctf_add_exam():
+    admin = session.get('admin')
+    if admin:
+        if request.method == 'POST':
+            type = int(request.form.get('exam_type'))
+            name = request.form.get('exam_name')
+            hint = request.form.get('exam_hint')
+            score = int(request.form.get("base_score"))
+            # status = int(request.form.get('status'))
+            flag = request.form.get('flag')
+            flag_type = int(request.form.get('flag_type'))
+            file_path = request.files['file']
+            docker_file  = request.files['docker_file']
+            info = request.form.get('info')
+            createtime =  time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            print("000000000000000000000")
+            print(file_path.filename)
+            print(docker_file.filename)
+            if file_path.filename == '':
+                file_flag = 0
+            else:
+                file_flag = 1
+                file_path.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file_path.filename)))
+            if docker_file.filename == '':
+                docker_flag = 0
+            else:
+                docker_flag = 1
+                docker_file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(docker_file.filename)))
+
+            # print(request.method)
+            #先将文件保存到服务器然后再将文件路径上传到数据库
+            mysql = Mysqld()
+            own_id = mysql.selectAdminIdByAdminName(admin)
+            result = mysql.addUserCtfExam(own_id,type,name,hint,score,0,flag_type,flag,file_flag,file_path.filename,docker_flag,docker_file.filename,info)
+            if result == 1:
+                return redirect(url_for('man_ctf_exam',message="添加成功")) #页面跳转
+            else:
+                return render_template("admin/man_ctf_add_exam.html",message="添加失败")
+        else:
+            # print(own_id)
+            return render_template("admin/man_ctf_add_exam.html")
+    else:
+        return render_template("admin/login.html")
+
+
+# @app.route('/upload')
+# def upload_file():
+#    return render_template('user/test.html')
+# @app.route('/uploader', methods = ['GET', 'POST'])
+# def uploader():
+#    if request.method == 'POST':
+#       f = request.files['file']
+#       f.save(os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(f.filename)))
+#       return 'file uploaded success'
+
+
 # 创建CTF实例
 #通过ajax实现,所以返回类型一定要是字符串
 # 如果是静态flag的话，只需要创建一个实例为所有队伍使用就行
@@ -409,6 +478,8 @@ def create_ctf_instance():
     else:
         return "0"
 
+# ajax实现
+# 用来删除CTF题目
 @app.route('/delete_ctf_exam',methods=["POST"])
 def delete_ctf_exam():
     admin = session.get('admin')
@@ -423,6 +494,26 @@ def delete_ctf_exam():
     else:
         print("未授权访问/delete_ctf_exam！")
         return "0"
+
+# delete_ctf_instance
+# ajax实现
+# 用来删除CTF题目实例
+@app.route('/delete_ctf_instance',methods=["POST"])
+def delete_ctf_instance():
+    admin = session.get('admin')
+    if admin:
+        id = int(request.form.get('id'))
+        print(id)
+        mysql = Mysqld()
+        result = mysql.delUserCtfInstanceById(id)
+        if result == 1:
+            return "1"
+        else:
+            return "0"
+    else:
+        print("未授权访问/delete_ctf_exam！")
+        return "0"
+
 
 @app.route("/man_user")
 def man_user():
@@ -485,9 +576,26 @@ def page_not_found(error):
 
 
 # 没啥用测试用的
-@app.route("/test")
-def test():
-    return render_template('user/test.html')
+# @app.route("/test")
+# @app.route("/test",methods=["POST"])
+# def test():
+#     if request.method == 'POST':
+#         f = request.files['file']
+#         basepath = os.path.dirname(__file__)  # 当前文件所在路径
+#         upload_path = os.path.join(basepath,'static\uploads',secure_filename(f.filename))  # 注意：没有的文件夹一定要先创建，不然会提示没有该路径
+#         f.save(upload_path)
+#         return redirect(url_for('upload'))
+#     return render_template('upload.html')
+
+@app.route('/upload')
+def upload_file():
+   return render_template('user/test.html')
+@app.route('/uploader', methods = ['GET', 'POST'])
+def uploader():
+   if request.method == 'POST':
+      f = request.files['file']
+      f.save(os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(f.filename)))
+      return 'file uploaded success'
 
 
 

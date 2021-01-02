@@ -1,60 +1,11 @@
-<!doctype html>
 <html>
-
-    <head>
-        <meta charset="utf-8">
-        <title>倒计时js代码</title>
-{#        <style>#}
-{#            * {#}
-{#                margin: 0;#}
-{#                padding: 0;#}
-{#            }#}
-{##}
-{#            body {#}
-{#                font-size: 16px;#}
-{#                text-align: center;#}
-{#                font-family: arial;#}
-{#            }#}
-{##}
-{#            .time {#}
-{#                margin-top: 10px;#}
-{#                border: 1px solid red;#}
-{#                height: 30px;#}
-{#                padding: 2px;#}
-{#                line-height: 30px;#}
-{#            }#}
-{#        </style>#}
-    </head>
-
-    <body>
-        <div class="time">
-            <span id="t_d">00天</span>
-            <span id="t_h">00时</span>
-            <span id="t_m">00分</span>
-            <span id="t_s">00秒</span>
-        </div>
-        <script>
-            setInterval(function() {
-                var EndTime = new Date('2021/04/05 00:00:00');
-                var NowTime = new Date();
-                var t = EndTime.getTime() - NowTime.getTime();
-                var d = 0;
-                var h = 0;
-                var m = 0;
-                var s = 0;
-                if (t >= 0) {
-                    d = Math.floor(t / 1000 / 60 / 60 / 24);
-                    h = Math.floor(t / 1000 / 60 / 60 % 24);
-                    m = Math.floor(t / 1000 / 60 % 60);
-                    s = Math.floor(t / 1000 % 60);
-                }
-                document.getElementById("t_d").innerHTML = d + "天";
-                document.getElementById("t_h").innerHTML = h + "时";
-                document.getElementById("t_m").innerHTML = m + "分";
-                document.getElementById("t_s").innerHTML = s + "秒";
-            }, 10);
-        </script>
-
-    </body>
-
+<head>
+  <title>File Upload</title>
+</head>
+<body>
+    <form action="http://localhost:5000/uploader" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".jpg,.png" />
+        <input type="submit" />
+    </form>
+</body>
 </html>

@@ -42,9 +42,9 @@
                             <span class="lbl"></span>
                         </label>
                     </td>
-{#                        sql = ' SELECT id,own_id,type,name,hint,base_score,flag_type,base_flag,file_flag,file_path,docker_flag,docker_path,create_time,info,status FROM `ctf_exam`;'#}
+{#        sql = 'select group_id,id,ctf_exam_id,name,score,hint,type,docker_flag,docker_info,file_flag,file_path,flag,date from challenge_list'#}
 
-                    <td>{{ j[0] }}</td>
+                    <td>{{ j[1] }}</td>
                     <td>{{ j[3] }}</td>
 {#                    <td>WEB</td>#}
                     {% if j[2]==0 %}
@@ -63,11 +63,11 @@
                     <td>是</td>
                     <td>EasyPython</td>
                     <td>无</td>
-                    <td>HSM</td>
-                    <td>2020-12-14</td>
+                    <td>{{ j[1] }}</td>
+                    <td>{{ j[12] }}</td>
                     <td>
                                  <div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
-                            <button class="btn btn-xs btn-success">
+                            <button class="btn btn-xs btn-success" onclick="delete_ctf_instance({{ j[i] }})">
                                 <i class="icon-ok bigger-120">删除题目</i>
                             </button>
                             <button class="btn btn-xs btn-info">
@@ -85,5 +85,35 @@
         </div>
 
     </div>
+
+<script>
+    function delete_ctf_instance(id) {
+        var a = confirm("确定要删除吗?");
+        if (a == true) {
+            $.ajax({
+                url: "/delete_ctf_instance",
+                type: "post",
+                data: {"id": id},
+                success: function (result) {
+                    if (result == "1") {
+                        alert("删除成功");
+                        window.location.reload()
+                    } else {
+                        alert("删除题目错误！")
+                    }
+                },
+                error: function () {
+                    alert("发送请求失败");
+                }
+            })
+        } else {
+            alert("删除失败");
+        }
+
+    };
+
+
+
+</script>
 
    {% include "admin/footer.html" %}

@@ -1,2 +1,1 @@
-import time
-print ()
+from flask import Flask,request
