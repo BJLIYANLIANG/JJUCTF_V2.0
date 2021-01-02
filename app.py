@@ -1,6 +1,6 @@
 from flask import Flask,url_for
 from flask import render_template
-from  flask import request,flash
+from  flask import request
 from  flask import session,redirect
 from datetime import timedelta
 from jjuctf.man_Sql import Mysqld
