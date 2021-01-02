@@ -326,7 +326,7 @@ class Mysqld:
 
 
     def selectCtfInstanceList(self):
-        sql = 'select group_id,id,ctf_exam_id,name,score,hint,type,docker_flag,docker_info,file_flag,file_path,flag,date from challenge_list'
+        sql = 'select group_id,id,ctf_exam_id,name,score,hint,type,docker_flag,docker_info,file_flag,file_path,flag,date,flag from challenge_list'
         print(sql)
         try:
             self.cursor.execute(sql)
