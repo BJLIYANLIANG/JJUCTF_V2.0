@@ -377,6 +377,7 @@ def man_target_ctf():
     if admin:
         connectsql = Mysqld()
         ctfList  = connectsql.selectCtfInstanceList()
+        print(ctfList)
         return render_template("admin/man_ctf_instance.html", ctfList=ctfList)
     else:
         return render_template("admin/login.html")

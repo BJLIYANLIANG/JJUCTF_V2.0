@@ -23,10 +23,8 @@
                     <th>题目类型</th>
                     <th>Hint</th>
                     <th>分值</th>
-                    <th>包含靶机</th>
-                    <th>Docker路径</th>
+                    <th>Docker信息</th>
                      <th>附件</th>
-                    <th>创建者</th>
                     <th>创建时间</th>
                     <th>操作</th>
                 </tr>
@@ -47,27 +45,33 @@
                     <td>{{ j[1] }}</td>
                     <td>{{ j[3] }}</td>
 {#                    <td>WEB</td>#}
-                    {% if j[2]==0 %}
+                    {% if j[6]==0 %}
                     <td>WEB</td>
-                        {% elif j[2] == 1  %}
+                        {% elif j[6] == 1  %}
                         <td>Misc</td>
-                        {% elif j[2] == 2  %}
+                        {% elif j[6] == 2  %}
                         <td>Crypto</td>
-                        {% elif j[2] == 3  %}
+                        {% elif j[6] == 3  %}
                         <td>Reverse</td>
-                        {% elif j[2] == 4  %}
+                        {% else  %}
                         <td>Pwn</td>
                     {% endif %}
+                <td>{{ j[5] }}</td>
                     <td>{{ j[4] }}</td>
-                    <td>{{ j[5] }}</td>
-                    <td>是</td>
-                    <td>EasyPython</td>
+                    {% if j[7]==1 %}
+                        <td>{{ j[8] }}</td>
+                {% else %}
+                        <td>无</td>
+                {% endif %}
+                {% if j[9]==1 %}
+                    <td>{{ j[10] }}</td>
+                {% else %}
                     <td>无</td>
-                    <td>{{ j[1] }}</td>
+                {% endif %}
                     <td>{{ j[12] }}</td>
                     <td>
                                  <div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
-                            <button class="btn btn-xs btn-success" onclick="delete_ctf_instance({{ j[i] }})">
+                            <button class="btn btn-xs btn-success" onclick="delete_ctf_instance({{ j[1] }})">
                                 <i class="icon-ok bigger-120">删除题目</i>
                             </button>
                             <button class="btn btn-xs btn-info">
