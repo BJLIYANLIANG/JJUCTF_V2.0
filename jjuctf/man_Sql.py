@@ -66,7 +66,7 @@ class Mysqld:
             showinfo = self.cursor
             groupid = self.selectGroupidByusername(user)
             # sql = 'select a.id,a.name,a.score,a.hint,a.type,a.docker_flag,a.docker_info,a.file_flag,a.file_path,a.score,a.date,b.solved from challenge_list where group_id=%d or group_id=0' %(groupid)
-            sql = 'select a.id,a.name,a.score,a.hint,a.type,a.docker_flag,a.docker_info,a.file_flag,a.file_path,a.date,b.solved from (select * from challenge_list where group_id=%d or group_id=0) as a left join (select ctf_exam_id,count(*) as solved from user_challenge_list group by ctf_exam_id) as b on a.ctf_exam_id=b.ctf_exam_id '%(groupid)
+
             sql = 'select a.id,a.name,a.score,a.hint,a.type,a.docker_flag,a.docker_info,a.file_flag,a.file_path,a.date,b.solved,c.solved_flag from (select * from challenge_list where group_id=%d or group_id=0) as a left join (select ctf_exam_id,count(*) as solved from user_challenge_list group by ctf_exam_id) as b on a.ctf_exam_id=b.ctf_exam_id left join (select ctf_exam_id,id as solved_flag from user_challenge_list where group_id=%d) as c on a.ctf_exam_id=b.ctf_exam_id;'%(groupid,groupid)
             showinfo.execute(sql)
             # print(sql)
@@ -75,6 +75,24 @@ class Mysqld:
             print("selectChallengeListByUserName函数执行失败！")
             return 0
 
+
+
+    def selectCtfChallengeTypeNum(self,user):
+        groupid = self.selectGroupidByusername(user)
+        sql = 'select a.type,count(a.type) from (select * from challenge_list where group_id=%d or group_id=0) as a left join (select ctf_exam_id,count(*) as solved from user_challenge_list group by ctf_exam_id) as b on a.ctf_exam_id=b.ctf_exam_id '%(groupid)
+        if groupid!=0:
+            try:
+                self.cursor.execute(sql)
+                result = self.cursor.fetchall()
+                if result:
+                    return result
+                else:
+                    return 0
+            except:
+                print("查找CTF题目类型出错，赶紧去修复BUG！")
+                return 0
+        else:
+            return 0
 
 
 
@@ -397,11 +415,34 @@ class Mysqld:
                         self.conn.rollback()
                         self.conn.close()
                         return 0
-
-
-
-
         else:
+            return 0
+
+    def delUserCtfExam(self,ctf_exam_id):
+        sql = 'delete from ctf_exam where id=%d'%(ctf_exam_id)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            self.conn.close()
+            return 1
+        except:
+            self.conn.rollback()
+            self.conn.close()
+            print("删除数据表失败!")
+            return 0
+
+    def addUserCtfExam(self,own_id,type,name,hint,base_score,status,flag_type,base_flag,file_flag,file_path,docker_flag,docker_path,info):
+        create_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        sql = 'insert into ctf_exam (own_id,type,name,hint,base_score,status,flag_type,base_flag,file_flag,file_path,docker_flag,docker_path,create_time,info) values (%d,%d,"%s","%s",%d,%d,%d,"%s",%d,"%s",%d,"%s","%s","%s")'%(own_id,type,name,hint,base_score,status,flag_type,base_flag,file_flag,file_path,docker_flag,docker_path,create_time,info)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            self.conn.close()
+            return 1
+        except:
+            self.conn.rollback()
+            self.conn.close()
+            print("插入数据表失败!")
             return 0
     def selectUserScoreList(self):
 
@@ -417,6 +458,6 @@ class Mysqld:
 
 
 # # ===============user-end===============
-a = Mysqld()
-b = a.selectUserIdByUserName('hsm123')
-print(b)
+# a = Mysqld()
+# b = a.addUserCtfExam(12,0,"testWEB","this hint",100,0,0,"flag{helloworld}",1,"https://www.hsm.cool",0,0,"this is test!")
+# print(b)

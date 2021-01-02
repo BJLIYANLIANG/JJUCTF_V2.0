@@ -9,12 +9,13 @@
     <div class="row" >
         <div class="col-md-4  ">
             <div class="card">
-                <div class="card-header">队员信息</div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12">队伍名称:JJU_SEC </div>
-                        <div class="col-md-12">ID:<span>7173411</span> </div>
-                        <div class="col-md-12">学院:<span>信息学院</span></div>
+                <div class="card-header">队伍信息</div>
+                <div class="card-body" >
+                    <div class="row" style="font-size: 1.2rem">
+                        <div class="col-md-12">队伍名称: <span>{{ groupinfo[1] }}</span></div>
+                        <div class="col-md-12">队伍ID:<span>{{ groupinfo[0] }}</span> </div>
+                        <div class="col-md-12">队伍简介:<span>{{ groupinfo[3] }}</span> </div>
+                        <div class="col-md-12">队伍token:<span>{{ groupinfo[2] }}</span></div>
                     </div>
                 </div>
             </div>

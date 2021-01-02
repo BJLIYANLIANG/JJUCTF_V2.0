@@ -32,6 +32,7 @@
                 </tr>
                 </thead>
                 <tbody>
+{#                #返回类型: ((1, 13,0, ' easyPython', 'easyPython', 50, 0, 'flag{xxxxx123}', 0, None, 0, 'easyPython', datetime.datetime(2020, 12, 1, 0, 0), None,0),)#}
                 {% for j in ctfList %}
 
                 <tr>
@@ -41,22 +42,24 @@
                             <span class="lbl"></span>
                         </label>
                     </td>
+{#                        sql = ' SELECT id,own_id,type,name,hint,base_score,flag_type,base_flag,file_flag,file_path,docker_flag,docker_path,create_time,info,status FROM `ctf_exam`;'#}
+
                     <td>{{ j[0] }}</td>
-                    <td>{{ j[1] }}</td>
+                    <td>{{ j[3] }}</td>
 {#                    <td>WEB</td>#}
-                    {% if j[4]==0 %}
+                    {% if j[2]==0 %}
                     <td>WEB</td>
-                        {% elif j[4] == 1  %}
+                        {% elif j[2] == 1  %}
                         <td>Misc</td>
-                        {% elif j[4] == 2  %}
+                        {% elif j[2] == 2  %}
                         <td>Crypto</td>
-                        {% elif j[4] == 3  %}
+                        {% elif j[2] == 3  %}
                         <td>Reverse</td>
-                        {% elif j[4] == 4  %}
+                        {% elif j[2] == 4  %}
                         <td>Pwn</td>
                     {% endif %}
-                    <td>{{ j[3] }}</td>
-                    <td>{{ j[2] }}</td>
+                    <td>{{ j[4] }}</td>
+                    <td>{{ j[5] }}</td>
                     <td>是</td>
                     <td>EasyPython</td>
                     <td>无</td>

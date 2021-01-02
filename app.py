@@ -49,6 +49,7 @@ def challenge():
         print("challengeResult:",end='')
         print(challengeResult)
         challengeNum = getChallengeListByType.showChallengeNum()
+        # challengeTypeNum = getChallengeListByType.selectCtfChallengeTypeNum(user)   #用这个代替上面那个！今天不写了，难受，我写的垃圾代码。。。
         groupInfo = getChallengeListByType.selectGroupInfoByUsername(user)
         # print(groupInfo)
         userNotice = getChallengeListByType.selectUserNotice()
@@ -407,6 +408,22 @@ def create_ctf_instance():
                 return "0"
     else:
         return "0"
+
+@app.route('/delete_ctf_exam',methods=["POST"])
+def delete_ctf_exam():
+    admin = session.get('admin')
+    if admin:
+        ctf_exam_id = int(request.form.get('ctf_exam_id'))
+        mysql = Mysqld()
+        result = mysql.delUserCtfExam(ctf_exam_id)
+        if result == 1:
+            return "1"
+        else:
+            return "0"
+    else:
+        print("未授权访问/delete_ctf_exam！")
+        return "0"
+
 @app.route("/man_user")
 def man_user():
     manAdmin = Mysqld()

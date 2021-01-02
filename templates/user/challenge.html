@@ -36,11 +36,13 @@
     <div class="row">
         <div class="col-md-3">
             <div class="card" style="background-color: #104E70;color: white">
-                <div class="card-header">战队名:{{ groupInfo[1] }}</div>
+                <div class="card-header">比赛信息</div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12">战队token：<span style="color: red">{{ groupInfo[2] }}</span></div>
-                         <div class="col-md-12">队伍简介：{{ groupInfo[3] }}</div>
+                    <div class="row" style="font-size: 1.1rem">
+                        <div class="col-md-12">战队名：<span>{{ groupInfo[1] }}</span></div>
+                        <div class="col-md-12">队员名：<span>{{ username }}</span></div>
+                        <div class="col-md-12">Token：<span>{{ groupInfo[2] }}</span></div>
+                        <div class="col-md-12">队伍简介：{{ groupInfo[3] }}</div>
                         <div class="col-md-12">战队排名：110</div>
                         <div class="col-md-12">解题数量：2</div>
                         <div class="col-md-12">得分：50</div>
@@ -134,7 +136,7 @@
         <div class="col-md-2">
              <div class="list-group" >
                  <a href="#"  class="list-group-item list-group-item-action list-group-item-dark " disabled  data-toggle="pill" style="background-color: #104E70;color: white">比赛题目</a>
-                 {% for typeNum in examNum %}
+                 {% for typeNum in examNum  %}
                  <a class="list-group-item list-group-item-action" href="#{{ typeNum[0] }}" data-toggle="pill">{{ typeNum[0] }} <span class="badge badge-success">{{ typeNum[1] }}</span></a>
                  {% endfor %}
              </div>
