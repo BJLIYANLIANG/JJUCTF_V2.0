@@ -435,6 +435,20 @@ class Mysqld:
                         return 0
         else:
             return 0
+    #删除管理员用户
+    def delAdminById(self,id):
+        sql = 'DELETE FROM `admin` WHERE admin_id =%d'%(id)
+        print(sql)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            self.conn.close()
+            return 1
+        except:
+            self.conn.rollback()
+            self.conn.close()
+            print("删除管理员信息失败!")
+            return 0
 
     def delUserCtfExam(self,ctf_exam_id):
         sql = 'delete from ctf_exam where id=%d'%(ctf_exam_id)

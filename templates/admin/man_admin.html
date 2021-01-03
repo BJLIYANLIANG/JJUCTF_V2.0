@@ -59,7 +59,7 @@
                             <button class="btn btn-xs btn-info">
                                 <i class="icon-edit bigger-120">重置密码</i>
                             </button>
-                            <button class="btn btn-xs btn-danger">
+                            <button class="btn btn-xs btn-danger" onclick="delAdmin({{ i[0] }})">
                                 <i class="icon-trash bigger-120">删除账户</i>
                             </button>
                             <button class="btn btn-xs btn-warning">
@@ -80,5 +80,34 @@
              </div>
         </div>
     </div>
+<script>
+      function delAdmin(id){
+        var result = confirm("确定要删除吗？");
+        if(result==true){
+              $.ajax({
+                url: "/delete_admin",
+                type: "post",
+                data: {"admin_id":id},
+                success: function (result) {
+                    if (result == "1") {
+                        alert("删除成功");
+                        window.location.reload()
+                    }
+                    else{
+                        alert("删除管理员信息错误！")
+                    }},
+             error:function () {
 
+                alert("发送请求失败");
+            }
+
+            }
+        )
+        }
+        {#var a = document.getElementById(id).value;#}
+
+
+    };
+
+</script>
    {% include "admin/footer.html" %}

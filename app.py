@@ -326,12 +326,14 @@ def adminIndex():
 
 
 
-
+# 管理员系统设置
 @app.route("/setting_info")
 def setting_info():
     admin = session.get("admin")
+    admin_ip = request.remote_addr
+    user_agent = request.user_agent
     if admin:
-        return render_template("admin/setting_info.html")
+        return render_template("admin/setting_info.html",admin_ip=admin_ip,adminname=admin,user_agent=user_agent)
     else:
         return render_template("admin/login.html")
 # 添加管理员
@@ -581,16 +583,11 @@ def page_not_found(error):
 
 
 # 没啥用测试用的
-# @app.route("/test")
-# @app.route("/test",methods=["POST"])
-# def test():
-#     if request.method == 'POST':
-#         f = request.files['file']
-#         basepath = os.path.dirname(__file__)  # 当前文件所在路径
-#         upload_path = os.path.join(basepath,'static\uploads',secure_filename(f.filename))  # 注意：没有的文件夹一定要先创建，不然会提示没有该路径
-#         f.save(upload_path)
-#         return redirect(url_for('upload'))
-#     return render_template('upload.html')
+@app.route("/test")
+@app.route("/test",methods=["POST","GET"])
+def test():
+    return render_template("user/test.html")
+
 
 @app.route('/upload')
 def upload_file():
@@ -636,7 +633,24 @@ def create_group():
             return "0"
     else:
         return "0"
-
+# 删除管理员用户
+# Ajax实现
+@app.route("/delete_admin",methods=["POST"])
+def delete_admin():
+    admin = session.get('admin')
+    if admin:
+        if request.method=="POST":
+            admin_id = int(request.form.get('admin_id'))
+            if admin_id:
+                mysql = Mysqld()
+                result = mysql.delAdminById(admin_id)
+                if result==1:
+                    return "1"
+                else:
+                    return "0"
+            else:
+                return "0"
+    return "404"
 
 if __name__ == '__main__':
     app.run()

@@ -1,10 +1,9 @@
 {% include'user/header.html' %}
-
-
 <style>
     .modal_fix{
     top: 22%;
     }
+    {#模态框下拉高度用的#}
 </style>
 <div class="container-fluid">
     <div class="row">
@@ -20,32 +19,21 @@
                         <div class="col-md-12">战队排名：110</div>
                         <div class="col-md-12">解题数量：2</div>
                         <div class="col-md-12">得分：50</div>
-                        <br>
-                        <br>
-                        <br>
                     </div>
-
-
                 </div>
-{#                <div class="card-footer"></div>#}
             </div>
         </div>
-        <div class="col-md-6" >
-              <div class="card " style="background-color: #104E70;color: white">
+        <div class="col-md-6">
+              <div class="card " style="background-color: #104E70;color: white;">
                   <div class="card-header">比赛公告</div>
                   <div class="card-body">
                       <div class="row" >
                          <div class="col-md-12">
-                             <div style="overflow-y:auto;height: 10rem;width: 100%">
-                                 <ol>
+                             <div style="overflow-y:auto;mix-height: 10rem;max-height: 12rem; width: 100%">
+                                 <ol>{#公告栏#}
                                      {% for i in userNotic %}
                                      <li>{{ i[1] }}</li>
                                      {% endfor %}
-{#                                      <li>本届赛事期间，请大家留意裁判人员的电话（尾号2710），并积极配合，如果以任何理由拒接，无法沟通以及不配合裁判质询要求，将进行禁赛处理。比赛期间禁止以任何形式进行跨队交流，一起维护公平、清朗的竞赛环境。</li>#}
-{#                                      <li>比赛时间：2020年12月26日10：00-18：00</li>#}
-{#                                      <li>注意：请选手时刻关注比赛公告，大赛执行规则以比赛公告为准。</li>#}
-{#                                      <li>积分模式：动态积分模式（即每道题目的分值将根据解出队伍的数量动态变化），前3血没有额外奖励。</li>#}
-{#                                     <li>选手在解题过程中，如遇到需要输入token的题目，请使用本队伍的唯一token（在平台左上角处），该token为队伍的唯一标识，随便乱输视该payload为无效。请各参赛者妥善保护好本队伍token信息，输入其他队伍的token，两队同时将被视为作弊处理。</li>#}
                                  </ol>
                              </div>
                          </div>
@@ -56,44 +44,51 @@
         <div class="col-md-3">
             <div class="card" style="background-color: #104E70;color: white">
                 <div class="card-header">解题动态</div>
-                <div class="card-body">
-                    <ul class="nav ">
-                        <li class="nav-item nav-divider">宝宝战队-</li>
-                        <li class="nav-item">解出了-</li>
-                        <li class="nav-item">问卷调查-</li>
-                        <li class="nav-item">17:59</li>
-                    </ul>
-                    <ul class="nav ">
-                        <li class="nav-item nav-divider">宝宝战队-</li>
-                        <li class="nav-item">解出了-</li>
-                        <li class="nav-item">问卷调查-</li>
-                        <li class="nav-item">17:59</li>
-                    </ul>
-                    <ul class="nav ">
-                        <li class="nav-item nav-divider">宝宝战队-</li>
-                        <li class="nav-item">解出了-</li>
-                        <li class="nav-item">问卷调查-</li>
-                        <li class="nav-item">17:59</li>
-                    </ul>
-                    <ul class="nav ">
-                        <li class="nav-item nav-divider">宝宝战队-</li>
-                        <li class="nav-item">解出了-</li>
-                        <li class="nav-item">问卷调查-</li>
-                        <li class="nav-item">17:59</li>
-                    </ul>
-                    <ul class="nav ">
-                        <li class="nav-item nav-divider">宝宝战队-</li>
-                        <li class="nav-item">解出了-</li>
-                        <li class="nav-item">问卷调查-</li>
-                        <li class="nav-item">17:59</li>
-                    </ul>
-                    <ul class="nav ">
-                        <li class="nav-item nav-divider">宝宝战队-</li>
-                        <li class="nav-item">解出了-</li>
-                        <li class="nav-item">问卷调查-</li>
-                        <li class="nav-item">17:59</li>
-                    </ul>
-
+                <div class="card-body" style="max-height: 14.5rem;overflow-y:auto;">
+                    <table class="table table-borderless " style="color: white;font-size: 0.9rem">
+                        <tr>
+                            <td>JJUSEC1战队</td>
+                            <td class="text-danger">攻破了</td>
+                            <td>WEB1</td>
+                            <td>17:00</td>
+                        </tr>
+                        <tr>
+                            <td>JJUSEC1战队</td>
+                            <td class="text-danger">攻破了</td>
+                            <td>WEB1</td>
+                            <td>17:00</td>
+                        </tr>
+                        <tr>
+                            <td>Stac2战队</td>
+                            <td class="text-danger">攻破了</td>
+                            <td>WEB2</td>
+                            <td>17:30</td>
+                        </tr>
+                        <tr>
+                            <td>Stac2战队</td>
+                            <td class="text-danger">攻破了</td>
+                            <td>WEB1</td>
+                            <td>17:31</td>
+                        </tr>
+                        <tr>
+                            <td>JJUSEC战队</td>
+                            <td class="text-danger">攻破了</td>
+                            <td>WEB2</td>
+                            <td>17:50</td>
+                        </tr>
+                    </table>
+{#                    <ul class="nav ">#}
+{#                        <li class="nav-item nav-divider">JJUSEC1战队&nbsp;&nbsp;</li>#}
+{#                        <li class="nav-item text-danger" >攻破了&nbsp;&nbsp;</li>#}
+{#                        <li class="nav-item">WEB1&nbsp;&nbsp;</li>#}
+{#                        <li class="nav-item">17:00</li>#}
+{#                    </ul>#}
+{#                    <ul class="nav ">#}
+{#                        <li class="nav-item nav-divider">Stac2战队&nbsp;&nbsp;</li>#}
+{#                        <li class="nav-item text-danger" >攻破了&nbsp;&nbsp;</li>#}
+{#                        <li class="nav-item">WEB1&nbsp;&nbsp;</li>#}
+{#                        <li class="nav-item">17:59</li>#}
+{#                    </ul>#}
 
                 </div>
             </div>
@@ -108,19 +103,19 @@
     </div>
     <div class="row" style="min-height: 30rem;">
         <div class="col-md-2">
-             <div class="list-group" >
+             <div class="list-group"  >
                  <a href="#"  class="list-group-item list-group-item-action list-group-item-dark " disabled  data-toggle="pill" style="background-color: #104E70;color: white">比赛题目</a>
                  {% for typeNum in examNum  %}
-                 <a class="list-group-item list-group-item-action" href="#{{ typeNum[0] }}" data-toggle="pill">{{ typeNum[0] }} <span class="badge badge-success">{{ typeNum[1] }}</span></a>
+                 <a class="list-group-item list-group-item-action" href="#{{ typeNum[0] }}" data-toggle="pill">{{ typeNum[0] }} <span class="badge badge-success ">{{ typeNum[1] }}</span></a>
                  {% endfor %}
              </div>
         </div>
         <div class="col-md-7">
            <!-- 选项卡菜单-->
 <!-- 选项卡面板 -->
-        <div  class="tab-content">
+            <div  class="tab-content">
 {#    web#}
-        <div class="tab-pane fade in active" id="Web" >
+        <div class="tab-pane fade in active" id="Web">
             <div class="row" style="border-color: #1c2b36;border: 0.5rem">
              {% if challengeResult %}
                  {% for i in challengeResult %}
@@ -226,7 +221,7 @@
          </div>   {# 结束row #}
     </div>
 {#    misc#}
-     <div class="tab-pane fade in active" id="Misc" >
+     <div class="tab-pane fade" id="Misc" >
             <div class="row" style="border-color: #1c2b36;border: 0.5rem">
              {% if challengeResult %}
                  {% for i in challengeResult %}
@@ -333,7 +328,7 @@
     </div>
 
 
-  <div class="tab-pane fade in active" id="Crypto" >
+  <div class="tab-pane fade " id="Crypto" >
             <div class="row" style="border-color: #1c2b36;border: 0.5rem">
              {% if challengeResult %}
                  {% for i in challengeResult %}
@@ -438,7 +433,7 @@
              {#模态框#}
          </div>   {# 结束row #}
     </div>
-      <div class="tab-pane fade in active" id="Reverse" >
+      <div class="tab-pane fade" id="Reverse" >
             <div class="row" style="border-color: #1c2b36;border: 0.5rem">
              {% if challengeResult %}
                  {% for i in challengeResult %}
@@ -546,7 +541,7 @@
 
 
 
-          <div class="tab-pane fade in active" id="Pwn" >
+          <div class="tab-pane fade" id="Pwn" >
             <div class="row" style="border-color: #1c2b36;border: 0.5rem">
              {% if challengeResult %}
                  {% for i in challengeResult %}
