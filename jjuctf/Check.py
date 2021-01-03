@@ -1,4 +1,3 @@
-from jjuctf.man_Sql import Mysqld
 import re
 class Check:
     def __init__(self):
@@ -23,12 +22,12 @@ class Check:
             print("字符串长度过短！")
             return 0
 
-
+    #检测sql注入
     def checksqlSecure(self,sql):
         sql = str(sql).lower()
         pattern = r"\b(and|like|exec|insert|select|drop|grant|alter|delete|update|count|chr|mid|master|truncate|char|delclare|or)\b|(\*|;)"
         r = re.search(pattern, sql)
-        print(r)
+        # print(r)
         if r:
             print('检测到有sql注入！')
             return 0

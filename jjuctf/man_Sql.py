@@ -291,9 +291,10 @@ class Mysqld:
         return result
 
     def selectAdminList(self):
-        sql = 'select admin_id,admin_name,admin_email,admin_mobile from admin'
+        sql = 'select admin_id,admin_name,admin_email,admin_mobile,status from admin'
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
+        print(result)
         if result:
             return result
         return 0
@@ -438,7 +439,7 @@ class Mysqld:
     #删除管理员用户
     def delAdminById(self,id):
         sql = 'DELETE FROM `admin` WHERE admin_id =%d'%(id)
-        print(sql)
+        # print(sql)
         try:
             self.cursor.execute(sql)
             self.conn.commit()
@@ -448,6 +449,29 @@ class Mysqld:
             self.conn.rollback()
             self.conn.close()
             print("删除管理员信息失败!")
+            return 0
+    #禁用管理员
+    def changeAdminStatusById(self,id):
+        # status=0为禁用，已经在数据库中设置status默认为1
+        checksql = 'select status from admin where admin_id=%d'%(id)
+        self.cursor.execute(checksql)
+        status = self.cursor.fetchone()[0]
+        print()
+        print(status)
+        if status==0:
+            sql = 'update `admin` set status=1  WHERE admin_id =%d' % (id)
+        else:
+            sql = 'update `admin` set status=0  WHERE admin_id =%d' % (id)
+        print(sql)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            self.conn.close()
+            return 1
+        except:
+            self.conn.rollback()
+            self.conn.close()
+            print("禁用管理员信息失败!")
             return 0
 
     def delUserCtfExam(self,ctf_exam_id):
@@ -463,6 +487,9 @@ class Mysqld:
             self.conn.close()
             print("删除数据表失败!")
             return 0
+
+
+    #删除CTF实例
     def delUserCtfInstanceById(self,id):
         sql = 'delete from challenge_list where id=%d'%(id)
         try:
@@ -505,7 +532,9 @@ class Mysqld:
 
 
 # # ===============user-end===============
-a = Mysqld()
+# a = Mysqld()
+# b = a.changeAdminStatusById(21)
+# print(b)
 # b = a.addUserCtfExam(12,0,"testWEB","this hint",100,0,0,"flag{helloworld}",1,"https://www.hsm.cool",0,0,"this is test!")
 # b = a.selectAdminIdByAdminName('hsm')
 # print(b)

@@ -528,8 +528,9 @@ def man_user():
     userList = manAdmin.selectUserList()
     return render_template("admin/man_user.html",userList=userList)
 
-@app.route("/man_admin")
 
+
+@app.route("/man_admin",methods=["GET"])
 def man_admin():
     manAdmin = Mysqld()
     adminList = manAdmin.selectAdminList()
@@ -651,7 +652,38 @@ def delete_admin():
             else:
                 return "0"
     return "404"
-
+@app.route("/delete_admin",methods=["POST"])
+def disable_admin():
+    admin = session.get('admin')
+    if admin:
+        if request.method=="POST":
+            admin_id = int(request.form.get('admin_id'))
+            if admin_id:
+                mysql = Mysqld()
+                result = mysql.disableAdminById(admin_id)
+                if result==1:
+                    return "1"
+                else:
+                    return "0"
+            else:
+                return "0"
+    return "404"
+@app.route("/changeAdminStatus",methods=["POST"])
+def changeAdminStatus():
+    admin = session.get('admin')
+    if admin:
+        if request.method == "POST":
+            admin_id = int(request.form.get('admin_id'))
+            if admin_id:
+                mysql = Mysqld()
+                result = mysql.changeAdminStatusById(admin_id)
+                if result == 1:
+                    return "1"
+                else:
+                    return "0"
+            else:
+                return "0"
+    return "404"
 if __name__ == '__main__':
     app.run()
 
