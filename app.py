@@ -26,18 +26,18 @@ def login():
     if request.method == 'GET':
         return render_template('user/login.html')
     if request.method == 'POST':
-        
+        check = Check()
         username = request.form.get('username')
         password = request.form.get('password')
-
+        if check.checksqlSecure(username)==0 or check.checksqlSecure(password)==0:
+            return render_template("user/login.html",message="请勿攻击靶场，违者做违规处理！")
         if username == '' or password == '':  #检查用户名和密码是否为空
             return render_template("user/login.html",message="用户名或密码不能为空")
         checkuser = Mysqld()
-
         result = checkuser.checkuser(username,password) #对用户表进行操作，检查登录
         if result == 1:
             session.permanent = True  #设置session为永久的
-            app.permanent_session_lifetime = timedelta(minutes=20)  # 设置session到期时间，单位分钟
+            # app.permanent_session_lifetime = timedelta(minutes=20)  # 设置session到期时间，单位分钟
             session['user'] = request.form.get('username')
             return redirect('/')
         else:
@@ -69,6 +69,8 @@ def challenge():
 
 
 
+
+
 # index
 # ctf解题模式
 @app.route('/')
@@ -79,6 +81,10 @@ def index():
         return render_template("user/index.html",username=user,headerType="index")
     return render_template('user/index.html',headerType="index")
 
+
+
+
+
 @app.route('/ranks')
 def ranks():
     user = session.get('user')
@@ -87,10 +93,12 @@ def ranks():
         GetChallengeList = sqlcheck.showChallengeList(user)
         # GetGroupInfo  = sqlcheck.
         GetUserNum = sqlcheck.selectUserNum(user)  #查数据库将排行榜数据传到template中，目前是测试阶段，使用的是用户表
-
         return render_template("user/ranks.html",username=user,headerType="rank",ChallengeList=GetChallengeList,userNum=GetUserNum,a=1)
     else:
         return render_template("user/login.html")
+
+
+
 
 @app.route('/register',methods=['POST','GET'])
 def userRegister():
@@ -220,36 +228,29 @@ def checkCtfFlag():
     # 检查flag需要ctf_id这个参数
     user = session.get("user")
     flag = request.form.get('flag')
-    ctf_id = int(request.form.get('ctf_id'))
-    print(ctf_id)
-    print(flag)
+    challenge_id = int(request.form.get('ctf_id'))
+    # print(ctf_id)
+    # print(flag)
     if user:
-        if flag and ctf_id :
+        if flag and challenge_id :
             # ctf_id就是CTF靶场id
-                # 没创建一个题目都会创建一个或者多个ctf_id,静态flag只需要创建一个id即可
+                # 每创建一个题目都会创建一个或者多个ctf_id,静态flag只需要创建一个id即可
             a = Mysqld()
-            result = a.checkFalg(flag, ctf_id)
+            result = a.checkFalg(flag, challenge_id)
             # result = 1
             #如果result为1则正确，0为不正确
-            print(result)
-
-            if result == 1:
+            # print(result)
+            if result == 1:  #查到flag正确
                 mysql = Mysqld()
                 group_id = mysql.selectGroupInfoByUsername(user)[0]
-                print(group_id)
+                # print(group_id)
                 if group_id != 0:
-                    (ctfType,score) = mysql.selectCtfTypeAndScoreByChallenge_id(ctf_id)
-                    print(ctfType,score)
+                    (ctfType,score) = mysql.selectCtfTypeAndScoreByChallenge_id(challenge_id)
+                    # print(ctfType,score)
                     date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-                    print(date)
-                    print(user)
-                    # mysql1 = Mysqld()
                     user_id = mysql.selectUserIdByUserName(user)
-                    # user_id = mysql.selectUseridByUsername(user)
-                    # print(user_id)
-                    # print(user_id)
-                        # 插入到得分表中
-                    adduserscore_result = mysql.addUserScore(group_id,ctfType,ctf_id,user_id,score,date)
+                    # 插入到得分表中
+                    adduserscore_result = mysql.addUserScore(group_id,ctfType,challenge_id,user_id,score,date)
                     print(adduserscore_result)
                     if adduserscore_result==1:
                         return "1"
@@ -294,6 +295,7 @@ def checkAdminLogin():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
+
         if username == '' or password == '':  # 检查用户名和密码是否为空
             return render_template("admin/login.html", message="用户名或密码不能为空")
         checkuser = Mysqld()
@@ -324,6 +326,14 @@ def adminIndex():
 
 
 
+
+@app.route("/setting_info")
+def setting_info():
+    admin = session.get("admin")
+    if admin:
+        return render_template("admin/setting_info.html")
+    else:
+        return render_template("admin/login.html")
 # 添加管理员
 @app.route("/add_admin")
 @app.route("/add_admin",methods=['POST'])
@@ -348,6 +358,8 @@ def add_admin():
 
 
 
+
+
 # upload_ctf_contain
 @app.route("/upload_ctf_contain")
 def upload_ctf_contain():
@@ -356,6 +368,7 @@ def upload_ctf_contain():
         return render_template("admin/upload_ctf.html")
     else:
         return render_template("admin/login.html")
+
 
 
 
@@ -417,7 +430,7 @@ def man_ctf_add_exam():
             docker_file  = request.files['docker_file']
             info = request.form.get('info')
             createtime =  time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            print("000000000000000000000")
+            # print("000000000000000000000")
             print(file_path.filename)
             print(docker_file.filename)
             if file_path.filename == '':
@@ -447,16 +460,6 @@ def man_ctf_add_exam():
         return render_template("admin/login.html")
 
 
-# @app.route('/upload')
-# def upload_file():
-#    return render_template('user/test.html')
-# @app.route('/uploader', methods = ['GET', 'POST'])
-# def uploader():
-#    if request.method == 'POST':
-#       f = request.files['file']
-#       f.save(os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(f.filename)))
-#       return 'file uploaded success'
-
 
 # 创建CTF实例
 #通过ajax实现,所以返回类型一定要是字符串
@@ -470,8 +473,9 @@ def create_ctf_instance():
         mysql  = Mysqld()
         ctf_exam_info = mysql.selectctf_examByctf_exam_Id(ctf_exam_id)
         if ctf_exam_info[6] == 0:  #[6]为flag类型为静态flag
-            result  = mysql.add_user_challenge_list(0,ctf_exam_id)
+            result = mysql.add_user_challenge_list(0,ctf_exam_id)
             if result == 1:
+
                 return "1"
             else:
                 print("create_ctf_instance函数插入错误!")
@@ -597,8 +601,6 @@ def uploader():
       f = request.files['file']
       f.save(os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(f.filename)))
       return 'file uploaded success'
-
-
 
 
 # 创建队伍

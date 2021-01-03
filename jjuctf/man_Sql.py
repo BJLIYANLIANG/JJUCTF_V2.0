@@ -66,10 +66,9 @@ class Mysqld:
             showinfo = self.cursor
             groupid = self.selectGroupidByusername(user)
             # sql = 'select a.id,a.name,a.score,a.hint,a.type,a.docker_flag,a.docker_info,a.file_flag,a.file_path,a.score,a.date,b.solved from challenge_list where group_id=%d or group_id=0' %(groupid)
-
             sql = 'select a.id,a.name,a.score,a.hint,a.type,a.docker_flag,a.docker_info,a.file_flag,a.file_path,a.date,b.solved,c.solved_flag from (select * from challenge_list where group_id=%d or group_id=0) as a left join (select ctf_exam_id,count(*) as solved from user_challenge_list group by ctf_exam_id) as b on a.ctf_exam_id=b.ctf_exam_id left join (select ctf_exam_id,id as solved_flag from user_challenge_list where group_id=%d) as c on a.ctf_exam_id=b.ctf_exam_id;'%(groupid,groupid)
             showinfo.execute(sql)
-            # print(sql)
+            print(sql)
             return showinfo.fetchall()
         except:
             print("selectChallengeListByUserName函数执行失败！")
@@ -327,7 +326,7 @@ class Mysqld:
 
     def selectCtfInstanceList(self):
         sql = 'select group_id,id,ctf_exam_id,name,score,hint,type,docker_flag,docker_info,file_flag,file_path,flag,date,flag from challenge_list'
-        print(sql)
+        # print(sql)
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchall()
@@ -338,7 +337,7 @@ class Mysqld:
 
     def checkFalg(self,flag,challenge_id):
         sql = 'select * from challenge_list where flag="%s" and id=%d'%(flag,challenge_id)
-        print(sql)
+        # print(sql)
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchall()
@@ -351,12 +350,14 @@ class Mysqld:
 
     #增加用户得分
     # user_challenge_list
-    def addUserScore(self, group_id, ctfType, ctf_id, user_id, score, date):
-
-        sql = 'select ctf_exam_id from challenge_list where id=%d'%(ctf_id)
-        ctf_exam_id = self.cursor.execute(sql)
-        print(ctf_exam_id)
-        sql = 'insert into user_challenge_list (group_id,type,challenge_id,user_id,score,date,ctf_exam_id)values(%d,%d,%d,%d,%d,"%s",%d)'%(group_id,ctfType,ctf_id,user_id,score,date,ctf_exam_id)
+    def addUserScore(self, group_id, ctfType, challenge_id, user_id, score, date):
+        #首先获取题目的CTF_id
+        sql = 'select ctf_exam_id from challenge_list where id=%d'%(challenge_id)
+        self.cursor.execute(sql)
+        query_ctf_exam_id = self.cursor.fetchone()
+        if query_ctf_exam_id[0]==None:
+            return 0
+        sql = 'insert into user_challenge_list (group_id,type,challenge_id,user_id,score,date,ctf_exam_id)values(%d,%d,%d,%d,%d,"%s",%d)'%(group_id,ctfType,challenge_id,user_id,score,date,query_ctf_exam_id[0])
         print(sql)
         try:
             self.cursor.execute(sql)
@@ -374,9 +375,6 @@ class Mysqld:
         sql = ''
         #答题成功后添加到这个表中
 
-        #如果开放了一个实例，那么产生动态flag
-    def openChallenge(self,challenge_id):
-        pass
 
     def selectctf_exam(self):
         sql = ' SELECT id,own_id,type,name,hint,base_score,flag_type,base_flag,file_flag,file_path,docker_flag,docker_path,create_time,info,status FROM `ctf_exam`;'
@@ -422,9 +420,11 @@ class Mysqld:
                     datetime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
                     info = ctf_exam_info[13]
                     sql = 'insert into challenge_list (group_id,ctf_exam_id,name,score,hint,type,docker_flag,file_flag,file_path,flag,date) values (%d,%d,"%s",%d,"%s",%d,%d,%d,"%s","%s","%s")'%(group_id,ctf_exam_id,name,score,hint,type,0,file_flag,file_info,flag,datetime)
+                    sql2 = 'update ctf_exam set status=1 where id=%d;'%(ctf_exam_id)
                     try:
                         print(sql)
                         self.cursor.execute(sql)
+                        self.cursor.execute(sql2)
                         self.conn.commit()
                         self.conn.close()
                         return 1
@@ -438,6 +438,7 @@ class Mysqld:
 
     def delUserCtfExam(self,ctf_exam_id):
         sql = 'delete from ctf_exam where id=%d'%(ctf_exam_id)
+        # sql2 =  'select id from challenge_list where id=%d'%(ctf_exam_id)# 首先
         try:
             self.cursor.execute(sql)
             self.conn.commit()
@@ -474,6 +475,8 @@ class Mysqld:
             self.conn.close()
             print("插入数据表失败!")
             return 0
+
+
     def selectUserScoreList(self):
 
         pass

@@ -1,1 +1,2 @@
-from flask import Flask,request
+from jjuctf.Check import Check
+# print(Check.checksqlSecure("sesafse"))
