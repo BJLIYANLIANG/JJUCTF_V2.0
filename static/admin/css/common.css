@@ -73,7 +73,7 @@ xmp {
 .wrapper {
   position: relative;
   /*overflow: hidden;*/
-  padding-top: 51px;
+  padding-top: 0rem;
   height: 100%;
   /*padding-bottom: 45px;*/
   background-color: #17232c;
@@ -340,7 +340,7 @@ pre,
 /** ============== 基于Bootstrap中的样式组件定义 ============== **/
 /** ============== 网站公共样式定义 ============== **/
 .padding {
-  padding: 15px; }
+  padding:.25rem 0.75rem; }
 
 /* 分割线 */
 .separator-10 {
@@ -425,7 +425,7 @@ pre,
 .box {
   background-color: white;
   /*border: 1px solid #ddd;*/
-  margin-bottom: 20px;
+  margin-bottom: .75rem;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
   -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
   -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);

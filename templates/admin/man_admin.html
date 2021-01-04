@@ -11,10 +11,12 @@
         </div>
 
         <div class="padding">
-
+{#            <div class="table-responsive">#}
+{#                #}
+{#            </div>#}
             <table id="sample-table-1" class="table table-striped table-bordered table-hover">
                 <thead>
-                <tr>
+                <tr >
                     <th class="center">
                         <label>
                             <input type="checkbox" class="ace" />
@@ -23,17 +25,14 @@
                     </th>
                     <th>管理员ID</th>
                     <th>管理员用户名</th>
-                    <th class="hidden-480">邮箱</th>
-                    <th>
-                        <i class="icon-time bigger-110 hidden-480"></i>
-                        电话号码
+                    <th>邮箱</th>
+                    <th>电话号码
                     </th>
-                    <th class="hidden-480">状态</th>
+                    <th>状态</th>
                     <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-
                 {% for i in adminList %}
                 <tr>
                     <td class="center">
@@ -46,13 +45,13 @@
                         <a href="#">{{ i[0] }}</a>
                     </td>
                     <td>{{ i[1] }}</td>
-                    <td class="hidden-480">{{ i[2] }}</td>
+                    <td>{{ i[2] }}</td>
                     <td>{{ i[3] }}</td>
-                    <td class="hidden-480">
-                        <span class="label label-sm label-success">{% if i[4]==0 %}禁用{% else %}正常{% endif %}</span>
+                    <td>
+                        <span>{% if i[4]==0 %}禁用{% else %}正常{% endif %}</span>
                     </td>
                     <td>
-                     <div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
+                     <div class="btn-group">
                             <button class="btn btn-xs btn-success">
                                 <i class="icon-ok bigger-120">修改信息</i>
                             </button>

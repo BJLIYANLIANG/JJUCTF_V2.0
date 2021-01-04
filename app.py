@@ -684,6 +684,23 @@ def changeAdminStatus():
             else:
                 return "0"
     return "404"
+@app.route("/man_ctf_exam_info")
+def man_ctf_exam_info():
+    admin = session.get("admin")
+    if admin:
+        return render_template("admin/man_ctf_exam_info.html")
+    else:
+        return render_template("admin/login.html")
+
+# 管理用户
+@app.route("/man_group")
+def man_group():
+    admin = session.get("admin")
+    if admin:
+        return render_template("admin/man_group.html")
+    else:
+        return render_template("admin/login.html")
+
 if __name__ == '__main__':
     app.run()
 

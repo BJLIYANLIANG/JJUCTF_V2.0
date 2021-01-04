@@ -1,0 +1,91 @@
+{% include "admin/header.html" %}
+
+    <div class="main-container">
+        <div class="padding">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="admin">首页</a>
+                <a class="breadcrumb-item" href="#">用户管理</a>
+                <span class="breadcrumb-item active">队伍管理</span>
+            </nav>
+        </div>
+        <div class="padding">
+            <div class="box">
+                <div class="heading">
+                    <h3 class="title">队伍列表</h3>
+                </div>
+                <div class="box-inner">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th><input type="checkbox" class="all-cb"></th>
+                                <th>公告标题</th>
+                                <th>发布日期</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><input type="checkbox" class="child-cb"></td>
+                                <td>Mark</td>
+                                <td>2016-12-14 14:13</td>
+                                <td><span class="label label-info">已读</span></td>
+                                <td>
+                                    <a href="inbox-detail.html">查看</a>
+                                    <a href="#" data-url="这里放一个删除链接" class="link-show-confirm">删除</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="child-cb"></td>
+                                <td>Mark</td>
+                                <td>2016-12-14 14:13</td>
+                                <td><span class="label label-info">已读</span></td>
+                                <td>
+                                    <a href="inbox-detail.html">查看</a>
+                                    <a href="#" data-url="这里放一个删除链接" class="link-show-confirm">删除</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="child-cb"></td>
+                                <td>Mark</td>
+                                <td>2016-12-14 14:13</td>
+                                <td><span class="label label-info">已读</span></td>
+                                <td>
+                                    <a href="inbox-detail.html">查看</a>
+                                    <a href="#" data-url="这里放一个删除链接" class="link-show-confirm">删除</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" class="child-cb"></td>
+                                <td>Mark</td>
+                                <td>2016-12-14 14:13</td>
+                                <td><span class="label label-info">已读</span></td>
+                                <td>
+                                    <a href="inbox-detail.html">查看</a>
+                                    <a href="#" data-url="这里放一个删除链接" class="link-show-confirm">删除</a>
+                                </td>
+                            </tr>
+                    </tbody>
+                </table>
+                    </div>
+                    <div class="row">
+                            <div class="col-md-offset-4 col-md-4"></div>
+                            <div class="col-md-6">
+                                <ul class="pagination">
+                                    <li class="page-item active"><a class="page-link" href="#">Previous</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="padding">
+
+        </div>
+    </div>
+        {% include "admin/footer.html" %}
