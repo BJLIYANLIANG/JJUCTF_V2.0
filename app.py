@@ -668,6 +668,7 @@ def disable_admin():
             else:
                 return "0"
     return "404"
+# 获取用户管理员状态
 @app.route("/changeAdminStatus",methods=["POST"])
 def changeAdminStatus():
     admin = session.get('admin')
@@ -688,7 +689,11 @@ def changeAdminStatus():
 def man_ctf_exam_info():
     admin = session.get("admin")
     if admin:
-        return render_template("admin/man_ctf_exam_info.html")
+        mysql = Mysqld()
+        userNum = len(mysql.selectUserList())
+        groupNum = len(mysql.selectUserGroupList())
+        user_Challenge_List_Num = len(mysql.select_user_challenge_list())
+        return render_template("admin/man_ctf_exam_info.html",userNum=userNum,groupNum=groupNum,user_Challenge_List_Num=user_Challenge_List_Num)
     else:
         return render_template("admin/login.html")
 
@@ -697,10 +702,20 @@ def man_ctf_exam_info():
 def man_group():
     admin = session.get("admin")
     if admin:
-        return render_template("admin/man_group.html")
+        mysql = Mysqld()
+        groupList = mysql.selectUserGroupList()
+        return render_template("admin/man_group.html",groupList=groupList)
     else:
         return render_template("admin/login.html")
-
+@app.route("/competition")
+def competition():
+    admin = session.get("admin")
+    if admin:
+        mysql = Mysqld()
+        result = mysql.selectCompetition_Info()[0]
+        return render_template("admin/competition_info.html",competitionInfo=result)
+    else:
+        return render_template("admin/login.html")
 if __name__ == '__main__':
     app.run()
 

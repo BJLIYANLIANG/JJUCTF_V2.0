@@ -1,0 +1,25 @@
+{% include "admin/header.html" %}
+<div class="main-container">
+        <div class="padding">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="admin">首页</a>
+                <a class="breadcrumb-item" href="#">用户管理</a>
+                <span class="breadcrumb-item active">队伍管理</span>
+            </nav>
+        </div>
+        <div class="padding">
+            <div class="box">
+                <div class="heading">
+                    <h3 class="title">比赛信息</h3>
+                </div>
+                <div class="box-inner">
+                    <p>比赛名称:&nbsp;<span class="text-info">{{ competitionInfo[1] }}</span></p>
+                    <p>介绍&nbsp;&nbsp;:&nbsp;<span class="text-info">{{ competitionInfo[2] }}</span></p>
+                    <p>开始时间:&nbsp;<span class="text-info">{{ competitionInfo[3] }}</span></p>
+                    <p>结束时间:&nbsp;<span class="text-info">{{ competitionInfo[4] }}</span></p>
+                </div>
+            </div>
+        </div>
+</div>
+
+{% include "admin/footer.html" %}

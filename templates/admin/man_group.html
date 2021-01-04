@@ -19,69 +19,43 @@
                             <thead>
                             <tr>
                                 <th><input type="checkbox" class="all-cb"></th>
-                                <th>公告标题</th>
-                                <th>发布日期</th>
-                                <th>状态</th>
+                                <th>队伍id</th>
+                                <th>队伍名</th>
+                                <th>简介</th>
+                                <th>创建时间</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
+                            {% for i in groupList %}
                             <tr>
                                 <td><input type="checkbox" class="child-cb"></td>
-                                <td>Mark</td>
-                                <td>2016-12-14 14:13</td>
-                                <td><span class="label label-info">已读</span></td>
+                                <td>{{ i[0] }}</td>
+                                <td>{{ i[1] }}</td>
+                                <td><span class="label label-info">{{ i[2] }}</span></td>
+                                <td>{{ i[3] }}</td>
                                 <td>
                                     <a href="inbox-detail.html">查看</a>
                                     <a href="#" data-url="这里放一个删除链接" class="link-show-confirm">删除</a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td><input type="checkbox" class="child-cb"></td>
-                                <td>Mark</td>
-                                <td>2016-12-14 14:13</td>
-                                <td><span class="label label-info">已读</span></td>
-                                <td>
-                                    <a href="inbox-detail.html">查看</a>
-                                    <a href="#" data-url="这里放一个删除链接" class="link-show-confirm">删除</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" class="child-cb"></td>
-                                <td>Mark</td>
-                                <td>2016-12-14 14:13</td>
-                                <td><span class="label label-info">已读</span></td>
-                                <td>
-                                    <a href="inbox-detail.html">查看</a>
-                                    <a href="#" data-url="这里放一个删除链接" class="link-show-confirm">删除</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><input type="checkbox" class="child-cb"></td>
-                                <td>Mark</td>
-                                <td>2016-12-14 14:13</td>
-                                <td><span class="label label-info">已读</span></td>
-                                <td>
-                                    <a href="inbox-detail.html">查看</a>
-                                    <a href="#" data-url="这里放一个删除链接" class="link-show-confirm">删除</a>
-                                </td>
-                            </tr>
-                    </tbody>
-                </table>
+                            {% endfor %}
+                            </tbody>
+                        </table>
                     </div>
-                    <div class="row">
-                            <div class="col-md-offset-4 col-md-4"></div>
-                            <div class="col-md-6">
-                                <ul class="pagination">
-                                    <li class="page-item active"><a class="page-link" href="#">Previous</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                </div>
+{#                    <div class="row">#}
+{#                        <div class="col-md-offset-4 col-md-4"></div>#}
+{#                            <div class="col-md-6">#}
+{#                                <ul class="pagination">#}
+{#                                    <li class="page-item active"><a class="page-link" href="#">Previous</a></li>#}
+{#                                    <li class="page-item"><a class="page-link" href="#">1</a></li>#}
+{#                                    <li class="page-item"><a class="page-link" href="#">2</a></li>#}
+{#                                    <li class="page-item"><a class="page-link" href="#">3</a></li>#}
+{#                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>#}
+{#                                </ul>#}
+{#                            </div>#}
+{#                    </div>#}
+                </div><!--box inner-->
             </div>
         </div>
         <div class="padding">

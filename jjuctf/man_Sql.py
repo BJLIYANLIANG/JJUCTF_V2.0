@@ -174,7 +174,6 @@ class Mysqld:
             self.conn.commit()
             # self.conn.close()
             return 1
-
         except:
             self.conn.rollback()
             # self.conn.close()
@@ -400,9 +399,14 @@ class Mysqld:
         # (1, 13, 0, ' easyPython', 'easyPython', 50, 0, 'flag{xxxxx123}', 0, None, 1, 'easyPython',datetime.datetime(2020, 12, 1, 0, 0), None, 0)
         except:
             return 0
-
-
-
+    def select_user_challenge_list(self):
+        sql = 'select * from user_challenge_list'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+        except:
+            return 0
     def add_user_challenge_list(self,group_id,ctf_exam_id):
         #如果group_id==0表示这个是静态flag，并且只要创建一个就行
         if group_id==0:
@@ -435,6 +439,18 @@ class Mysqld:
                         self.conn.close()
                         return 0
         else:
+            return 0
+    #情况CTf成绩表内容
+    def delEntireUser_Challenge_list(self):
+        sql = 'TRUNCATE table `jjuctf`.`user_challenge_list`'
+        try:
+            self.cursor.execute(sql)
+            self.cursor.fetchall()
+            self.conn.commit()
+            return 1
+        except:
+            self.conn.rollback()
+            self.conn.close()
             return 0
     #删除管理员用户
     def delAdminById(self,id):
@@ -517,10 +533,24 @@ class Mysqld:
             print("插入数据表失败!")
             return 0
 
+    def selectUserGroupList(self):
+        sql = 'select group_id,name,info,create_time from user_group'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+        except:
+            return 0
+    def selectCompetition_Info(self):
+        sql = 'select status,name,info,start_date,end_date from competition'
+        print(sql)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+        except:
+            return 0
 
-    def selectUserScoreList(self):
-
-        pass
 # ===============后台-end===============
 
 # 间可以使用‘+’，‘*’,即允许元组进行组合连接和重复复制，运算后生成一个新的元组。
@@ -532,9 +562,9 @@ class Mysqld:
 
 
 # # ===============user-end===============
-# a = Mysqld()
-# b = a.changeAdminStatusById(21)
-# print(b)
+a = Mysqld()
+b = a.selectCompetition_Info()
+print(b)
 # b = a.addUserCtfExam(12,0,"testWEB","this hint",100,0,0,"flag{helloworld}",1,"https://www.hsm.cool",0,0,"this is test!")
 # b = a.selectAdminIdByAdminName('hsm')
 # print(b)
