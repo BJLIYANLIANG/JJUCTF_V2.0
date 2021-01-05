@@ -59,12 +59,15 @@ def challenge():
         challengeNum = getChallengeListByType.showChallengeNum()
         # challengeTypeNum = getChallengeListByType.selectCtfChallengeTypeNum(user)   #用这个代替上面那个！今天不写了，难受，我写的垃圾代码。。。
         groupInfo = getChallengeListByType.selectGroupInfoByUsername(user)
-        # print(groupInfo)
+        # 0表示为开始或者未结束并且即将开始的比赛，只能有一个
+        competition_info = getChallengeListByType.selectCompetition_InfoByStatus(0)[0]
+        #转换为js需要的格式
+        end_time = str(competition_info[4]).replace('-','/')
         userNotice = getChallengeListByType.selectUserNotice()
         # print(userNotice)
         # 0为web 以此类推
         return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult,
-                               examNum=challengeNum,groupInfo=groupInfo,userNotic=userNotice)
+                               examNum=challengeNum,groupInfo=groupInfo,userNotic=userNotice,competition_info=competition_info,end_time=end_time)
     return render_template('user/login.html')
 
 
@@ -77,8 +80,11 @@ def challenge():
 @app.route('/index')
 def index():
     user = session.get('user')
+    mysql = Mysqld()
+    #比赛信息
+    competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
     if user :  #如果登录成功
-        return render_template("user/index.html",username=user,headerType="index")
+        return render_template("user/index.html",username=user,headerType="index",competition_info=competition_info)
     return render_template('user/index.html',headerType="index")
 
 
@@ -147,7 +153,10 @@ def logout():
 def awd():
     user = session.get('user')
     if user:
-        return render_template("user/awd.html",username=user,headerType="awd")
+        mysql = Mysqld()
+        # 比赛信息
+        competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
+        return render_template("user/awd.html",username=user,headerType="awd",competition_info=competition_info)
     else:
         return render_template("user/login.html")
 
@@ -160,11 +169,12 @@ def user():
         username = request.args.get('user')
         mysql = Mysqld()
         userinfo = mysql.selectUserInfo(user)
+        competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
         # print(userinfo)
         usergroupinfo = mysql.selectGroupInfoByUsername(user)
         # print(usergroupinfo)
         # print(usergroup)
-        return render_template("user/user.html",username=username,headerType=username,userinfo=userinfo,usergroupinfo=usergroupinfo)
+        return render_template("user/user.html",username=username,headerType=username,userinfo=userinfo,usergroupinfo=usergroupinfo,competition_info=competition_info)
     else:
         return render_template("user/login.html")
 
@@ -174,43 +184,36 @@ def user():
 def groupSetting():
     user = session.get('user')
     if user:
+        #获得用户名
         username = request.args.get('user')
         mysql = Mysqld()
+        # 得到用户信息
         userinfo = mysql.selectUserInfo(user)
-        groupinfo = mysql.selectGroupInfoByUsername(user)
-        print(user)
-        print(groupinfo)
-        #
-        if groupinfo:
-            groupList = mysql.selectUserGroupList(groupinfo[0])
-            print(groupList)
-        # print(userinfo)
-            return render_template("user/group.html",username=username,headerType="userSetting",userinfo=userinfo,groupinfo=groupinfo,groupList=groupList)
+        # 得到用户队伍的id，如果没有则为0
+        group_id = mysql.selectGroupidByusername(user)
+        # print(groupinfo)
+        #得到比赛信息
+        competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
+        # 如果存在比赛id
+        if group_id!=0:
+            groupinfo = mysql.selectGroupInfoByUsername(user)
+            #队伍成员信息
+            userGroupList = mysql.selectUserGroupListByGroupId(group_id)
+            #解题信息
+            userScoreList = mysql.selectUserScoreListByGroupId(group_id)
+            # print(userGroupList)
+            # print(userScoreList)
+            # (('hsm', 1),)
+            # (('web1', 0, 'hsm', 100, datetime.datetime(2021, 1, 5, 11, 5, 43)),)
+            # print(userinfo)
+            return render_template("user/group.html",username=username,headerType="userSetting",userinfo=userinfo,group_id=group_id,groupinfo=groupinfo,userGroupList=userGroupList,competition_info=competition_info,userScoreList=userScoreList)
         else:
-            return render_template("user/group.html",username=username,headerType="userSetting",userinfo=userinfo,groupinfo=groupinfo)
+            return render_template("user/group.html",username=username,headerType="userSetting",userinfo=userinfo,group_id=group_id)
 
     else:
         return render_template("user/login.html")
 
 
-
-
-@app.route('/practice')
-def practice():
-    user = session.get('user')
-    if user:
-        return render_template("user/pratices.html",username=user,headerType="practice")
-    else:
-        return render_template("user/login.html")
-
-@app.route('/exams')
-def exams():
-    user = session.get('user')
-    if user:
-        return render_template("user/exam.html",username=user,headerType="exam")
-    else:
-
-        return render_template("user/login.html")
 
 
 @app.route("/settings")

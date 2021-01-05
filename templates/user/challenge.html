@@ -659,8 +659,9 @@
                              <span id="t_s">00秒</span></button>
 
         <script>
+
             setInterval(function() {
-                var EndTime = new Date('2020/12/29 17:00:00');
+                var EndTime = new Date('{{ end_time }}');
                 var NowTime = new Date();
                 var t = EndTime.getTime() - NowTime.getTime();
                 var d = 0;

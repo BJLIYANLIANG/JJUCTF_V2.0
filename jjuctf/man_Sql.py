@@ -190,12 +190,14 @@ class Mysqld:
         except:
             return 0
 
-    def selectUserGroupList(self,group_id):
+    def selectUserGroupListByGroupId(self,group_id):
         sql = 'select a.user_name,b.role from user as a inner join (select * from user_group_list where group_id=%d) as b on a.id=b.user_id;'%(group_id)
+        # print(sql)
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchall()
             return result
+        # (('hsm', 1),)
         except:
             return 0
 # ========================group end========================
@@ -368,12 +370,21 @@ class Mysqld:
             self.conn.rollback()
             return 0
 
+    def selectUserScoreListByGroupId(self,group_id):
+        sql = 'select c.name,a.type,b.user_name,a.score,a.date from user_challenge_list as a left join user as b on a.user_id=b.id left join ctf_exam as c on c.id=a.ctf_exam_id where a.group_id=%d'%(group_id)
+        try:
+            self.cursor.execute(sql)
+            userScoreList = self.cursor.fetchall()
+            return userScoreList
 
-        #user_score_list表
-    def addUserScoreList(self,uid,gid,challenge_id,score):
-        date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        sql = ''
-        #答题成功后添加到这个表中
+        except:
+            self.conn.rollback()
+            return 0
+    #user_score_list表
+    # def addUserScoreList(self,uid,gid,challenge_id,score):
+    #     date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    #     sql = ''
+    #     #答题成功后添加到这个表中
 
 
     def selectctf_exam(self):
@@ -533,17 +544,19 @@ class Mysqld:
             print("插入数据表失败!")
             return 0
 
-    def selectUserGroupList(self):
-        sql = 'select group_id,name,info,create_time from user_group'
-        try:
-            self.cursor.execute(sql)
-            result = self.cursor.fetchall()
-            return result
-        except:
-            return 0
-    def selectCompetition_Info(self):
-        sql = 'select status,name,info,start_date,end_date from competition'
-        print(sql)
+    # def selectUserGroupList(self):
+    #     sql = 'select group_id,name,info,create_time from user_group'
+    #     try:
+    #         self.cursor.execute(sql)
+    #         result = self.cursor.fetchall()
+    #         return result
+    #     except:
+    #         return 0
+
+    #当status为0时表示比赛没结束或者未开始
+    def selectCompetition_InfoByStatus(self,statusNum):
+        sql = 'select status,name,info,start_date,end_date from competition where status=%d'%(statusNum)
+        # print(sql)
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchall()
@@ -560,11 +573,20 @@ class Mysqld:
 # ===============user-start===============
 
 
+# 完整内容
+# id
+# group_id
+# ctf_exam_id
+# type
+# challenge_id
+# user_id
+# score
+# date
 
 # # ===============user-end===============
-a = Mysqld()
-b = a.selectCompetition_Info()
-print(b)
+# a = Mysqld()
+# b = a.selectUserScoreListByGroupId(45)
+# print(b)
 # b = a.addUserCtfExam(12,0,"testWEB","this hint",100,0,0,"flag{helloworld}",1,"https://www.hsm.cool",0,0,"this is test!")
 # b = a.selectAdminIdByAdminName('hsm')
 # print(b)

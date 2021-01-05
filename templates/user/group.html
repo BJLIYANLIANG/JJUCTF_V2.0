@@ -1,6 +1,6 @@
 {% include 'user/header.html' %}
 <div class="container-fluid">
-    {% if groupinfo !=0 %}
+    {% if group_id !=0 %}
         <div class="row">
         <div class="col-md-12 text-right" style="height: 40px">
             <a href="#">退出队伍</a>
@@ -21,83 +21,52 @@
             </div>
         </div>
         <div class="col-md-8">
-             <div class="card">
-                <div class="card-header">队员信息</div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12">　
-                            <table class="table table-center "  >
+            <div class="box">
+                <div class="box-inner">
+                    <table class="table table-center "  >
                             <thead>
                                 <tr class="table-primary">
                                 <th>队员名称</th>
                                 <th>职位</th>
                             </tr>
-                                {% for i in groupList %}
+                                {% for i in userGroupList %}
                             <tr class="table-info">
                                 <td>{{ i[0] }}</td>
                                 {% if i[1]==0 %}
                                 <td>队员</td>
-
-                            {% else %}
-                                <td>队长</td>
-                            {% endif %}
-                            </tr>
-                            {% endfor %}
+                                {% else %}
+                                <td>队长</td>{% endif %}
+                            </tr>{% endfor %}
                         </thead>
                         </table>
                 </div>
-                </div>
-        </div>
-        </div>
+            </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12"><h3>详细信息</h3> </div>
+        <div class="col-md-12"><h3>得分信息</h3> </div>
     </div>
     <div class="row">
         <div class="col-md-12">
             <table class="table table-center">
         <thead>
+{#             # (('web1', 0, 'hsm', 100, datetime.datetime(2021, 1, 5, 11, 5, 43)),)#}
             <tr class="table-primary">
                 <th >题目名称</th>
                 <th>题目类型</th>
                 <th>题目分值</th>
                 <th>解题人</th>
-                <th>是否一血</th>
-                <th>得分队伍数</th>
+                <th>答对时间</th>
             </tr>
+            {% for i in userScoreList %}
             <tr class="table-success">
-                <td>babymaze1</td>
-                <td>Misc</td>
-                <td>68</td>
-                <td>U6173934</td>
-                <td>否</td>
-                <td>130</td>
+                <td>{{ i[0] }}</td>
+                {% if i[1]==0 %}<td>Web</td>{% elif i[1]==1 %}<td>Misc</td>{% elif i[1]==2 %}<td>Crypto</td>{% elif i[1]==3 %}<td>Reverse</td>{% else %}<td>Pwn</td>{% endif %}
+                <td>{{ i[3] }}</td>
+                <td>{{ i[2] }}</td>
+                <td>{{ i[4] }}</td>
             </tr>
-         <tr class="table-success">
-                <td>hello_php</td>
-                <td>Misc</td>
-                <td>68</td>
-                <td>U6173934</td>
-                <td>否</td>
-                <td>130</td>
-            </tr>
-         <tr class="table-success">
-                <td>babymaze1</td>
-                <td>Misc</td>
-                <td>68</td>
-                <td>U6173934</td>
-                <td>否</td>
-                <td>130</td>
-            </tr>
-         <tr class="table-success">
-                <td>ezcms</td>
-                <td>Web</td>
-                <td>68</td>
-                <td>U6173934</td>
-                <td>否</td>
-                <td>130</td>
-            </tr>
+        {% endfor %}
         </thead>
         </table>
         </div>
@@ -105,11 +74,6 @@
 
     </div>
         {% else %}
-{#         <div class="row">#}
-{#        <div class="col-md-12 text-right" style="height: 40px">#}
-{#            <a href="#">加入队伍</a>#}
-{#        </div>#}
-{#        </div>#}
         <div class="row">
         <div class="col-md-12 jumbotron-fluid">
             <p class="text-center">您还未加入队伍！请选择创建队伍或者加入队伍</p>
@@ -122,7 +86,6 @@
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#search_group">
             加入队伍
             </button>
-
 <!-- 模态框 -->
 <div class="modal fade" id="creat_group">
     <div class="modal-dialog">
@@ -148,7 +111,7 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="creat_group()">创建</button>
                     </div>
                 </div>
-
+            </div>
             </div>
         </div>
     </div>
