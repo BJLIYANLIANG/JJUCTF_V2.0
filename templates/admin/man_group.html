@@ -35,31 +35,41 @@
                                 <td><span class="label label-info">{{ i[2] }}</span></td>
                                 <td>{{ i[3] }}</td>
                                 <td>
-                                    <a href="inbox-detail.html">查看</a>
-                                    <a href="#" data-url="这里放一个删除链接" class="link-show-confirm">删除</a>
+                                    <a href="/manGroupInfo?gid={{ i[0] }}">查看</a>
+                                    <a href="#" onclick="delUserGroup({{ i[0] }})" class="link-show-confirm">删除</a>
                                 </td>
                             </tr>
                             {% endfor %}
                             </tbody>
                         </table>
                     </div>
-{#                    <div class="row">#}
-{#                        <div class="col-md-offset-4 col-md-4"></div>#}
-{#                            <div class="col-md-6">#}
-{#                                <ul class="pagination">#}
-{#                                    <li class="page-item active"><a class="page-link" href="#">Previous</a></li>#}
-{#                                    <li class="page-item"><a class="page-link" href="#">1</a></li>#}
-{#                                    <li class="page-item"><a class="page-link" href="#">2</a></li>#}
-{#                                    <li class="page-item"><a class="page-link" href="#">3</a></li>#}
-{#                                    <li class="page-item"><a class="page-link" href="#">Next</a></li>#}
-{#                                </ul>#}
-{#                            </div>#}
-{#                    </div>#}
                 </div><!--box inner-->
             </div>
         </div>
-        <div class="padding">
+       <script>
+           function delUserGroup(id){
+               var result = confirm("确定删除这个队伍?");
+               if(result==true){
+                   $.ajax({
+                       url: "/delUserGroup",
+                       type: "post",
+                       data: {"id":id},
+                       success: function (result) {
+                           if (result == "1") {
+                               alert("删除成功");
+                               window.location.reload()
+                           }
+                           else{
+                               alert("删除失败！请检查该队伍是否已经添加过成员")
+                           }
+                           },
+                       error:function () {
+                           alert("发送请求失败");
+                       }
+                   })
+               };
 
-        </div>
+    };
+       </script>
     </div>
         {% include "admin/footer.html" %}

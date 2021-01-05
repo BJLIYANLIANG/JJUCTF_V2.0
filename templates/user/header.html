@@ -40,7 +40,7 @@
         <a class="nav-link" href="/challenges">CTF答题</a>
       </li>{% endif %}
         <li class="nav-item">
-        <a href="/challenges"><title class="navbar-brand" href="/" STYLE="color: #005cbf ">{{ competition_info[1] }}</title></a>
+        <a href="/challenges"><title class="navbar-brand" href="/" STYLE="color: #005cbf ">{% if competition_info %}{{ competition_info[1] }}{% endif %}</title></a>
       </li>{% if headerType == 'awd' %}
             <li class="nav-item active">
         <a class="nav-link" href="/awd">AWD攻防<span class="sr-only">(current)</span></a>

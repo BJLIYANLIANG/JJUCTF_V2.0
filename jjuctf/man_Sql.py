@@ -146,22 +146,24 @@ class Mysqld:
     def addGroup(self,name,info):
         key = Config().tokenKey
         token = hashlib.md5((name+key).encode('utf-8')).hexdigest()
+        # print(token)
+        checkGroupregister = self.selectGroupInfoByGroupName(name)
+        # print(type(checkGroupregister))
+        if checkGroupregister is None:
+            date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            sql = 'insert into user_group (name,info,token,create_time) values ("%s","%s","%s","%s")' % (name,info,token,date)
+            print(sql)
+            try:
 
-        a = self.selectGrouInfoByGroupName(name)
-
-        if a:
-            return 0
-        sql = 'insert into user_group (name,info,token) values ("%s","%s","%s")' % (name,info,token)
-
-        try:
-
-            self.cursor.execute(sql)
-            self.conn.commit()
-            # self.conn.close()
-            return 1
-        except:
-            self.conn.rollback()
-            # self.conn.close()
+                self.cursor.execute(sql)
+                self.conn.commit()
+                # self.conn.close()
+                return 1
+            except:
+                self.conn.rollback()
+                # self.conn.close()
+                return 0
+        else:
             return 0
 
 
@@ -180,12 +182,12 @@ class Mysqld:
             return 0
 
 
-    def selectGrouInfoByGroupName(self,groupname):
+    def selectGroupInfoByGroupName(self,groupname):
         sql = 'select group_id,name,token,info from user_group where name="%s";'%(groupname)
+        print(sql)
         try:
-
             self.cursor.execute(sql)
-            result = self.cursor.fetchall()[0]
+            result = self.cursor.fetchone()
             return result
         except:
             return 0
@@ -269,27 +271,53 @@ class Mysqld:
 
 
 
-    #ctf公告
+    #====================ctf公告=====================
     def selectUserNotice(self):
         sql = 'select id,info,date from user_notice'
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
         return result
 
+    def addUserNotice(self,uid,info):
+        if len(info)<5:
+            return 0
+        date =  time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        sql = 'insert into user_notice (uid,info,date) values (%d,"%s","%s")'%(uid,info,date)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            # self.conn.close()
+            return 1
+        except:
+            self.conn.rollback()
+            # self.conn.close()
+            return 0
+    def delUserNotice(self,id):
+        sql = 'DELETE FROM `user_notice` WHERE id=%d' % (id)
+        # print(sql)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            # self.conn.close()
+            return 1
+        except:
+            self.conn.rollback()
+            # self.conn.close()
+            print("删除公告失败!")
+            return 0
+#================================================================================
 # ===============后台-start===============
     def addAdmin(self,name,email,mobile,passwd):
         sql = 'insert into admin (admin_name,admin_email,admin_mobile,admin_password) values("%s","%s","%s",md5("%s"))'%(name,email,mobile,passwd)
         try:
             self.cursor.execute(sql)
             self.conn.commit()
+            # self.conn.close()
+            return 1
         except:
             self.conn.rollback()
-        self.conn.close()
-
-        result = self.cursor.fetchall()
-
-
-        return result
+            # self.conn.close()
+            return 0
 
     def selectAdminList(self):
         sql = 'select admin_id,admin_name,admin_email,admin_mobile,status from admin'
@@ -442,12 +470,12 @@ class Mysqld:
                         self.cursor.execute(sql)
                         self.cursor.execute(sql2)
                         self.conn.commit()
-                        self.conn.close()
+                        # self.conn.close()
                         return 1
                     except:
                         print("add_user_challenge_list(self,group_id,ctf_exam_id)函数执行错误！")
                         self.conn.rollback()
-                        self.conn.close()
+                        # self.conn.close()
                         return 0
         else:
             return 0
@@ -461,7 +489,7 @@ class Mysqld:
             return 1
         except:
             self.conn.rollback()
-            self.conn.close()
+            # self.conn.close()
             return 0
     #删除管理员用户
     def delAdminById(self,id):
@@ -470,11 +498,11 @@ class Mysqld:
         try:
             self.cursor.execute(sql)
             self.conn.commit()
-            self.conn.close()
+            # self.conn.close()
             return 1
         except:
             self.conn.rollback()
-            self.conn.close()
+            # self.conn.close()
             print("删除管理员信息失败!")
             return 0
     #禁用管理员
@@ -493,11 +521,11 @@ class Mysqld:
         try:
             self.cursor.execute(sql)
             self.conn.commit()
-            self.conn.close()
+            # self.conn.close()
             return 1
         except:
             self.conn.rollback()
-            self.conn.close()
+            # self.conn.close()
             print("禁用管理员信息失败!")
             return 0
 
@@ -507,11 +535,11 @@ class Mysqld:
         try:
             self.cursor.execute(sql)
             self.conn.commit()
-            self.conn.close()
+            # self.conn.close()
             return 1
         except:
             self.conn.rollback()
-            self.conn.close()
+            # self.conn.close()
             print("删除数据表失败!")
             return 0
 
@@ -522,11 +550,11 @@ class Mysqld:
         try:
             self.cursor.execute(sql)
             self.conn.commit()
-            self.conn.close()
+            # self.conn.close()
             return 1
         except:
             self.conn.rollback()
-            self.conn.close()
+            # self.conn.close()
             print("删除数据表失败!")
             return 0
 
@@ -536,23 +564,35 @@ class Mysqld:
         try:
             self.cursor.execute(sql)
             self.conn.commit()
-            self.conn.close()
+            # self.conn.close()
             return 1
         except:
             self.conn.rollback()
-            self.conn.close()
+            # self.conn.close()
             print("插入数据表失败!")
             return 0
 
-    # def selectUserGroupList(self):
-    #     sql = 'select group_id,name,info,create_time from user_group'
-    #     try:
-    #         self.cursor.execute(sql)
-    #         result = self.cursor.fetchall()
-    #         return result
-    #     except:
-    #         return 0
-
+    def selectUserGroupList(self):
+        sql = 'select group_id,name,info,create_time from user_group'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+        except:
+            return 0
+    def delGroupByGroup_Id(self,group_id):
+        sql = 'delete from user_group where group_id=%d' % (group_id)
+        print(sql)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            # self.conn.close()
+            return 1
+        except:
+            self.conn.rollback()
+            # self.conn.close()
+            print("删除队伍失败!")
+            return 0
     #当status为0时表示比赛没结束或者未开始
     def selectCompetition_InfoByStatus(self,statusNum):
         sql = 'select status,name,info,start_date,end_date from competition where status=%d'%(statusNum)
@@ -565,15 +605,15 @@ class Mysqld:
             return 0
     def selectCompetitionInfoList(self):
         sql = 'select status,name,info,start_date,end_date from competition'
-        # print(sql)
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchall()
             return result
         except:
             return 0
-    def changeCompetitionInfo(self,name,info,start_date,end_date):
-        sql = 'change table '
+    # def changeCompetitionInfo(self,name,info,start_date,end_date):
+    #     sql = 'change table '
+
 
 # ===============后台-end===============
 
@@ -596,6 +636,10 @@ class Mysqld:
 
 # # ===============user-end===============
 # a = Mysqld()
+# c = a.delGroupByGroup_Id(46)
+# print(c)
+# b = a.addUserNotice(1,"hwllo world")
+# print(b)
 # b = a.selectUserScoreListByGroupId(45)
 # print(b)
 # b = a.addUserCtfExam(12,0,"testWEB","this hint",100,0,0,"flag{helloworld}",1,"https://www.hsm.cool",0,0,"this is test!")

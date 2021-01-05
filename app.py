@@ -290,6 +290,23 @@ def admin_notice():
         return render_template("admin/admin_notice.html",userNotice=userNotice)
     return render_template('admin/login.html')
 
+# ajax实现
+@app.route("/delUserNotice",methods=["POST"])
+def delUserNotice():
+    if session.get('admin'):
+        if request.method=='POST':
+            id = int(request.form.get('id'))
+            if id!=0:
+                mysql = Mysqld()
+                result = mysql.delUserNotice(id)
+                if result==1:
+                    return "1"
+                else:
+                    return "0"
+            else:
+                return "0"
+    return "0"
+
 
 # 检查admin登录情况
 @app.route("/checkAdminLogin",methods=["POST"])
@@ -620,7 +637,7 @@ def create_group():
         if userId:
             addgroup = mysql.addGroup(groupName, groupInfo)
             if addgroup == 1:
-                groupinfo = mysql.selectGrouInfoByGroupName(groupName)
+                groupinfo = mysql.selectGroupInfoByGroupName(groupName)
                 print(groupinfo)
                 group_id = groupinfo[0]
                 print(group_id)
@@ -699,6 +716,7 @@ def man_ctf_exam_info():
         mysql = Mysqld()
         userNum = len(mysql.selectUserList())
         groupNum = len(mysql.selectUserGroupList())
+        # groupNum = len(mysql.selectUserGroupListByGroupId())
         user_Challenge_List_Num = len(mysql.select_user_challenge_list())
         return render_template("admin/man_ctf_exam_info.html",userNum=userNum,groupNum=groupNum,user_Challenge_List_Num=user_Challenge_List_Num)
     else:
@@ -714,15 +732,61 @@ def man_group():
         return render_template("admin/man_group.html",groupList=groupList)
     else:
         return render_template("admin/login.html")
+
+#删除队伍
+#ajax
+@app.route("/delUserGroup",methods=["POST"])
+def delUserGroup():
+    if session.get("admin"):
+        if request.method=="POST":
+            id = int(request.form.get('id'))
+            mysql = Mysqld()
+            result = mysql.delGroupByGroup_Id(id)
+            if result==1:
+                return "1"
+            else:
+                return "0"
+        return "0"
+    else:
+        return "0"
+
+@app.route("/manGroupInfo")
+def manGroupInfo():
+    if session.get("admin"):
+        return render_template("admin/man_group_about_user.html")
+    else:
+        return render_template("admin/login.html")
+
+
 @app.route("/competition")
 def competition():
     admin = session.get("admin")
     if admin:
         mysql = Mysqld()
         result = mysql.selectCompetitionInfoList()[0]
+        print(result)
         return render_template("admin/competition_info.html",competitionInfo=result)
     else:
         return render_template("admin/login.html")
+# form表单实现
+@app.route("/addUserNotice",methods=["POST"])
+def addUserNotice():
+    admin = session.get('admin')
+    if admin:
+        mysql = Mysqld()
+        admin_id = mysql.selectAdminIdByAdminName(admin)
+        info  = request.form.get('info')
+        result = mysql.addUserNotice(admin_id,info)
+        if result==1:
+            return redirect(url_for('admin_notice',message="添加成功"))
+            # return render_template("admin/.html",message="添加公告成功")
+        else:
+            return redirect(url_for('admin_notice', message="添加失败"))
+            # return render_template("admin/admin_notice.html",message="添加失败!")
+    else:
+        return render_template("admin/login.html")
+        # admin_id =
+
 if __name__ == '__main__':
     app.run()
 

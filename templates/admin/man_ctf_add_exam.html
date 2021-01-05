@@ -8,37 +8,6 @@
                 <a class="breadcrumb-item" href="/man_ctf_exam">题目</a>
                 <span class="breadcrumb-item active">新增题目</span>
             </nav>
-{#            <div class="form-group">#}
-{#                <label for="exampleInputEmail1">题目类型</label>#}
-{#                <div class="btn-group dropdown" id="dropdown">#}
-{#                    <select class="form-group form-control">#}
-{#                        <option>WEB</option>#}
-{#                        <option>MISC</option>#}
-{#                        <option>Reverse</option>#}
-{#                        <option>Pwn</option>#}
-{#                        <option>Crypto</option>#}
-{#                    </select>#}
-{#                </div>#}
-{#            </div>#}
-
-            <form role="form" action="/man_ctf_add_exam" enctype="multipart/form-data" method="post">
-                  <div class="form-group">
-                    <label>题目类型：</label>
-                    <label class="radio-inline"><input type="radio" name="exam_type" value="0">Web </label>
-                    <label class="radio-inline"><input type="radio" name="exam_type" value="1" checked>Misc </label>
-                    <label class="radio-inline"><input type="radio" name="exam_type" value="2" >Crypto </label>
-                    <label class="radio-inline"><input type="radio" name="exam_type" value="3">Reverse </label>
-                    <label class="radio-inline"><input type="radio" name="exam_type" value="4">Pwn</label>
-                </div>
-				<div class="form-group">
-					 <label for="input1" class="inline">题目名称：</label><input id="input1" name="exam_name" type="text" class="form-control "/>
-				</div>
-                <div class="form-group">
-					 <label for="input2">题目提示</label><input type="text" name="exam_hint" id="input2" class="form-control" />
-				</div>
-{#                <div class="form-group">#}
-{#					 <label for="input">URL链接</label><input type="text" placeholder="" class="form-control"  />#}
-{#				</div>#}
            	    <div class="form-group">
 					 <label for="">题目分值</label><input type="text" name="base_score" class="form-control" />
                 </div>

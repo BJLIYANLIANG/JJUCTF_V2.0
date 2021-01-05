@@ -10,28 +10,26 @@
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-group">
+                                <form method="post" action="/addUserNotice">
+                                    <div class="form-group">
                                     <label for="">公告:</label>
                                     <textarea class="form-control" name="info" rows="4" id=""></textarea>
                                 </div>
+                                <div class="btn-group">
+                                <button type="submit"  class="btn btn-info">发布</button>
+                                </div>
+                                </form>
                             </div>
-                            <div class="col-md-12">
-                            <div class="ml-auto ">
-                                <button  class="btn btn-info">发布</button>
-                            </div>
-                            </div>
+
+
                         </div>
 
-
-
-
                     </div>
-{#                    <div class="modal-footer">#}
-{#                        <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>#}
-{#                    </div>#}
                 </div>
             </div>
     </div><!--modal-->
+
+
     <div class="main-container">
         <div class="padding">
               <nav class="breadcrumb">
@@ -59,7 +57,7 @@
                     <h3 class="title">通知信息</h3>
                 </div>
                 <div class="box-inner">
-                    <table id="sample-table-1" class="table table-striped table-bordered table-hover">
+                    <table class="table table-striped">
                 <thead>
                 <tr>
                     <th class="center">
@@ -78,26 +76,19 @@
                 {% for i in userNotice %}
 
                 <tr>
-                    <td class="center">
+                    <td class="center" style="width: 3%">
                         <label>
                             <input type="checkbox" class="ace" />
                             <span class="lbl"></span>
                         </label>
                     </td>
 
-                    <td>{{ i[0] }}</td>
-                    <td>{{ i[1] }}</td>
-                    <td>{{ i[2] }}</td>
-                    <td>
-                                 <div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
-                            <button class="btn btn-xs btn-success">
-                                <i class="icon-ok bigger-120">删除</i>
-                            </button>
-                            <button class="btn btn-xs btn-info">
-                                <i class="icon-edit bigger-120">修改</i>
-                            </button>
-                        </div>
-
+                    <td style="width: 5%">{{ i[0] }}</td>
+                    <td  style="width: 70%">{{ i[1] }}</td>
+                    <td style="font-size: .75rem;width: 9%">{{ i[2] }}</td>
+                    <td style="width: 13%">
+                        <button class="btn btn-info">修改</button>
+                        <button class="btn btn-danger" onclick="delUserNotice({{ i[0] }})">删除</button>
                     </td>
                 </tr>
 {% endfor %}
@@ -107,6 +98,35 @@
                 </div>
             </div>
         </div>
-    </div>
+        <script>
+            {#delUserNotice#}
+            function delUserNotice(id){
+                var result = confirm("确定删除？");
+                if(result==true){
+                    $.ajax({
+                        url: "/delUserNotice",
+                        type: "post",
+                        data: {"id":id},
+                        success: function (result) {
+                            if (result == "1") {
+                                alert("修改成功");
+                                window.location.reload()
+                                }
+                            else{
+                                alert("删除管理员信息错误！")
+                                }
+                            },
+                        error:function () {
+                            alert("发送请求失败");
+                        }
+
+            }
+        )
+        }
+        {#var a = document.getElementById(id).value;#}
+
+
+    };
+        </script>
 
    {% include "admin/footer.html" %}
