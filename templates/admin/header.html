@@ -21,7 +21,9 @@
       if(b[0]=='message'){
           var c = b[1];
           alert(decodeURI(c));
-      }
+          //防止意外弹框
+          window.location.href=window.location.pathname;
+      };
     });
     </script>
 </head>
@@ -61,11 +63,11 @@
                     <a href="/competition" ><i class="fa fa-info-circle" aria-hidden="true"></i>比赛信息</a>
                 </li>
                 <li class="menu-item">
-                    <a href="/setting_info" ><i class="fa fa-server" aria-hidden="true"></i>系统配置</a>
+                    <a href="/setting_info" ><i class="fa fa-server" aria-hidden="true"></i>系统信息</a>
                 </li>
                 <li class="separator-20"></li>
     <li class="menu-item">
-    <a href="javascript:void(0)"><i class="fa fa-cube" aria-hidden="true"></i>用户管理</a>
+    <a href="javascript:void(0)"><i class="fa fa-cube" aria-hidden="true" id="man_user"></i>用户管理</a>
     <ul class="sub-menu-list">
         <li class="sub-menu-item"><a href="man_user">参赛选手</a></li>
         <li class="sub-menu-item"><a href="/man_group">队伍管理</a></li>

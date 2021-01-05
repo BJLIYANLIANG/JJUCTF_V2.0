@@ -15,7 +15,6 @@ class Mysqld:
     def adduser(self,user_name,password,email):
         sql = 'insert into user (role,password,email,user_name) values ("%d",md5("%s"),"%s","%s")'%(0,password,email,user_name)
         # print(sql)
-        #当role为1时表示管理员，0为普通用户，status后面再说
         try:
             self.cursor.execute(sql)
             self.conn.commit()
@@ -226,6 +225,14 @@ class Mysqld:
         except:
             return 0
 
+    def selectUserInfoById(self,id):
+        sql = 'select user_name,user_id,real_name,role,status,email,mobile,class_id,user_photo,password from user where id=%d'%(id)
+        showinfo = self.cursor
+        try:
+            showinfo.execute(sql)
+            return showinfo.fetchone()
+        except:
+            return 0
 
 
     # 查看所有靶机
@@ -277,6 +284,16 @@ class Mysqld:
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
         return result
+    #查看单条公告
+    def selectUserNoticeByid(self,id):
+        sql = 'select id,info,date from user_notice where id=%d'%(id)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            return result
+        except:
+            return 0
+
 
     def addUserNotice(self,uid,info):
         if len(info)<5:
@@ -293,6 +310,7 @@ class Mysqld:
             # self.conn.close()
             return 0
     def delUserNotice(self,id):
+
         sql = 'DELETE FROM `user_notice` WHERE id=%d' % (id)
         # print(sql)
         try:
@@ -582,7 +600,7 @@ class Mysqld:
             return 0
     def delGroupByGroup_Id(self,group_id):
         sql = 'delete from user_group where group_id=%d' % (group_id)
-        print(sql)
+        # print(sql)
         try:
             self.cursor.execute(sql)
             self.conn.commit()
@@ -611,8 +629,45 @@ class Mysqld:
             return result
         except:
             return 0
-    # def changeCompetitionInfo(self,name,info,start_date,end_date):
-    #     sql = 'change table '
+
+    def changeCompetitionInfo(self,name,info,start_date,end_date):
+        date = '2021-01-04 15:12:02'
+        date2= '2020-12-30 20:24:00'
+        sql = 'update competition set name="%s",info="%s",start_date="%s",end_date="%s" where status=0'%(name,info,start_date,end_date)
+        print(sql)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            return 1
+        except:
+            self.conn.rollback()
+            print("删除队伍失败!")
+            return 0
+    def delUserByUserId(self,id):
+        sql = 'DELETE FROM `user` WHERE id=%d' % (id)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            # self.conn.close()
+            return 1
+        except:
+            self.conn.rollback()
+            # self.conn.close()
+            print("删除公告失败!")
+            return 0
+            return 0
+    def changeUserinfo(self,user_name,real_name,email,mobile,class_name,id):
+        sql = 'update user set user_name="%s",real_name="%s",email="%s",mobile="%s",class_id="%s" where id=%d'%(user_name,real_name,email,mobile,class_name,id)
+        print(sql)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            # self.conn.close()
+            return 1
+        except:
+            self.conn.rollback()
+            # self.conn.close()
+            return 0
 
 
 # ===============后台-end===============
@@ -635,13 +690,4 @@ class Mysqld:
 # date
 
 # # ===============user-end===============
-# a = Mysqld()
-# c = a.delGroupByGroup_Id(46)
-# print(c)
-# b = a.addUserNotice(1,"hwllo world")
-# print(b)
-# b = a.selectUserScoreListByGroupId(45)
-# print(b)
-# b = a.addUserCtfExam(12,0,"testWEB","this hint",100,0,0,"flag{helloworld}",1,"https://www.hsm.cool",0,0,"this is test!")
-# b = a.selectAdminIdByAdminName('hsm')
-# print(b)
+

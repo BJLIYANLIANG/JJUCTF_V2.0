@@ -87,7 +87,7 @@
                     <td  style="width: 70%">{{ i[1] }}</td>
                     <td style="font-size: .75rem;width: 9%">{{ i[2] }}</td>
                     <td style="width: 13%">
-                        <button class="btn btn-info">修改</button>
+                        <a href="/admin_notice_change?id={{ i[0] }}"><button class="btn btn-info">修改</button></a>
                         <button class="btn btn-danger" onclick="delUserNotice({{ i[0] }})">删除</button>
                     </td>
                 </tr>

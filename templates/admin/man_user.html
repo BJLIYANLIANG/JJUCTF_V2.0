@@ -1,4 +1,43 @@
 {% include "admin/header.html" %}
+    <div class="modal fade" id="add_user">
+            <div class="modal-dialog">
+                <div class="modal-content">
+      <!-- 模态框头部 -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">添加用户</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form method="post" action="/man_addUser">
+                                    <div class="form-group">
+                                        <label for="usr">用户名:</label>
+                                        <input type="text" name="user_name" class="form-control" id="usr">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="usr">邮箱:</label>
+                                        <input type="text" name="email" class="form-control" id="usr">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="usr">密码:</label>
+                                        <input type="password" name="passwd1" class="form-control" id="usr">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="usr">确认密码:</label>
+                                        <input type="password" name="passwd2" class="form-control" id="usr">
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-info" id="usr">添加用户</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div><!--modal-->
+
 
     <div class="main-container">
         <div class="padding">
@@ -8,7 +47,18 @@
                 <span class="breadcrumb-item active">选手</span>
             </nav>
         </div>
-
+        <div class="padding">
+            <div class="box">
+                <div class="heading">
+                    <h3 class="title">用户管理</h3>
+                </div>
+                <div class="box-inner">
+                     <div class="btn-group">
+                         <button  type="button" data-toggle="modal" data-target="#add_user" class="btn btn-success">添加用户</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="padding">
               <div class="row">
                   <div class="col-md-12 col-sm-12 col-lg-12 col-xl-12">
@@ -50,13 +100,11 @@
                         <span class="label label-sm label-success">正常</span>
                     </td>
                     <td style="width: 32%">
-                            <button class="btn btn-xs btn-success">
-                                修改信息
-                            </button>
+                        <a href="/man_user_change?id={{ i[0] }}"><button class="btn btn-xs btn-success">修改信息</button></a>
                             <button class="btn btn-xs btn-info">
                                 重置密码
                             </button>
-                            <button class="btn btn-xs btn-danger">
+                            <button onclick="delUser({{ i[0] }})" class=" btn btn-xs btn-danger">
                               删除账户
                             </button>
                             <button class="btn btn-xs btn-warning">
@@ -72,6 +120,29 @@
                   </div>
               </div>
         </div>
+    <script>
+        function delUser(id){
+        var result = confirm("确定要修改状态？");
+            if(result==true){
+                $.ajax({
+                    url: "/delUser",
+                    type: "post",
+                    data: {"id":id},
+                    success: function (result) {
+                        if (result == "1") {
+                            alert("删除成功！");
+                            window.location.reload()
+                        }
+                        else{
+                            alert("删除信息错误！")
+                        }},
+                    error:function () {
+                        alert("发送请求失败");
+                    }
+                })
+            }
+        };
+    </script>
 
     </div>
 

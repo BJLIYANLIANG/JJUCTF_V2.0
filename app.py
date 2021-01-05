@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 import os
 from jjuctf.Check import Check
 import time
+import datetime
 app = Flask(__name__)
 app.secret_key = '905008'  #session 密钥
 app.debug = True
@@ -407,8 +408,6 @@ def upload_awd_contain():
         return render_template("admin/login.html")
 
 
-
-
 # CTF实例
 @app.route("/man_ctf_instance")
 def man_target_ctf():
@@ -548,19 +547,31 @@ def delete_ctf_instance():
 
 @app.route("/man_user")
 def man_user():
-    manAdmin = Mysqld()
-    userList = manAdmin.selectUserList()
-    return render_template("admin/man_user.html",userList=userList)
+    admin = session.get('admin')
+    if admin:
+        #消除意外弹框
+        #启用之后，message参数将没用了
+        # if request.args.get('message'):
+        #     return redirect(url_for('man_user'))
+        manAdmin = Mysqld()
+        userList = manAdmin.selectUserList()
+        return render_template("admin/man_user.html",userList=userList)
+    else:
+        return render_template("admin/login.html")
 
 
 
 @app.route("/man_admin",methods=["GET"])
 def man_admin():
-    manAdmin = Mysqld()
-    adminList = manAdmin.selectAdminList()
-    if adminList:
-        return render_template("admin/man_admin.html",adminList=adminList)
-    return "404"
+    admin = session.get('admin')
+    if admin:
+        manAdmin = Mysqld()
+        adminList = manAdmin.selectAdminList()
+        if adminList:
+            return render_template("admin/man_admin.html",adminList=adminList)
+        return "404"
+    else:
+        return render_template('admin/login.html')
 
 #管理员登录退出
 @app.route("/adminLogout")
@@ -786,6 +797,109 @@ def addUserNotice():
     else:
         return render_template("admin/login.html")
         # admin_id =
+
+@app.route("/changeCompetitionInfo",methods=["POST"])
+def changeCompetitionInfo():
+    admin = session.get("admin")
+    if admin:
+        if request.method=="POST":
+            name = request.form.get('name')
+            info = request.form.get('info')
+            start_date = str(request.form.get('start_date')).replace('T',' ')+":00"
+            end_date  = str(request.form.get('end_date')).replace('T',' ')+":00"
+            start_time = datetime.datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S")
+            end_time = datetime.datetime.strptime(end_date,"%Y-%m-%d %H:%M:%S")
+            mysql = Mysqld()
+            result = mysql.changeCompetitionInfo(name,info,start_time,end_time)
+            if result==1:
+                return redirect(url_for('competition',message="修改成功！"))
+            else:
+                return redirect(url_for('competition',message="修改失败！"))
+
+    else:
+        return render_template("admin/login.html")
+@app.route("/delUser",methods=["POST","GET"])
+def delUser():
+    admin = session.get("admin")
+    if admin:
+        if request.method == "POST":
+            id = int(request.form.get('id'))
+            mysql = Mysqld()
+            result = mysql.delUserByUserId(id)
+            if result==1:
+                return "1"
+            else:
+                return "0"
+        else:
+            return "0"
+    return "0"
+
+
+
+@app.route("/admin_notice_change")
+def admin_notice_change():
+    admin = session.get('admin')
+    if admin:
+        id = int(request.args.get('id'))
+        mysql = Mysqld()
+        notice = mysql.selectUserNoticeByid(id)
+        return render_template('admin/admin_notice_change.html',notice=notice)
+
+    else:
+        return render_template('admin/login.html')
+@app.route("/man_user_change")
+def man_user_change():
+    admin = session.get('admin')
+    if admin:
+        id = int(request.args.get('id'))
+        mysql = Mysqld()
+        # userinfo = mysql.
+        userinfo = mysql.selectUserInfoById(id)
+        print(userinfo)
+        # notice = '123'
+        return render_template('admin/man_user_change.html',userinfo=userinfo)
+    else:
+        return render_template('admin/login.html')
+
+@app.route('/man_user_change_save',methods=["POST"])
+def man_user_change_save():
+    admin = session.get('admin')
+    if admin:
+
+        name = request.form.get('user_name')
+        real_name = request.form.get('real_name')
+        class_id = request.form.get('cid')
+        email = request.form.get('email')
+        mobile = request.form.get('mobile')
+        # print(name,real_name,sid,email,mobile)
+        mysql = Mysqld()
+        id = mysql.selectUserIdByUserName(name)
+        result = mysql.changeUserinfo(name,real_name,email,mobile,class_id,id)
+        if result==1:
+            return redirect(url_for('man_user',message="修改成功！"))
+        else:
+            return redirect(url_for('man_user',message="修改失败"))
+    else:
+        return redirect(url_for('man_user',message="修改失败"))
+@app.route("/man_addUser",methods=["POST"])
+def man_addUser():
+    admin = session.get('admin')
+    if admin:
+        if request.method=="POST":
+            name = request.form.get('user_name')
+            email = request.form.get('email')
+            passwd1 = request.form.get('passwd1')
+            passwd2 = request.form.get('passwd2')
+            if passwd1!=passwd2:
+                return redirect(url_for('man_user', message="两次输入密码不相同!"))
+            mysql = Mysqld()
+            result = mysql.adduser(name,passwd1,email)
+            if result==1:
+                return redirect(url_for('man_user',message="添加成功！"))
+            else:
+               return redirect(url_for('man_user',message="添加失败！"))
+    else:
+        return render_template("admin/login.html")
 
 if __name__ == '__main__':
     app.run()
