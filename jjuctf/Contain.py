@@ -20,8 +20,6 @@ class Contain:
     def stopContain(self):
         pass
 
-
-
 #
 b = Contain()
 b.startContain("EasyPython")
