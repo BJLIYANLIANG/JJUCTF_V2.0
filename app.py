@@ -51,6 +51,7 @@ def login():
 def challenge():
     user = session.get('user')
     if user :  #如果登录成功
+        check = Check()
         getChallengeListByType = Mysqld()
         #获取CTf实例列表
         challengeResult = getChallengeListByType.selectChallengeListByUserName(user)
@@ -62,12 +63,15 @@ def challenge():
         # 0表示为开始或者未结束并且即将开始的比赛，只能有一个
         competition_info = getChallengeListByType.selectCompetition_InfoByStatus(0)[0]
         #转换为js需要的格式
+        startDateTime = str(competition_info[3])
+        endDateTime = str(competition_info[4])
         end_time = str(competition_info[4]).replace('-','/')
+        # 比赛状态码 如果比赛正在进行，则结果为1,否则为0
+        competition_StatusCode = check.checkCompetition_start(startDateTime,endDateTime)
         userNotice = getChallengeListByType.selectUserNotice()
         # print(userNotice)
         # 0为web 以此类推
-        return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult,
-                               examNum=challengeNum,groupInfo=groupInfo,userNotic=userNotice,competition_info=competition_info,end_time=end_time)
+        return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult,examNum=challengeNum,groupInfo=groupInfo,userNotic=userNotice,competition_info=competition_info,end_time=end_time,competition_StatusCode=competition_StatusCode)
     return render_template('user/login.html')
 
 

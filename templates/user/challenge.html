@@ -5,6 +5,7 @@
     }
     {#模态框下拉高度用的#}
 </style>
+
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3">
@@ -64,31 +65,7 @@
                             <td>WEB2</td>
                             <td>17:30</td>
                         </tr>
-                        <tr>
-                            <td>Stac2战队</td>
-                            <td class="text-danger">攻破了</td>
-                            <td>WEB1</td>
-                            <td>17:31</td>
-                        </tr>
-                        <tr>
-                            <td>JJUSEC战队</td>
-                            <td class="text-danger">攻破了</td>
-                            <td>WEB2</td>
-                            <td>17:50</td>
-                        </tr>
                     </table>
-{#                    <ul class="nav ">#}
-{#                        <li class="nav-item nav-divider">JJUSEC1战队&nbsp;&nbsp;</li>#}
-{#                        <li class="nav-item text-danger" >攻破了&nbsp;&nbsp;</li>#}
-{#                        <li class="nav-item">WEB1&nbsp;&nbsp;</li>#}
-{#                        <li class="nav-item">17:00</li>#}
-{#                    </ul>#}
-{#                    <ul class="nav ">#}
-{#                        <li class="nav-item nav-divider">Stac2战队&nbsp;&nbsp;</li>#}
-{#                        <li class="nav-item text-danger" >攻破了&nbsp;&nbsp;</li>#}
-{#                        <li class="nav-item">WEB1&nbsp;&nbsp;</li>#}
-{#                        <li class="nav-item">17:59</li>#}
-{#                    </ul>#}
 
                 </div>
             </div>
@@ -719,8 +696,14 @@
 
             }
         )
-}
+};
+
+
+        {% if competition_StatusCode == 0 %}
+    alert("不再比赛时间，请稍后再试");
+    {% endif %}
 </script>
+
 {% include'user/footer.html' %}
 
 
