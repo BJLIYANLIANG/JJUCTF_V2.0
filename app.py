@@ -719,7 +719,7 @@ def competition():
     admin = session.get("admin")
     if admin:
         mysql = Mysqld()
-        result = mysql.selectCompetition_Info()[0]
+        result = mysql.selectCompetitionInfoList()[0]
         return render_template("admin/competition_info.html",competitionInfo=result)
     else:
         return render_template("admin/login.html")

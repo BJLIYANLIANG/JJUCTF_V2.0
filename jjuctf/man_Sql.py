@@ -563,6 +563,17 @@ class Mysqld:
             return result
         except:
             return 0
+    def selectCompetitionInfoList(self):
+        sql = 'select status,name,info,start_date,end_date from competition'
+        # print(sql)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+        except:
+            return 0
+    def changeCompetitionInfo(self,name,info,start_date,end_date):
+        sql = 'change table '
 
 # ===============后台-end===============
 
