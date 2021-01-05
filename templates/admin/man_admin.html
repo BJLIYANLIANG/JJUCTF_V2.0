@@ -1,6 +1,5 @@
 {% include "admin/header.html" %}
 
-
     <div class="main-container">
         <div class="padding">
             <nav class="breadcrumb">
@@ -47,21 +46,12 @@
                     <td>
                         <span>{% if i[4]==0 %}禁用{% else %}正常{% endif %}</span>
                     </td>
-                    <td>
-                     <div class="btn-group">
-                            <button class="btn btn-xs btn-success">
-                                <i class="icon-ok bigger-120">修改信息</i>
-                            </button>
-                            <button class="btn btn-xs btn-info">
-                                <i class="icon-edit bigger-120">重置密码</i>
-                            </button>
-                            <button class="btn btn-xs btn-danger" onclick="delAdmin({{ i[0] }})">
-                                <i class="icon-trash bigger-120">删除账户</i>
-                            </button>
-                            <button class="btn btn-xs btn-warning" onclick="changeAdminStatus({{ i[0] }})">
-                                <i class="icon-flag bigger-120">{% if i[4]==1 %}禁用账户{% else %}激活账户{% endif %}</i>
-                            </button>
-                        </div>
+                    <td style="width: 32%">
+
+                            <button class="btn btn-success">修改信息</button>
+                            <button class="btn btn-info">重置密码</button>
+                            <button class="btn  btn-danger" onclick="delAdmin({{ i[0] }})">删除账户</button>
+                            <button class="btn  btn-warning" onclick="changeAdminStatus({{ i[0] }})">{% if i[4]==1 %}禁用账户{% else %}激活账户{% endif %}</button>
 
                     </td>
                 </tr>
@@ -128,7 +118,6 @@
             }
         )
         }
-        {#var a = document.getElementById(id).value;#}
 
 
     };

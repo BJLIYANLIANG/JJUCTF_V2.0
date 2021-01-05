@@ -71,16 +71,13 @@
                 {% endif %}
                 <td>{{ j[13] }}</td>
                     <td>{{ j[12] }}</td>
-                    <td>
-                                 <div class="visible-md visible-lg hidden-sm hidden-xs btn-group">
-                            <button class="btn btn-xs btn-success" onclick="delete_ctf_instance({{ j[1] }})">
-                                <i class="icon-ok bigger-120">删除题目</i>
-                            </button>
-                            <button class="btn btn-xs btn-info">
-                                <i class="icon-edit bigger-120">修改题目</i>
-                            </button>
-                        </div>
-
+                    <td style="width: 17%">
+                        <button class="btn btn-xs btn-info">
+                               修改题目
+                        </button>
+                        <button class="btn btn-xs btn-danger" onclick="delete_ctf_instance({{ j[1] }})">
+                               删除题目
+                        </button>
                     </td>
                 </tr>
 {% endfor %}
