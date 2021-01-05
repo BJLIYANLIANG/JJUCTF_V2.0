@@ -68,7 +68,10 @@ def challenge():
         endDateTime = str(competition_info[4])
         end_time = str(competition_info[4]).replace('-','/')
         # 比赛状态码 如果比赛正在进行，则结果为1,否则为0
+        print(startDateTime,endDateTime)
         competition_StatusCode = check.checkCompetition_start(startDateTime,endDateTime)
+        print('conpetitioncode')
+        print(competition_StatusCode)
         userNotice = getChallengeListByType.selectUserNotice()
         # print(userNotice)
         # 0为web 以此类推
@@ -100,11 +103,12 @@ def index():
 def ranks():
     user = session.get('user')
     if user:
-        sqlcheck = Mysqld()
-        GetChallengeList = sqlcheck.showChallengeList(user)
+        mysql = Mysqld()
+        GetChallengeList = mysql.select_user_challenge_list()
         # GetGroupInfo  = sqlcheck.
-        GetUserNum = sqlcheck.selectUserNum(user)  #查数据库将排行榜数据传到template中，目前是测试阶段，使用的是用户表
-        return render_template("user/ranks.html",username=user,headerType="rank",ChallengeList=GetChallengeList,userNum=GetUserNum,a=1)
+        GetUserNum = mysql.selectUserNum(user)  #查数据库将排行榜数据传到template中，目前是测试阶段，使用的是用户表
+        competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
+        return render_template("user/ranks.html",username=user,headerType="rank",ChallengeList=GetChallengeList,userNum=GetUserNum,a=1,competition_info=competition_info)
     else:
         return render_template("user/login.html")
 
