@@ -381,8 +381,8 @@ def add_admin():
             addAdmin = Mysqld()
             result  = addAdmin.addAdmin(name,email,mobile,passwd)
             if result:
-                return render_template("admin/man_admin.html",message="成功添加记录")
-        return  render_template("admin/addAdmin.html")
+                return redirect(url_for('man_admin',message="成功添加记录"))
+        return render_template("admin/addAdmin.html")
     else:
         return render_template("admin/login.html")
 
@@ -498,13 +498,15 @@ def create_ctf_instance():
     admin = session.get('admin')
     if admin:
         ctf_exam_id = int(request.form.get('ctf_exam_id'))
-
         mysql  = Mysqld()
+        # 先检查是否已经创建过实例,实质是查challenge_list表是否存在数据
+        checkinsert = mysql.checkCtf_exam_insertById(ctf_exam_id)
+        if checkinsert == -1:
+            return "-1"
         ctf_exam_info = mysql.selectctf_examByctf_exam_Id(ctf_exam_id)
         if ctf_exam_info[6] == 0:  #[6]为flag类型为静态flag
             result = mysql.add_user_challenge_list(0,ctf_exam_id)
             if result == 1:
-
                 return "1"
             else:
                 print("create_ctf_instance函数插入错误!")
@@ -732,8 +734,11 @@ def man_ctf_exam_info():
         userNum = len(mysql.selectUserList())
         groupNum = len(mysql.selectUserGroupList())
         # groupNum = len(mysql.selectUserGroupListByGroupId())
+        # 用户挑战数的
         user_Challenge_List_Num = len(mysql.select_user_challenge_list())
-        return render_template("admin/man_ctf_exam_info.html",userNum=userNum,groupNum=groupNum,user_Challenge_List_Num=user_Challenge_List_Num)
+        # 查找CTF解题情况
+        user_succcess_challenge_list = mysql.selectUserChallengeList()
+        return render_template("admin/man_ctf_exam_info.html",userNum=userNum,groupNum=groupNum,user_Challenge_List_Num=user_Challenge_List_Num,user_succcess_challenge_list=user_succcess_challenge_list)
     else:
         return render_template("admin/login.html")
 
@@ -801,6 +806,28 @@ def addUserNotice():
     else:
         return render_template("admin/login.html")
         # admin_id =
+# @app.route('')
+# n_id
+
+# form表单实现
+@app.route("/changeUserNotice",methods=["POST"])
+def changeUserNotice():
+    admin = session.get('admin')
+    if admin:
+        mysql = Mysqld()
+        admin_id = mysql.selectAdminIdByAdminName(admin)
+        id = int(request.form.get('n_id'))
+        info  = request.form.get('info')
+        result = mysql.changeUserNotice(id,admin_id,info)
+        if result==-1:
+            return redirect(url_for('admin_notice', message="修改失败!您输入的信息长度不足5个字符长度！请重新修改"))
+        if result==1:
+            return redirect(url_for('admin_notice',message="修改成功"))
+        else:
+            return redirect(url_for('admin_notice', message="修改失败"))
+    else:
+        return render_template("admin/login.html")
+
 
 @app.route("/changeCompetitionInfo",methods=["POST"])
 def changeCompetitionInfo():

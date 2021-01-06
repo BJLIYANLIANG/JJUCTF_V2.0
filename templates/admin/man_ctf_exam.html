@@ -155,7 +155,14 @@
                         window.location.reload()
                     }
                     else{
-                        alert("开启题目实况错误！")
+                        if(result=="-1")
+                        {
+                            alert("已经打开过实例了!");
+                        }
+                        else{
+                            alert("开启题目实况错误！");
+                        }
+
                     }},
              error:function () {
 
@@ -184,7 +191,8 @@
                     if (result == "1") {
                         alert("删除成功");
                         window.location.reload()
-                    } else {
+                    }
+                    else {
                         alert("删除题目错误！")
                     }
                 },

@@ -65,9 +65,11 @@ class Mysqld:
             showinfo = self.cursor
             groupid = self.selectGroupidByusername(user)
             # sql = 'select a.id,a.name,a.score,a.hint,a.type,a.docker_flag,a.docker_info,a.file_flag,a.file_path,a.score,a.date,b.solved from challenge_list where group_id=%d or group_id=0' %(groupid)
-            sql = 'select a.id,a.name,a.score,a.hint,a.type,a.docker_flag,a.docker_info,a.file_flag,a.file_path,a.date,b.solved,c.solved_flag from (select * from challenge_list where group_id=%d or group_id=0) as a left join (select ctf_exam_id,count(*) as solved from user_challenge_list group by ctf_exam_id) as b on a.ctf_exam_id=b.ctf_exam_id left join (select ctf_exam_id,id as solved_flag from user_challenge_list where group_id=%d) as c on a.ctf_exam_id=b.ctf_exam_id;'%(groupid,groupid)
-            showinfo.execute(sql)
+            # sql = 'select a.id,a.name,a.score,a.hint,a.type,a.docker_flag,a.docker_info,a.file_flag,a.file_path,a.date,b.solved,c.solved_flag from (select * from challenge_list where group_id=%d or group_id=0) as a left join (select ctf_exam_id,count(*) as solved from user_challenge_list group by ctf_exam_id) as b on a.ctf_exam_id=b.ctf_exam_id left join (select ctf_exam_id,id as solved_flag from user_challenge_list where group_id=%d) as c on a.ctf_exam_id=b.ctf_exam_id;'%(groupid,groupid)
+            sql = 'select a.id,a.name,a.score,a.hint,a.type,a.docker_flag,a.docker_info,a.file_flag,a.file_path,a.date,b.solved,c.id from (select * from challenge_list where group_id=50 or group_id=0) as a left join (select ctf_exam_id,count(*) as solved from user_challenge_list group by ctf_exam_id) as b on a.ctf_exam_id=b.ctf_exam_id left join (select * from user_challenge_list where group_id=%d) as c on a.ctf_exam_id=c.ctf_exam_id;'%(groupid)
             print(sql)
+            showinfo.execute(sql)
+            # print(sql)
             return showinfo.fetchall()
         except:
             print("selectChallengeListByUserName函数执行失败！")
@@ -300,6 +302,20 @@ class Mysqld:
             return 0
         date =  time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
         sql = 'insert into user_notice (uid,info,date) values (%d,"%s","%s")'%(uid,info,date)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            # self.conn.close()
+            return 1
+        except:
+            self.conn.rollback()
+            # self.conn.close()
+            return 0
+    def changeUserNotice(self,id,uid,info):
+        if len(info)<5:
+            return -1
+        date =  time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        sql = 'update user_notice set uid=%d,info="%s",date="%s" where id=%d'%(uid,info,date,id)
         try:
             self.cursor.execute(sql)
             self.conn.commit()
@@ -669,9 +685,34 @@ class Mysqld:
             # self.conn.close()
             return 0
 
-
+    def checkCtf_exam_insertById(self,id):
+        sql = 'select id from challenge_list where ctf_exam_id=%d'%(id)
+        # print(sql)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()[0]
+            # 如果查到看有内容
+            print(result)
+            if result:
+                return -1
+            else:
+                return 1
+        except:
+            return 0
+    # 在CTF管理页面用到的
+    def selectUserChallengeList(self):
+        sql = 'select b.name,d.user_name,c.name,a.type,a.score,a.date from user_challenge_list as a left join user_group as b on  a.group_id=b.group_id left join ctf_exam as c on a.ctf_exam_id=c.id left join user as d on a.user_id=d.id'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+        except:
+            return 0
 # ===============后台-end===============
 
+a = Mysqld()
+b = a.selectUserChallengeList()
+print(b)
 # 间可以使用‘+’，‘*’,即允许元组进行组合连接和重复复制，运算后生成一个新的元组。
 
 
