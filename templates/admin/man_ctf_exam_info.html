@@ -15,7 +15,7 @@
                 </div>
                 <div class="box-inner">
                     <div class="btn-group">
-                        <button onclick="" class="btn btn-danger">清空答题记录</button>
+                        <button onclick="delAllUserChallengeList()" class="btn btn-danger">清空答题记录</button>
                     </div>
                 </div><!--inner-->
             </div>
@@ -192,12 +192,33 @@
             </div>
         </div>
         <script>
+{#delAllUserChallengeList#}
 
-        </script>
+    function delAllUserChallengeList(){
+                var result = confirm("确定要清空吗？一旦清空将不可恢复！");
+                if(result==true){
+                    $.ajax({
+                        url: "/delAllUserChallengeList",
+                        type: "post",
+                        data: {"key":1},
+                        success: function (result) {
+                            if (result == "1") {
+                                alert("清空用户挑战列表成功！");
+                                window.location.reload()
+                                }
+                            else{
+                                alert("清空用户挑战列表成功失败！")
+                                }
+                            },
+                        error:function () {
+                            alert("发送请求失败");
+                        }
 
-
-
-
+            }
+        )
+        }
+    };
+     </script>
     </div>
 
    {% include "admin/footer.html" %}

@@ -1,11 +1,12 @@
-from flask import Flask,url_for
-from flask import render_template
+from flask import Flask,url_for,flash,send_from_directory
+from flask import render_template,abort
 from flask import request
 from flask import session,redirect
 from datetime import timedelta
 from jjuctf.man_Sql import Mysqld
 from werkzeug.utils import secure_filename
 import os
+
 from jjuctf.Check import Check
 import time
 import datetime
@@ -15,9 +16,9 @@ app.debug = True
 
 
 # 常量
-app.config['UPLOAD_FOLDER'] = 'static/'
-
-
+app.config['UPLOAD_FOLDER'] = 'jjuctf/upload_file/'
+app.config['UPLOAD_CTF_FILE'] = 'jjuctf/CTF_FILE/'
+app.config['UPLOAD_CTF_CONTAINER'] = 'jjuctf/CTF_CONTAINER/'
 
 
 @app.route('/login',methods=['GET','POST'])
@@ -40,7 +41,10 @@ def login():
             session.permanent = True  #设置session为永久的
             # app.permanent_session_lifetime = timedelta(minutes=20)  # 设置session到期时间，单位分钟
             session['user'] = request.form.get('username')
-            return redirect('/')
+            # message = "Wecome %s !"%(username)
+            # print(message)
+            # flash(message)
+            return redirect(url_for('index'))
         else:
             return render_template("user/login.html",message="帐号或密码错误")
     else:
@@ -104,11 +108,14 @@ def ranks():
     user = session.get('user')
     if user:
         mysql = Mysqld()
-        GetChallengeList = mysql.select_user_challenge_list()
+        #这个函数貌似没啥用了，有时间的话就把这个删除
+        # GetChallengeList = mysql.select_user_challenge_list()
         # GetGroupInfo  = sqlcheck.
+        getUserCTFChallengeList = mysql.selectUserChallengeListDesc()
+        getUserCTFChallengeListNum = len(getUserCTFChallengeList)
         GetUserNum = mysql.selectUserNum(user)  #查数据库将排行榜数据传到template中，目前是测试阶段，使用的是用户表
         competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
-        return render_template("user/ranks.html",username=user,headerType="rank",ChallengeList=GetChallengeList,userNum=GetUserNum,a=1,competition_info=competition_info)
+        return render_template("user/ranks.html",username=user,headerType="rank",userNum=GetUserNum,a=1,getUserCTFChallengeList=getUserCTFChallengeList,getUserCTFChallengeListNum=getUserCTFChallengeListNum,competition_info=competition_info)
     else:
         return render_template("user/login.html")
 
@@ -452,26 +459,28 @@ def man_ctf_add_exam():
             name = request.form.get('exam_name')
             hint = request.form.get('exam_hint')
             score = int(request.form.get("base_score"))
-            # status = int(request.form.get('status'))
             flag = request.form.get('flag')
+            #得到附件文件
             flag_type = int(request.form.get('flag_type'))
             file_path = request.files['file']
+            #得到docker-compose文件
             docker_file  = request.files['docker_file']
+            #题目备注
             info = request.form.get('info')
             createtime =  time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            # print("000000000000000000000")
             print(file_path.filename)
             print(docker_file.filename)
             if file_path.filename == '':
+                #如果发现没有上传文件，则将flag标记为0，
                 file_flag = 0
             else:
                 file_flag = 1
-                file_path.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(file_path.filename)))
+                file_path.save(os.path.join(app.config['UPLOAD_CTF_FILE'], secure_filename(file_path.filename)))
             if docker_file.filename == '':
                 docker_flag = 0
             else:
                 docker_flag = 1
-                docker_file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(docker_file.filename)))
+                docker_file.save(os.path.join(app.config['UPLOAD_CTF_CONTAINER'], secure_filename(docker_file.filename)))
 
             # print(request.method)
             #先将文件保存到服务器然后再将文件路径上传到数据库
@@ -633,13 +642,17 @@ def test():
 
 @app.route('/upload')
 def upload_file():
-   return render_template('user/test.html')
+   return render_template('user/upload.html')
 @app.route('/uploader', methods = ['GET', 'POST'])
 def uploader():
    if request.method == 'POST':
-      f = request.files['file']
+      f = request.files['file1']
+      print("request.url:"+str(request.url))
+      print("success upload file:"+str(f.filename))
       f.save(os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(f.filename)))
       return 'file uploaded success'
+   else:
+       return "500"
 
 
 # 创建队伍
@@ -932,10 +945,40 @@ def man_addUser():
     else:
         return render_template("admin/login.html")
 
+# 下载文件
+@app.route("/download/<path:filename>")
+
+def downloader(filename):
+    user = session.get('user')
+    print(request.user_agent)
+    print(user)
+    if user:
+         # dirpath = os.path.join(app.root_path, 'upload')  # 这里是下在目录，从工程的根目录写起，比如你要下载static/js里面的js文件，这里就要写“static/js”
+        return send_from_directory(app.config['UPLOAD_CTF_FILE'], filename, as_attachment=True)  # as_attachment=True 一定要写，不然会变成打开，而不是下载
+    else:
+        return abort(404)
+
+# ajax实现
+@app.route("/delAllUserChallengeList",methods=["POST"])
+def delAllUserChallengeList():
+    user = session.get('admin')
+    if user:
+        key = int(request.form.get('key'))
+        print(key)
+        if key == 1:
+            mysql = Mysqld()
+            result = mysql.delAllUserChallengeList()
+            if result ==1:
+                return "1"
+            else:
+                return "0"
+        else:
+            return "0"
+    else:
+        return redirect(url_for('login'))
+
 if __name__ == '__main__':
     app.run()
-
-
 
 
 

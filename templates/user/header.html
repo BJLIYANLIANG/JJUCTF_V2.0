@@ -3,14 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <link rel="icon" href="static/favicon.ico">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="static/js/axios.min.js"></script>
-    <script src="static/js/vue.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="static/js/jquery-3.5.1.min.js"></script>
     <link rel="stylesheet" href="static/css/jjuctf.css">
-   <link rel="stylesheet" href="static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css/bootstrap.min.css">
     <script src="static/js/bootstrap.min.js"></script>
-       <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
     <title>JJUCTF</title>
 </head>
 <style>
@@ -18,7 +16,11 @@
         background-color: 	#FFFAFA;
     }
 </style>
-<body  >
+<body>
+
+{# {% for message in get_flashed_messages() %}#}
+{#    <script>alert({{ message }})</script>#}
+{# {% endfor %}#}
 <nav  class="navbar navbar-expand-lg navbar-light bg-light" >
   <a class="navbar-brand" href="/" >JJUCTF</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,36 +28,36 @@
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent" >
-    <ul class="navbar-nav ml-auto" >{% if headerType == 'index' %}
+      <ul class="navbar-nav ml-auto" >{% if headerType == 'index' %}
             <li class="nav-item active">
         <a class="nav-link" href="/" >态势感知<span class="sr-only">(current)</span></a>
-      </li>{% else %}
-             <li class="nav-item">
-        <a class="nav-link" href="/">态势感知</a>
-      </li>{% endif %}{% if headerType == 'challenges' %}
-            <li class="nav-item active">
-        <a class="nav-link" href="/challenges">CTF答题<span class="sr-only">(current)</span></a>
-      </li>{% else %}
-             <li class="nav-item">
-        <a class="nav-link" href="/challenges">CTF答题</a>
-      </li>{% endif %}
-        <li class="nav-item">
-        <a href="/challenges"><title class="navbar-brand" href="/" STYLE="color: #005cbf ">{% if competition_info %}{{ competition_info[1] }}{% endif %}</title></a>
-      </li>{% if headerType == 'awd' %}
-            <li class="nav-item active">
-        <a class="nav-link" href="/awd">AWD攻防<span class="sr-only">(current)</span></a>
-      </li>{% else %}
+           </li>{% else %}
+                 <li class="nav-item">
+            <a class="nav-link" href="/">态势感知</a>
+          </li>{% endif %}{% if headerType == 'challenges' %}
+                <li class="nav-item active">
+            <a class="nav-link" href="/challenges">CTF答题<span class="sr-only">(current)</span></a>
+          </li>{% else %}
+                 <li class="nav-item">
+            <a class="nav-link" href="/challenges">CTF答题</a>
+          </li>{% endif %}
             <li class="nav-item">
-        <a class="nav-link" href="/awd">AWD攻防</a>
-      </li>{% endif %}
-        {% if headerType == 'rank' %}
-            <li class="nav-item active">
-        <a class="nav-link" href="/ranks">排行榜<span class="sr-only">(current)</span></a>
-      </li>{% else %}
-             <li class="nav-item">
-        <a class="nav-link" href="/ranks">排行榜</a>
-      </li>{% endif %}
-    </ul>
+            <a href="/challenges"><title class="navbar-brand" href="/" STYLE="color: #005cbf ">{% if competition_info %}{{ competition_info[1] }}{% endif %}</title></a>
+          </li>{% if headerType == 'awd' %}
+                <li class="nav-item active">
+            <a class="nav-link" href="/awd">AWD攻防<span class="sr-only">(current)</span></a>
+          </li>{% else %}
+                <li class="nav-item">
+            <a class="nav-link" href="/awd">AWD攻防</a>
+          </li>{% endif %}
+            {% if headerType == 'rank' %}
+                <li class="nav-item active">
+            <a class="nav-link" href="/ranks">排行榜<span class="sr-only">(current)</span></a>
+          </li>{% else %}
+                 <li class="nav-item">
+            <a class="nav-link" href="/ranks">排行榜</a>
+          </li>{% endif %}
+      </ul>
      <ul class="nav navbar-nav  navbar-right ml-auto">{% if username %}
                                <li class="dropdown ">
                                <a class="dropdown-toggle" data-toggle="dropdown" style="color: #2e6da4">
@@ -76,9 +78,11 @@
       </ul>
   </div>
 </nav>
-{#警告信息#}{% if message %}
-    <script language="JavaScript"> alert("{{ message}}")</script>
-{% endif %}
+{#警告信息#}
+    <script language="JavaScript">
+        {% if message  %} alert("{{ message}}"){% endif %}
+    </script>
+
 
 
 

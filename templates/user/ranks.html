@@ -1,81 +1,60 @@
 {% include 'user/header.html' %}
 <div  class="container-fluid" >
-{#   <div class="row">#}
-{#       <div class="panel panel-default">#}
-{#           <!-- Default panel contents -->#}
-{#           <div class="panel-heading">#}
-{#               排行榜#}
-{#           </div>#}
-<script src="https://cdn.jsdelivr.net/npm/echarts@5.0.0/dist/echarts.min.js">
-
-</script>
+{#<script src="https://cdn.jsdelivr.net/npm/echarts@5.0.0/dist/echarts.min.js">#}
+{#</script>#}
+<br>
 <div class="row ">
-    <div class="col-md-12 ">
-        <div id="main"  style="width: 100%;height:400px;"></div>
+    <div class="col-md-offset-1 col-md-1"></div>
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title text-center">CTF战况</h3>
+            </div>
+            <div class="card-body">
+                <div id="main"  style="width: 100%;height:400px;"></div>
+            </div>
+        </div>
     </div>
+    <div class="col-md-offset-1 col-md-1"></div>
 
 </div>
-           <!-- Table -->
+<p></p>
+<div class="row">
+    <div class="col-md-offset-1 col-md-1"></div>
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="card-title text-center">CTF排行榜</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <tr class="bg-info text-light">
+                    <th>排名</th>
+                    <th>战队</th>
+                    <th>解题数量</th>
+                    <th>积分</th>
+                </tr>
+                {% for i in range(1,getUserCTFChallengeListNum + 1)  %}
+                <tr>
+                    <td>{{ i }}</td>
+                   <td>{{ getUserCTFChallengeList[i-1][0] }}</td>
+                   <td>{{ getUserCTFChallengeList[i-1][2] }}</td>
+                   <td>{{ getUserCTFChallengeList[i-1][1] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-offset-1 col-md-1"></div>
+    <div class="col-md-12"><h3 class="title text-center"></h3></div>
+    <div class="col-md-offset-1 col-md-1 "></div>
+    <div class="col-md-10" >
+        <div>
 
-<div class="row" >
-     <div class="col-md-12">
-           <div class="table">
-           <table class="table table-bordered">
-               <thead class="table-bordered">
-               <tr class="success">
-                   <th>排名</th>
-                   <th>战队</th>
-               <th>解题数量</th>
-                   <th>积分</th>
-               </tr>
-               </thead>
-           <tbody>
-               <tr>
-                   <td>1</td>
-                   <td>JJUSEC</td>
-                   <td>10</td>
-                   <td>1000</td>
-               </tr>
-               <tr>
-                    <td>2</td>
-                   <td>JJUSEC2</td>
-                   <td>9</td>
-                   <td>900</td>
-               </tr>
-               <tr>
-                    <td>2</td>
-                   <td>JJUSEC2</td>
-                   <td>9</td>
-                   <td>900</td>
-               </tr>
-                <tr>
-                    <td>2</td>
-                   <td>JJUSEC2</td>
-                   <td>9</td>
-                   <td>900</td>
-               </tr>
-                <tr>
-                    <td>2</td>
-                   <td>JJUSEC2</td>
-                   <td>9</td>
-                   <td>900</td>
-               </tr>
-               <tr>
-                    <td>2</td>
-                   <td>JJUSEC2</td>
-                   <td>9</td>
-                   <td>900</td>
-               </tr>
-                <tr>
-                    <td>2</td>
-                   <td>JJUSEC2</td>
-                   <td>9</td>
-                   <td>900</td>
-               </tr>
-           </tbody>
-           </table>
-       </div>
-     </div>
+        </div>
+    </div>
+    <div class="col-md-offset-1 col-md-1"></div>
 </div>
 {#       </div>#}
 {#   </div>#}
@@ -152,54 +131,5 @@
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
     </script>
-
-
-{##}
-{#<table class="table">#}
-{#	<caption>基本的表格布局</caption>#}
-{#   <thead>#}
-{#      <tr>#}
-{#         <th>名称</th>#}
-{#         <th>城市</th>#}
-{#      </tr>#}
-{#   </thead>#}
-{#   <tbody>#}
-{#      <tr>#}
-{#         <td>Tanmay</td>#}
-{#         <td>Bangalore</td>#}
-{#      </tr>#}
-{#      <tr>#}
-{#         <td>Sachin</td>#}
-{#         <td>Mumbai</td>#}
-{#      </tr>#}
-{#   </tbody>#}
-{#</table>#}
-{#<table class="table table-striped">#}
-{#  <caption>条纹表格布局</caption>#}
-{#  <thead>#}
-{#    <tr>#}
-{#      <th>名称</th>#}
-{#      <th>城市</th>#}
-{#      <th>邮编</th>#}
-{#    </tr>#}
-{#  </thead>#}
-{#  <tbody>#}
-{#    <tr>#}
-{#      <td>Tanmay</td>#}
-{#      <td>Bangalore</td>#}
-{#      <td>560001</td>#}
-{#    </tr>#}
-{#    <tr>#}
-{#      <td>Sachin</td>#}
-{#      <td>Mumbai</td>#}
-{#      <td>400003</td>#}
-{#    </tr>#}
-{#    <tr>#}
-{#      <td>Uma</td>#}
-{#      <td>Pune</td>#}
-{#      <td>411027</td>#}
-{#    </tr>#}
-{#  </tbody>#}
-{#</table>#}
 </div>
 {% include 'user/footer.html' %}

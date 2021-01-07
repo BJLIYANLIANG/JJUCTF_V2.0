@@ -1,0 +1,12 @@
+{% include 'user/header.html' %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <form method="post" enctype="multipart/form-data" action="/uploader">
+                <input type="file" name="file1" value="上传文件">
+                <button type="submit">提交</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% include 'user/footer.html' %}

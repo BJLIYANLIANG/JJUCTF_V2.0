@@ -34,6 +34,7 @@ class Check:
             return 0
         else:
             return 1
+
     # 检查是否是比赛时间，如果是则返回1,不是则返回0
     def checkCompetition_start(self,start_time, end_time):
         date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())

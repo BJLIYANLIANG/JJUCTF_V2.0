@@ -671,10 +671,10 @@ class Mysqld:
             # self.conn.close()
             print("删除公告失败!")
             return 0
-            return 0
+
     def changeUserinfo(self,user_name,real_name,email,mobile,class_name,id):
         sql = 'update user set user_name="%s",real_name="%s",email="%s",mobile="%s",class_id="%s" where id=%d'%(user_name,real_name,email,mobile,class_name,id)
-        print(sql)
+        # print(sql)
         try:
             self.cursor.execute(sql)
             self.conn.commit()
@@ -708,11 +708,36 @@ class Mysqld:
             return result
         except:
             return 0
-# ===============后台-end===============
+    # 在CTF排名中，ranks排序
+    def selectUserChallengeListDesc(self):
 
-a = Mysqld()
-b = a.selectUserChallengeList()
-print(b)
+        sql = 'select b.name,a.sum_score,a.count_id from (select group_id,count(id) as count_id,sum(score) as sum_score from user_challenge_list group by group_id) as a left join user_group as b on a.group_id=b.group_id order by a.sum_score desc;'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+        except BaseException:
+            print("查询CTF排名失败")
+            return 0
+
+    def delAllUserChallengeList(self):
+        sql = 'TRUNCATE user_challenge_list'
+        print(sql)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            # self.conn.close()
+            return 1
+        except:
+            self.conn.rollback()
+            # self.conn.close()
+            print("清空用户挑战记录失败!")
+            return 0
+# ===============后台-end===============
+#
+# a = Mysqld()
+# b = a.selectUserChallengeListDesc()
+# print(b)
 # 间可以使用‘+’，‘*’,即允许元组进行组合连接和重复复制，运算后生成一个新的元组。
 
 

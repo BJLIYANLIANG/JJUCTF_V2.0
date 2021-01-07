@@ -1,39 +1,45 @@
 {% include 'user/header.html' %}
 <div class="container-fluid">
-    {% if group_id !=0 %}
-        <div class="row">
-        <div class="col-md-12 text-right" style="height: 40px">
-            <a href="#">退出队伍</a>
-        </div>
-        </div>
-    <div class="row" >
-        <div class="col-md-4  ">
-            <div class="card">
-                <div class="card-header">队伍信息</div>
-                <div class="card-body" >
-                    <div class="row" style="font-size: 1.2rem">
-                        <div class="col-md-12">队伍名称: <span>{{ groupinfo[1] }}</span></div>
-                        <div class="col-md-12">队伍ID:<span>{{ groupinfo[0] }}</span> </div>
-                        <div class="col-md-12">队伍简介:<span>{{ groupinfo[3] }}</span> </div>
-                        <div class="col-md-12">队伍token:<span>{{ groupinfo[2] }}</span></div>
+{% if group_id !=0 %}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul class="list-group">
+                    <li class="list-group-item list-group-item-dark">队伍信息</li>
+                    <li class="list-group-item">队伍名称: <span>{{ groupinfo[1] }}</span></li>
+                    <li class="list-group-item">队伍ID:<span>{{ groupinfo[0] }}</span></li>
+                    <li class="list-group-item">队伍简介:<span>{{ groupinfo[3] }}</span></li>
+                    <li class="list-group-item">队伍token:<span>{{ groupinfo[2] }}</span></li>
+                </ul>
+                    <br>
+                </div>
+                <div class="col-md-12">
+                    <div class="btn-group">
+                        <button class="btn btn-info">搜索队伍</button>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-danger">退出队伍</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-8">
-            <div class="box">
-                <div class="heading">
-                    <h3 class="title">队伍成员</h3>
-                </div>
-                <div class="box-inner">
-                    <table class="table table-center "  >
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header bg-secondary text-light">
+                            <h4 class="card-title ">队员信息</h4>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-center table-bordered">
                             <thead>
-                                <tr class="table-primary">
+                                <tr>
                                 <th>队员名称</th>
                                 <th>职位</th>
                             </tr>
                                 {% for i in userGroupList %}
-                            <tr class="table-info">
+                            <tr >
                                 <td>{{ i[0] }}</td>
                                 {% if i[1]==0 %}
                                 <td>队员</td>
@@ -42,42 +48,46 @@
                             </tr>{% endfor %}
                         </thead>
                         </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <p></p>
+                </div>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header bg-secondary text-light">
+                            <h4 class="card-title">得分信息</h4>
+                        </div>
+                        <div class="card-body">
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr class="">
+                                    <th >题目名称</th>
+                                    <th>题目类型</th>
+                                    <th>题目分值</th>
+                                    <th>解题人</th>
+                                    <th>答对时间</th>
+                                </tr>
+                                {% for i in userScoreList %}
+                                <tr >
+                                    <td>{{ i[0] }}</td>
+                                    {% if i[1]==0 %}<td>Web</td>{% elif i[1]==1 %}<td>Misc</td>{% elif i[1]==2 %}<td>Crypto</td>{% elif i[1]==3 %}<td>Reverse</td>{% else %}<td>Pwn</td>{% endif %}
+                                    <td>{{ i[3] }}</td>
+                                    <td>{{ i[2] }}</td>
+                                    <td>{{ i[4] }}</td>
+                                </tr>
+                                {% endfor %}
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+{% else %}
     <div class="row">
-        <div class="col-md-12"><h3>得分信息</h3> </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <table class="table table-center">
-        <thead>
-{#             # (('web1', 0, 'hsm', 100, datetime.datetime(2021, 1, 5, 11, 5, 43)),)#}
-            <tr class="table-primary">
-                <th >题目名称</th>
-                <th>题目类型</th>
-                <th>题目分值</th>
-                <th>解题人</th>
-                <th>答对时间</th>
-            </tr>
-            {% for i in userScoreList %}
-            <tr class="table-success">
-                <td>{{ i[0] }}</td>
-                {% if i[1]==0 %}<td>Web</td>{% elif i[1]==1 %}<td>Misc</td>{% elif i[1]==2 %}<td>Crypto</td>{% elif i[1]==3 %}<td>Reverse</td>{% else %}<td>Pwn</td>{% endif %}
-                <td>{{ i[3] }}</td>
-                <td>{{ i[2] }}</td>
-                <td>{{ i[4] }}</td>
-            </tr>
-        {% endfor %}
-        </thead>
-        </table>
-        </div>
-
-
-    </div>
-        {% else %}
-        <div class="row">
         <div class="col-md-12 jumbotron-fluid">
             <p class="text-center">您还未加入队伍！请选择创建队伍或者加入队伍</p>
         </div>
@@ -89,6 +99,8 @@
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#search_group">
             加入队伍
             </button>
+        </div>
+    </div>
 <!-- 模态框 -->
 <div class="modal fade" id="creat_group">
     <div class="modal-dialog">
@@ -141,24 +153,18 @@
                    </div>
                </div>
                 <div class="list-group">
-    <li href="#" class="list-group-item list-group-item-success col-md-8"><span>JJUCTF</span><a><button class="btn btn-dark col-md-3">申请加入</button></a></li>
-
-  </div>
-
+                    <li href="#" class="list-group-item list-group-item-success col-md-8"><span>JJUCTF</span><a><button class="btn btn-dark col-md-3">申请加入</button></a></li>
+                </div>
             </div>
         </div>
     </div>
 </div>
-        </div>
-        </div>
     {% endif %}
 </div>
 <script>
     function creat_group(){
         var groupName = document.getElementById('groupname').value;
         var groupInfo = document.getElementById('groupinfo').value;
-        {#alert(groupInfo);#}
-        {#alert(groupName);#}
         $.ajax({
                 url: "/create_group",
                 type: "post",
