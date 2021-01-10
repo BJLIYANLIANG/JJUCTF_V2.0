@@ -16,7 +16,7 @@
                 </div>
                 <div class="col-md-12">
                     <div class="btn-group">
-                        <button class="btn btn-info">搜索队伍</button>
+                        <button class="btn btn-info" data-toggle="modal" data-target="#search_group">搜索队伍</button>
                     </div>
                     <div class="btn-group">
                         <button class="btn btn-danger">退出队伍</button>
@@ -86,6 +86,66 @@
             </div>
         </div>
     </div>
+
+    <!--搜索队伍模态框-->
+    <div class="modal fade" id="search_group">
+            <div class="modal-dialog">
+                <div class="modal-content">
+      <!-- 模态框头部 -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">搜索队伍</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                    <label class="title">队伍名:</label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="input-group">
+                                    <input class="form-control" id="search_group_name">
+                                    <a onclick="search_group()" class="input-group-addon btn btn-info">搜索</a>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <p></p>
+                            </div>
+                            <div class="col-md-12">
+                                <table class="table table-bordered" id="search_result">
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+    </div><!--modal-->
+<script>
+    function search_group(){
+        var groupName = document.getElementById('search_group_name').value;
+        $.ajax({
+                url: "search_group",
+                type: "post",
+                data: {"groupname": groupName},
+                success: function (result) {
+                    if(result!="0" && result!="-1"){
+                        $('#search_result').empty();
+                         $('#search_result').append("<tr><th style='width: 50%'>队伍名</th><th class='text-right'>操作</th></tr><tr><td>result</td><td><button class='btn btn-success'>加入</button></td></tr>");
+                    }
+                    else {
+                        $('#search_result').empty();
+                        $('#search_result').append("<tr><td>未找到结果</td></tr>");
+                    }
+
+                },
+             error:function () {
+                alert("发送请求失败，请检查网络连接窗台");
+            }
+            });
+        {#var groupInfo = document.getElementById('groupinfo').value;#}
+
+}
+</script>
 {% else %}
     <div class="row">
         <div class="col-md-12 jumbotron-fluid">
@@ -185,4 +245,5 @@
         )
 }
 </script>
+
 {% include 'user/footer.html' %}

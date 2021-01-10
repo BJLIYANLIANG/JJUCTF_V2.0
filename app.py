@@ -1,4 +1,4 @@
-from flask import Flask,url_for,flash,send_from_directory
+from flask import Flask,url_for,send_from_directory
 from flask import render_template,abort
 from flask import request
 from flask import session,redirect
@@ -6,13 +6,41 @@ from datetime import timedelta
 from jjuctf.man_Sql import Mysqld
 from werkzeug.utils import secure_filename
 import os
-
+from flask_socketio import SocketIO,emit,join_room,leave_room,send
+import redis
 from jjuctf.Check import Check
 import time
 import datetime
 app = Flask(__name__)
 app.secret_key = '905008'  #session 密钥
-app.debug = True
+# app.debug = True
+socketio = SocketIO(app,cors_allowed_origins='*')
+# 没啥用测试用的
+@socketio.on('test')
+def test123():
+    print('hello world')
+
+@app.route("/test")
+@app.route("/test",methods=["POST","GET"])
+def test():
+    return render_template("user/test.html")
+
+@app.route('/push')
+def push():
+    event_name = 'test'
+    broadcast_data = "hello world!"
+    emit(event_name,broadcast_data,broadcast=True,namespace=name_space)
+    return "done!"
+
+
+name_space = '/test'
+@socketio.on('connect',namespace=name_space)
+def connected_msg():
+    print('client connected.')
+
+@socketio.on('disconnect',namespace=name_space)
+def disconnect_msg():
+    print('client disconnected.')
 
 
 # 常量
@@ -60,14 +88,16 @@ def challenge():
         getChallengeListByType = Mysqld()
         #获取CTf实例列表
         challengeResult = getChallengeListByType.selectChallengeListByUserName(user)
-        print("challengeResult:",end='')
-        print(challengeResult)
+        # print("challengeResult:",end='')
+        # print(challengeResult)
         challengeNum = getChallengeListByType.showChallengeNum()
         # challengeTypeNum = getChallengeListByType.selectCtfChallengeTypeNum(user)   #用这个代替上面那个！今天不写了，难受，我写的垃圾代码。。。
         groupInfo = getChallengeListByType.selectGroupInfoByUsername(user)
         # 0表示为开始或者未结束并且即将开始的比赛，只能有一个
         competition_info = getChallengeListByType.selectCompetition_InfoByStatus(0)[0]
         #转换为js需要的格式
+        userChallengeinfo = getChallengeListByType.selectUserChallengeListDesc()
+        print(userChallengeinfo)
         startDateTime = str(competition_info[3])
         endDateTime = str(competition_info[4])
         end_time = str(competition_info[4]).replace('-','/')
@@ -248,8 +278,6 @@ def checkCtfFlag():
     user = session.get("user")
     flag = request.form.get('flag')
     challenge_id = int(request.form.get('ctf_id'))
-    # print(ctf_id)
-    # print(flag)
     if user:
         if flag and challenge_id :
             # ctf_id就是CTF靶场id
@@ -269,6 +297,11 @@ def checkCtfFlag():
                     date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
                     user_id = mysql.selectUserIdByUserName(user)
                     # 插入到得分表中
+                    challengeinfo = mysql.selectChallengeInfoByChallengeId(challenge_id)
+                    if challengeinfo:
+                        challenge_time = time.strftime("%H:%M:%S", time.localtime())
+                        data = {'name': challengeinfo[0], "target": challengeinfo[0], "date": challenge_time,"id":challenge_id,"score":str(score)}
+                        emit('challenge_list', data, broadcast=True, namespace='/challenges')
                     adduserscore_result = mysql.addUserScore(group_id,ctfType,challenge_id,user_id,score,date)
                     print(adduserscore_result)
                     if adduserscore_result==1:
@@ -627,17 +660,7 @@ def page_not_found(error):
     return render_template("404.html"),404
 
 
-
-
-
 # ===============函数====================
-
-
-# 没啥用测试用的
-@app.route("/test")
-@app.route("/test",methods=["POST","GET"])
-def test():
-    return render_template("user/test.html")
 
 
 @app.route('/upload')
@@ -977,8 +1000,50 @@ def delAllUserChallengeList():
     else:
         return redirect(url_for('login'))
 
+@app.route('/search_group',methods=["POST","GET"])
+def search_group():
+    user = session.get('user')
+    if user:
+        if request.method == "POST":
+            group_name = request.form.get('groupname')
+            mysql = Mysqld()
+            searchGroupResult = mysql.searchGroupListByGroupname(group_name)
+            if searchGroupResult !=0 and searchGroupResult != -1:
+                group_name = searchGroupResult[0]
+                return str(group_name)
+            else:
+                return "0"
+        else:
+            return "-1"
+    else:
+        return "检测到越权访问!"
+
+
+@app.route('/push_ws')
+def push_ws():
+    date = {'name':"jjusec2","target":"web1","date":"2020"}
+    emit('challenge_list',date,broadcast=True,namespace='/challenges')
+    return 'done!'
+
+@socketio.on("join")
+def on_join(data):
+    user = data["user"]
+    room = data["room"]
+    print(f"client {user} wants to join: {room}")
+    join_room(room)
+    emit("room_message", f"Welcome to {room}, {user}", room=room)
+
+@socketio.on('leave')
+def on_leave(data):
+    username = data['username']
+    room = data['room']
+    leave_room(room)
+    send(username + ' has left the room.', room=room)
+
+
 if __name__ == '__main__':
-    app.run()
+    # app.run()
+    socketio.run(app,host='0.0.0.0',port=5000,debug=True)
 
 
 

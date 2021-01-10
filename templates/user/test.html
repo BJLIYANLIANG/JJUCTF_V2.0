@@ -1,18 +1,31 @@
-{% include 'user/index.html' %}
-<!-- 选项卡菜单-->
-<ul id="myTab" class="nav nav-tabs" role="tablist">
-    <li class="active"><a href="#bulletin" role="tab" data-toggle="tab">公告</a></li>
-    <li><a href="#rule" role="tab" data-toggle="tab">规则</a></li>
-    <li><a href="#forum" role="tab" data-toggle="tab">论坛</a></li>
-    <li><a href="#security" role="tab"  data-toggle="tab">安全</a></li>
-    <li><a href="#welfare" role="tab" data-toggle="tab">公益</a></li>
-</ul>
-<!-- 选项卡面板 -->
-<div id="myTabContent" class="tab-content">
-    <div class="tab-pane fade in active" id="bulletin">公告内容面板</div>
-    <div class="tab-pane fade" id="rule">规则内容面板</div>
-    <div class="tab-pane fade" id="forum">论坛内容面板</div>
-    <div class="tab-pane fade" id="security">安全内容面板</div>
-    <div class="tab-pane fade" id="welfare">公益内容面板</div>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+       <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.5/socket.io.js"></script>
+</head>
+<body>
+<div id="t">
 </div>
-{% include 'user/footer.html' %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        var url = location.href;
+        var socket = io.connect(url);
+        socket.on('test',function (res){
+            {#alert(res);#}
+            var t = res;
+            if (t){
+                $('#t').append(t).append('<br>');
+            }
+        })
+        
+    })
+</script>
+
+</body>
+</html>

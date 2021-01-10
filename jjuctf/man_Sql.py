@@ -733,10 +733,35 @@ class Mysqld:
             # self.conn.close()
             print("清空用户挑战记录失败!")
             return 0
+    #用户搜索队伍名
+    def searchGroupListByGroupname(self,groupName):
+        sql =  'select name,info,create_time from user_group where name="%s"'%(groupName)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            if result:
+                return result
+            else:
+                return -1
+        except BaseException:
+            print("查询队伍失败")
+            return 0
+    def selectChallengeInfoByChallengeId(self,id):
+        sql = 'select name,score,type from challenge_list where id=%d' % (id)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            if result:
+                return result
+            else:
+                return -1
+        except BaseException:
+            print("查询CTF实例失败")
+            return 0
 # ===============后台-end===============
 #
 # a = Mysqld()
-# b = a.selectUserChallengeListDesc()
+# b = a.selectChallengeInfoByChallengeId(38)
 # print(b)
 # 间可以使用‘+’，‘*’,即允许元组进行组合连接和重复复制，运算后生成一个新的元组。
 
