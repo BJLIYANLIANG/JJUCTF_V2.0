@@ -2,4 +2,7 @@ gunicorn
 gevent
 flask
 pymysql
+pycrypto
+redis
+eventlet
 

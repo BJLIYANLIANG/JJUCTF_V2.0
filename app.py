@@ -1,15 +1,19 @@
 from flask import Flask,url_for,send_from_directory
 from flask import render_template,abort
-from flask import request
+from flask import request,make_response
 from flask import session,redirect
 from datetime import timedelta
+import hashlib
 from jjuctf.man_Sql import Mysqld
 from werkzeug.utils import secure_filename
 import os
 from flask_socketio import SocketIO,emit,join_room,leave_room,send
 import redis
+from jjuctf.config import *
+redos_instance = redis.Redis(host=redis_address, port=redis_port, decode_responses=True)
 from jjuctf.Check import Check
 import time
+from jjuctf.Crypto_AES import *
 import datetime
 app = Flask(__name__)
 app.secret_key = '905008'  #session 密钥
@@ -63,16 +67,19 @@ def login():
             return render_template("user/login.html",message="请勿攻击靶场，违者做违规处理！")
         if username == '' or password == '':  #检查用户名和密码是否为空
             return render_template("user/login.html",message="用户名或密码不能为空")
-        checkuser = Mysqld()
-        result = checkuser.checkuser(username,password) #对用户表进行操作，检查登录
+        mysql = Mysqld()
+        group_id = mysql.selectGroupidByusername(username)
+        result = mysql.checkuser(username,password) #对用户表进行操作，检查登录
         if result == 1:
             session.permanent = True  #设置session为永久的
             # app.permanent_session_lifetime = timedelta(minutes=20)  # 设置session到期时间，单位分钟
             session['user'] = request.form.get('username')
-            # message = "Wecome %s !"%(username)
-            # print(message)
-            # flash(message)
-            return redirect(url_for('index'))
+            resp = make_response(redirect(url_for('index')))
+            message = str(group_id)+':'+username
+            token = encrypt(message)
+            # 添加token信息
+            resp.set_cookie('token', token)
+            return resp
         else:
             return render_template("user/login.html",message="帐号或密码错误")
     else:
@@ -299,9 +306,13 @@ def checkCtfFlag():
                     # 插入到得分表中
                     challengeinfo = mysql.selectChallengeInfoByChallengeId(challenge_id)
                     if challengeinfo:
+                        print(challengeinfo)
                         challenge_time = time.strftime("%H:%M:%S", time.localtime())
-                        data = {'name': challengeinfo[0], "target": challengeinfo[0], "date": challenge_time,"id":challenge_id,"score":str(score)}
-                        emit('challenge_list', data, broadcast=True, namespace='/challenges')
+                        data = {'name': challengeinfo[0], "target": challengeinfo[0], "date": challenge_time,"challenge_id":challenge_id,"score":str(score)}
+                        # 广播战况
+                        emit('challenge_list', data, broadcast=True,namespace='/challenges')
+                        emit('group_message',data,room=str(group_id),namespace='/challenges')
+                        print(str(group_id)+" :success track"+challengeinfo[0])
                     adduserscore_result = mysql.addUserScore(group_id,ctfType,challenge_id,user_id,score,date)
                     print(adduserscore_result)
                     if adduserscore_result==1:
@@ -683,12 +694,16 @@ def uploader():
 def create_group():
     user = session.get('user')
     if user:
+
         groupName = request.form.get('groupname')
         groupInfo = request.form.get('groupinfo')
         mysql = Mysqld()
         userId = mysql.selectUserIdByUserName(user)
         if userId:
-            addgroup = mysql.addGroup(groupName, groupInfo)
+            key = '123'
+            token = hashlib.md5((user+key).encode('utf-8')).hexdigest()
+            # 先不改，后面再说！
+            addgroup = mysql.addGroup(groupName, groupInfo,token)
             if addgroup == 1:
                 groupinfo = mysql.selectGroupInfoByGroupName(groupName)
                 print(groupinfo)
@@ -1025,13 +1040,20 @@ def push_ws():
     emit('challenge_list',date,broadcast=True,namespace='/challenges')
     return 'done!'
 
-@socketio.on("join")
+
+# 加入队伍组
+@socketio.on("join_group",namespace='/challenges')
 def on_join(data):
-    user = data["user"]
-    room = data["room"]
-    print(f"client {user} wants to join: {room}")
-    join_room(room)
-    emit("room_message", f"Welcome to {room}, {user}", room=room)
+    token = data["token"]
+    message = decrypt(token)
+    arrmessage = message.split(':')
+    group_id = arrmessage[0]
+    username = arrmessage[1]
+    print(group_id)
+    print(username)
+    print(f"client {username} wants to join: {group_id}")
+    join_room(group_id)
+    # emit("group_message",f"Welcome to {group_id}, {username}", room=group_id)
 
 @socketio.on('leave')
 def on_leave(data):

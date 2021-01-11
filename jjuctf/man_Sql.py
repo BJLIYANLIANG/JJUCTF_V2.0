@@ -144,9 +144,9 @@ class Mysqld:
         except:
             return 0
 # # 增加队
-    def addGroup(self,name,info):
-        key = Config().tokenKey
-        token = hashlib.md5((name+key).encode('utf-8')).hexdigest()
+    def addGroup(self,name,info,token):
+        # key = Config().tokenKey
+        # token = hashlib.md5((name+key).encode('utf-8')).hexdigest()
         # print(token)
         checkGroupregister = self.selectGroupInfoByGroupName(name)
         # print(type(checkGroupregister))
@@ -155,7 +155,6 @@ class Mysqld:
             sql = 'insert into user_group (name,info,token,create_time) values ("%s","%s","%s","%s")' % (name,info,token,date)
             print(sql)
             try:
-
                 self.cursor.execute(sql)
                 self.conn.commit()
                 # self.conn.close()
