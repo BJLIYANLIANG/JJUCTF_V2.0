@@ -1,6 +1,4 @@
-from flask import Flask,url_for,send_from_directory
-from flask import render_template,abort
-from flask import request,make_response
+from flask import Flask,url_for,send_from_directory,render_template,abort,request,make_response
 from flask import session,redirect
 from datetime import timedelta
 import hashlib
@@ -10,11 +8,14 @@ import os
 from flask_socketio import SocketIO,emit,join_room,leave_room,send
 import redis
 from jjuctf.config import *
-redos_instance = redis.Redis(host=redis_address, port=redis_port, decode_responses=True)
 from jjuctf.Check import Check
 import time
 from jjuctf.Crypto_AES import *
 import datetime
+
+
+redis_instance = redis.Redis(host=redis_address, port=redis_port, decode_responses=True)
+
 app = Flask(__name__)
 app.secret_key = '905008'  #session 密钥
 # app.debug = True
@@ -92,31 +93,40 @@ def challenge():
     user = session.get('user')
     if user :  #如果登录成功
         check = Check()
-        getChallengeListByType = Mysqld()
+        mysql = Mysqld()
         #获取CTf实例列表
-        challengeResult = getChallengeListByType.selectChallengeListByUserName(user)
+        challengeResult = mysql.selectChallengeListByUserName(user)
         # print("challengeResult:",end='')
         # print(challengeResult)
-        challengeNum = getChallengeListByType.showChallengeNum()
+        challengeNum = mysql.showChallengeNum()
         # challengeTypeNum = getChallengeListByType.selectCtfChallengeTypeNum(user)   #用这个代替上面那个！今天不写了，难受，我写的垃圾代码。。。
-        groupInfo = getChallengeListByType.selectGroupInfoByUsername(user)
+        groupInfo = mysql.selectGroupInfoByUsername(user)
         # 0表示为开始或者未结束并且即将开始的比赛，只能有一个
-        competition_info = getChallengeListByType.selectCompetition_InfoByStatus(0)[0]
+        # if groupInfo!=0:
+        #     message = str(groupInfo[0]) + ':' + user
+        #     token = str(encrypt(message))
+        #     token = token.split('\'')[1]
+        # else:
+        #     token = ''
+        competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
         #转换为js需要的格式
-        userChallengeinfo = getChallengeListByType.selectUserChallengeListDesc()
+        userChallengeinfo = mysql.selectUserChallengeListDesc()
         print(userChallengeinfo)
         startDateTime = str(competition_info[3])
         endDateTime = str(competition_info[4])
         end_time = str(competition_info[4]).replace('-','/')
         # 比赛状态码 如果比赛正在进行，则结果为1,否则为0
-        print(startDateTime,endDateTime)
+        # print(startDateTime,endDateTime)
         competition_StatusCode = check.checkCompetition_start(startDateTime,endDateTime)
-        print('conpetitioncode')
-        print(competition_StatusCode)
-        userNotice = getChallengeListByType.selectUserNotice()
+        # print('conpetitioncode')
+        # print(competition_StatusCode)
+        userNotice = mysql.selectUserNotice()
         # print(userNotice)
+        # 解题动态 CTF_History_table
+
+        ctf_history_table = mysql.selectCtfHistoryTable()
         # 0为web 以此类推
-        return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult,examNum=challengeNum,groupInfo=groupInfo,userNotic=userNotice,competition_info=competition_info,end_time=end_time,competition_StatusCode=competition_StatusCode)
+        return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult,ctf_history_table=ctf_history_table,examNum=challengeNum,groupInfo=groupInfo,userNotic=userNotice,competition_info=competition_info,end_time=end_time,competition_StatusCode=competition_StatusCode)
     return render_template('user/login.html')
 
 
@@ -297,23 +307,24 @@ def checkCtfFlag():
             if result == 1:  #查到flag正确
                 mysql = Mysqld()
                 group_id = mysql.selectGroupInfoByUsername(user)[0]
+                groupname = mysql.selectGroupNameByGroupId(group_id)
                 # print(group_id)
                 if group_id != 0:
                     (ctfType,score) = mysql.selectCtfTypeAndScoreByChallenge_id(challenge_id)
                     # print(ctfType,score)
-                    date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+                    # date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+                    challenge_time = time.strftime("%H:%M:%S", time.localtime())
                     user_id = mysql.selectUserIdByUserName(user)
                     # 插入到得分表中
                     challengeinfo = mysql.selectChallengeInfoByChallengeId(challenge_id)
                     if challengeinfo:
-                        print(challengeinfo)
-                        challenge_time = time.strftime("%H:%M:%S", time.localtime())
-                        data = {'name': challengeinfo[0], "target": challengeinfo[0], "date": challenge_time,"challenge_id":challenge_id,"score":str(score)}
+                        # print(challengeinfo)
+                        data = {'name': groupname, "target": challengeinfo[0], "date": challenge_time,"challenge_id":challenge_id,"score":str(score)}
                         # 广播战况
                         emit('challenge_list', data, broadcast=True,namespace='/challenges')
                         emit('group_message',data,room=str(group_id),namespace='/challenges')
                         print(str(group_id)+" :success track"+challengeinfo[0])
-                    adduserscore_result = mysql.addUserScore(group_id,ctfType,challenge_id,user_id,score,date)
+                    adduserscore_result = mysql.addUserScore(group_id,ctfType,challenge_id,user_id,score,challenge_time)
                     print(adduserscore_result)
                     if adduserscore_result==1:
                         return "1"
@@ -700,10 +711,7 @@ def create_group():
         mysql = Mysqld()
         userId = mysql.selectUserIdByUserName(user)
         if userId:
-            key = '123'
-            token = hashlib.md5((user+key).encode('utf-8')).hexdigest()
-            # 先不改，后面再说！
-            addgroup = mysql.addGroup(groupName, groupInfo,token)
+            addgroup = mysql.addGroup(groupName, groupInfo)
             if addgroup == 1:
                 groupinfo = mysql.selectGroupInfoByGroupName(groupName)
                 print(groupinfo)

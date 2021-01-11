@@ -1,5 +1,7 @@
+# redis config
 redis_address = 'localhost'
 redis_port = '6379'
+
 class Config:
     def __init__(self):
         self.serverIp = "localhost"

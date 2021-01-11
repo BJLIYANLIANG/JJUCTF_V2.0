@@ -118,7 +118,7 @@ class Mysqld:
             if group_id:
                 # print("group_id:"+str(group_id))
             # sql = 'select a.group_id,a.name,a.info,b.role from user_group as a left join user_group_list as b on a.group_id = b.group_id and b.user_id=%d'%()
-                sql = 'select group_id,name,token,info from user_group where group_id="%s"'%(group_id)
+                sql = 'select group_id,name,1,info from user_group where group_id="%s"'%(group_id)
                 # print(sql)
                 exec = self.cursor
                 exec.execute(sql)
@@ -143,16 +143,24 @@ class Mysqld:
                 return 0
         except:
             return 0
+    def selectGroupNameByGroupId(self,id):
+        sql = 'SELECT name FROM user_group where group_id=%d'%(id)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()[0]
+            if result:
+                return result
+            else:
+                return 0
+        except:
+            return 0
+
 # # 增加队
-    def addGroup(self,name,info,token):
-        # key = Config().tokenKey
-        # token = hashlib.md5((name+key).encode('utf-8')).hexdigest()
-        # print(token)
+    def addGroup(self,name,info):
         checkGroupregister = self.selectGroupInfoByGroupName(name)
-        # print(type(checkGroupregister))
         if checkGroupregister is None:
             date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            sql = 'insert into user_group (name,info,token,create_time) values ("%s","%s","%s","%s")' % (name,info,token,date)
+            sql = 'insert into user_group (name,info,create_time) values ("%s","%s","%s")' % (name,info,date)
             print(sql)
             try:
                 self.cursor.execute(sql)
@@ -745,8 +753,10 @@ class Mysqld:
         except BaseException:
             print("查询队伍失败")
             return 0
+
     def selectChallengeInfoByChallengeId(self,id):
         sql = 'select name,score,type from challenge_list where id=%d' % (id)
+        print(sql)
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchone()
@@ -757,11 +767,19 @@ class Mysqld:
         except BaseException:
             print("查询CTF实例失败")
             return 0
+    # 解题动态
+    def selectCtfHistoryTable(self):
+        sql = 'select b.name,c.name,a.score,a.date from user_challenge_list as a left join user_group as b on a.group_id = b.group_id left join ctf_exam as c on a.ctf_exam_id=c.id;'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+
+        except BaseException:
+            print("查询解题动态失败")
+            return 0
 # ===============后台-end===============
 #
-# a = Mysqld()
-# b = a.selectChallengeInfoByChallengeId(38)
-# print(b)
 # 间可以使用‘+’，‘*’,即允许元组进行组合连接和重复复制，运算后生成一个新的元组。
 
 

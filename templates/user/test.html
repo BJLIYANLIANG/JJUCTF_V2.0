@@ -8,24 +8,35 @@
     <title>Document</title>
        <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.5/socket.io.js"></script>
+<script>
+  $(function() {
+      $( "#dialog" ).dialog({
+       autoOpen: false,
+       show: {
+        effect: "blind",
+        duration: 1000
+           },
+   hide: {
+        effect: "explode",
+        duration: 1000
+       }
+    });
+
+      $("#bt").click(function(){
+         $("#dialog").dialog("open");
+         setTimeout(function () {$( "#dialog" ).dialog("close");}, 1000);
+      });
+  });
+  </script>
 </head>
 <body>
-<div id="t">
+ <button id="bt">打开</button>
+<div id="dialog" title="基本的对话框bai">
+  <p>这是一个默认的对话框，用于显示信息。对话框窗口可以移动，调整尺寸，默认可通过 'x' 图标关闭。</p>
 </div>
-<script type="text/javascript">
-    $(document).ready(function () {
-        var url = location.href;
-        var socket = io.connect(url);
-        socket.on('test',function (res){
-            {#alert(res);#}
-            var t = res;
-            if (t){
-                $('#t').append(t).append('<br>');
-            }
-        })
-        
-    })
-</script>
-
 </body>
 </html>
+
+
+
+

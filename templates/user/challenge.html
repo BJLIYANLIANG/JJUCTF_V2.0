@@ -13,10 +13,10 @@
                 <div class="card-header">比赛信息</div>
                 <div class="card-body">
                     <div class="row" style="font-size: 1.1rem">
-                        <div class="col-md-12">战队名：<span>{{ groupInfo[1] }}</span></div>
-                        <div class="col-md-12">队员名：<span>{{ username }}</span></div>
-                        <div class="col-md-12">Token：<span>{{ groupInfo[2] }}</span></div>
-                        <div class="col-md-12">队伍简介：{{ groupInfo[3] }}</div>
+                        <div class="col-md-12">战队名：<span class="text-info">{{ groupInfo[1] }}</span></div>
+                        <div class="col-md-12">队员名：<span class="text-info">{{ username }}</span></div>
+{#                        <div class="col-md-12">Token：<span>{{ token }}</span></div>#}
+                        <div class="col-md-12">队伍简介：<span class="text-info">{{ groupInfo[3] }}</span></div>
                         <div class="col-md-12">战队排名：110</div>
                         <div class="col-md-12">解题数量：2</div>
                         <div class="col-md-12">得分：50</div>
@@ -48,12 +48,14 @@
                 <div class="card-body" style="max-height: 14.5rem;min-height:14.5rem;overflow-y:auto;">
                     {% if competition_StatusCode==1 %}
                     <table class="table table-borderless" id="challenge_list" style="color: white;font-size: 0.9rem">
+                      {% for i in ctf_history_table %}
                         <tr>
-                            <td>Stac2战队</td>
+                            <td>{{ i[0] }}战队</td>
                             <td class="text-danger">攻破了</td>
-                            <td>WEB2</td>
-                            <td>17:30</td>
+                            <td>{{ i[1] }}</td>
+                            <td>{{ i[3] }}</td>
                         </tr>
+                        {% endfor %}
                         {% endif %}
                     </table>
 
@@ -681,9 +683,16 @@
                 success: function (result) {
                     if (result == "1") {
                         alert("回答正确！");
+
+                       // setTimeout(hiden,1000);
+                        //function hiden()
+                        //{
+                          //  alert('hello world');
+                           // document.getElementById("sh").style.display='none';
+                        //}
                     }
                     else{
-                        alert("回答错误")
+                        alert("回答错误");
                     }},
              error:function () {
 
@@ -695,7 +704,6 @@
 };
 
 </script>
-
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -722,7 +730,7 @@
         //加入后接收消息回调
 
         socket.on("group_message", (res) => {
-                alert(res.challenge_id);
+                {#alert(res.challenge_id);#}
                 $("#button"+res.challenge_id).empty();
                 $("#button"+res.challenge_id).append('<button class="btn btn-success btn-lg btn-block" style="border-color: #696969" data-toggle="modal" data-target="#modal'+res.challenge_id+'">已解答</button>');
                 $('#div'+res.challenge_id).empty();
@@ -733,7 +741,7 @@
         })
         socket.on('challenge_list',function (res){
             var t = res;
-            $('#challenge_list').append('<tr><td>'+t.name+'</td><td class="text-danger">攻破了</td><td>'+t.target+'</td><td>'+t.date+'</td></tr>');
+            $('#challenge_list').append('<tr><td>'+t.name+'战队</td><td class="text-danger">攻破了</td><td>'+t.target+'</td><td>'+t.date+'</td></tr>');
         })
 
 

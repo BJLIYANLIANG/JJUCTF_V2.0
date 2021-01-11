@@ -8,8 +8,9 @@
     <link rel="stylesheet" href="/static/css/jjuctf.css">
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <script src="/static/js/bootstrap.min.js"></script>
-    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+{#    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>#}
     <script type="text/javascript" src="/static/js/socket.io.js"></script>
+     <script type="text/javascript" src="/static/js/echarts.js"></script>
     <title>JJUCTF</title>
 </head>
 <style>
@@ -61,8 +62,8 @@
       </ul>
      <ul class="nav navbar-nav  navbar-right ml-auto">{% if username %}
                                <li class="dropdown ">
-                               <a class="dropdown-toggle" data-toggle="dropdown" style="color: #2e6da4">
-                                   <img class="card-img img-circle "style="width: 2em;height: 100%"  src="https://www.hsm.cool/usr/uploads/2020/07/3375162998.jpeg" alt="User">
+                               <a class="dropdown-toggle" data-toggle="dropdown" style="color: #2e6da4;">
+                                   <img class="img-circle img-thumbnail"  src="https://www.hsm.cool/usr/uploads/2020/07/3375162998.jpeg" alt="User" style="max-height: 2rem">
                                   {{ username }}<span class="caret"></span>
                                </a>
                                    <ul class="dropdown-menu dropdown-menu-md-right">
