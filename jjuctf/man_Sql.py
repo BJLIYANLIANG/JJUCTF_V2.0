@@ -118,11 +118,11 @@ class Mysqld:
             if group_id:
                 # print("group_id:"+str(group_id))
             # sql = 'select a.group_id,a.name,a.info,b.role from user_group as a left join user_group_list as b on a.group_id = b.group_id and b.user_id=%d'%()
-                sql = 'select group_id,name,1,info from user_group where group_id="%s"'%(group_id)
+                sql = 'select group_id,name,info,user_id from user_group where group_id="%s"'%(group_id)
                 # print(sql)
                 exec = self.cursor
                 exec.execute(sql)
-                return exec.fetchall()[0]
+                return exec.fetchone()
             return 0
         except:
             return 0
@@ -156,11 +156,11 @@ class Mysqld:
             return 0
 
 # # 增加队
-    def addGroup(self,name,info):
+    def addGroup(self,name,info,user_id):
         checkGroupregister = self.selectGroupInfoByGroupName(name)
         if checkGroupregister is None:
             date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            sql = 'insert into user_group (name,info,create_time) values ("%s","%s","%s")' % (name,info,date)
+            sql = 'insert into user_group (name,info,create_time,user_id) values ("%s","%s","%s",%d)' % (name,info,date,user_id)
             print(sql)
             try:
                 self.cursor.execute(sql)
@@ -176,8 +176,8 @@ class Mysqld:
 
 
 
-    def addUser_group_list(self,group_id,user_id,role):
-        sql = 'insert into user_group_list (group_id,user_id,role) values (%d,%d,%d)' % (group_id, user_id,role)
+    def addUser_group_list(self,group_id,user_id):
+        sql = 'insert into user_group_list (group_id,user_id) values (%d,%d)' % (group_id, user_id)
 
         try:
             self.cursor.execute(sql)
@@ -201,7 +201,7 @@ class Mysqld:
             return 0
 
     def selectUserGroupListByGroupId(self,group_id):
-        sql = 'select a.user_name,b.role from user as a inner join (select * from user_group_list where group_id=%d) as b on a.id=b.user_id;'%(group_id)
+        sql = 'select a.user_name from user as a inner join (select * from user_group_list where group_id=%d) as b on a.id=b.user_id;'%(group_id)
         # print(sql)
         try:
             self.cursor.execute(sql)
@@ -623,7 +623,7 @@ class Mysqld:
             return 0
     def delGroupByGroup_Id(self,group_id):
         sql = 'delete from user_group where group_id=%d' % (group_id)
-        # print(sql)
+        print(sql)
         try:
             self.cursor.execute(sql)
             self.conn.commit()
@@ -653,6 +653,7 @@ class Mysqld:
         except:
             return 0
 
+
     def changeCompetitionInfo(self,name,info,start_date,end_date):
         date = '2021-01-04 15:12:02'
         date2= '2020-12-30 20:24:00'
@@ -678,6 +679,18 @@ class Mysqld:
             # self.conn.close()
             print("删除公告失败!")
             return 0
+    def deluser_group_listByGroupId(self,id):
+        sql = ' delete from user_group_list where group_id=%d'%(id)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            # self.conn.close()
+            return 1
+        except:
+            self.conn.rollback()
+            # self.conn.close()
+            return 0
+
 
     def changeUserinfo(self,user_name,real_name,email,mobile,class_name,id):
         sql = 'update user set user_name="%s",real_name="%s",email="%s",mobile="%s",class_id="%s" where id=%d'%(user_name,real_name,email,mobile,class_name,id)
@@ -729,7 +742,7 @@ class Mysqld:
 
     def delAllUserChallengeList(self):
         sql = 'TRUNCATE user_challenge_list'
-        print(sql)
+        # print(sql)
         try:
             self.cursor.execute(sql)
             self.conn.commit()
@@ -742,7 +755,7 @@ class Mysqld:
             return 0
     #用户搜索队伍名
     def searchGroupListByGroupname(self,groupName):
-        sql =  'select name,info,create_time from user_group where name="%s"'%(groupName)
+        sql =  'select name,info,create_time,group_id from user_group where name="%s"'%(groupName)
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchone()
@@ -778,15 +791,97 @@ class Mysqld:
         except BaseException:
             print("查询解题动态失败")
             return 0
+
+    def selectCtfTypeNum(self):
+        sql = ' select type,count(id) from challenge_list group by type'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+
+        except BaseException:
+            print("查询CTF类型数失败")
+            return 0
+
+
+    def addUserGroupApply(self,user_id,groupid):
+        sql = 'INSERT INTO user_group_apply (user_id,group_id) VALUES (%d,%d)'%(user_id,groupid)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            # self.conn.close()
+            return 1
+        except:
+            self.conn.rollback()
+            # self.conn.close()
+            print("申请加入队伍失败!")
+            return 0
+
+    # 检查这个申请之前是否已经申请过
+    def checkAddGroupApply(self,user_id,group_id):
+        sql = 'select * from user_group_apply where user_id=%d and group_id=%d'%(user_id,group_id)
+
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+
+        except BaseException:
+            print("查询CTF类型数失败")
+            return 0
+
+    #查找用户申请列表用，使用在group.html
+    def selectUserGroupApplyByGroupId(self,id):
+        sql = 'select user_id from user_group_apply where group_id=%d'%(id)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+
+        except BaseException:
+            print("查询用户申请加入队伍列表失败")
+            return 0
+
+    # 检查用户目前是不是已经加入到队伍中了
+    def checkUserGroupApplyByGIdAndUId(self,groupId,UserId):
+        sql = 'select * from user_group_list where group_id=%d and user_id=%d'%(groupId,UserId)
+        print(sql)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            if result:
+                return 0
+            else:
+                return 1
+
+        except BaseException:
+            print("查询用户申请加入队伍列表失败")
+            return 0
+
+    def checkUserIsTeamLeader(self,user_id,group_id):
+        sql = 'select * from user_group where group_id=%d and user_id=%d'%(group_id,user_id)
+        # sql = 'select * from user_group_list where group_id=%d and user_id=%d' % (groupId, UserId)
+        # print(sql)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            if result:
+                return 1
+            else:
+                return 0
+
+        except BaseException:
+            print("查询用户申请加入队伍列表失败")
+            return 0
 # ===============后台-end===============
 #
 # 间可以使用‘+’，‘*’,即允许元组进行组合连接和重复复制，运算后生成一个新的元组。
 
-
-
 # ===============user-start===============
-
-
+#
+# a = Mysqld()
+# b = a.checkUserIsTeamLeader(35,50)
+# print(b)
 # 完整内容
 # id
 # group_id

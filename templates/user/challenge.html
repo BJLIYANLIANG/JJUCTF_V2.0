@@ -5,7 +5,6 @@
     }
     {#模态框下拉高度用的#}
 </style>
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3">
@@ -15,7 +14,6 @@
                     <div class="row" style="font-size: 1.1rem">
                         <div class="col-md-12">战队名：<span class="text-info">{{ groupInfo[1] }}</span></div>
                         <div class="col-md-12">队员名：<span class="text-info">{{ username }}</span></div>
-{#                        <div class="col-md-12">Token：<span>{{ token }}</span></div>#}
                         <div class="col-md-12">队伍简介：<span class="text-info">{{ groupInfo[3] }}</span></div>
                         <div class="col-md-12">战队排名：110</div>
                         <div class="col-md-12">解题数量：2</div>
@@ -73,9 +71,13 @@
         <div class="col-md-2">
              <div class="list-group"  >
                  <a href="#"  class="list-group-item list-group-item-action list-group-item-dark " disabled  data-toggle="pill" style="background-color: #104E70;color: white">比赛题目</a>
-                 {% for typeNum in examNum  %}
-                 <a class="list-group-item list-group-item-action" href="#{{ typeNum[0] }}" data-toggle="pill">{{ typeNum[0] }} <span class="badge badge-success ">{{ typeNum[1] }}</span></a>
+{#                 {% for typeNum in examNum  %}#}
+{#                 <a class="list-group-item list-group-item-action" href="#{{ typeNum[0] }}" data-toggle="pill">{{ typeNum[0] }} <span class="badge badge-success ">{{ typeNum[1] }}</span></a>#}
+{#                 {% endfor %}#}
+             {% for i in UserTypeNum  %}
+                 <a class="list-group-item list-group-item-action" href="#{% if i[0]==0 %}Web{% elif i[0]==1 %}Misc{% elif i[0]==2 %}Crypto{% elif i[0]==3 %}Reverse{% elif i[0]==4 %}Pwn{% endif %}" data-toggle="pill">{% if i[0]==0 %}Web{% elif i[0]==1 %}Misc{% elif i[0]==2 %}Crypto{% elif i[0]==3 %}Reverse{% elif i[0]==4 %}Pwn{% endif %} <span class="badge badge-success ">{{ i[1] }}</span></a>
                  {% endfor %}
+{#             UserTypeNum#}
              </div>
         </div>
         <div class="col-md-7">
@@ -683,13 +685,6 @@
                 success: function (result) {
                     if (result == "1") {
                         alert("回答正确！");
-
-                       // setTimeout(hiden,1000);
-                        //function hiden()
-                        //{
-                          //  alert('hello world');
-                           // document.getElementById("sh").style.display='none';
-                        //}
                     }
                     else{
                         alert("回答错误");

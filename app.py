@@ -78,6 +78,7 @@ def login():
             resp = make_response(redirect(url_for('index')))
             message = str(group_id)+':'+username
             token = encrypt(message)
+            print(token)
             # 添加token信息
             resp.set_cookie('token', token)
             return resp
@@ -91,23 +92,34 @@ def login():
 @app.route('/challenges')
 def challenge():
     user = session.get('user')
+    # print('cookie')
+
+        #
+        #
+
     if user :  #如果登录成功
+        #获取CTf实例列表
         check = Check()
         mysql = Mysqld()
-        #获取CTf实例列表
         challengeResult = mysql.selectChallengeListByUserName(user)
-        # print("challengeResult:",end='')
-        # print(challengeResult)
         challengeNum = mysql.showChallengeNum()
         # challengeTypeNum = getChallengeListByType.selectCtfChallengeTypeNum(user)   #用这个代替上面那个！今天不写了，难受，我写的垃圾代码。。。
         groupInfo = mysql.selectGroupInfoByUsername(user)
-        # 0表示为开始或者未结束并且即将开始的比赛，只能有一个
-        # if groupInfo!=0:
-        #     message = str(groupInfo[0]) + ':' + user
-        #     token = str(encrypt(message))
-        #     token = token.split('\'')[1]
-        # else:
-        #     token = ''
+        UserTypeNum = mysql.selectCtfTypeNum()
+        # 如果该用户没有创建队伍，那么跳转让他创建队伍
+        if groupInfo == 0:
+            return redirect('/group')
+
+        # 检查时候有token，如果没有，那么创建token
+        if request.cookies.get('token') is None:
+            resp = make_response(redirect(url_for('challenges')))
+            group_id = mysql.selectGroupidByusername(user)
+            message = str(group_id) + ':' + user
+            token = encrypt(message)
+            print(token)
+                # 添加token信息
+            resp.set_cookie('token', token)
+            return resp
         competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
         #转换为js需要的格式
         userChallengeinfo = mysql.selectUserChallengeListDesc()
@@ -126,7 +138,7 @@ def challenge():
 
         ctf_history_table = mysql.selectCtfHistoryTable()
         # 0为web 以此类推
-        return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult,ctf_history_table=ctf_history_table,examNum=challengeNum,groupInfo=groupInfo,userNotic=userNotice,competition_info=competition_info,end_time=end_time,competition_StatusCode=competition_StatusCode)
+        return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult,ctf_history_table=ctf_history_table,examNum=challengeNum,groupInfo=groupInfo,userNotic=userNotice,competition_info=competition_info,end_time=end_time,competition_StatusCode=competition_StatusCode,UserTypeNum=UserTypeNum)
     return render_template('user/login.html')
 
 
@@ -248,7 +260,7 @@ def groupSetting():
     user = session.get('user')
     if user:
         #获得用户名
-        username = request.args.get('user')
+        username = user
         mysql = Mysqld()
         # 得到用户信息
         userinfo = mysql.selectUserInfo(user)
@@ -257,10 +269,20 @@ def groupSetting():
         # print(groupinfo)
         #得到比赛信息
         competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
+
+
         # 如果存在比赛id
         if group_id!=0:
             groupinfo = mysql.selectGroupInfoByUsername(user)
             #队伍成员信息
+
+            # 如果这个身份为队长，那么
+            if groupinfo[3] == mysql.selectUserIdByUserName(user):
+                UserApplyList = mysql.selectUserGroupApplyByGroupId(group_id)
+            else:
+                UserApplyList = ()
+
+
             userGroupList = mysql.selectUserGroupListByGroupId(group_id)
             #解题信息
             userScoreList = mysql.selectUserScoreListByGroupId(group_id)
@@ -269,9 +291,9 @@ def groupSetting():
             # (('hsm', 1),)
             # (('web1', 0, 'hsm', 100, datetime.datetime(2021, 1, 5, 11, 5, 43)),)
             # print(userinfo)
-            return render_template("user/group.html",username=username,headerType="userSetting",userinfo=userinfo,group_id=group_id,groupinfo=groupinfo,userGroupList=userGroupList,competition_info=competition_info,userScoreList=userScoreList)
+            return render_template("user/group.html",username=username,headerType="userSetting",userinfo=userinfo,group_id=group_id,groupinfo=groupinfo,userGroupList=userGroupList,competition_info=competition_info,userScoreList=userScoreList,UserApplyList=UserApplyList)
         else:
-            return render_template("user/group.html",username=username,headerType="userSetting",userinfo=userinfo,group_id=group_id)
+            return render_template("user/group.html",username=username,headerType="userSetting",competition_info=competition_info,userinfo=userinfo,group_id=group_id)
 
     else:
         return render_template("user/login.html")
@@ -711,17 +733,17 @@ def create_group():
         mysql = Mysqld()
         userId = mysql.selectUserIdByUserName(user)
         if userId:
-            addgroup = mysql.addGroup(groupName, groupInfo)
+            addgroup = mysql.addGroup(groupName, groupInfo,userId)
             if addgroup == 1:
                 groupinfo = mysql.selectGroupInfoByGroupName(groupName)
-                print(groupinfo)
+                # print(groupinfo)
                 group_id = groupinfo[0]
-                print(group_id)
-                print(userId)
+                # print(group_id)
+                # print(userId)
                 if group_id != 0:
                     print("id:",end='')
                     # print(groupid)
-                    addusergrouplistResult = mysql.addUser_group_list(group_id,userId,1)
+                    addusergrouplistResult = mysql.addUser_group_list(group_id,userId)
                     if addusergrouplistResult==1:
                         return "1"
                     else:
@@ -820,7 +842,11 @@ def delUserGroup():
         if request.method=="POST":
             id = int(request.form.get('id'))
             mysql = Mysqld()
-            result = mysql.delGroupByGroup_Id(id)
+            rel = mysql.deluser_group_listByGroupId(id)
+            if rel==1:
+                result = mysql.delGroupByGroup_Id(id)
+            else:
+                result = 0
             if result==1:
                 return "1"
             else:
@@ -1030,10 +1056,16 @@ def search_group():
         if request.method == "POST":
             group_name = request.form.get('groupname')
             mysql = Mysqld()
+            mygroup_id = mysql.selectGroupInfoByUsername(user)
+            if mygroup_id:
+                if group_name == mygroup_id[1]:
+                    # 不能加入自己的id
+                    return "500"
+
             searchGroupResult = mysql.searchGroupListByGroupname(group_name)
             if searchGroupResult !=0 and searchGroupResult != -1:
-                group_name = searchGroupResult[0]
-                return str(group_name)
+                data ={'name':searchGroupResult[0],'id':searchGroupResult[3]}
+                return data
             else:
                 return "0"
         else:
@@ -1049,6 +1081,27 @@ def push_ws():
     return 'done!'
 
 
+# ajax实现用户申请
+@app.route('/group_apply',methods=["POST"])
+def group_apply():
+    user = session.get('user')
+    if user:
+        group_id = int(request.form.get('id'))
+        mysql = Mysqld()
+        user_id = mysql.selectUserIdByUserName(user)
+        checkapply = mysql.checkAddGroupApply(user_id,group_id)
+        if checkapply:
+            return "500"
+        result = mysql.addUserGroupApply(user_id,group_id)
+        if result == 1:
+            return "1"
+        else:
+            return "0"
+    else:
+        return "0"
+
+
+
 # 加入队伍组
 @socketio.on("join_group",namespace='/challenges')
 def on_join(data):
@@ -1057,10 +1110,10 @@ def on_join(data):
     arrmessage = message.split(':')
     group_id = arrmessage[0]
     username = arrmessage[1]
-    print(group_id)
-    print(username)
-    print(f"client {username} wants to join: {group_id}")
+    # print(group_id)
+    # print(username)
     join_room(group_id)
+    print(f"client {username} wants to join: {group_id}")
     # emit("group_message",f"Welcome to {group_id}, {username}", room=group_id)
 
 @socketio.on('leave')
@@ -1069,6 +1122,9 @@ def on_leave(data):
     room = data['room']
     leave_room(room)
     send(username + ' has left the room.', room=room)
+
+
+
 
 
 if __name__ == '__main__':
