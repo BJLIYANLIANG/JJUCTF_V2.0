@@ -176,9 +176,9 @@ class Mysqld:
 
 
 
-    def addUser_group_list(self,group_id,user_id):
-        sql = 'insert into user_group_list (group_id,user_id) values (%d,%d)' % (group_id, user_id)
-
+    def addUser_group_list(self,group_id,user_id,role):
+        sql = 'insert into user_group_list (group_id,user_id,role) values (%d,%d,%d)' % (group_id, user_id,role)
+        # print(sql)
         try:
             self.cursor.execute(sql)
             self.conn.commit()

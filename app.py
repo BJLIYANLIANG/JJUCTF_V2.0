@@ -732,7 +732,6 @@ def uploader():
 def create_group():
     user = session.get('user')
     if user:
-
         groupName = request.form.get('groupname')
         groupInfo = request.form.get('groupinfo')
         mysql = Mysqld()
@@ -748,7 +747,7 @@ def create_group():
                 if group_id != 0:
                     print("id:",end='')
                     # print(groupid)
-                    addusergrouplistResult = mysql.addUser_group_list(group_id,userId)
+                    addusergrouplistResult = mysql.addUser_group_list(group_id,userId,1)
                     if addusergrouplistResult==1:
                         return "1"
                     else:
