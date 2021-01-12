@@ -1,5 +1,5 @@
 from flask import Flask,url_for,send_from_directory,render_template,abort,request,make_response
-from flask import session,redirect
+from flask import session,redirect,Response
 from datetime import timedelta
 import hashlib
 from jjuctf.man_Sql import Mysqld
@@ -220,7 +220,12 @@ def userRegister():
 @app.route("/logout")
 def logout():
     session.clear()
-    return render_template("user/login.html",message="退出帐号成功，请重新登录")
+    resp = Response()
+    if request.cookies.get('token'):
+        resp.delete_cookie('token')
+    resp.data = render_template("user/login.html",message="退出帐号成功，请重新登录")
+    return resp
+
 
 
 # AWD模块
@@ -1057,12 +1062,13 @@ def search_group():
             group_name = request.form.get('groupname')
             mysql = Mysqld()
             mygroup_id = mysql.selectGroupInfoByUsername(user)
-            if mygroup_id:
+            if mygroup_id :
                 if group_name == mygroup_id[1]:
                     # 不能加入自己的id
                     return "500"
 
             searchGroupResult = mysql.searchGroupListByGroupname(group_name)
+            print(searchGroupResult)
             if searchGroupResult !=0 and searchGroupResult != -1:
                 data ={'name':searchGroupResult[0],'id':searchGroupResult[3]}
                 return data
@@ -1102,7 +1108,7 @@ def group_apply():
 
 
 
-# 加入队伍组
+# 加入队伍组,/challenges上用的
 @socketio.on("join_group",namespace='/challenges')
 def on_join(data):
     token = data["token"]
@@ -1122,9 +1128,6 @@ def on_leave(data):
     room = data['room']
     leave_room(room)
     send(username + ' has left the room.', room=room)
-
-
-
 
 
 if __name__ == '__main__':

@@ -82,13 +82,6 @@ class Check:
 
         return 0
 
-
-
-
-
-
-
-
     def splitdatetime(self,datetime):
         a = datetime.split('-')
         b = a[2].split(' ')

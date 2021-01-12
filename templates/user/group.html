@@ -260,18 +260,22 @@
                 type: "post",
                 data: {"groupname": name},
                 success: function (result) {
+                    {#alert(result.id);#}
                     if(result.id){
                          $('#search_result_table').empty();
                         $('#search_result_table').append('<tr><td width="70%">'+result.name+'</td><td width="30%"><button class="btn btn-info" onclick="group_apply('+result.id+')">申请加入</button></td></tr>');
                     }
-                    if(result == "500"){
+                    else {
+                        if(result == "500"){
                         $('#search_result_table').empty();
                         $('#search_result_table').append('<tr> <td>您已经加入到这个队伍哦！</td></tr>');
-                    }
-                    else {
+                        }
+                        else {
                         $('#search_result_table').empty();
                         $('#search_result_table').append('<tr> <td>无结果</td></tr>');
+                        }
                     }
+
                     },
              error:function () {
                 alert("发送请求失败，请检查网络连接窗台");
