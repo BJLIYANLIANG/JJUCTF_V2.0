@@ -1,5 +1,6 @@
 import re
 import time
+import datetime
 class Check:
     def __init__(self):
         pass
@@ -37,50 +38,30 @@ class Check:
 
     # 检查是否是比赛时间，如果是则返回1,不是则返回0
     def checkCompetition_start(self,start_time, end_time):
-        date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        # print(date)
-        year, moon, day, h, m, s = self.splitdatetime(date)
-        print(year, moon, day, h, m, s)
-        start_year, start_moon, start_day, start_h, start_m, start_s = self.splitdatetime(start_time)
-        print(start_year, start_moon, start_day, start_h, start_m, start_s)
-        end_year, end_moon, end_day, end_h, end_m, end_s = self.splitdatetime(end_time)
-        print(end_year, end_moon, end_day, end_h, end_m, end_s)
-        if year > start_year and year < end_year:
+        current_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        # type(current_time)
+        if current_time.__ge__(start_time) and current_time.__le__(end_time):
             return 1
-        elif year==start_year and year == end_year:
-            if moon >start_moon and moon < end_moon:
-                return 1
-            elif moon == start_moon and moon == end_moon:
-                if day > start_day and day < end_day:
-                    return 1
-                elif day== start_day and day == end_day:
-                    if h > start_h and h < end_h:
-                        return 1
-                    elif h == start_h and h == end_h:
-                        if m >  start_m and h < end_m:
-                            return 1
-                        elif m == start_m and m == end_m:
-                            if s> start_s and s < end_s:
-                                return 1
-                            elif s == start_s and s == end_s:
-                                return 1
-                            else:
-                                return 0
-                        else:
-                            return 0
-
-                    return 0
-                elif day == start_day:
-                    if h>start_h:
-                        return 1
+        else:
+            if current_time.__lt__(start_time):
                 return 0
-            elif moon==start_moon:
-                if day >start_day:
-                    return 1
+            else:
+                return 2
+        # print(date)
+        # year, moon, day, h, m, s = self.splitdatetime(date)
+        # print(year, moon, day, h, m, s)
+        # start_year, start_moon, start_day, start_h, start_m, start_s = self.splitdatetime(start_time)
+        # print(start_year, start_moon, start_day, start_h, start_m, start_s)
+        # end_year, end_moon, end_day, end_h, end_m, end_s = self.splitdatetime(end_time)
+        # print(end_year, end_moon, end_day, end_h, end_m, end_s)
 
-            return 0
 
-        return 0
+
+
+                    # 2020-7-7 14:14 start
+                    # 2021-1-1 1:11 current
+                    # 2021-7-7 14:14 end
+
 
     def splitdatetime(self,datetime):
         a = datetime.split('-')
@@ -94,8 +75,10 @@ class Check:
         s = c[2]
         return (year, moon, day, h, m, s)
 
-# a = Check()
-# b = a.checksqlSecure("select;ssadsdfdsa")
+
+# current_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+# a = Check(
+# b = a.checksqlSecure()
 # print(b)
 # b = a.checkflag('test123',"flag{jjuctf}",1)
 # print(b)

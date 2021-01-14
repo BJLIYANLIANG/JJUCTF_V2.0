@@ -92,16 +92,12 @@ def login():
 @app.route('/challenges')
 def challenge():
     user = session.get('user')
-    # print('cookie')
-
-        #
-        #
-
     if user :  #如果登录成功
         #获取CTf实例列表
         check = Check()
         mysql = Mysqld()
         challengeResult = mysql.selectChallengeListByUserName(user)
+        print(challengeResult)
         challengeNum = mysql.showChallengeNum()
         # challengeTypeNum = getChallengeListByType.selectCtfChallengeTypeNum(user)   #用这个代替上面那个！今天不写了，难受，我写的垃圾代码。。。
         groupInfo = mysql.selectGroupInfoByUsername(user)
@@ -109,17 +105,16 @@ def challenge():
         # 如果该用户没有创建队伍，那么跳转让他创建队伍
         if groupInfo == 0:
             return redirect('/group')
-
         # 检查时候有token，如果没有，那么创建token
-        if request.cookies.get('token') is None:
-            resp = make_response(redirect(url_for('challenges')))
-            group_id = mysql.selectGroupidByusername(user)
-            message = str(group_id) + ':' + user
-            token = encrypt(message)
-            print(token)
-                # 添加token信息
-            resp.set_cookie('token', token)
-            return resp
+        # if request.cookies.get('token') is None:
+        #     resp = make_response(redirect(url_for('challenges')))
+        #     group_id = mysql.selectGroupidByusername(user)
+        #     message = str(group_id) + ':' + user
+        #     token = encrypt(message)
+        #     print(token)
+        #         # 添加token信息
+        #     resp.set_cookie('token', token)
+        #     return resp
         competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
         #转换为js需要的格式
         userChallengeinfo = mysql.selectUserChallengeListDesc()
@@ -127,8 +122,7 @@ def challenge():
         startDateTime = str(competition_info[3])
         endDateTime = str(competition_info[4])
         end_time = str(competition_info[4]).replace('-','/')
-        # 比赛状态码 如果比赛正在进行，则结果为1,否则为0
-        # print(startDateTime,endDateTime)
+        # 比赛状态码 如果比赛正在进行，则结果为1,已结束为2,未开始为0
         competition_StatusCode = check.checkCompetition_start(startDateTime,endDateTime)
         # print('conpetitioncode')
         # print(competition_StatusCode)
@@ -142,21 +136,18 @@ def challenge():
     return render_template('user/login.html')
 
 
-
-
-
 # index
 # ctf解题模式
 @app.route('/')
 @app.route('/index')
 def index():
     user = session.get('user')
-    mysql = Mysqld()
-    #比赛信息
-    competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
     if user :  #如果登录成功
+        mysql = Mysqld()
+        # 比赛信息
+        competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
         return render_template("user/index.html",username=user,headerType="index",competition_info=competition_info)
-    return render_template('user/index.html',headerType="index")
+    return render_template('user/login.html')
 
 
 
@@ -1152,6 +1143,21 @@ def admin_competition_list():
         return render_template('admin/competition_list.html',CompetitionList=CompetitionList)
     else:
         return render_template('admin/login.html')
+
+
+
+# 用户使用的比赛列表
+@app.route('/user_competition_list')
+def user_competition_list():
+    user = session.get('user')
+    if user:
+        mysql = Mysqld()
+        competitionlist = mysql.selectCompetitionInfoList()
+        print(competitionlist)
+        return render_template('user/competition_list.html',competitionlist=competitionlist)
+    else:
+        return render_template('user/login.html')
+
 if __name__ == '__main__':
     # app.run()
     socketio.run(app,host='0.0.0.0',port=5000,debug=True)

@@ -63,30 +63,30 @@
     </div>
 {% if competition_StatusCode==1 %}
     <div class="row" style="min-height: 30rem;">
-        <div class="col-md-2 col-sm-12">
+        <div class="col-md-2">
              <div class="list-group"  >
                  <a href="#"  class="list-group-item list-group-item-action list-group-item-dark " disabled  data-toggle="pill" style="background-color: #104E70;color: white">比赛题目</a>
 {#                 {% for typeNum in examNum  %}#}
 {#                 <a class="list-group-item list-group-item-action" href="#{{ typeNum[0] }}" data-toggle="pill">{{ typeNum[0] }} <span class="badge badge-success ">{{ typeNum[1] }}</span></a>#}
 {#                 {% endfor %}#}
              {% for i in UserTypeNum  %}
-                 <a class="list-group-item list-group-item-action {% if i[0]==0 %}active{% endif %}" href="#{% if i[0]==0 %}Web{% elif i[0]==1 %}Misc{% elif i[0]==2 %}Crypto{% elif i[0]==3 %}Reverse{% elif i[0]==4 %}Pwn{% endif %}" data-toggle="pill">{% if i[0]==0 %}Web{% elif i[0]==1 %}Misc{% elif i[0]==2 %}Crypto{% elif i[0]==3 %}Reverse{% elif i[0]==4 %}Pwn{% endif %} <span class="badge badge-success ">{{ i[1] }}</span></a>
+                 <a class="list-group-item list-group-item-action" href="#{% if i[0]==0 %}Web{% elif i[0]==1 %}Misc{% elif i[0]==2 %}Crypto{% elif i[0]==3 %}Reverse{% elif i[0]==4 %}Pwn{% endif %}" data-toggle="pill">{% if i[0]==0 %}Web{% elif i[0]==1 %}Misc{% elif i[0]==2 %}Crypto{% elif i[0]==3 %}Reverse{% elif i[0]==4 %}Pwn{% endif %} <span class="badge badge-success ">{{ i[1] }}</span></a>
                  {% endfor %}
 {#             UserTypeNum#}
              </div>
         </div>
-        <div class="col-md-7 col-sm-12">
+        <div class="col-md-7">
            <!-- 选项卡菜单-->
 <!-- 选项卡面板 -->
             <div  class="tab-content">
 {#    web#}
-        <div class="tab-pane fade show active" id="Web">
+        <div class="tab-pane fade in active" id="Web">
             <div class="row" style="border-color: #1c2b36;border: 0.5rem">
              {% if challengeResult %}
                  {% for i in challengeResult %}
                      {% if i[4]==0 %}
             <div class="col-md-3">
-                <div class="card " style="background-color:#A9A9A9;color: #ffffff;font-size: 17px" >
+                <div class="card bg-dark" style="color: #ffffff;font-size: 17px" >
                     <div class="card-header ">
                         <div class="card-group" style="float: left"><b>{{ i[1] }}</b></div>
                         <div class="card-group" style="float: right;color:#191970;font-size: 20px">{{ i[2] }}</div>
@@ -228,9 +228,14 @@
                         {% else %}
                             <div class="col-md-6 col-md-auto"><span style="color: red" class="modal_marger ">未解答</span></div>
                             {% endif %}
+{#                        <div class="col-md-12" style="font-size: 0.7rem">#}
+{#                            <strong  title="欢迎妹子打电话"><span>第一名</span>：欢迎妹子打电话</strong>#}
+{#                        </div>#}
                     </div>
                         <div class="row row-no-gutters font_Size modal_marger ">
                             <div class="col-md-12" style="color: #458B00">答对人数:<span class="modal_marger">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+{#                            <div class="col-md-12" style="color: #1E90FF">题目名称:<span class="modal_marger">{{ i[1] }}</span></div>#}
+{#                            <div class="col-md-12" style="color: #5D478B;font-size: 0.8rem"><span class="modal_marger" href="static/">{{ i[3] }}</span></div>#}
                         {% if i[7]==1 %}
                             <div class="col-md-12">题目附件:<a class="modal_marger" href="/download/{{ i[8] }}">附件1</a></div>
                             {% endif %}
@@ -330,9 +335,14 @@
                         {% else %}
                             <div class="col-md-6 col-md-auto"><span style="color: red" class="modal_marger ">未解答</span></div>
                             {% endif %}
+{#                        <div class="col-md-12" style="font-size: 0.7rem">#}
+{#                            <strong  title="欢迎妹子打电话"><span>第一名</span>：欢迎妹子打电话</strong>#}
+{#                        </div>#}
                     </div>
                         <div class="row row-no-gutters font_Size modal_marger ">
                             <div class="col-md-12" style="color: #458B00">答对人数:<span class="modal_marger">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+{#                            <div class="col-md-12" style="color: #1E90FF">题目名称:<span class="modal_marger">{{ i[1] }}</span></div>#}
+{#                            <div class="col-md-12" style="color: #5D478B;font-size: 0.8rem"><span class="modal_marger" href="static/">{{ i[3] }}</span></div>#}
                         {% if i[7]==1 %}
                             <div class="col-md-12">题目附件:<a class="modal_marger" href="/download/{{ i[8] }}">附件1</a></div>
                             {% endif %}
@@ -588,6 +598,7 @@
                                         <button type="submit"  class="btn btn-dark  " onclick="postflag('{{ i[0] }}','flag{{ i[0] }}')">提交</button>
                                     </div>
                                 {% endif %}
+
                         </div>
                 </div>
             </div><!-- /.modal-content -->
@@ -596,11 +607,12 @@
     {% endif  %}
     {% endfor %}
     {% endif %}
-         </div>
+             {#模态框#}
+         </div>   {# 结束row #}
     </div>
 </div>
         </div>
-        <div class="col-md-3 col-sm-12">
+        <div class="col-md-3">
                <div class="row">
                 <div class="col-md-12">
                             <div class="time btn-group text-right ">
@@ -647,7 +659,6 @@
             </div>
         </div>
     </div>
-
     {% else %}
     <div class="row">
     <div class="col-md-12">
@@ -686,6 +697,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
         function getCookie(name){
             var strcookie = document.cookie;//获取cookie字符串
             var arrcookie = strcookie.split("; ");//分割
@@ -698,19 +710,21 @@
             }
             return "";
         };
+
+        {#var socket = io();#}
         var url = location.href;
         var socket = io.connect(url);
         //申请加入这个队伍
         var token = getCookie("token");
         socket.emit("join_group", { "token":token});
         //加入后接收消息回调
+
         socket.on("group_message", (res) => {
                 {#alert(res.challenge_id);#}
                 $("#button"+res.challenge_id).empty();
                 $("#button"+res.challenge_id).append('<button class="btn btn-success btn-lg btn-block" style="border-color: #696969" data-toggle="modal" data-target="#modal'+res.challenge_id+'">已解答</button>');
                 $('#div'+res.challenge_id).empty();
                 $('#div'+res.challenge_id).append('<div> <a class="text-success">已解答，获得'+res.score+'分</a></div>');
-
                 $('#span'+res.challenge_id).empty();
                 $('#span'+res.challenge_id).append('<span class="text-success modal_marger ">已解答</span>');
 
@@ -719,8 +733,11 @@
             var t = res;
             $('#challenge_list').append('<tr><td>'+t.name+'战队</td><td class="text-danger">攻破了</td><td>'+t.target+'</td><td>'+t.date+'</td></tr>');
         })
+
+
     })
 </script>
+
 {% include'user/footer.html' %}
 
 

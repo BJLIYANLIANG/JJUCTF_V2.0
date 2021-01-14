@@ -1,12 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>比赛列表</title>
-    <!-- 开发环境版本，包含了有帮助的命令行警告 -->
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-</head>
-<body>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>register-九江学院网络安全实训平台</title>
+      <link rel="icon" href="/static/favicon.ico">
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <!-- Brand -->
+  <a class="navbar-brand" href="/">JJUCTF</a>
+  <!-- Links -->
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <a class="nav-link" href="#">大数据展示</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/user_competition_list">比赛列表</a>
+    </li>
 
-</body>
+    <!-- Dropdown -->
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+        关于
+      </a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="#">Link 1</a>
+        <a class="dropdown-item" href="#">Link 2</a>
+        <a class="dropdown-item" href="#">Link 3</a>
+      </div>
+    </li>
+  </ul>
+</nav>
+<div class="container-fluid">
+    <br>
+    <div class="row">
+        <div class="col-md-4">
+            <ul class="list-group">
+                <li class="list-group-item">First item</li>
+                <li class="list-group-item">Second item</li>
+                <li class="list-group-item">Third item</li>
+            </ul>
+        </div>
+        <div class="col-md-8">
+            <div>
+                {% for i in competitionlist %}
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">名称:<span>{{ i[1] }}</span></div>
+                            <div class="col-md-5">比赛时间:{{ i[3] }}~{{ i[4] }}<span class="badge badge-success">正在进行中</span></div>
+                            <div class="col-md-3"><a href="/challenges"><button class="btn btn-success">进入比赛</button></a></div>
+                            <div class="col-md-12">简介:{{ i[2] }}</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+  <script src="/static/js/jquery-3.5.1.min.js"></script>
+  <script src="/static/js/bootstrap.min.js"></script>
+  </body>
 </html>
