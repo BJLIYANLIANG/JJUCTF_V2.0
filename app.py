@@ -870,11 +870,15 @@ def manGroupInfo():
 @app.route("/competition")
 def competition():
     admin = session.get("admin")
+    id_str = request.args.get('id')
+    try:
+        id = int(id_str)
+    except:
+        return "参数错误!"
     if admin:
         mysql = Mysqld()
-        result = mysql.selectCompetitionInfoList()[0]
-        print(result)
-        return render_template("admin/competition_info.html",competitionInfo=result)
+        result = mysql.selectCompetitionInfoListById(id)
+        return render_template("admin/competition_info.html",competitionInfo=result,id=id)
     else:
         return render_template("admin/login.html")
 # form表单实现
@@ -923,18 +927,29 @@ def changeCompetitionInfo():
     admin = session.get("admin")
     if admin:
         if request.method=="POST":
+            id_str = request.form.get('id')
+            print(id_str)
+            try:
+                # print("id:"+str(id))
+                id = int(id_str)
+            # except:
+                # id = 0
+            except:
+                return redirect(url_for('admin_competition_list',message="修改失败！检测到特殊字符"))
             name = request.form.get('name')
             info = request.form.get('info')
             start_date = str(request.form.get('start_date')).replace('T',' ')+":00"
             end_date  = str(request.form.get('end_date')).replace('T',' ')+":00"
+            # print(start_date)
+            # print(end_date)
             start_time = datetime.datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S")
             end_time = datetime.datetime.strptime(end_date,"%Y-%m-%d %H:%M:%S")
             mysql = Mysqld()
-            result = mysql.changeCompetitionInfo(name,info,start_time,end_time)
+            result = mysql.changeCompetitionInfo(name,info,start_time,end_time,id)
             if result==1:
-                return redirect(url_for('competition',message="修改成功！"))
+                return redirect(url_for('admin_competition_list',message="修改成功！"))
             else:
-                return redirect(url_for('competition',message="修改失败！"))
+                return redirect(url_for('admin_competition_list',message="修改失败！"))
 
     else:
         return render_template("admin/login.html")
@@ -1128,7 +1143,15 @@ def on_leave(data):
     leave_room(room)
     send(username + ' has left the room.', room=room)
 
-
+@app.route('/admin_competition_list')
+def admin_competition_list():
+    admin = session.get('admin')
+    if admin:
+        mysql = Mysqld()
+        CompetitionList = mysql.selectCompetitionInfoList()
+        return render_template('admin/competition_list.html',CompetitionList=CompetitionList)
+    else:
+        return render_template('admin/login.html')
 if __name__ == '__main__':
     # app.run()
     socketio.run(app,host='0.0.0.0',port=5000,debug=True)

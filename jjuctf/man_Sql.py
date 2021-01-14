@@ -645,20 +645,27 @@ class Mysqld:
         except:
             return 0
     def selectCompetitionInfoList(self):
-        sql = 'select status,name,info,start_date,end_date from competition'
+        sql = 'select status,name,info,start_date,end_date,id from competition'
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchall()
             return result
         except:
             return 0
+    def selectCompetitionInfoListById(self,id):
+        sql = 'select status,name,info,start_date,end_date,id from competition where id=%d'%(id)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            return result
+        except:
+            return 0
 
-
-    def changeCompetitionInfo(self,name,info,start_date,end_date):
-        date = '2021-01-04 15:12:02'
-        date2= '2020-12-30 20:24:00'
-        sql = 'update competition set name="%s",info="%s",start_date="%s",end_date="%s" where status=0'%(name,info,start_date,end_date)
-        print(sql)
+    def changeCompetitionInfo(self,name,info,start_date,end_date,id):
+        # date = '2021-01-04 15:12:02'
+        # date2= '2020-12-30 20:24:00'
+        sql = 'update competition set name="%s",info="%s",start_date="%s",end_date="%s" where id=%d'%(name,info,start_date,end_date,id)
+        # print(sql)
         try:
             self.cursor.execute(sql)
             self.conn.commit()
