@@ -1,0 +1,77 @@
+{% include "admin/header.html" %}
+<div class="main-container">
+    <div class="modal fade" id="changeCompetition">
+            <div class="modal-dialog">
+                <div class="modal-content">
+      <!-- 模态框头部 -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">比赛信息</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form method="post" action="/changeCompetitionInfo">
+                                    <div class="form-group">
+                                    <label for="ptname">比赛名称:</label>
+                                        <input type="text" name="name" value="{{ competitionInfo[1] }}" id="ptname">
+                                    </div>
+                                    <div class="form-group">
+                                    <label for="ptinfo">比赛简介:</label>
+                                        <textarea name="info" class="form-control" placeholder="{{ competitionInfo[2] }}" rows="3"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                    <label for="ptstart" >开始时间:</label>
+                                        <input type="datetime-local" name="start_date" id="ptstart">
+                                    </div>
+                                    <div class="form-group">
+                                    <label for="ptend">结束时间:</label>
+                                        <input type="datetime-local"  name="end_date" id="ptend">
+                                    </div>
+
+                                <div class="btn-group">
+                                <button type="submit"  class="btn btn-info">发布</button>
+                                </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div><!--modal-->
+
+
+        <div class="padding">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="/admin">首页</a>
+                <span class="breadcrumb-item active">比赛信息</span>
+            </nav>
+        </div>
+        <div class="padding">
+            <div class="box">
+                <div class="heading">
+                    <h3 class="title">比赛管理</h3>
+                </div>
+                <div class="box-inner">
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#changeCompetition">修改比赛信息</button>
+                </div>
+            </div>
+        </div>
+        <div class="padding">
+            <div class="box">
+                <div class="heading">
+                    <h3 class="title">比赛信息</h3>
+                </div>
+                <div class="box-inner">
+                    <p>比赛名称:&nbsp;<span class="text-info">{{ competitionInfo[1] }}</span></p>
+                    <p>介绍&nbsp;&nbsp;:&nbsp;<span class="text-info">{{ competitionInfo[2] }}</span></p>
+                    <p>开始时间:&nbsp;<span class="text-info">{{ competitionInfo[3] }}</span></p>
+                    <p>结束时间:&nbsp;<span class="text-info">{{ competitionInfo[4] }}</span></p>
+                </div>
+            </div>
+        </div>
+
+</div>
+
+{% include "admin/footer.html" %}

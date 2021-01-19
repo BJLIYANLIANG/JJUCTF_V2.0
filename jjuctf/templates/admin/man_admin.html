@@ -1,0 +1,133 @@
+{% include "admin/header.html" %}
+
+    <div class="main-container">
+        <div class="padding">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="admin">首页</a>
+                <a class="breadcrumb-item" href="#">用户管理</a>
+                <span class="breadcrumb-item active">管理员</span>
+            </nav>
+        </div>
+        <div class="padding">
+            <div class="box">
+                <div class="heading">
+                    <h3 class="title">管理</h3>
+                </div>
+                <div class="box-inner">
+                     <div >
+                 <a href="/add_admin"><input  type="button" value="新增用户" id="addBtn"  class="btn btn-success  btn-sm" data-backdrop="false"></a>
+                 <a><input  type="button" value="修改用户" id="editBtn"  class="btn btn-success  btn-sm"  data-backdrop="false"></a>
+                 <a><input  type="button" value="删除用户" id="deleteBtn" class="btn btn-danger btn-sm"></a>
+             </div>
+                </div>
+            </div>
+        </div>
+        <div class="padding">
+            <table id="sample-table-1" class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr >
+                    <th class="center">
+                        <label>
+                            <input type="checkbox" class="ace" />
+                            <span class="lbl"></span>
+                        </label>
+                    </th>
+                    <th>管理员ID</th>
+                    <th>管理员用户名</th>
+                    <th>邮箱</th>
+                    <th>电话号码
+                    </th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for i in adminList %}
+                <tr>
+                    <td class="center">
+                        <label>
+                            <input type="checkbox" class="ace" />
+                            <span class="lbl"></span>
+                        </label>
+                    </td>
+                    <td>
+                        <a href="#">{{ i[0] }}</a>
+                    </td>
+                    <td>{{ i[1] }}</td>
+                    <td>{{ i[2] }}</td>
+                    <td>{{ i[3] }}</td>
+                    <td>
+                        <span>{% if i[4]==0 %}禁用{% else %}正常{% endif %}</span>
+                    </td>
+                    <td style="width: 32%">
+
+                            <button class="btn btn-success">修改信息</button>
+                            <button class="btn btn-info">重置密码</button>
+                            <button class="btn  btn-danger" onclick="delAdmin({{ i[0] }})">删除账户</button>
+                            <button class="btn  btn-warning" onclick="changeAdminStatus({{ i[0] }})">{% if i[4]==1 %}禁用账户{% else %}激活账户{% endif %}</button>
+
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+<script>
+      function delAdmin(id){
+        var result = confirm("确定要删除吗？");
+        if(result==true){
+              $.ajax({
+                url: "/delete_admin",
+                type: "post",
+                data: {"admin_id":id},
+                success: function (result) {
+                    if (result == "1") {
+                        alert("删除成功");
+                        window.location.reload()
+                    }
+                    else{
+                        alert("删除管理员信息错误！")
+                    }},
+             error:function () {
+
+                alert("发送请求失败");
+            }
+
+            }
+        )
+        }
+        {#var a = document.getElementById(id).value;#}
+
+
+    };
+
+      function changeAdminStatus(id){
+        var result = confirm("确定要修改状态？");
+        if(result==true){
+              $.ajax({
+                url: "/changeAdminStatus",
+                type: "post",
+                data: {"admin_id":id},
+                success: function (result) {
+                    if (result == "1") {
+                        alert("修改成功");
+                        window.location.reload()
+                    }
+                    else{
+                        alert("删除管理员信息错误！")
+                    }},
+             error:function () {
+
+                alert("发送请求失败");
+            }
+
+            }
+        )
+        }
+
+
+    };
+
+</script>
+   {% include "admin/footer.html" %}

@@ -1,0 +1,56 @@
+{% include "admin/header.html" %}
+
+    <div class="main-container">
+        <div class="padding">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="admin">首页</a>
+                <a class="breadcrumb-item" href="#">靶场导入</a>
+                <span class="breadcrumb-item active">导入其他靶场</span>
+            </nav>
+        </div>
+
+        <div class="padding">
+            <div class="form-group">
+       <label for="exampleInputEmail1">题目类型</label>
+                <div class="btn-group dropdown" id="dropdown">
+		  <select class="form-group form-control">
+			<option>WEB</option>
+			<option>MISC</option>
+			<option>Reverse</option>
+			<option>Pwn</option>
+			<option>Crypto</option>
+          </select>
+                </div>
+            </div>
+
+
+             <form role="form">
+				<div class="form-group">
+					 <label for="exampleInputEmail1">题目名称</label><input type="text" class="form-control" id="exampleInputEmail1" />
+				</div>
+           	<div class="form-group">
+					 <label for="exampleInputEmail1">题目提示</label><input type="text" class="form-control" id="exampleInputEmail1" />
+				</div>
+                 <div class="form-group">
+					 <label for="exampleInputEmail1">URL链接</label><input type="text" placeholder="输入外部靶场url:http://ip:port" class="form-control" id="exampleInputEmail1" />
+				</div>
+           	    <div class="form-group">
+					 <label for="exampleInputEmail1">题目分值</label><input type="text" class="form-control" id="exampleInputEmail1" />
+                </div>
+                 <div class="form-group">
+					 <label for="exampleInputEmail1">Flag值</label><input type="text" class="form-control" id="exampleInputEmail1" />
+                </div>
+           <div class="form-group">
+					 <label for="exampleInputFile">上传附件</label><input type="file" id="exampleInputFile" />
+					<p class="help-block">
+						这里上传附件，比如misc.zip
+					</p>
+				</div>
+				<button type="submit" class="btn btn-primary">确认上传</button>
+			</form>
+        </div>
+
+
+    </div>
+
+   {% include "admin/footer.html" %}

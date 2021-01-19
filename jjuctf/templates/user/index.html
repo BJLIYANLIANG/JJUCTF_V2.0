@@ -1,0 +1,313 @@
+{% include "user/header.html" %}
+<script src="/static/js/world.js"></script>
+<style>
+    body{
+        background-color: #333;
+    }
+    .map{
+        background-color: #333;
+    }
+
+</style>
+<div  class="container-fluid" >
+   <div class="row">
+        <div class="col-md-12">
+            <div id="map2" class="map" style="width: 100%;height: 800px"></div>
+        </div>
+   </div>
+</div>
+
+
+
+
+
+
+
+<script>
+    var myChart = echarts.init(document.getElementById('map2'));
+
+    var GeoCoordMap = {
+    '中国成都': [100.501765, 30.756331],
+    '九江': [115.953555, 29.671882],
+    '美国': [-83.357567, 35.951935],
+    '巴西': [-56.903606, -5.480594],
+    '澳大利亚': [135.209296, -20.86882]
+};
+var Datas = [
+    [{
+        name: '中国成都',
+        value: "192.168.1.1",
+        price: 100,
+        num: 2
+    }],
+     [{
+        name: '九江',
+        value: "192.168.4.1",
+        price: 100,
+        num: 2
+    }],
+    [{
+        name: '美国',
+        value: "192.168.2.1",
+        price: 100,
+        num: 2
+    }],
+    [{
+        name: '巴西',
+        value: "192.168.3.1",
+        price: 100,
+        num: 2
+    }],
+    [{
+        name: '澳大利亚',
+        value: "192.168.0.1",
+        price: 100,
+        num: 3
+    }],
+];
+var convertData = function(data) {
+    var res = [];
+    {#data = ["成都"]#}
+    for (var i = 0; i < data.length; i++) {
+        var dataItem = data[i];
+        // 			console.log('dataItem',dataItem) //第二个数据
+        var fromCoord = [100.501765, 30.756331];
+        var toCoord = GeoCoordMap[dataItem[0].name];
+        {#var toCoord = GeoCoordMap['九江'];#}
+        {#alert(dataItem[0].name)#}
+        // 			console.log('toCoord',toCoord);//第一个地址
+        if (fromCoord && toCoord) {
+            res.push([{
+                coord: fromCoord,
+                value: dataItem[0].value,
+            }, {
+                coord: toCoord,
+                dataItem: dataItem
+            }]);
+        }
+    }
+    return res;
+};
+
+var series = [];
+[
+    ['中国成都', Datas]
+].forEach(function(item, i) {
+    series.push(
+
+        {
+            type: 'lines',
+            zlevel: 0,
+            effect: {
+                // 括 'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none'
+                show: true,
+                period: 4, //箭头指向速度，值越小速度越快
+                trailLength: 0.02, //特效尾迹长度[0,1]值越大，尾迹越长重
+                symbol: 'diamond', //箭头图标
+                symbolSize: 5, //图标大小
+                color: "#ff3355"
+            },
+            lineStyle: {
+                normal: {
+                    width: 0, //尾迹线条宽度
+                    opacity: 0, //尾迹线条透明度
+                    curveness: 0.2, //尾迹线条曲直度
+                    color: function(params) { //圆环显示文字
+                        return '#359fd1'
+                    },
+                },
+                color: 'red'
+            },
+            data: convertData(item[1])
+        }, {
+            type: 'effectScatter',
+            coordinateSystem: 'geo',
+            zlevel: 2,
+            rippleEffect: { //涟漪特效
+                period: 4, //动画时间，值越小速度越快
+                brushType: 'fill', //波纹绘制方式 stroke, fill
+                scale: 4.2 //波纹圆环最大限制，值越大波纹越大
+            },
+            // 括 'circle', 'rect', 'roundRect', 'triangle', 'diamond', 'pin', 'arrow', 'none'
+            // symbol: 'none',
+            symbol: 'circle',
+            symbolSize: function(val) {
+                return 5; //圆环大小
+            },
+            itemStyle: {
+                normal: {
+                    show: false,
+                    // color: '#f00'
+                    color: function(params) { //圆环显示文字
+                        return '#ff0000'
+                    },
+                    borderWidth: 5,
+                    shadowColor: '#359fd1', //发光?效果
+                    shadowBlur: 4
+                }
+            },
+            data: item[1].map(function(dataItem) {
+                // 	console.log('dataItem',dataItem[0]);
+                return {
+                    dataItem: dataItem,
+                    name: dataItem[0].name,
+                    value: GeoCoordMap[dataItem[0].name].concat([dataItem[0].value])
+                };
+            }),
+        },
+        //被攻击点
+        {
+            type: 'scatter',
+            coordinateSystem: 'geo',
+            zlevel: 1,
+            rippleEffect: {
+                period: 4,
+                brushType: 'stroke',
+                scale: 4
+            },
+            symbol: 'circle',
+            color: 'rgba(128, 220, 251, .6)',
+            symbolSize: 20,
+            data: [{
+                name: item[0],
+                value: GeoCoordMap[item[0]].concat(["192.168.2.1"]),
+            }],
+        }
+    );
+});
+
+option = {
+    type: 'map',
+    mapType: 'world',
+    tooltip: {
+        formatter: function(e) {
+            if (typeof(e.value)[2] == "undefined" || e.name == "") {
+                return e.name;
+            } else {
+                return 'IP<br>' + e.name + ':' + e.value[2];
+            }
+        }
+    },
+    geo: {
+        map: 'world',
+        zoom: 1.2,
+        label: {
+            emphasis: {
+                show: true,
+                color:'white'
+            }
+        },
+        roam: false, //是否允许缩放
+        itemStyle: {
+            normal: {
+                color: "#2F4F4F", //地图背景色
+                borderColor: '#44d9fb', //省市边界线00fcff 516a89
+                borderWidth: 1
+            },
+            emphasis: {
+                color: 'rgba(104, 217, 251, 127)' //悬浮背景
+            }
+        },
+    },
+    series: series
+
+};
+myChart.setOption(option);
+</script>
+    <script>
+        {#var rank = echarts.init(document.getElementById('rank'));#}
+
+         function drawPercentage(container, yData, ratio, surplus) {
+        var myChart1 = echarts.init(document.getElementById('rank'));
+        var option = {
+            grid: {
+                left: '8%',
+                right: '8%',
+                bottom: '4%',
+                top: 10,
+                containLabel: true
+            },
+            xAxis: {
+                show: false
+            },
+            yAxis: {
+                type: 'category',
+                inverse: true,
+                //城市名称
+                data: yData,
+                axisTick: {
+                    show: false
+                },
+                axisLine: {
+                    show: false
+                },
+                axisLabel: {
+                    show: true,
+                    color: function (value, index) {
+                        if(index == 0) {
+                            return 'red';
+                        }
+                        if(index == 1) {
+                            return '#ff8447';
+                        }
+                        if(index == 2) {
+                            return '#ffcc00';
+                        }
+                        return 'rgb(18,205,12)'
+                    },
+                    fontSize: 15,
+                    fontWeight: 'bold'
+                },
+            },
+            series: [
+                {
+                    type: 'bar',
+                    stack: 'chart',
+                    z: 3,
+                    barWidth: '20',
+                    itemStyle: {
+                        normal: {
+                            color: new echarts.graphic.LinearGradient(1,
+                                0, 0, 1, [{
+                                    offset: 0,
+                                    color: '#2A6BCD'
+                                }, {
+                                    offset: 1,
+                                    color: '#34F6F8'
+                                }])
+                        }
+                    },
+                    label: {
+                        normal: {
+                            position: 'right',
+                            show: true,
+                            color: 'white',
+                            formatter: '{c}%'
+                        }
+                    },
+                    data: ratio
+                },
+                {
+                    type: 'bar',
+                    stack: 'chart',
+                    barWidth: '20',
+                    itemStyle: {
+                        normal: {
+                            color: '#0D2253'
+                        }
+                    },
+                    data: surplus
+                }]
+        }
+        myChart1.setOption(option);
+    };
+     var yData = ["user1", "user2", "user3", "user4", "user5", "user6", "user7", "user8", "user9", "user10"];
+    //百分比数据
+    var ratio = [45, 12, 10, 7, 6, 5, 5, 4, 3, 2];
+    //100%-ratio
+    var surplus = [55, 88, 90, 93, 94, 95, 95, 96, 97, 98];
+    drawPercentage('regionDetail', yData, ratio, surplus);
+
+    </script>
+</div>
+{% include "user/footer.html" %}

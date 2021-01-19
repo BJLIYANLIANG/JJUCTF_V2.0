@@ -1,0 +1,242 @@
+{% include 'user/header.html' %}
+<div class="container-fluid" >
+    <div class="row">
+      <div class="col-md-12">  <h3>个人信息</h3>
+      </div>
+    </div>
+    <div class="row" >
+        <div class="col-md-1">
+                <div style=" background-size: cover;">
+                   <img class="img-circle"style="width: 3rem;height: 3rem"  src="https://www.hsm.cool/usr/uploads/2020/07/3375162998.jpeg" alt="User">
+                </div>
+        </div>
+        <div class="col-md-4">
+            <div>
+{#                <img class="card-img img-circle btn-group "style="width: 3rem;height: 3rem"  src="https://www.hsm.cool/usr/uploads/2020/07/3375162998.jpeg" alt="User">#}
+{#                <button class="btn btn-primary" >更改头像</button>#}
+                <div class="text-center text-success" >
+                    <div>用户名:{{ username }}</div>
+                    <div >ID:<span>{{ userinfo[0] }}</span></div>
+                    <div >学号:<span>{{ userinfo[1] }}</span></div>
+                    <div >真实姓名:<span>{{ userinfo[2] }}</span></div>
+                    <div >班级:<span>{{ userinfo[7] }}</span></div>
+                    <div >邮箱:<span>{{ userinfo[5] }}</span></div>
+                    <div >电话:<span>{{ userinfo[6] }}</span></div>
+                    <div >队伍信息:<span>{{ usergroupinfo[1] }}</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7 text-right">
+            <a href="#">#编辑个人资料</a>
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-md-12">
+           <h3>个人战绩</h3>
+        </div>
+    </div>
+    <div class="row" style="background-color: #111b29" >
+        <div class="col-md-6 col-sm-12"><div id="scorechart" style="width: 100%;height: 30rem"></div></div>
+        <div class="col-md-6 col-sm-12"> <div id="scorelist" style="width: 100%;height: 30rem"></div></div>
+    </div>
+</div>
+<script>
+    var scorechart = echarts.init(document.getElementById('scorechart'))
+    option =  {
+        backgroundColor: '#111b29',
+        color: ['#3D91F7', '#61BE67'],
+        tooltip: {
+          show: true // 弹层数据去掉
+        },
+        radar: {
+          center: ['50%', '55%'], // 外圆的位置
+          name: {
+            textStyle: {
+              color: '#fff',
+              fontSize: 14,
+              fontWeight: 400,
+              fontFamily: 'PingFangSC-Regular,PingFang SC'
+            }
+          },
+          // TODO:
+          indicator: [
+            {
+              name: 'WEB',
+              max: 100
+            },
+            {
+              name: 'MISC',
+              max: 100
+            },
+            {
+              name: 'Crypto',
+              max: 100
+            },
+            {
+              name: 'Reverse',
+              max: 100
+            },
+            {
+              name: 'Pwn',
+              max: 100
+            }
+          ],
+          splitArea: {
+            // 坐标轴在 grid 区域中的分隔区域，默认不显示。
+            show: true,
+            areaStyle: {
+              // 分隔区域的样式设置。
+              color: ['#1c2330'] // 分隔区域颜色。分隔区域会按数组中颜色的顺序依次循环设置颜色。默认是一个深浅的间隔色。
+            }
+          },
+          axisLine: {
+            // 指向外圈文本的分隔线样式
+            lineStyle: {
+              color: 'rgba(255,255,255,0.2)'
+            }
+          },
+          splitLine: {
+            lineStyle: {
+              type: 'dashed',
+              color: '#fff', // 分隔线颜色
+              width: 1 // 分隔线线宽
+            }
+          }
+        },
+        series: [
+          {
+            type: 'radar',
+            data: [
+              {
+                // TODO:
+                value: [80, 80, 80, 60, 20],
+                name: 'a',
+                areaStyle: {
+                  normal: {
+                    color: 'rgba(76,155,254,0.5)'
+                  }
+                }
+              },
+              {
+                // TODO:
+                value: [40, 70, 20, 60, 20],
+                name: 'b',
+                areaStyle: {
+                  normal: {
+                    color: 'rgba(35,189,84,0.4)'
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+scorechart.setOption(option)
+
+
+
+
+{#    这是scorelist#}
+  var scorelistchart = echarts.init(document.getElementById('scorelist'))
+option = {
+    grid: {
+        left: '5%',
+        right: '5%',
+        bottom: '5%',
+        top: '10%',
+        containLabel: true
+    },
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'none'
+        },
+        formatter: function(params) {
+            return params[0].name + '<br/>' +
+                "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:rgba(36,207,233,0.9)'></span>" +
+                params[0].seriesName + ' : ' + Number((params[0].value.toFixed(4) / 1).toFixed(2)).toLocaleString() + ' 题<br/>'
+        }
+    },
+    backgroundColor: 'rgb(20,28,52)',
+    xAxis: {
+        show: false,
+        type: 'value'
+    },
+    yAxis: [{
+        type: 'category',
+        inverse: true,
+        axisLabel: {
+            show: true,
+            textStyle: {
+                color: '#fff'
+            },
+        },
+        splitLine: {
+            show: false
+        },
+        axisTick: {
+            show: false
+        },
+        axisLine: {
+            show: false
+        },
+        data: ['WEB', 'MISC', 'Crypto', 'Reverse', 'Pwn']
+    }, {
+        type: 'category',
+        inverse: true,
+        axisTick: 'none',
+        axisLine: 'none',
+        show: true,
+        axisLabel: {
+            textStyle: {
+                color: '#ffffff',
+                fontSize: '12'
+            },
+            formatter: function(value) {
+                if (value >= 1) {
+                    return (value / 1).toLocaleString() + '题';
+                } else {
+                    return value.toLocaleString();
+                }
+            },
+        },
+        data: [50, 22, 10, 50, 1]
+    }],
+    series: [{
+            name: '题量',
+            type: 'bar',
+            zlevel: 1,
+            itemStyle: {
+                normal: {
+                    barBorderRadius: 30,
+                    color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{
+                        offset: 0,
+                        color: 'rgb(57,89,255,1)'
+                    }, {
+                        offset: 1,
+                        color: 'rgb(46,200,207,1)'
+                    }]),
+                },
+            },
+            barWidth: 20,
+            data: [150, 22, 10, 50, 1]
+        },
+        {
+            name: '背景',
+            type: 'bar',
+            barWidth: 20,
+            barGap: '-100%',
+            data: [150, 50, 50, 50, 1],
+            itemStyle: {
+                normal: {
+                    color: 'rgba(24,31,68,1)',
+                    barBorderRadius: 30,
+                }
+            },
+        },
+    ]
+};
+    scorelistchart.setOption(option)
+
+</script>
+{% include 'user/footer.html' %}
