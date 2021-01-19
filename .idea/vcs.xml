@@ -2,5 +2,7 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/jjuctf" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/jjuctf/CTF_CONTAINER/jjuctf" vcs="Git" />
   </component>
 </project>
