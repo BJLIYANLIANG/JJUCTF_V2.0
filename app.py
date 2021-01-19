@@ -1152,8 +1152,6 @@ def admin_competition_list():
     else:
         return render_template('admin/login.html')
 
-
-
 # 用户使用的比赛列表
 @app.route('/user_competition_list')
 def user_competition_list():

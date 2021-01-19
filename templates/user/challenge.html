@@ -1,4 +1,24 @@
 {% include'user/header.html' %}
+<style>
+    body{
+        background-image: url(/static/image/ctf.png)!important;
+    background-size: 100% 100%!important;
+    background-repeat: no-repeat;
+    background-repeat-x: no-repeat;
+    background-repeat-y: no-repeat;
+    background-attachment: fixed!important;
+    background-color: #000;
+        {#background-image: url(/static/image/ctf.png);#}
+        {#background-color: #2c3e50;#}
+    }
+    .ctf_card{
+        border: 0.3rem solid #005cbf;
+        background-color:#0d1927;
+
+        {#border-color: #005cbf;#}
+    }
+
+</style>
 <link rel="stylesheet" href="/static/css/user/challenges.css">
 <div class="container-fluid">
     <div class="row">
@@ -86,7 +106,7 @@
                  {% for i in challengeResult %}
                      {% if i[4]==0 %}
             <div class="col-md-3">
-                <div class="card " style="background-color:#A9A9A9;color: #ffffff;font-size: 17px" >
+                <div class="card ctf_card" style="color: #ffffff;font-size: 17px" >
                     <div class="card-header ">
                         <div class="card-group" style="float: left"><b>{{ i[1] }}</b></div>
                         <div class="card-group" style="float: right;color:#191970;font-size: 20px">{{ i[2] }}</div>
