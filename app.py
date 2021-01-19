@@ -2,6 +2,8 @@ from flask import Flask,url_for,send_from_directory,render_template,abort,reques
 from flask import session,redirect,Response
 from datetime import timedelta
 import hashlib
+import zipfile
+import shutil
 from jjuctf.man_Sql import Mysqld
 from werkzeug.utils import secure_filename
 import os
@@ -12,7 +14,7 @@ from jjuctf.Check import Check
 import time
 from jjuctf.Crypto_AES import *
 import datetime
-
+from jjuctf.Contain import Contain
 
 redis_instance = redis.Redis(host=redis_address, port=redis_port, decode_responses=True)
 
@@ -470,28 +472,6 @@ def add_admin():
 
 
 
-
-# upload_ctf_contain
-@app.route("/upload_ctf_contain")
-def upload_ctf_contain():
-    admin = session.get('admin')
-    if admin:
-        return render_template("admin/upload_ctf.html")
-    else:
-        return render_template("admin/login.html")
-
-
-
-
-@app.route("/upload_awd_contain")
-def upload_awd_contain():
-    admin = session.get('admin')
-    if admin:
-        return render_template("admin/upload_awd.html")
-    else:
-        return render_template("admin/login.html")
-
-
 # CTF实例
 @app.route("/man_ctf_instance")
 def man_target_ctf():
@@ -528,13 +508,16 @@ def man_ctf_add_exam():
     admin = session.get('admin')
     if admin:
         if request.method == 'POST':
-            type = int(request.form.get('exam_type'))
+            try:
+                type = int(request.form.get('exam_type'))
+                flag_type = int(request.form.get('flag_type'))
+                score = int(request.form.get("base_score"))
+            except:
+                return render_template("admin/man_ctf_add_exam.html", message="添加失败,请按规范输入！")
             name = request.form.get('exam_name')
             hint = request.form.get('exam_hint')
-            score = int(request.form.get("base_score"))
             flag = request.form.get('flag')
             #得到附件文件
-            flag_type = int(request.form.get('flag_type'))
             file_path = request.files['file']
             #得到docker-compose文件
             docker_file  = request.files['docker_file']
@@ -552,11 +535,18 @@ def man_ctf_add_exam():
             if docker_file.filename == '':
                 docker_flag = 0
             else:
+                # 上传docker zip包
                 docker_flag = 1
                 docker_file.save(os.path.join(app.config['UPLOAD_CTF_CONTAINER'], secure_filename(docker_file.filename)))
-
-            # print(request.method)
-            #先将文件保存到服务器然后再将文件路径上传到数据库
+                # =======解压zip包=====
+                print(app.config['UPLOAD_CTF_CONTAINER']+docker_file.filename)
+                zip = zipfile.ZipFile(app.config['UPLOAD_CTF_CONTAINER']+docker_file.filename,'r')
+                try:
+                    zip.extractall(app.config['UPLOAD_CTF_CONTAINER'])
+                except:
+                    return render_template("admin/man_ctf_add_exam.html", message="添加CTF题目失败,解压失败！")
+                zip.close()
+                # == 解压缩完成 ==
             mysql = Mysqld()
             own_id = mysql.selectAdminIdByAdminName(admin)
             result = mysql.addUserCtfExam(own_id,type,name,hint,score,0,flag_type,flag,file_flag,file_path.filename,docker_flag,docker_file.filename,info)
@@ -588,11 +578,19 @@ def create_ctf_instance():
         ctf_exam_info = mysql.selectctf_examByctf_exam_Id(ctf_exam_id)
         if ctf_exam_info[6] == 0:  #[6]为flag类型为静态flag
             result = mysql.add_user_challenge_list(0,ctf_exam_id)
-            if result == 1:
-                return "1"
-            else:
+            if result == 0:
+                # return "1"
                 print("create_ctf_instance函数插入错误!")
                 return "0"
+
+        # 创建Docker虚拟机
+        if ctf_exam_info[11]==1:
+            docker_name = ctf_exam_info[12]
+            docker = docker = Contain()
+            result = docker.startContain(docker_name)
+            if result==0:
+                return "0"
+        return "1"
     else:
         return "0"
 
@@ -604,6 +602,14 @@ def delete_ctf_exam():
     if admin:
         ctf_exam_id = int(request.form.get('ctf_exam_id'))
         mysql = Mysqld()
+        # status[0],flag_type[1],file_flag[2],docker_flag[3],file_path[4],docker_path[5]
+        ctf_exam_info = mysql.selectCtf_exam_DeleteInfoByCtf_exam_Id(ctf_exam_id)
+        # 如果存在附件
+        if ctf_exam_info[2] == 1:
+            os.remove(app.config['UPLOAD_CTF_FILE']+ctf_exam_info[4])
+        # 如果存在docker-compose文件
+        if ctf_exam_info[3] == 1:
+            shutil.rmtree(app.config['UPLOAD_CTF_CONTAINER']+ctf_exam_info[5][:-4])
         result = mysql.delUserCtfExam(ctf_exam_id)
         if result == 1:
             return "1"
@@ -944,6 +950,8 @@ def changeCompetitionInfo():
 
     else:
         return render_template("admin/login.html")
+
+
 @app.route("/delUser",methods=["POST","GET"])
 def delUser():
     admin = session.get("admin")
@@ -1156,6 +1164,7 @@ def user_competition_list():
         print(competitionlist)
         return render_template('user/competition_list.html',competitionlist=competitionlist)
     else:
+        # return render_template('user/login.html')
         return render_template('user/login.html')
 
 if __name__ == '__main__':
