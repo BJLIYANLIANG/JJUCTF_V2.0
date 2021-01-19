@@ -15,15 +15,22 @@
 </head>
 <style>
     body{
-        background-color: 	#FFFAFA;
+        background-image: url(/static/image/bg.ctf.png)!important;
+        background-size: 100% 100%!important;
+        background-repeat: no-repeat;
+        background-repeat-x: no-repeat;
+        background-repeat-y: no-repeat;
+        background-attachment: fixed!important;
+        background-color: #000;
+    }
+    .img-circle-ctf{
+        border: 0.2rem solid #2c3e50;
+        width: 2rem;
+        height: 2rem;
     }
 </style>
 <body>
-
-{# {% for message in get_flashed_messages() %}#}
-{#    <script>alert({{ message }})</script>#}
-{# {% endfor %}#}
-<nav  class="navbar navbar-expand-lg navbar-light bg-light" >
+<nav class="navbar navbar-expand-lg" style="border-bottom: 0.1rem solid #2c3e50">
   <a class="navbar-brand" href="/" >JJUCTF</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -33,46 +40,38 @@
       <ul class="navbar-nav ml-auto" >
             <li class="nav-item">
             <a href="/challenges"><title class="navbar-brand" href="/" style="color: #005cbf;font-size: 1.4rem;">{% if competition_info %}{{ competition_info[1] }}{% endif %}</title></a>
-            <span class="text-dark">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+            <span class="text-info">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
           </li>
-
-{#          {% if headerType == 'index' %}#}
-{#            <li class="nav-item active">#}
-{#        <a class="nav-link" href="/" ><span class="sr-only">(current)</span></a>#}
-{#           </li>{% else %}#}
-{#                 <li class="nav-item">#}
-{#            <a class="nav-link" href="/">态势感知</a>#}
-{#          </li>{% endif %}#}
           {% if headerType == 'challenges' %}
-                <li class="nav-item active">
-            <a class="nav-link" href="/challenges">CTF答题<span class="sr-only">(current)</span></a>
+                <li class="nav-item active ">
+            <a class="nav-link text-info" href="/challenges">CTF答题<span class="sr-only">(current)</span></a>
           </li>{% else %}
                  <li class="nav-item">
-            <a class="nav-link" href="/challenges">CTF答题</a>
+            <a class="nav-link text-light" href="/challenges">CTF答题</a>
           </li>{% endif %}
           {% if headerType == 'awd' %}
                 <li class="nav-item active">
-            <a class="nav-link" href="/awd">AWD攻防<span class="sr-only">(current)</span></a>
+            <a class="nav-link text-info" href="/awd">AWD攻防<span class="sr-only">(current)</span></a>
           </li>{% else %}
                 <li class="nav-item">
-            <a class="nav-link" href="/awd">AWD攻防</a>
+            <a class="nav-link text-light" href="/awd">AWD攻防</a>
           </li>{% endif %}
             {% if headerType == 'rank' %}
                 <li class="nav-item active">
-            <a class="nav-link" href="/ranks">排行榜<span class="sr-only">(current)</span></a>
+            <a class="nav-link text-info" href="/ranks">排行榜<span class="sr-only">(current)</span></a>
           </li>{% else %}
                  <li class="nav-item">
-            <a class="nav-link" href="/ranks">排行榜</a>
+            <a class="nav-link text-light" href="/ranks">排行榜</a>
           </li>{% endif %}
       </ul>
-     <ul class="nav navbar-nav  navbar-right ml-auto">{% if username %}
-                               <li class="dropdown ">
+     <ul class="nav navbar-nav text-light navbar-right ml-auto">{% if username %}
+                               <li class="dropdown text-light">
                                <a class="dropdown-toggle" data-toggle="dropdown" style="color: #2e6da4;">
-                                   <img class="navbar-brand img-circle img-thumbnail"  src="https://www.hsm.cool/usr/uploads/2020/07/3375162998.jpeg" alt="User" style="max-height: 2rem">
+                                   <img class="navbar-brand img-circle img-circle-ctf"  src="https://www.hsm.cool/usr/uploads/2020/07/3375162998.jpeg" alt="User">
                                   {{ username }}<span class="caret"></span>
                                </a>
-                                   <ul class="dropdown-menu dropdown-menu-md-right">
-                                       <li class="dropdown-item"><a href="/info">通知</a></li>
+                                   <ul class="dropdown-menu dropdown-menu-md-right text-light">
+                                       <li class="dropdown-item "><a href="/info">通知</a></li>
                                     <li class="dropdown-item"><a href="/group?user={{ username }}">队伍管理</a></li>
                                     <li class="dropdown-item"><a href="/user?user={{ username }}">个人中心</a></li>
                                      <li class="dropdown-item"><a href="/admin">后台管理</a></li>
