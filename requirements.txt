@@ -1,8 +1,8 @@
-gunicorn
-gevent
-flask
-pymysql
-pycrypto
-redis
-eventlet
+gunicorn=20.0.4
+Flask=1.1.2
+PyMySQL=0.10.1
+pycrypto=2.6.1
+redis=3.5.3
+Flask_socketio=5.0.1
+eventlet=0.30.0
 

@@ -120,7 +120,7 @@ def challenge():
         competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
         #转换为js需要的格式
         userChallengeinfo = mysql.selectUserChallengeListDesc()
-        print(userChallengeinfo)
+        # print(userChallengeinfo)
         startDateTime = str(competition_info[3])
         endDateTime = str(competition_info[4])
         end_time = str(competition_info[4]).replace('-','/')
@@ -1142,6 +1142,7 @@ def on_leave(data):
     leave_room(room)
     send(username + ' has left the room.', room=room)
 
+# 管理员用的比赛列表
 @app.route('/admin_competition_list')
 def admin_competition_list():
     admin = session.get('admin')

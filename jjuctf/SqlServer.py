@@ -736,8 +736,8 @@ class Mysqld:
             return 0
     # 在CTF排名中，ranks排序
     def selectUserChallengeListDesc(self):
-
         sql = 'select b.name,a.sum_score,a.count_id from (select group_id,count(id) as count_id,sum(score) as sum_score from user_challenge_list group by group_id) as a left join user_group as b on a.group_id=b.group_id order by a.sum_score desc;'
+        print(sql)
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchall()
