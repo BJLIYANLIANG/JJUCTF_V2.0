@@ -1,5 +1,4 @@
 import pymysql
-import hashlib
 from jjuctf.config import Config
 config = Config()
 import time
@@ -867,8 +866,6 @@ class Mysqld:
 
     def checkUserIsTeamLeader(self,user_id,group_id):
         sql = 'select * from user_group where group_id=%d and user_id=%d'%(group_id,user_id)
-        # sql = 'select * from user_group_list where group_id=%d and user_id=%d' % (groupId, UserId)
-        # print(sql)
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchone()
@@ -880,6 +877,16 @@ class Mysqld:
         except BaseException:
             print("查询用户申请加入队伍列表失败")
             return 0
+    def selectCtf_exam_DeleteInfoByCtf_exam_Id(self,ctf_exam_id):
+        sql = 'select status,flag_type,file_flag,docker_flag,file_path,docker_path from ctf_exam where id=%d'%(ctf_exam_id)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            return result
+        except BaseException:
+            print("函数：selectCtf_exam_DeleteInfoByCtf_exam_Id执行失败")
+            return 0
+
 # ===============后台-end===============
 #
 # 间可以使用‘+’，‘*’,即允许元组进行组合连接和重复复制，运算后生成一个新的元组。
@@ -887,7 +894,7 @@ class Mysqld:
 # ===============user-start===============
 #
 # a = Mysqld()
-# b = a.checkUserIsTeamLeader(35,50)
+# b = a.selectCtf_exam_DeleteInfoByCtf_exam_Id(29)
 # print(b)
 # 完整内容
 # id
