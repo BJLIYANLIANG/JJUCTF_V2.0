@@ -562,6 +562,8 @@ def man_ctf_add_exam():
                     return render_template("admin/man_ctf_add_exam.html", message="添加CTF题目失败,解压失败！")
                 zip.close()
                 # == 解压缩完成 ==
+                # 删除上传的zip包
+                os.remove(app.config['UPLOAD_CTF_CONTAINER'] + docker_file.filename)
             mysql = Mysqld()
             own_id = mysql.selectAdminIdByAdminName(admin)
             result = mysql.addUserCtfExam(own_id,type,name,hint,score,0,flag_type,flag,file_flag,file_path.filename,docker_flag,docker_file.filename,info)
