@@ -1,0 +1,82 @@
+{% include 'user/header.html' %}
+<style>
+    .user-card{
+        border: 0.3rem solid #005cbf;
+        background-color: #0d1927;
+        color: white;
+    }
+     .user-list{
+         background-color: #0d1927;
+         color: white;
+     }
+     .ctf-from{
+         width: 55%;
+         color: white;
+     }
+</style>
+<div class="container-fluid">
+    <br>
+    <div class="row">
+        <div class="col-md-3" style="border-right-color: #005cbf;border: 2rem">
+            <div class="row user-card">
+                <div class="col-md-12">
+                   <h2 class="title" style="color:  #31708f">个人信息</h2>
+                </div>
+                <div class="col-md-12">
+                    <ul class="list-group">
+                        <li class="list-group-item user-list"><img class="img-circle"style="width: 3rem;height: 3rem"  src="https://www.hsm.cool/usr/uploads/2020/07/3375162998.jpeg" alt="User"></li>
+                        <li class="list-group-item user-list">用户名:{{ username }}</li>
+                        <li class="list-group-item user-list">ID:<span>{{ userinfo[0] }}</span></li>
+{#                        <li class="list-group-item user-list">学号:<span>{{ userinfo[1] }}</span></li>#}
+                        <li class="list-group-item user-list">真实姓名:<span>{{ userinfo[2] }}</span></li>
+                        <li class="list-group-item user-list">班级:<span>{{ userinfo[7] }}</span></li>
+                        <li class="list-group-item user-list">邮箱:<span>{{ userinfo[5] }}</span></li>
+                        <li class="list-group-item user-list">电话:<span>{{ userinfo[6] }}</span></li>
+                        <li class="list-group-item user-list">队伍信息:<span>{{ usergroupinfo[1] }}</span></li>
+                    </ul>
+                </div>
+
+            </div>
+            <br>
+        </div>
+        <div class="col-md-9">
+            <nav aria-label="breadcrumb" >
+                <ol class="breadcrumb" style="background-color: #1c2b36">
+                    <li class="breadcrumb-item"><a href="/">首页</a></li>
+                    <li class="breadcrumb-item"><a href="/user">个人中心</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">信息修改</li>
+                </ol>
+            </nav>
+            <h2 class="text-info">基本信息</h2>
+  <form style="width: 50%" class="center-block ctf-from">
+    <div class="form-group">
+      <label for="email">邮箱:</label>
+      <input type="email" class="form-control" id="email" value="{{ userinfo[5] }}">
+    </div>
+      <div class="form-group">
+      <label for="text">用户名:</label>
+      <input type="email" class="form-control" id="email" value="{{ username }}">
+    </div>
+    <div class="form-group">
+      <label for="phone">电话:</label>
+      <input type="text" class="form-control" id="phone" value="">
+    </div>
+      <div class="form-group">
+      <label for="realname">真实姓名:</label>
+      <input type="text" class="form-control" id="realname" value="{{ userinfo[2] }}">
+    </div>
+       <div class="form-group">
+      <label class="" for="photo">头像:</label>
+      <input type="file" class="file" id="photo">
+    </div>
+    <div class="form-check">
+      <label class="form-check-label">
+        <input class="form-check-input" type="checkbox"> 记住我
+      </label>
+    </div>
+    <button type="submit" class="btn btn-primary">提交</button>
+  </form>
+        </div>
+    </div>
+</div>
+{% include 'user/footer.html' %}

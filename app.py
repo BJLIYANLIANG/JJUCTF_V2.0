@@ -254,7 +254,7 @@ def awd():
 def user():
     user = session.get('user')
     if user:
-        username = request.args.get('user')
+        username = user
         mysql = Mysqld()
         userinfo = mysql.selectUserInfo(user)
         competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
@@ -266,7 +266,17 @@ def user():
     else:
         return render_template("user/login.html")
 
-
+@app.route('/user_setting',methods=['GET'])
+def user_setting():
+    user = session.get('user')
+    if user:
+        mysql = Mysqld()
+        userinfo = mysql.selectUserInfo(user)
+        competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
+        usergroupinfo = mysql.selectGroupInfoByUsername(user)
+        return render_template('user/user_setting.html',username=user,headerType=user,competition_info=competition_info,userinfo=userinfo,usergroupinfo=usergroupinfo)
+    else:
+        return render_template('user/login.html')
 # 队伍设置
 @app.route('/group',methods=['GET'])
 def groupSetting():
