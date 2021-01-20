@@ -3,6 +3,7 @@ from flask import session,redirect,Response
 from datetime import timedelta
 import zipfile
 import shutil
+import jsonify
 from jjuctf.SqlServer import Mysqld
 from werkzeug.utils import secure_filename
 import os
@@ -1216,6 +1217,36 @@ def user_competition_list():
     else:
         # return render_template('user/login.html')
         return render_template('user/login.html')
+
+
+@app.route('/getChallengeTypeNum',methods=['POST'])
+def getChallengeTypeNum():
+    admin = session.get('admin')
+    if admin:
+        sqlServer = Mysqld()
+        typeNum = sqlServer.select_challenge_list_Type_Count()
+        for i in typeNum:
+            if i[0]==0:
+                webNum = i[1]
+                continue
+            if i[0]==1:
+                miscNum = i[1]
+                continue
+            if i[0]==2:
+                cryptoNum = i[1]
+                continue
+            if i[0]==3:
+                reverseNum = i[1]
+                continue
+            if i[0]==4:
+                pwnNum = i[1]
+            else:
+
+                continue
+        data = {'Web':webNum,'Misc':miscNum,'Crypto':cryptoNum,'Reverse':reverseNum,'Pwn':pwnNum}
+        return jsonify(data)
+    else:
+        return render_template('admin/login.html')
 
 if __name__ == '__main__':
     # app.run()

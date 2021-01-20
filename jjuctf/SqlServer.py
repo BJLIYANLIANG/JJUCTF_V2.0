@@ -895,6 +895,18 @@ class Mysqld:
         except BaseException:
             print("函数：selectChallengeListRank执行失败")
             return 0
+    # 后台专用
+    def select_challenge_list_Type_Count(self):
+        sql = 'select type,count(id) from  challenge_list group by type;'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+        except BaseException:
+            print("函数：select_challenge_list_Type_Count")
+            return 0
+# a = Mysqld()
+# b = a.select_challenge_list_Type_Count()
 
 # ===============后台-end===============
 #

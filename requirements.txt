@@ -6,4 +6,4 @@ redis=3.5.3
 Flask_socketio=5.0.1
 eventlet=0.30.0
 yagmail
-
+jsonify
