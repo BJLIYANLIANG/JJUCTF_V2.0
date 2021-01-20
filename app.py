@@ -173,10 +173,25 @@ def ranks():
 
 
 
-
+import random
 @app.route('/register',methods=['POST','GET'])
 def userRegister():
     if request.method != 'POST':   #用户不是使用
+        # =====start ====
+        # 等号里面的代码可以随时删除
+        # 思路：用于注册验证邮箱的，首先给注册者一个随机6位数，
+        # 然后给注册者一个sesson，用于跟踪用户，
+        # 然后注册者点击发送邮件，服务器就发送这个随机6位数给该邮箱
+        # 当验证成功之后，就执行其他步骤。
+        # 随机生产6位数字字符串
+        serialMail = ''
+        for i in range(6):
+            ch = chr(random.randrange(ord('0'), ord('9') + 1))
+            serialMail += ch
+        checkMailId = serialMail
+        session['checkid'] = checkMailId
+        print(checkMailId)
+        # =====end =====
         return render_template("user/register.html")
     else:
         uid = request.form.get('uid')
