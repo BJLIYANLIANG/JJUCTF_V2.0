@@ -28,6 +28,7 @@ user
 - 数据库：Mysql
 - 前端UI:Bootstrap
 - js框架:Vue.js
+- WebSocket
 
 
 ## 搭建
