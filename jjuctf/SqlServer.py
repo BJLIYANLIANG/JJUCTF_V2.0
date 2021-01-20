@@ -886,6 +886,15 @@ class Mysqld:
         except BaseException:
             print("函数：selectCtf_exam_DeleteInfoByCtf_exam_Id执行失败")
             return 0
+    def selectChallengeListRank(self):
+        sql = 'select group_id,sum(score),count(id) as sum_score from user_challenge_list group by group_id order by sum_score desc;'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+        except BaseException:
+            print("函数：selectChallengeListRank执行失败")
+            return 0
 
 # ===============后台-end===============
 #
@@ -893,8 +902,9 @@ class Mysqld:
 
 # ===============user-start===============
 #
-# a = Mysqld()
-# b = a.selectCtf_exam_DeleteInfoByCtf_exam_Id(29)
+
+
+
 # print(b)
 # 完整内容
 # id

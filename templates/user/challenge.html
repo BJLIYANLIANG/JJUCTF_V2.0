@@ -64,9 +64,9 @@
                         <div class="col-md-12">战队名：<span class="text-info">{{ groupInfo[1] }}</span></div>
                         <div class="col-md-12">队员名：<span class="text-info">{{ username }}</span></div>
                         <div class="col-md-12">队伍简介：<span class="text-info">{{ groupInfo[3] }}</span></div>
-                        <div class="col-md-12">战队排名：110</div>
-                        <div class="col-md-12">解题数量：2</div>
-                        <div class="col-md-12">得分：50</div>
+                        <div class="col-md-12">战队排名：<span class="text-info">{{ rank }}</span></div>
+                        <div class="col-md-12">解题数量：<span id="track_sum" class="text-info">{{ Challenge_Count }}</span></div>
+                        <div class="col-md-12">得分： <span id="sum_score" class="text-info">{{ sum_score }}</span></div>
                     </div>
                 </div>
             </div>
@@ -140,8 +140,8 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">
-                                                    <div class="col-md-12">
-                                                        <span class="text-success">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}支队伍答对</span>
+                                                    <div class="col-md-12 text-success">
+                                                        <span id="hsm{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span>支队伍答对
                                                     </div>
                                                 </div>
                                                 <p></p>
@@ -175,7 +175,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="row row-no-gutters font_Size modal_marger ">
-                                                        <div class="col-md-12">答对人数:<span class="text-info modal_marger">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                        <div class="col-md-12">答对人数:<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
                                                         {% if i[7]==1 %}
                                                             <div class="col-md-12">题目附件:<a class="modal_marger" href="/download/{{ i[8] }}">附件1</a></div>
                                                         {% endif %}
@@ -244,8 +244,8 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">
-                                                    <div class="col-md-12">
-                                                        <span class="text-success">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}支队伍答对</span>
+                                                    <div class="col-md-12 text-success">
+                                                        <span id="hsm{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span>支队伍答对
                                                     </div>
                                                 </div>
                                                 <p></p>
@@ -279,7 +279,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="row row-no-gutters font_Size modal_marger ">
-                                                        <div class="col-md-12">答对人数:<span class="text-info modal_marger">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                        <div class="col-md-12">答对人数:<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
                                                         {% if i[7]==1 %}
                                                             <div class="col-md-12">题目附件:<a class="modal_marger" href="/download/{{ i[8] }}">附件1</a></div>
                                                         {% endif %}
@@ -348,8 +348,8 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">
-                                                    <div class="col-md-12">
-                                                        <span class="text-success">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}支队伍答对</span>
+                                                    <div class="col-md-12 text-success">
+                                                        <span id="hsm{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span>支队伍答对
                                                     </div>
                                                 </div>
                                                 <p></p>
@@ -383,7 +383,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="row row-no-gutters font_Size modal_marger ">
-                                                        <div class="col-md-12">答对人数:<span class="text-info modal_marger">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                        <div class="col-md-12">答对人数:<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
                                                         {% if i[7]==1 %}
                                                             <div class="col-md-12">题目附件:<a class="modal_marger" href="/download/{{ i[8] }}">附件1</a></div>
                                                         {% endif %}
@@ -452,8 +452,8 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">
-                                                    <div class="col-md-12">
-                                                        <span class="text-success">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}支队伍答对</span>
+                                                    <div class="col-md-12 text-success">
+                                                        <span id="hsm{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span>支队伍答对
                                                     </div>
                                                 </div>
                                                 <p></p>
@@ -487,7 +487,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="row row-no-gutters font_Size modal_marger ">
-                                                        <div class="col-md-12">答对人数:<span class="text-info modal_marger">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                        <div class="col-md-12">答对人数:<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
                                                         {% if i[7]==1 %}
                                                             <div class="col-md-12">题目附件:<a class="modal_marger" href="/download/{{ i[8] }}">附件1</a></div>
                                                         {% endif %}
@@ -556,8 +556,8 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="row">
-                                                    <div class="col-md-12">
-                                                        <span class="text-success">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}支队伍答对</span>
+                                                    <div class="col-md-12 text-success">
+                                                        <span id="hsm{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span>支队伍答对
                                                     </div>
                                                 </div>
                                                 <p></p>
@@ -591,7 +591,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="row row-no-gutters font_Size modal_marger ">
-                                                        <div class="col-md-12">答对人数:<span class="text-info modal_marger">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                        <div class="col-md-12">答对人数:<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
                                                         {% if i[7]==1 %}
                                                             <div class="col-md-12">题目附件:<a class="modal_marger" href="/download/{{ i[8] }}">附件1</a></div>
                                                         {% endif %}
@@ -745,9 +745,21 @@
                 $("#button"+res.challenge_id).append('<button class="btn btn-success btn-lg btn-block" style="border-color: #696969" data-toggle="modal" data-target="#modal'+res.challenge_id+'">已解答</button>');
                 $('#div'+res.challenge_id).empty();
                 $('#div'+res.challenge_id).append('<div> <a class="text-success">已解答，获得'+res.score+'分</a></div>');
-
+                sum_score = $('#sum_score').text();
+                sum_score_int = Number(sum_score)+Number(res.score);
+                $('#sum_score').text(sum_score_int.toString());
+                count_track = $('#track_sum').text();
+                count_track_int = Number(count_track)+1;
+                $('#track_sum').text(count_track_int.toString());
+                count_hsm = $('#hsm'+res.challenge_id).text();
+                count_hsm_int = Number(count_hsm)+1;
+                $('#hsm'+res.challenge_id).text(count_hsm_int.toString());
+                count_hsm2 = $('#hsm2'+res.challenge_id).text();
+                count_hsm2_int = Number(count_hsm2)+1;
+                $('#hsm2'+res.challenge_id).text(count_hsm2_int.toString());
                 $('#span'+res.challenge_id).empty();
                 $('#span'+res.challenge_id).append('<span class="text-success modal_marger ">已解答</span>');
+
 
         })
         socket.on('challenge_list',function (res){

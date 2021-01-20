@@ -1,7 +1,6 @@
 from flask import Flask,url_for,send_from_directory,render_template,abort,request,make_response
 from flask import session,redirect,Response
 from datetime import timedelta
-import hashlib
 import zipfile
 import shutil
 from jjuctf.SqlServer import Mysqld
@@ -100,9 +99,17 @@ def challenge():
         mysql = Mysqld()
         challengeResult = mysql.selectChallengeListByUserName(user)
         print(challengeResult)
+        # 展示题目列表
+
         challengeNum = mysql.showChallengeNum()
         # challengeTypeNum = getChallengeListByType.selectCtfChallengeTypeNum(user)   #用这个代替上面那个！今天不写了，难受，我写的垃圾代码。。。
+        # 查找队伍信息
         groupInfo = mysql.selectGroupInfoByUsername(user)
+        challenge_list_rank = mysql.selectChallengeListRank()
+        # 分别得到排名，分数，解题数
+        rank,score,Challenge_Count = sortChallengeByGroupId(challenge_list_rank,groupInfo[0])
+
+        #
         UserTypeNum = mysql.selectCtfTypeNum()
         # 如果该用户没有创建队伍，那么跳转让他创建队伍
         if groupInfo == 0:
@@ -134,9 +141,18 @@ def challenge():
 
         ctf_history_table = mysql.selectCtfHistoryTable()
         # 0为web 以此类推
-        return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult,ctf_history_table=ctf_history_table,examNum=challengeNum,groupInfo=groupInfo,userNotic=userNotice,competition_info=competition_info,end_time=end_time,competition_StatusCode=competition_StatusCode,UserTypeNum=UserTypeNum)
+        return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult,ctf_history_table=ctf_history_table,examNum=challengeNum,groupInfo=groupInfo,userNotic=userNotice,competition_info=competition_info,end_time=end_time,competition_StatusCode=competition_StatusCode,UserTypeNum=UserTypeNum,
+                               rank=rank,sum_score=score,Challenge_Count=Challenge_Count)
     return render_template('user/login.html')
 
+# 排序，找出带队伍的名次
+def sortChallengeByGroupId(challenge_info,id):
+    rankid = 1
+    for i in challenge_info:
+        if id == i[0]:
+            return rankid,i[1],i[2]
+        else:
+            rankid += 1
 
 # index
 # ctf解题模式
@@ -327,9 +343,6 @@ def groupSetting():
 @app.route("/settings")
 def setting():
     return render_template("user/index.html")
-
-
-
 
 
 # 检查CTF答题模式flag是否正确
