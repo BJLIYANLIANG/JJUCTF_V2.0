@@ -484,9 +484,6 @@ def add_admin():
         return render_template("admin/login.html")
 
 
-
-
-
 # CTF实例
 @app.route("/man_ctf_instance")
 def man_target_ctf():
@@ -539,8 +536,7 @@ def man_ctf_add_exam():
             #题目备注
             info = request.form.get('info')
             createtime =  time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-            print(file_path.filename)
-            print(docker_file.filename)
+
             if file_path.filename == '':
                 #如果发现没有上传文件，则将flag标记为0，
                 file_flag = 0
@@ -590,23 +586,35 @@ def create_ctf_instance():
         mysql  = Mysqld()
         # 先检查是否已经创建过实例,实质是查challenge_list表是否存在数据
         checkinsert = mysql.checkCtf_exam_insertById(ctf_exam_id)
+        # 查询这个实例之前是否创建过
         if checkinsert == -1:
             return "-1"
         ctf_exam_info = mysql.selectctf_examByctf_exam_Id(ctf_exam_id)
-        if ctf_exam_info[6] == 0:  #[6]为flag类型为静态flag
-            result = mysql.add_user_challenge_list(0,ctf_exam_id)
+        print(ctf_exam_info)
+        # [6]为flag类型为静态flag
+        if ctf_exam_info[6] == 0:
+            # 如果docker_flag为1表示需要开启docker容器
+            if ctf_exam_info[10] == 1:
+                # 创建Docker虚拟机
+                docker_name = ctf_exam_info[11]
+                print(docker_name)
+                docker = Contain()
+                result = docker.startContain(docker_name)
+                if result == 0:
+                    return "0"
+                # print(result)
+                dockerid = docker.getDockerId(docker_name)
+                print(dockerid)
+            result = mysql.add_user_challenge_list(0, ctf_exam_id)
             if result == 0:
                 # return "1"
                 print("create_ctf_instance函数插入错误!")
                 return "0"
+        # 动态flag:
+        else:
+            pass
 
-        # 创建Docker虚拟机
-        if ctf_exam_info[11]==1:
-            docker_name = ctf_exam_info[12]
-            docker = docker = Contain()
-            result = docker.startContain(docker_name)
-            if result==0:
-                return "0"
+
         return "1"
     else:
         return "0"
@@ -952,10 +960,13 @@ def changeCompetitionInfo():
                 return redirect(url_for('admin_competition_list',message="修改失败！检测到特殊字符"))
             name = request.form.get('name')
             info = request.form.get('info')
-            start_date = str(request.form.get('start_date')).replace('T',' ')+":00"
-            end_date  = str(request.form.get('end_date')).replace('T',' ')+":00"
-            # print(start_date)
-            # print(end_date)
+            start_time = str(request.form.get('start_date'))
+            end_time = str(request.form.get('end_date'))
+            if start_time == '' or end_time == '':
+                return redirect(url_for('admin_competition_list',message="修改失败，未设置比赛时间！"))
+            start_date = start_time.replace('T',' ')+":00"
+            end_date  = end_time.replace('T',' ')+":00"
+
             start_time = datetime.datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S")
             end_time = datetime.datetime.strptime(end_date,"%Y-%m-%d %H:%M:%S")
             mysql = Mysqld()
@@ -1186,6 +1197,5 @@ def user_competition_list():
 if __name__ == '__main__':
     # app.run()
     socketio.run(app,host='0.0.0.0',port=5000,debug=True)
-
 
 

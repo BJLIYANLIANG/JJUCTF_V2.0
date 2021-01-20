@@ -43,12 +43,10 @@
     .font_Size{
             font-size: 1.2rem;
         }
-
     .modal_marger{
             margin: 4px;
             height:20%;
         }
-
     .ctf-modal_card-body{
         background-color: rgb(39,72,89);
         border-color: rgb(39,72,89);
@@ -107,20 +105,18 @@
                         {% endfor %}
                         {% endif %}
                     </table>
-
                 </div>
             </div>
-
         </div>
     </div>
     <div class="row">
-<br>
+    <br>
     </div>
 {% if competition_StatusCode==1 %}
     <div class="row" style="min-height: 30rem;">
         <div class="col-md-2 col-sm-12">
              <div class="list-group ">
-                 <a href="#"  class="list-group-item list-group-item-action list-group-item-dark ctf-list-group-item" disabled  data-toggle="pill">比赛题目</a>
+                 <a href="#" class="list-group-item list-group-item-action list-group-item-dark ctf-list-group-item" disabled  data-toggle="pill">比赛题目</a>
              {% for i in UserTypeNum  %}
                  <a class="list-group-item list-group-item-action {% if i[0]==0 %}active{% endif %}" style="background-color: #1c2b36;color: white" href="#{% if i[0]==0 %}Web{% elif i[0]==1 %}Misc{% elif i[0]==2 %}Crypto{% elif i[0]==3 %}Reverse{% elif i[0]==4 %}Pwn{% endif %}" data-toggle="pill">{% if i[0]==0 %}Web{% elif i[0]==1 %}Misc{% elif i[0]==2 %}Crypto{% elif i[0]==3 %}Reverse{% elif i[0]==4 %}Pwn{% endif %} <span class="badge badge-success">{{ i[1] }}</span></a>
                  {% endfor %}

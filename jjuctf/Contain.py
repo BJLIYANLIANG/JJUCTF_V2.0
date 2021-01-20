@@ -1,27 +1,20 @@
 import os
 import docker
 import re
-
 class Contain:
     def __init__(self):
         self.path = "./Container/" # jjuctf目录下的
 
-
     def startContain(self,containName):
-        # pass
-        # 等学一下docker库后再实现功能
-        # port = range(54000,54332)
-        cmd  = "docker-compose -f CTF_CONTAINER/"+containName+"/docker-compose.yml up -d "
+        cmd  = "docker-compose -f jjuctf/CTF_CONTAINER/"+containName[:-4]+"/docker-compose.yml up -d "
         startdocker = os.popen(cmd)
         if str(startdocker.readlines()).find('Errno'):
             return 0
 
-        # print(startdocker.readlines())
-        return self.getDockerId(containName)
 
 
     def stopContain(self,containName):
-        cmd = "docker-compose -f CTF_CONTAINER/"+containName+"/docker-compose.yml stop"
+        cmd = "docker-compose -f jjuctf/CTF_CONTAINER/"+containName[:-4]+"/docker-compose.yml stop"
         # print(cmd)
         try:
             result = os.system(cmd)
@@ -59,13 +52,13 @@ class Contain:
 
         # print(a.readlines())
     def getDockerId(self,containName):
-        cmd = "docker-compose -f CTF_CONTAINER/"+containName+"/docker-compose.yml ps -q"
+        cmd = "docker-compose -f jjuctf/CTF_CONTAINER/"+containName[:-4]+"/docker-compose.yml ps -q"
         result  = os.popen(cmd)
         if result:
             id = []
             for i in result:
                 id.append(i.replace('\n',''))
-            return i
+            return id
         else:
             return []
         # print(a.readlines())
