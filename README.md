@@ -2,8 +2,6 @@
 ## 简述
 JJUCTF是一个网络安全靶场，可以提供添加容器(Docker)，用户管理，使用WEB作为前端页面，后端开发使用Python flask框架
 ### 前端
-- index
-![](static/image/readme/index.png)
 - challenge
 ![](static/image/readme/challenge.png)
 - awd
