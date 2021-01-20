@@ -4,7 +4,7 @@
         border: 0.3rem solid #005cbf;
         background-color:#0d1927;
         color: #ffffff;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
     }
     .ctf-card-score{
         color: #4ec3ff;
@@ -41,7 +41,7 @@
         color: white
     }
     .font_Size{
-            font-size: 1.3rem;
+            font-size: 1.2rem;
         }
 
     .modal_marger{
@@ -60,7 +60,7 @@
     <div class="row">
         <div class="col-md-3">
             <div class="card card-userinfo">
-                <div class="card-header">比赛信息</div>
+                <div class="card-header text-info">比赛信息</div>
                 <div class="card-body">
                     <div class="row" style="font-size: 1.1rem">
                         <div class="col-md-12">战队名：<span class="text-info">{{ groupInfo[1] }}</span></div>
@@ -75,7 +75,7 @@
         </div>
         <div class="col-md-6">
               <div class="card card-competition-notice">
-                  <div class="card-header">比赛公告</div>
+                  <div class="card-header text-info">比赛公告</div>
                   <div class="card-body">
                       <div class="row" >
                          <div class="col-md-12">
@@ -93,7 +93,7 @@
         </div>
         <div class="col-md-3">
             <div class="card card-competition-status">
-                <div class="card-header">解题动态</div>
+                <div class="card-header text-info">解题动态</div>
                 <div class="card-body" style="max-height: 14.5rem;min-height:14.5rem;overflow-y:auto;">
                     {% if competition_StatusCode==1 %}
                     <table class="table table-borderless" id="challenge_list" style="color: white;font-size: 0.9rem">

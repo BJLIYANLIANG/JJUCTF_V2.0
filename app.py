@@ -12,7 +12,7 @@ import redis
 from jjuctf.config import *
 from jjuctf.Check import Check
 import time
-from jjuctf.Crypto_AES import *
+from jjuctf.Crypto import *
 import datetime
 from jjuctf.Contain import Contain
 
