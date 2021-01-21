@@ -175,36 +175,19 @@
                                                         </div>
                                                     </div>
                                                     <div class="row row-no-gutters font_Size modal_marger ">
-                                                        <div class="col-md-12">答对人数:<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                        <div class="col-md-12">答对人数：<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                        <div class="col-md-12">提示：<span class="text-info">{{ i[3] }}</span></div>
                                                         {% if i[7]==1 %}
                                                             <div class="col-md-12">题目附件:<a class="modal_marger" href="/download/{{ i[8] }}">附件1</a></div>
                                                         {% endif %}
+                                                        {% if i[5]==1 %}
                                                         <div class="col-md-12">
                                                             <div class="card ctf-modal_card" style="width: 100%;">
                                                                 <div class="card-body ctf-modal_card-body">
-                                                                    <h5 class="card-title text-center"><a href="/">{{ i[3] }}</a></h5>
+                                                                    <h5 class="card-title text-center"><p href="/">{{ i[6] }}</p></h5>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        {% if i[5] == 1 and i[11] == None %}
-                                                            <div class="col-md-12">
-                                                                <div class="card" style="width: 100%;">
-                                                                    <div class="card-body ">
-                                                                        <h5 class="card-title text-center">{{ i[3] }}</h5>
-                                                                        <button type="button" class="btn btn-primary card-link " style="width: 100%" onclick="">开启实例</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        {% endif %}
-                                                        {% if i[5] == 1 and i[11] == 1 %}
-                                                            <div class="col-md-12">
-                                                                <div class="card" style="width: 100%;">
-                                                                    <div class="card-body ">
-                                                                        <a href="{{ i[12] }}" target="_blank" class="">{{ i[12] }}</a>
-                                                                        <button class="btn btn-success">还剩5:00</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
                                                         {% endif %}
                                                     </div>
                                                     <div class="row row-no-gutters font_Size modal_marger" id="div{{ i[0] }}">
@@ -279,36 +262,19 @@
                                                         </div>
                                                     </div>
                                                     <div class="row row-no-gutters font_Size modal_marger ">
-                                                        <div class="col-md-12">答对人数:<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                        <div class="col-md-12">答对人数：<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                        <div class="col-md-12">提示：<span class="text-info">{{ i[3] }}</span></div>
                                                         {% if i[7]==1 %}
                                                             <div class="col-md-12">题目附件:<a class="modal_marger" href="/download/{{ i[8] }}">附件1</a></div>
                                                         {% endif %}
+                                                        {% if i[5]==1 %}
                                                         <div class="col-md-12">
                                                             <div class="card ctf-modal_card" style="width: 100%;">
                                                                 <div class="card-body ctf-modal_card-body">
-                                                                    <h5 class="card-title text-center"><a href="/">{{ i[3] }}</a></h5>
+                                                                    <h5 class="card-title text-center"><p href="/">{{ i[6] }}</p></h5>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        {% if i[5] == 1 and i[11] == None %}
-                                                            <div class="col-md-12">
-                                                                <div class="card" style="width: 100%;">
-                                                                    <div class="card-body ">
-                                                                        <h5 class="card-title text-center">{{ i[3] }}</h5>
-                                                                        <button type="button" class="btn btn-primary card-link " style="width: 100%" onclick="">开启实例</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        {% endif %}
-                                                        {% if i[5] == 1 and i[11] == 1 %}
-                                                            <div class="col-md-12">
-                                                                <div class="card" style="width: 100%;">
-                                                                    <div class="card-body ">
-                                                                        <a href="{{ i[12] }}" target="_blank" class="">{{ i[12] }}</a>
-                                                                        <button class="btn btn-success">还剩5:00</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
                                                         {% endif %}
                                                     </div>
                                                     <div class="row row-no-gutters font_Size modal_marger" id="div{{ i[0] }}">
@@ -383,36 +349,19 @@
                                                         </div>
                                                     </div>
                                                     <div class="row row-no-gutters font_Size modal_marger ">
-                                                        <div class="col-md-12">答对人数:<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                        <div class="col-md-12">答对人数：<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                        <div class="col-md-12">提示：<span class="text-info">{{ i[3] }}</span></div>
                                                         {% if i[7]==1 %}
                                                             <div class="col-md-12">题目附件:<a class="modal_marger" href="/download/{{ i[8] }}">附件1</a></div>
                                                         {% endif %}
+                                                        {% if i[5]==1 %}
                                                         <div class="col-md-12">
                                                             <div class="card ctf-modal_card" style="width: 100%;">
                                                                 <div class="card-body ctf-modal_card-body">
-                                                                    <h5 class="card-title text-center"><a href="/">{{ i[3] }}</a></h5>
+                                                                    <h5 class="card-title text-center"><p href="/">{{ i[6] }}</p></h5>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        {% if i[5] == 1 and i[11] == None %}
-                                                            <div class="col-md-12">
-                                                                <div class="card" style="width: 100%;">
-                                                                    <div class="card-body ">
-                                                                        <h5 class="card-title text-center">{{ i[3] }}</h5>
-                                                                        <button type="button" class="btn btn-primary card-link " style="width: 100%" onclick="">开启实例</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        {% endif %}
-                                                        {% if i[5] == 1 and i[11] == 1 %}
-                                                            <div class="col-md-12">
-                                                                <div class="card" style="width: 100%;">
-                                                                    <div class="card-body ">
-                                                                        <a href="{{ i[12] }}" target="_blank" class="">{{ i[12] }}</a>
-                                                                        <button class="btn btn-success">还剩5:00</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
                                                         {% endif %}
                                                     </div>
                                                     <div class="row row-no-gutters font_Size modal_marger" id="div{{ i[0] }}">
@@ -487,36 +436,19 @@
                                                         </div>
                                                     </div>
                                                     <div class="row row-no-gutters font_Size modal_marger ">
-                                                        <div class="col-md-12">答对人数:<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                        <div class="col-md-12">答对人数：<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                        <div class="col-md-12">提示：<span class="text-info">{{ i[3] }}</span></div>
                                                         {% if i[7]==1 %}
                                                             <div class="col-md-12">题目附件:<a class="modal_marger" href="/download/{{ i[8] }}">附件1</a></div>
                                                         {% endif %}
+                                                        {% if i[5]==1 %}
                                                         <div class="col-md-12">
                                                             <div class="card ctf-modal_card" style="width: 100%;">
                                                                 <div class="card-body ctf-modal_card-body">
-                                                                    <h5 class="card-title text-center"><a href="/">{{ i[3] }}</a></h5>
+                                                                    <h5 class="card-title text-center"><p href="/">{{ i[6] }}</p></h5>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        {% if i[5] == 1 and i[11] == None %}
-                                                            <div class="col-md-12">
-                                                                <div class="card" style="width: 100%;">
-                                                                    <div class="card-body ">
-                                                                        <h5 class="card-title text-center">{{ i[3] }}</h5>
-                                                                        <button type="button" class="btn btn-primary card-link " style="width: 100%" onclick="">开启实例</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        {% endif %}
-                                                        {% if i[5] == 1 and i[11] == 1 %}
-                                                            <div class="col-md-12">
-                                                                <div class="card" style="width: 100%;">
-                                                                    <div class="card-body ">
-                                                                        <a href="{{ i[12] }}" target="_blank" class="">{{ i[12] }}</a>
-                                                                        <button class="btn btn-success">还剩5:00</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
                                                         {% endif %}
                                                     </div>
                                                     <div class="row row-no-gutters font_Size modal_marger" id="div{{ i[0] }}">
@@ -572,7 +504,7 @@
                                         </div>
                                     </div>
                                     {#模态框#}
-                                    <div class="modal fade modal_fix"  id="modal{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                                   <div class="modal fade modal_fix"  id="modal{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
                                         <div class="modal-dialog">
                                             <div class="modal-content modal_content-ctf" >
                                                 <div class="modal-header">
@@ -591,36 +523,19 @@
                                                         </div>
                                                     </div>
                                                     <div class="row row-no-gutters font_Size modal_marger ">
-                                                        <div class="col-md-12">答对人数:<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                        <div class="col-md-12">答对人数：<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                        <div class="col-md-12">提示：<span class="text-info">{{ i[3] }}</span></div>
                                                         {% if i[7]==1 %}
                                                             <div class="col-md-12">题目附件:<a class="modal_marger" href="/download/{{ i[8] }}">附件1</a></div>
                                                         {% endif %}
+                                                        {% if i[5]==1 %}
                                                         <div class="col-md-12">
                                                             <div class="card ctf-modal_card" style="width: 100%;">
                                                                 <div class="card-body ctf-modal_card-body">
-                                                                    <h5 class="card-title text-center"><a href="/">{{ i[3] }}</a></h5>
+                                                                    <h5 class="card-title text-center"><p href="/">{{ i[6] }}</p></h5>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        {% if i[5] == 1 and i[11] == None %}
-                                                            <div class="col-md-12">
-                                                                <div class="card" style="width: 100%;">
-                                                                    <div class="card-body ">
-                                                                        <h5 class="card-title text-center">{{ i[3] }}</h5>
-                                                                        <button type="button" class="btn btn-primary card-link " style="width: 100%" onclick="">开启实例</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        {% endif %}
-                                                        {% if i[5] == 1 and i[11] == 1 %}
-                                                            <div class="col-md-12">
-                                                                <div class="card" style="width: 100%;">
-                                                                    <div class="card-body ">
-                                                                        <a href="{{ i[12] }}" target="_blank" class="">{{ i[12] }}</a>
-                                                                        <button class="btn btn-success">还剩5:00</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
                                                         {% endif %}
                                                     </div>
                                                     <div class="row row-no-gutters font_Size modal_marger" id="div{{ i[0] }}">

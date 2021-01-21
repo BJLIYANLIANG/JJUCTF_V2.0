@@ -614,31 +614,37 @@ def create_ctf_instance():
         if checkinsert == -1:
             return "-1"
         ctf_exam_info = mysql.selectctf_examByctf_exam_Id(ctf_exam_id)
-        print(ctf_exam_info)
+        # own_id = ctf_exam_info[1]
+        type = ctf_exam_info[2]  # 题目类型 如web misc等
+        name = ctf_exam_info[3]
+        hint = ctf_exam_info[4]
+        score = ctf_exam_info[5]
+        flag = ctf_exam_info[7]
+        file_flag = ctf_exam_info[8]
+        file_info = ctf_exam_info[9]
+        docker_flag = ctf_exam_info[10]
+        docker_info = ctf_exam_info[11]
+        # info = ctf_exam_info[13]
         # [6]为flag类型为静态flag
         if ctf_exam_info[6] == 0:
             # 如果docker_flag为1表示需要开启docker容器
             if ctf_exam_info[10] == 1:
                 # 创建Docker虚拟机
                 docker_name = ctf_exam_info[11]
-                print(docker_name)
+                # print(docker_name)
                 docker = Contain()
-                result = docker.startContain(docker_name)
-                if result == 0:
-                    return "0"
-                # print(result)
+                # 打开虚拟机
+                docker.startContain(docker_name)
                 dockerid = docker.getDockerId(docker_name)
                 print(dockerid)
-            result = mysql.add_user_challenge_list(0, ctf_exam_id)
+                docker_info = docker.geturl(dockerid)
+            result = mysql.insertChallenge_list(0,ctf_exam_id,name,hint,score,type,docker_flag,docker_info,file_flag,file_path=file_info,flag=flag)
+            # result = mysql.add_user_challenge_list(0, ctf_exam_id)
             if result == 0:
                 # return "1"
                 print("create_ctf_instance函数插入错误!")
                 return "0"
         # 动态flag:
-        else:
-            pass
-
-
         return "1"
     else:
         return "0"
@@ -1250,6 +1256,6 @@ def getChallengeTypeNum():
 
 if __name__ == '__main__':
     # app.run()
-    socketio.run(app,host='0.0.0.0',port=5000,debug=True)
+    socketio.run(app,host='0.0.0.0',port=8000,debug=True)
 
 

@@ -63,8 +63,6 @@ class Mysqld:
         try:
             showinfo = self.cursor
             groupid = self.selectGroupidByusername(user)
-            # sql = 'select a.id,a.name,a.score,a.hint,a.type,a.docker_flag,a.docker_info,a.file_flag,a.file_path,a.score,a.date,b.solved from challenge_list where group_id=%d or group_id=0' %(groupid)
-            # sql = 'select a.id,a.name,a.score,a.hint,a.type,a.docker_flag,a.docker_info,a.file_flag,a.file_path,a.date,b.solved,c.solved_flag from (select * from challenge_list where group_id=%d or group_id=0) as a left join (select ctf_exam_id,count(*) as solved from user_challenge_list group by ctf_exam_id) as b on a.ctf_exam_id=b.ctf_exam_id left join (select ctf_exam_id,id as solved_flag from user_challenge_list where group_id=%d) as c on a.ctf_exam_id=b.ctf_exam_id;'%(groupid,groupid)
             sql = 'select a.id,a.name,a.score,a.hint,a.type,a.docker_flag,a.docker_info,a.file_flag,a.file_path,a.date,b.solved,c.id from (select * from challenge_list where group_id=50 or group_id=0) as a left join (select ctf_exam_id,count(*) as solved from user_challenge_list group by ctf_exam_id) as b on a.ctf_exam_id=b.ctf_exam_id left join (select * from user_challenge_list where group_id=%d) as c on a.ctf_exam_id=c.ctf_exam_id order by a.type;'%(groupid)
             # print(sql)
             showinfo.execute(sql)
@@ -486,10 +484,22 @@ class Mysqld:
             return result
         except:
             return 0
+    def insertChallenge_list(self, group_id, ctf_exam_id, name, hint,score,type,docker_flag,docker_info,file_flag,file_path,flag):
+        datetime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        sql = 'INSERT INTO `challenge_list` (`group_id`, `id`, `ctf_exam_id`, `name`, `score`, `hint`, `type`, `docker_flag`, `docker_info`, `file_flag`, `file_path`, `flag`, `date`) VALUES (%d, NULL, %d, "%s", %d, "%s", %d, %d,"%s",%d,"%s","%s","%s")'%(group_id,ctf_exam_id,name,score,hint,type,docker_flag,docker_info,file_flag,file_path,flag,datetime)
+        sql2 = 'update ctf_exam set status=1 where id=%d;' % (ctf_exam_id)
+        try:
+            self.cursor.execute(sql)
+            self.cursor.execute(sql2)
+            self.conn.commit()
+            return 1
+        except:
+            print("insertChallenge_list函数执行错误！")
+            return 0
+
     def add_user_challenge_list(self,group_id,ctf_exam_id):
         #如果group_id==0表示这个是静态flag，并且只要创建一个就行
         if group_id==0:
-            #ddd
             ctf_exam_info = self.selectctf_examByctf_exam_Id(ctf_exam_id)
             if ctf_exam_info:
                 if ctf_exam_info[10]==0:  #当docker_flag为0的时候，也就是不需要开启docker的题目

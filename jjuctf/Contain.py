@@ -1,17 +1,19 @@
 import os
-import docker
+import time
 import re
+import subprocess
 class Contain:
     def __init__(self):
         self.path = "./Container/" # jjuctf目录下的
-
     def startContain(self,containName):
+        penv = dict(os.environ)
         cmd  = "docker-compose -f jjuctf/CTF_CONTAINER/"+containName[:-4]+"/docker-compose.yml up -d "
-        startdocker = os.popen(cmd)
-        if str(startdocker.readlines()).find('Errno'):
-            return 0
-
-
+        try:
+            output = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
+            return output
+        except subprocess.CalledProcessError as e:
+            time.sleep(15)
+        raise Exception("failed to start docker-compose (called: %s): exit code: %d, output: %s" % (e.cmd, e.returncode, e.output))
 
     def stopContain(self,containName):
         cmd = "docker-compose -f jjuctf/CTF_CONTAINER/"+containName[:-4]+"/docker-compose.yml stop"
@@ -31,28 +33,25 @@ class Contain:
     #  [['0.0.0.0', '5000']]
     def geturl(self,id):
         url = []
+        penv = dict(os.environ)
         for i in id:
             cmd = 'docker ps |grep ' + i[:12]
-            result = os.popen(cmd)
-            str123 = str(result.readlines())
-            pattern = re.compile(r'\d\.\d\.\d\.\d:\d*->\d*')
-            a = pattern.search(str123)
-            b = a.group()
-            c = b.replace('[','').replace(']','').split(':')
-            d = c[1].split('->')
-            # print(d)
-            i = []
-            i.append(c[0])
-            i.append(d[1])
-            url.append(i)
+            result = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
+            output = str(result,encoding='utf-8')
+            # print(output)
+            # str123 = result
+            pattern = re.compile(r'\d\.\d\.\d\.\d:\d*')
+            a = pattern.search(output)
+            b = a.group()[0]
+            # print(b)
+            url.append(b)
         return url
-
 
             # print(cmd)
 
         # print(a.readlines())
     def getDockerId(self,containName):
-        cmd = "docker-compose -f jjuctf/CTF_CONTAINER/"+containName[:-4]+"/docker-compose.yml ps -q"
+        cmd = "docker-compose -f jjuctf/CTF_CONTAINER/"+containName[:-4]+"/docker-compose.yml ps -q "
         result  = os.popen(cmd)
         if result:
             id = []
@@ -65,10 +64,6 @@ class Contain:
 
 
 #
-# b = Contain()
-# # b.startContain("EasyPython")
-# c = b.stopContain('EasyPython')
-# print(c)
-# print(b.geturl("EasyPython"))
+
 #pr
 # print(b.stopContain('EasyPython'))
