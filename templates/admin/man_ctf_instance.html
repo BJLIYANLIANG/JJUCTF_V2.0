@@ -23,9 +23,6 @@
                     <th>题目类型</th>
                     <th>Hint</th>
                     <th>分值</th>
-                    <th>Docker信息</th>
-                     <th>附件</th>
-                    <th>Flag</th>
                     <th>创建时间</th>
                     <th>操作</th>
                 </tr>
@@ -56,21 +53,19 @@
                         {% else  %}
                         <td>Pwn</td>
                     {% endif %}
+
                 <td>{{ j[5] }}</td>
                     <td>{{ j[4] }}</td>
-                    {% if j[7]==1 %}
-                        <td>{{ j[8] }}</td>
-                {% else %}
-                        <td>无</td>
-                {% endif %}
-                {% if j[9]==1 %}
-                    <td>{{ j[10] }}</td>
-                {% else %}
-                    <td>无</td>
-                {% endif %}
-                <td>{{ j[13] }}</td>
+
+
+
                     <td>{{ j[12] }}</td>
-                    <td style="width: 17%">
+                    <td style="width: 23%">
+                        <a href="showCtfDetail?id={{ j[1] }}">
+                            <button  class="btn btn-xs btn-success">
+                               查看更多
+                            </button>
+                        </a>
                         <button class="btn btn-xs btn-info">
                                修改题目
                         </button>
@@ -89,6 +84,7 @@
     </div>
 
 <script>
+    {#showdetail#}
     function delete_ctf_instance(id) {
         var a = confirm("确定要删除吗?");
         if (a == true) {
@@ -113,6 +109,32 @@
         }
 
     };
+
+
+    function delete_ctf_instance(id) {
+        var a = confirm("确定要删除吗?");
+        if (a == true) {
+            $.ajax({
+                url: "/delete_ctf_instance",
+                type: "post",
+                data: {"id": id},
+                success: function (result) {
+                    if (result == "1") {
+                        alert("删除成功");
+                        window.location.reload()
+                    } else {
+                        alert("删除题目错误！")
+                    }
+                },
+                error: function () {
+                    alert("发送请求失败");
+                }
+            })
+        } else {
+            alert("删除失败");
+        }
+
+    }
 
 
 

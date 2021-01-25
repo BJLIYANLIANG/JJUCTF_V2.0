@@ -484,9 +484,9 @@ class Mysqld:
             return result
         except:
             return 0
-    def insertChallenge_list(self, group_id, ctf_exam_id, name, hint,score,type,docker_flag,docker_info,file_flag,file_path,flag):
+    def insertChallenge_list(self, group_id, ctf_exam_id, name, hint,score,type,docker_flag,docker_id,docker_info,file_flag,file_path,flag):
         datetime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        sql = 'INSERT INTO `challenge_list` (`group_id`, `id`, `ctf_exam_id`, `name`, `score`, `hint`, `type`, `docker_flag`, `docker_info`, `file_flag`, `file_path`, `flag`, `date`) VALUES (%d, NULL, %d, "%s", %d, "%s", %d, %d,"%s",%d,"%s","%s","%s")'%(group_id,ctf_exam_id,name,score,hint,type,docker_flag,docker_info,file_flag,file_path,flag,datetime)
+        sql = 'INSERT INTO `challenge_list` (`group_id`, `id`, `ctf_exam_id`, `name`, `score`, `hint`, `type`, `docker_flag`, `docker_id`,`docker_info`, `file_flag`, `file_path`, `flag`, `date`) VALUES (%d, NULL, %d, "%s", %d, "%s", %d, %d,"%s","%s",%d,"%s","%s","%s")'%(group_id,ctf_exam_id,name,score,hint,type,docker_flag,docker_id,docker_info,file_flag,file_path,flag,datetime)
         sql2 = 'update ctf_exam set status=1 where id=%d;' % (ctf_exam_id)
         try:
             self.cursor.execute(sql)
@@ -496,6 +496,18 @@ class Mysqld:
         except:
             print("insertChallenge_list函数执行错误！")
             return 0
+
+
+    def selectCtfinstanceById(self,id):
+        sql = 'select `group_id`, `id`, `ctf_exam_id`, `name`, `score`, `hint`, `type`, `docker_flag`, `docker_id`,`docker_info`, `file_flag`, `file_path`, `flag`, `date` from challenge_list where id=%d'%(id)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            return result
+        except:
+            return 0
+
+
 
     def add_user_challenge_list(self,group_id,ctf_exam_id):
         #如果group_id==0表示这个是静态flag，并且只要创建一个就行
@@ -796,6 +808,20 @@ class Mysqld:
         except BaseException:
             print("查询CTF实例失败")
             return 0
+    # 查询是否有docker实例
+    def selectInstanceDockerStatusByChallengeId(self,id):
+        sql = 'select group_id,docker_flag,ctf_exam_id from challenge_list where id=%d' % (id)
+        print(sql)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            if result:
+                return result
+            else:
+                return -1
+        except BaseException:
+            print("查询CTFDocker实例失败,代码811")
+            return 0
     # 解题动态
     def selectCtfHistoryTable(self):
         sql = 'select b.name,c.name,a.score,a.date from user_challenge_list as a left join user_group as b on a.group_id = b.group_id left join ctf_exam as c on a.ctf_exam_id=c.id;'
@@ -938,5 +964,8 @@ class Mysqld:
 # score
 # date
 
-# # ===============user-end===============
-
+# # # ===============user-end===============
+#
+# a = Mysqld()
+# b = a.selectCtfinstanceById(33)
+# print(b)

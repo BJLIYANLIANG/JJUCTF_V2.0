@@ -1,0 +1,72 @@
+{% include "admin/header.html" %}
+
+    <div class="main-container">
+        <div class="padding">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="/admin">首页</a>
+                <a class="breadcrumb-item" href="#">CTF管理</a>
+                <a class="breadcrumb-item" href="/man_ctf_instance">题目实例</a>
+                <span class="breadcrumb-item active">实例信息</span>
+            </nav>
+        </div>
+        <div class="padding">
+            <div class="box">
+                <div class="heading">
+                    <h3 class="title">题目信息</h3>
+                </div>
+{#                `group_id`, `id`, `ctf_exam_id`, `name`, `score`--4, `hint`, `type`--6, `docker_flag`, `docker_id`,`docker_info`--9, `file_flag`, `file_path`, `flag`, `date`#}
+                <div class="box-inner">
+                    <table class="table table-bordered table-hover">
+                        <tr>
+                            <th class="text-info">实例ID</th>
+                            <td>{{ instanceinfo[1] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">题目ID</th>
+                            <td>{{ instanceinfo[2] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">题目名称</th>
+                            <td>{{ instanceinfo[3] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">题目类型</th>
+                            <td>{{ instanceinfo[6] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">Hint</th>
+                            <td>{{ instanceinfo[5] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">分值</th>
+                            <td>{{ instanceinfo[4] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">Docker映射端口</th>
+                            <td>{{ instanceinfo[9] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">Docker ID</th>
+                            <td>{{ instanceinfo[8] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">Flag</th>
+                            <td>{{ instanceinfo[12] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">附件地址</th>
+                            <td>{{ instanceinfo[11] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">创建时间</th>
+                            <td>{{ instanceinfo[13] }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+   {% include "admin/footer.html" %}

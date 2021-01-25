@@ -621,12 +621,10 @@
                 type: "post",
                 data: {"flag": a,"ctf_id":ctf_id},
                 success: function (result) {
-                    if (result == "1") {
-                        alert("回答正确！");
-                    }
-                    else{
+                    if (result != "1") {
                         alert("回答错误");
-                    }},
+                    }
+                    },
              error:function () {
 
                 alert("发送请求失败");
@@ -656,6 +654,7 @@
         //加入后接收消息回调
         socket.on("group_message", (res) => {
                 {#alert(res.challenge_id);#}
+
                 $("#button"+res.challenge_id).empty();
                 $("#button"+res.challenge_id).append('<button class="btn btn-success btn-lg btn-block" style="border-color: #696969" data-toggle="modal" data-target="#modal'+res.challenge_id+'">已解答</button>');
                 $('#div'+res.challenge_id).empty();
@@ -666,6 +665,7 @@
                 count_track = $('#track_sum').text();
                 count_track_int = Number(count_track)+1;
                 $('#track_sum').text(count_track_int.toString());
+
                 count_hsm = $('#hsm'+res.challenge_id).text();
                 count_hsm_int = Number(count_hsm)+1;
                 $('#hsm'+res.challenge_id).text(count_hsm_int.toString());
@@ -680,6 +680,9 @@
         socket.on('challenge_list',function (res){
             var t = res;
             $('#challenge_list').append('<tr><td>'+t.name+'战队</td><td class="text-danger">攻破了</td><td>'+t.target+'</td><td>'+t.date+'</td></tr>');
+        })
+        socket.on('timeout',function () {
+            window.location.href='/logout';
         })
     })
 </script>

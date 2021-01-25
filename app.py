@@ -148,6 +148,10 @@ def challenge():
 
 # 排序，找出带队伍的名次
 def sortChallengeByGroupId(challenge_info,id):
+    # 当没有解题信息的时候,就返回这个
+    # rank,score,Challenge_Count
+    if challenge_info == ():
+        return None,0,0
     rankid = 1
     for i in challenge_info:
         if id == i[0]:
@@ -636,9 +640,11 @@ def create_ctf_instance():
                 # 打开虚拟机
                 docker.startContain(docker_name)
                 dockerid = docker.getDockerId(docker_name)
-                print(dockerid)
+                # print(dockerid)
                 docker_info = docker.geturl(dockerid)
-            result = mysql.insertChallenge_list(0,ctf_exam_id,name,hint,score,type,docker_flag,docker_info,file_flag,file_path=file_info,flag=flag)
+            else:
+                dockerid = [None]
+            result = mysql.insertChallenge_list(0,ctf_exam_id,name,hint,score,type,docker_flag,dockerid[0],docker_info,file_flag,file_path=file_info,flag=flag)
             # result = mysql.add_user_challenge_list(0, ctf_exam_id)
             if result == 0:
                 # return "1"
@@ -682,8 +688,15 @@ def delete_ctf_instance():
     admin = session.get('admin')
     if admin:
         id = int(request.form.get('id'))
-        print(id)
         mysql = Mysqld()
+        ctfinstanceinfo = mysql.selectInstanceDockerStatusByChallengeId(id)
+        # group_id,docker_flag,ctf_exam_id
+        # group_id为0表示为静态flag,只需要关闭
+        if ctfinstanceinfo[0]==0 and ctfinstanceinfo[1]==1:
+            # 查找docker路径
+            pass
+
+
         result = mysql.delUserCtfInstanceById(id)
         if result == 1:
             return "1"
@@ -1183,14 +1196,18 @@ def group_apply():
 @socketio.on("join_group",namespace='/challenges')
 def on_join(data):
     token = data["token"]
-    message = decrypt(token)
-    arrmessage = message.split(':')
-    group_id = arrmessage[0]
-    username = arrmessage[1]
-    # print(group_id)
-    # print(username)
-    join_room(group_id)
-    print(f"client {username} wants to join: {group_id}")
+    print(token)
+    if token:
+        message = decrypt(token)
+        arrmessage = message.split(':')
+        group_id = arrmessage[0]
+        username = arrmessage[1]
+        # print(group_id)
+        # print(username)
+        join_room(group_id)
+        print(f"client {username} wants to join: {group_id}")
+    else:
+        return emit('timeout',broadcast=False)
     # emit("group_message",f"Welcome to {group_id}, {username}", room=group_id)
 
 @socketio.on('leave')
@@ -1253,6 +1270,27 @@ def getChallengeTypeNum():
         return jsonify(data)
     else:
         return render_template('admin/login.html')
+
+
+# 显示CTF实例细节
+@app.route('/showCtfDetail')
+def showCtfDetail():
+    admin = session.get('admin')
+    if admin:
+        cid = request.args.get('id')
+        if cid:
+            id = int(cid)
+            mysql = Mysqld()
+            instanceinfo = mysql.selectCtfinstanceById(id)
+            if instanceinfo!=0:
+                return render_template('admin/man_ctf_instance_detail.html',instanceinfo=instanceinfo)
+            else:
+                pass
+        else:
+            return render_template('admin/man_ctf_instance.html')
+    else:
+        return render_template('admin/login.html')
+
 
 if __name__ == '__main__':
     # app.run()
