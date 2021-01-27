@@ -32,7 +32,7 @@
                 {% for j in ctfList %}
 
                 <tr>
-                    <td class="center">
+                    <td style="width: 5%" class="center">
                         <label>
                             <input type="checkbox" class="ace" />
                             <span class="lbl"></span>
@@ -40,27 +40,24 @@
                     </td>
 {#        sql = 'select group_id,id,ctf_exam_id,name,score,hint,type,docker_flag,docker_info,file_flag,file_path,flag,date from challenge_list'#}
 
-                    <td>{{ j[1] }}</td>
-                    <td>{{ j[3] }}</td>
+                    <td style="width: 10%">{{ j[1] }}</td>
+                    <td style="width: 13%">{{ j[3] }}</td>
                     {% if j[6]==0 %}
-                    <td>WEB</td>
+                    <td style="width: 7%">WEB</td>
                         {% elif j[6] == 1  %}
-                        <td>Misc</td>
+                        <td style="width: 7%">Misc</td>
                         {% elif j[6] == 2  %}
-                        <td>Crypto</td>
+                        <td style="width: 7%">Crypto</td>
                         {% elif j[6] == 3  %}
-                        <td>Reverse</td>
+                        <td style="width: 7%">Reverse</td>
                         {% else  %}
-                        <td>Pwn</td>
+                        <td style="width: 7%">Pwn</td>
                     {% endif %}
 
-                <td>{{ j[5] }}</td>
-                    <td>{{ j[4] }}</td>
-
-
-
-                    <td>{{ j[12] }}</td>
-                    <td style="width: 23%">
+                <td style="width: 10%">{{ j[5] }}</td>
+                    <td style="width: 10%">{{ j[4] }}</td>
+                    <td style="width: 15%">{{ j[12] }}</td>
+                    <td style="width: 30%">
                         <a href="showCtfDetail?id={{ j[1] }}">
                             <button  class="btn btn-xs btn-success">
                                查看更多

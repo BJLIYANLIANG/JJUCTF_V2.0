@@ -16,6 +16,15 @@
     .ctf-td{
         border: 1px solid #0d1927;
     }
+    .group-card-apply{
+        border: 0.3rem solid #2c3e60;
+        background-color: rgba(0,0,0,0);
+        color: white;
+    }
+    .btn-ctf-group{
+        background-color: rgba(0,0,0,0);
+        border: 0.1rem solid #2c3e60;
+    }
 </style>
 <div class="container-fluid">
 <br>
@@ -36,30 +45,30 @@
                 </div>
                 <div class="col-md-12">
                     <div class="btn-group">
-                        <button class="btn btn-info" data-toggle="modal" data-target="#search_group">加入队伍</button>
+                        <button class="btn btn-info btn-ctf-group" data-toggle="modal" data-target="#search_group">加入队伍</button>
                     </div>
                     <div class="btn-group">
-                        <button class="btn btn-danger">退出队伍</button>
+                        <button class="btn btn-danger btn-ctf-group">退出队伍</button>
                     </div>
                     <p></p>
-                    <div class="card">
-                        <div class="card-header bg-info">
-                            <h5 class="card-title text-dark">通知</h5>
+                    <div class="card group-card-apply">
+                        <div class="card-header">
+                            <h5 class="card-title">通知</h5>
                         </div>
                         <div class="card-body">
                         {% if UserApplyList %}
                             <label>申请列表</label>
-                            <table class="table table-bordered table-hover">
-                                <tr>
-                                    <th width="60%">用户ID</th>
+                            <table class="table table-bordered table-hover ">
+                                <tr class="text-primary">
+                                    <th width="60%">用户名</th>
                                     <th width="40%">操作</th>
                                 </tr>
 
                                 {%  for i in UserApplyList %}
-                                <tr>
-                                    <td width="60%">{{ i[0] }}</td>
+                                <tr class="text-success">
+                                    <td width="60%">{{ i[1] }}</td>
                                     <td width="40%">
-                                        <div class="btn-group"><button class="btn btn-success">同意</button></div>
+                                        <div class="btn-group"><button class="btn btn-success" onclick="great_apply({{ i[0] }})">同意</button></div>
                                         <div class="btn-group"><button class="btn btn-danger">拒绝</button></div>
                                     </td>
                                 </tr>{% endfor %}
@@ -301,6 +310,7 @@
             }
         })
 }
+
     function group_apply(id){
         var id = id;
         {#var group_id = document.getElementById('group_id1').value;#}
@@ -315,6 +325,28 @@
                     }
                     if(result == '500'){
                         alert('已经提交过申请！等待队长同意');
+                    }
+                },
+                error:function () {
+                alert("发送请求失败，请检查网络连接窗台");
+                }
+        })
+}
+function great_apply(uid){
+        var uid = uid;
+        {#var group_id = document.getElementById('group_id1').value;#}
+        {#alert(id);#}
+        $.ajax({
+                url: "/great_apply",
+                type: "post",
+                data: {"uid": uid },
+                success: function (result) {
+                    if(result=='200'){
+                        alert("添加成功");
+                        window.location.reload();
+                    }
+                    else {
+                        alert('添加失败');
                     }
                 },
                 error:function () {

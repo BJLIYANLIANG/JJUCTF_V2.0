@@ -268,6 +268,15 @@ class Mysqld:
             return result[0]
         return 0
 
+    # 通过uid查询用户名
+    def selectUserNameByUserId(self,uid):
+        sql = 'select user_name from user where id=%d'%(uid)
+        self.cursor.execute(sql)
+        result = self.cursor.fetchone()
+        if result:
+            return result[0]
+        return 0
+
 
 
     def selectCtfTypeAndScoreByChallenge_id(self,ctf_id):
@@ -361,7 +370,7 @@ class Mysqld:
         sql = 'select admin_id,admin_name,admin_email,admin_mobile,status from admin'
         self.cursor.execute(sql)
         result = self.cursor.fetchall()
-        print(result)
+        # print(result)
         if result:
             return result
         return 0
@@ -426,7 +435,7 @@ class Mysqld:
         if query_ctf_exam_id[0]==None:
             return 0
         sql = 'insert into user_challenge_list (group_id,type,challenge_id,user_id,score,date,ctf_exam_id)values(%d,%d,%d,%d,%d,"%s",%d)'%(group_id,ctfType,challenge_id,user_id,score,date,query_ctf_exam_id[0])
-        print(sql)
+        # print(sql)
         try:
             self.cursor.execute(sql)
             self.conn.commit()
@@ -528,7 +537,7 @@ class Mysqld:
                     sql = 'insert into challenge_list (group_id,ctf_exam_id,name,score,hint,type,docker_flag,file_flag,file_path,flag,date) values (%d,%d,"%s",%d,"%s",%d,%d,%d,"%s","%s","%s")'%(group_id,ctf_exam_id,name,score,hint,type,0,file_flag,file_info,flag,datetime)
                     sql2 = 'update ctf_exam set status=1 where id=%d;'%(ctf_exam_id)
                     try:
-                        print(sql)
+                        # print(sql)
                         self.cursor.execute(sql)
                         self.cursor.execute(sql2)
                         self.conn.commit()
@@ -573,13 +582,13 @@ class Mysqld:
         checksql = 'select status from admin where admin_id=%d'%(id)
         self.cursor.execute(checksql)
         status = self.cursor.fetchone()[0]
-        print()
-        print(status)
+        # print()
+        # print(status)
         if status==0:
             sql = 'update `admin` set status=1  WHERE admin_id =%d' % (id)
         else:
             sql = 'update `admin` set status=0  WHERE admin_id =%d' % (id)
-        print(sql)
+        # print(sql)
         try:
             self.cursor.execute(sql)
             self.conn.commit()
@@ -644,7 +653,7 @@ class Mysqld:
             return 0
     def delGroupByGroup_Id(self,group_id):
         sql = 'delete from user_group where group_id=%d' % (group_id)
-        print(sql)
+        # print(sql)
         try:
             self.cursor.execute(sql)
             self.conn.commit()
@@ -740,7 +749,7 @@ class Mysqld:
             self.cursor.execute(sql)
             result = self.cursor.fetchone()[0]
             # 如果查到看有内容
-            print(result)
+            # print(result)
             if result:
                 return -1
             else:
@@ -759,7 +768,7 @@ class Mysqld:
     # 在CTF排名中，ranks排序
     def selectUserChallengeListDesc(self):
         sql = 'select b.name,a.sum_score,a.count_id from (select group_id,count(id) as count_id,sum(score) as sum_score from user_challenge_list group by group_id) as a left join user_group as b on a.group_id=b.group_id order by a.sum_score desc;'
-        print(sql)
+        # print(sql)
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchall()
@@ -797,7 +806,7 @@ class Mysqld:
 
     def selectChallengeInfoByChallengeId(self,id):
         sql = 'select name,score,type from challenge_list where id=%d' % (id)
-        print(sql)
+        # print(sql)
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchone()
@@ -811,7 +820,7 @@ class Mysqld:
     # 查询是否有docker实例
     def selectInstanceDockerStatusByChallengeId(self,id):
         sql = 'select group_id,docker_flag,ctf_exam_id from challenge_list where id=%d' % (id)
-        print(sql)
+        # print(sql)
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchone()
@@ -851,11 +860,9 @@ class Mysqld:
         try:
             self.cursor.execute(sql)
             self.conn.commit()
-            # self.conn.close()
             return 1
         except:
             self.conn.rollback()
-            # self.conn.close()
             print("申请加入队伍失败!")
             return 0
 
@@ -872,7 +879,7 @@ class Mysqld:
             print("查询CTF类型数失败")
             return 0
 
-    #查找用户申请列表用，使用在group.html
+    #查找用户申请列表用，使用在group.html,只有队长可用
     def selectUserGroupApplyByGroupId(self,id):
         sql = 'select user_id from user_group_apply where group_id=%d'%(id)
         try:
@@ -887,7 +894,7 @@ class Mysqld:
     # 检查用户目前是不是已经加入到队伍中了
     def checkUserGroupApplyByGIdAndUId(self,groupId,UserId):
         sql = 'select * from user_group_list where group_id=%d and user_id=%d'%(groupId,UserId)
-        print(sql)
+        # print(sql)
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchall()
@@ -941,6 +948,15 @@ class Mysqld:
         except BaseException:
             print("函数：select_challenge_list_Type_Count")
             return 0
+    def delGroupApplyByUid(self,uid):
+        sql = 'DELETE FROM `user_group_apply` WHERE user_id = %d'%(uid)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            return 1
+        except:
+            self.conn.rollback()
+            return 0
 # a = Mysqld()
 # b = a.select_challenge_list_Type_Count()
 
@@ -969,3 +985,4 @@ class Mysqld:
 # a = Mysqld()
 # b = a.selectCtfinstanceById(33)
 # print(b)
+# INSERT INTO `user_group_list` (`id`, `group_id`, `user_id`, `role`) VALUES (NULL, '', '', '')

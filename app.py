@@ -80,7 +80,7 @@ def login():
             resp = make_response(redirect(url_for('index')))
             message = str(group_id)+':'+username
             token = encrypt(message)
-            print(token)
+            # print(token)
             # 添加token信息
             resp.set_cookie('token', token)
             return resp
@@ -99,7 +99,7 @@ def challenge():
         check = Check()
         mysql = Mysqld()
         challengeResult = mysql.selectChallengeListByUserName(user)
-        print(challengeResult)
+        # print(challengeResult)
         # 展示题目列表
 
         challengeNum = mysql.showChallengeNum()
@@ -107,8 +107,6 @@ def challenge():
         # 查找队伍信息
         groupInfo = mysql.selectGroupInfoByUsername(user)
         challenge_list_rank = mysql.selectChallengeListRank()
-        # 分别得到排名，分数，解题数
-        rank,score,Challenge_Count = sortChallengeByGroupId(challenge_list_rank,groupInfo[0])
 
         #
         UserTypeNum = mysql.selectCtfTypeNum()
@@ -125,6 +123,8 @@ def challenge():
         #         # 添加token信息
         #     resp.set_cookie('token', token)
         #     return resp
+        # 分别得到排名，分数，解题数
+        rank, score, Challenge_Count = sortChallengeByGroupId(challenge_list_rank, groupInfo[0])
         competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
         #转换为js需要的格式
         userChallengeinfo = mysql.selectUserChallengeListDesc()
@@ -314,7 +314,6 @@ def groupSetting():
         #得到比赛信息
         competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
 
-
         # 如果存在比赛id
         if group_id!=0:
             groupinfo = mysql.selectGroupInfoByUsername(user)
@@ -322,10 +321,20 @@ def groupSetting():
 
             # 如果这个身份为队长，那么
             if groupinfo[3] == mysql.selectUserIdByUserName(user):
-                UserApplyList = mysql.selectUserGroupApplyByGroupId(group_id)
+                # uid形式表示
+                applyList = mysql.selectUserGroupApplyByGroupId(group_id)
+                UserApplyList = []
+                # print(applyList)
+                for uid in applyList:
+                    list = []
+                    applyUsername = mysql.selectUserNameByUserId(uid[0])
+                    list.append(uid[0])
+                    # print(applyUsername)
+                    list.append(applyUsername)
+                    UserApplyList.append(list)
+                print(UserApplyList)
             else:
                 UserApplyList = ()
-
 
             userGroupList = mysql.selectUserGroupListByGroupId(group_id)
             #解题信息
@@ -386,9 +395,9 @@ def checkCtfFlag():
                         # 广播战况
                         emit('challenge_list', data, broadcast=True,namespace='/challenges')
                         emit('group_message',data,room=str(group_id),namespace='/challenges')
-                        print(str(group_id)+" :success track"+challengeinfo[0])
+                        # print(str(group_id)+" :success track"+challengeinfo[0])
                     adduserscore_result = mysql.addUserScore(group_id,ctfType,challenge_id,user_id,score,challenge_time)
-                    print(adduserscore_result)
+                    # print(adduserscore_result)
                     if adduserscore_result==1:
                         return "1"
                     else:
@@ -519,7 +528,7 @@ def man_target_ctf():
     if admin:
         connectsql = Mysqld()
         ctfList  = connectsql.selectCtfInstanceList()
-        print(ctfList)
+        # print(ctfList)
         return render_template("admin/man_ctf_instance.html", ctfList=ctfList)
     else:
         return render_template("admin/login.html")
@@ -578,7 +587,7 @@ def man_ctf_add_exam():
                 docker_flag = 1
                 docker_file.save(os.path.join(app.config['UPLOAD_CTF_CONTAINER'], secure_filename(docker_file.filename)))
                 # =======解压zip包=====
-                print(app.config['UPLOAD_CTF_CONTAINER']+docker_file.filename)
+                # print(app.config['UPLOAD_CTF_CONTAINER']+docker_file.filename)
                 zip = zipfile.ZipFile(app.config['UPLOAD_CTF_CONTAINER']+docker_file.filename,'r')
                 try:
                     zip.extractall(app.config['UPLOAD_CTF_CONTAINER'])
@@ -784,8 +793,8 @@ def upload_file():
 def uploader():
    if request.method == 'POST':
       f = request.files['file1']
-      print("request.url:"+str(request.url))
-      print("success upload file:"+str(f.filename))
+      # print("request.url:"+str(request.url))
+      # print("success upload file:"+str(f.filename))
       f.save(os.path.join(app.config['UPLOAD_FOLDER'],secure_filename(f.filename)))
       return 'file uploaded success'
    else:
@@ -810,7 +819,7 @@ def create_group():
                 # print(group_id)
                 # print(userId)
                 if group_id != 0:
-                    print("id:",end='')
+                    # print("id:",end='')
                     # print(groupid)
                     addusergrouplistResult = mysql.addUser_group_list(group_id,userId,1)
                     if addusergrouplistResult==1:
@@ -993,7 +1002,7 @@ def changeCompetitionInfo():
     if admin:
         if request.method=="POST":
             id_str = request.form.get('id')
-            print(id_str)
+            # print(id_str)
             try:
                 # print("id:"+str(id))
                 id = int(id_str)
@@ -1060,7 +1069,7 @@ def man_user_change():
         mysql = Mysqld()
         # userinfo = mysql.
         userinfo = mysql.selectUserInfoById(id)
-        print(userinfo)
+        # print(userinfo)
         # notice = '123'
         return render_template('admin/man_user_change.html',userinfo=userinfo)
     else:
@@ -1111,8 +1120,8 @@ def man_addUser():
 
 def downloader(filename):
     user = session.get('user')
-    print(request.user_agent)
-    print(user)
+    # print(request.user_agent)
+    # print(user)
     if user:
          # dirpath = os.path.join(app.root_path, 'upload')  # 这里是下在目录，从工程的根目录写起，比如你要下载static/js里面的js文件，这里就要写“static/js”
         return send_from_directory(app.config['UPLOAD_CTF_FILE'], filename, as_attachment=True)  # as_attachment=True 一定要写，不然会变成打开，而不是下载
@@ -1125,7 +1134,7 @@ def delAllUserChallengeList():
     user = session.get('admin')
     if user:
         key = int(request.form.get('key'))
-        print(key)
+        # print(key)
         if key == 1:
             mysql = Mysqld()
             result = mysql.delAllUserChallengeList()
@@ -1152,7 +1161,7 @@ def search_group():
                     return "500"
 
             searchGroupResult = mysql.searchGroupListByGroupname(group_name)
-            print(searchGroupResult)
+            # print(searchGroupResult)
             if searchGroupResult !=0 and searchGroupResult != -1:
                 data ={'name':searchGroupResult[0],'id':searchGroupResult[3]}
                 return data
@@ -1176,12 +1185,17 @@ def push_ws():
 def group_apply():
     user = session.get('user')
     if user:
+        # 队伍id
         group_id = int(request.form.get('id'))
         mysql = Mysqld()
+        # 查找这个用户的uid
         user_id = mysql.selectUserIdByUserName(user)
+        # 检查这个用户想要申请的队伍之前是否加入过
         checkapply = mysql.checkAddGroupApply(user_id,group_id)
+        # 如果加入过
         if checkapply:
             return "500"
+        # 没有加入过的话,就让他加入到申请列表中
         result = mysql.addUserGroupApply(user_id,group_id)
         if result == 1:
             return "1"
@@ -1196,7 +1210,7 @@ def group_apply():
 @socketio.on("join_group",namespace='/challenges')
 def on_join(data):
     token = data["token"]
-    print(token)
+    # print(token)
     if token:
         message = decrypt(token)
         arrmessage = message.split(':')
@@ -1235,7 +1249,7 @@ def user_competition_list():
     if user:
         mysql = Mysqld()
         competitionlist = mysql.selectCompetitionInfoList()
-        print(competitionlist)
+        # print(competitionlist)
         return render_template('user/competition_list.html',competitionlist=competitionlist)
     else:
         # return render_template('user/login.html')
@@ -1291,8 +1305,32 @@ def showCtfDetail():
             return render_template('admin/man_ctf_instance.html')
     else:
         return render_template('admin/login.html')
+# group.html用的
+# 同意加入队伍申请
+# ajax请求
+@app.route('/great_apply',methods=['POST'])
+def great_apply():
+    username = session.get('user')
+    if username:
+        uid = int(request.form.get('uid'))
 
-
+        if uid:
+            # 首先将这个用户加入这个队伍
+            # 然后在申请表中删除
+            mysql = Mysqld()
+            group_id = mysql.selectGroupidByusername(username)
+            # 0表示队员
+            code1 = mysql.addUser_group_list(group_id,uid,0)
+            code2 = mysql.delGroupApplyByUid(uid)
+            if code1 == 1 and code2 == 1:
+                return "200"
+            else:
+                return "502"
+        else:
+            # 表示没有uid这个参数
+            return "501"
+    else:
+        return render_template('user/login.html')
 if __name__ == '__main__':
     # app.run()
     socketio.run(app,host='0.0.0.0',port=8000,debug=True)

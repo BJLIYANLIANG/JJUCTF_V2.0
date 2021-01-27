@@ -2,23 +2,28 @@
 <style>
      .user-card{
         border: 0.3rem solid #005cbf;
-        background-color: #0d1927;
+        background-color: rgba(0,0,0,0);
         color: white;
     }
      .user-list{
-         background-color: #0d1927;
+         background-color: rgba(0,0,0,0);
          color: white;
      }
      .card-notice{
-         background-color: #1c2b36;
+         border: 0.2rem solid #005cbf;
+         background-color: rgba(0,0,0,0);
          color: white;
      }
+     .btn-ctf-group{
+        background-color: rgba(0,0,0,0);
+        border: 0.1rem solid #2c3e60;
+    }
 </style>
 <br>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3" style="border-right-color: #005cbf;border: 2rem">
-            <div class="row user-card">
+            <div class="card user-card">
                 <div class="col-md-12">
                    <h2 class="title" style="color:  #31708f">个人信息</h2>
                 </div>
@@ -38,7 +43,7 @@
 
             </div>
             <br>
-             <a href="/user_setting"><button class="btn btn-success">基本设置</button></a>
+             <a href="/user_setting"><button class="btn btn-success btn-ctf-group">基本设置</button></a>
         </div>
         <div class="col-md-9">
             <div class="row">
