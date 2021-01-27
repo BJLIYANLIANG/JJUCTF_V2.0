@@ -59,6 +59,6 @@ class Contain:
 #
 
 #pr
-# print(b.stopContain('EasyPython'))
-c = Contain()
-d = c.geturl(['7c7b10aff807fd2836'])
+# # print(b.stopContain('EasyPython'))
+# c = Contain()
+# d = c.geturl(['7c7b10aff807fd2836'])

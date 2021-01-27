@@ -1242,6 +1242,8 @@ def user_competition_list():
         return render_template('user/login.html')
 
 
+
+
 @app.route('/getChallengeTypeNum',methods=['POST'])
 def getChallengeTypeNum():
     admin = session.get('admin')
@@ -1264,7 +1266,6 @@ def getChallengeTypeNum():
             if i[0]==4:
                 pwnNum = i[1]
             else:
-
                 continue
         data = {'Web':webNum,'Misc':miscNum,'Crypto':cryptoNum,'Reverse':reverseNum,'Pwn':pwnNum}
         return jsonify(data)
