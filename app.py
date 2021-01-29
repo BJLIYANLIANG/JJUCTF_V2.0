@@ -101,55 +101,41 @@ def challenge():
         challengeResult = mysql.selectChallengeListByUserName(user)
         # print(challengeResult)
         # 展示题目列表
-
         challengeNum = mysql.showChallengeNum()
         # challengeTypeNum = getChallengeListByType.selectCtfChallengeTypeNum(user)   #用这个代替上面那个！今天不写了，难受，我写的垃圾代码。。。
         # 查找队伍信息
         groupInfo = mysql.selectGroupInfoByUsername(user)
-        challenge_list_rank = mysql.selectChallengeListRank()
 
         #
         UserTypeNum = mysql.selectCtfTypeNum()
         # 如果该用户没有创建队伍，那么跳转让他创建队伍
         if groupInfo == 0:
             return redirect('/group')
-        # 检查时候有token，如果没有，那么创建token
-        # if request.cookies.get('token') is None:
-        #     resp = make_response(redirect(url_for('challenges')))
-        #     group_id = mysql.selectGroupidByusername(user)
-        #     message = str(group_id) + ':' + user
-        #     token = encrypt(message)
-        #     print(token)
-        #         # 添加token信息
-        #     resp.set_cookie('token', token)
-        #     return resp
+        challenge_list_rank = mysql.selectChallengeListRank()
         # 分别得到排名，分数，解题数
         rank, score, Challenge_Count = sortChallengeByGroupId(challenge_list_rank, groupInfo[0])
         competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
         #转换为js需要的格式
         userChallengeinfo = mysql.selectUserChallengeListDesc()
-        # print(userChallengeinfo)
         startDateTime = str(competition_info[3])
         endDateTime = str(competition_info[4])
         end_time = str(competition_info[4]).replace('-','/')
         # 比赛状态码 如果比赛正在进行，则结果为1,已结束为2,未开始为0
         competition_StatusCode = check.checkCompetition_start(startDateTime,endDateTime)
-        # print('conpetitioncode')
-        # print(competition_StatusCode)
+        # 公告栏
         userNotice = mysql.selectUserNotice()
-        # print(userNotice)
         # 解题动态 CTF_History_table
-
         ctf_history_table = mysql.selectCtfHistoryTable()
         # 0为web 以此类推
-        return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult,ctf_history_table=ctf_history_table,examNum=challengeNum,groupInfo=groupInfo,userNotic=userNotice,competition_info=competition_info,end_time=end_time,competition_StatusCode=competition_StatusCode,UserTypeNum=UserTypeNum,
+        return render_template("user/challenge.html",username=user,headerType="challenges",challengeResult=challengeResult,ctf_history_table=ctf_history_table,examNum=challengeNum,groupInfo=groupInfo,userNotice=userNotice,competition_info=competition_info,end_time=end_time,competition_StatusCode=competition_StatusCode,UserTypeNum=UserTypeNum,
                                rank=rank,sum_score=score,Challenge_Count=Challenge_Count)
     return render_template('user/login.html')
 
 # 排序，找出带队伍的名次
 def sortChallengeByGroupId(challenge_info,id):
     # 当没有解题信息的时候,就返回这个
-    # rank,score,Challenge_Count
+    # rank,sls
+    #core,Challenge_Count
     if challenge_info == ():
         return None,0,0
     rankid = 1
@@ -158,6 +144,8 @@ def sortChallengeByGroupId(challenge_info,id):
             return rankid,i[1],i[2]
         else:
             rankid += 1
+    return None, 0, 0
+
 
 # index
 # ctf解题模式
@@ -265,7 +253,14 @@ def awd():
         mysql = Mysqld()
         # 比赛信息
         competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
-        return render_template("user/awd.html",username=user,headerType="awd",competition_info=competition_info)
+        # 公告栏
+        userNotice = mysql.selectUserNotice()
+        groupInfo = mysql.selectGroupInfoByUsername(user)
+        # select group_id,name,info,user_id from user_group where group_id=
+        # 如果该用户没有创建队伍，那么跳转让他创建队伍
+        if groupInfo == 0:
+            return redirect('/group')
+        return render_template("user/awd.html",username=user,headerType="awd",groupInfo=groupInfo,competition_info=competition_info,userNotice=userNotice)
     else:
         return render_template("user/login.html")
 

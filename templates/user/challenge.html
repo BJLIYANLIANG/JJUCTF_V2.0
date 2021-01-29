@@ -6,6 +6,11 @@
         color: #ffffff;
         font-size: 1.1rem;
     }
+    .ctf-group-card-x{
+        min-height: 10rem;
+        max-height: 10rem;
+
+    }
     .ctf-card-score{
         color: #4ec3ff;
         float: right;
@@ -51,6 +56,23 @@
         background-color: rgb(39,72,89);
         border-color: rgb(39,72,89);
     }
+    .table td{
+        padding: .2rem;
+    }
+    .card-competition-status-x{
+        min-height: 10rem;
+        max-height: 10rem;
+        overflow-y:auto;
+    }
+    .card-competition-notice-x{
+        overflow-y:auto;
+        min-height: 10rem;
+        max-height: 10rem;
+        width: 100%;
+    }
+    .card-body{
+        padding: .3rem;
+    }
 </style>
 <link rel="stylesheet" href="/static/css/user/challenges.css">
 <div class="container-fluid">
@@ -60,7 +82,7 @@
             <div class="card card-userinfo">
                 <div class="card-header text-info">比赛信息</div>
                 <div class="card-body">
-                    <div class="row" style="font-size: 1.1rem">
+                    <div class="row ctf-group-card-x" style="font-size: 1.1rem;">
                         <div class="col-md-12">战队名：<span class="text-info">{{ groupInfo[1] }}</span></div>
                         <div class="col-md-12">队员名：<span class="text-info">{{ username }}</span></div>
                         <div class="col-md-12">队伍简介：<span class="text-info">{{ groupInfo[3] }}</span></div>
@@ -75,15 +97,15 @@
               <div class="card card-competition-notice">
                   <div class="card-header text-info">比赛公告</div>
                   <div class="card-body">
-                      <div class="row" >
-                         <div class="col-md-12">
-                             <div style="overflow-y:auto;mix-height: 10rem;max-height: 12rem; width: 100%">
+                      <div class="row card-competition-notice-x" >
+                         <div class="col-md-12" >
+
                                  <ol>{#公告栏#}
-                                     {% for i in userNotic %}
+                                     {% for i in userNotice %}
                                         <li>{{ i[1] }}</li>
                                      {% endfor %}
                                  </ol>
-                             </div>
+
                          </div>
                       </div>
                   </div>
@@ -92,19 +114,21 @@
         <div class="col-md-3">
             <div class="card card-competition-status">
                 <div class="card-header text-info">解题动态</div>
-                <div class="card-body" style="max-height: 14.5rem;min-height:14.5rem;overflow-y:auto;">
+                <div class="card-body" style="">
                     {% if competition_StatusCode==1 %}
-                    <table class="table table-borderless" id="challenge_list" style="color: white;font-size: 0.9rem">
-                      {% for i in ctf_history_table %}
-                        <tr>
-                            <td>{{ i[0] }}战队</td>
-                            <td class="text-danger">攻破了</td>
-                            <td>{{ i[1] }}</td>
-                            <td>{{ i[3] }}</td>
-                        </tr>
+                    <div class="card-competition-status-x">
+                        <table class="table table-borderless" id="challenge_list" style="color: white;font-size: 0.9rem">
+                        {% for i in ctf_history_table %}
+                            <tr>
+                                <td style="width: 30%">{{ i[0] }}战队</td>
+                                <td style="width: 20%" class="text-danger">攻破了</td>
+                                <td style="width: 30%">{{ i[1] }}</td>
+                                <td style="width: 20%">{{ i[3] }}</td>
+                            </tr>
                         {% endfor %}
-                        {% endif %}
                     </table>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -125,7 +149,7 @@
         <div class="col-md-7 col-sm-12">
            <!-- 选项卡菜单-->
 <!-- 选项卡面板 -->
-            <div  class="tab-content">
+            <div class="tab-content">
                 <!--Web-->
                 <div class="tab-pane fade show active" id="Web">
                     <div class="row">
@@ -184,7 +208,7 @@
                                                         <div class="col-md-12">
                                                             <div class="card ctf-modal_card" style="width: 100%;">
                                                                 <div class="card-body ctf-modal_card-body">
-                                                                    <h5 class="card-title text-center"><p href="/">{{ i[6] }}</p></h5>
+                                                                    <h5 class="card-title text-center">{{ i[6] }}</h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -197,7 +221,7 @@
                                                             </div>
                                                         {% else %}
                                                             <div class="input-group col-md-12 modal_marger btn-group">
-                                                                <input  id="flag{{ i[0] }}" type="text" name="flag"  autocomplete="off" placeholder="flag.." >
+                                                            <label for="flag{{ i[0] }}"></label><input id="flag{{ i[0] }}" type="text" name="flag"  autocomplete="off" placeholder="flag.." >
                                                                 <button type="submit"  class="btn btn-primary" onclick="postflag('{{ i[0] }}','flag{{ i[0] }}')">提交</button>
                                                             </div>
                                                         {% endif %}
@@ -271,7 +295,7 @@
                                                         <div class="col-md-12">
                                                             <div class="card ctf-modal_card" style="width: 100%;">
                                                                 <div class="card-body ctf-modal_card-body">
-                                                                    <h5 class="card-title text-center"><p href="/">{{ i[6] }}</p></h5>
+                                                                    <h5 class="card-title text-center">{{ i[6] }}</h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -284,7 +308,7 @@
                                                             </div>
                                                         {% else %}
                                                             <div class="input-group col-md-12 modal_marger btn-group">
-                                                                <input  id="flag{{ i[0] }}" type="text" name="flag"  autocomplete="off" placeholder="flag.." >
+                                                                <label for="flag{{ i[0] }}"></label><input id="flag{{ i[0] }}" type="text" name="flag" autocomplete="off" placeholder="flag.." >
                                                                 <button type="submit"  class="btn btn-primary" onclick="postflag('{{ i[0] }}','flag{{ i[0] }}')">提交</button>
                                                             </div>
                                                         {% endif %}
@@ -358,7 +382,7 @@
                                                         <div class="col-md-12">
                                                             <div class="card ctf-modal_card" style="width: 100%;">
                                                                 <div class="card-body ctf-modal_card-body">
-                                                                    <h5 class="card-title text-center"><p href="/">{{ i[6] }}</p></h5>
+                                                                    <h5 class="card-title text-center">{{ i[6] }}</h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -395,7 +419,7 @@
                                 {% if i[4]==3 %}
                                     <div class="col-md-3">
                                         <div class="card ctf_card">
-                                            <div class="card-header ">
+                                            <div class="card-header">
                                                 <div class="card-group" style="float: left"><b>{{ i[1] }}</b></div>
                                                 <div class="card-group ctf-card-score">{{ i[2] }}</div>
                                             </div>
@@ -445,7 +469,7 @@
                                                         <div class="col-md-12">
                                                             <div class="card ctf-modal_card" style="width: 100%;">
                                                                 <div class="card-body ctf-modal_card-body">
-                                                                    <h5 class="card-title text-center"><p href="/">{{ i[6] }}</p></h5>
+                                                                    <h5 class="card-title text-center">{{ i[6] }}</h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -511,7 +535,7 @@
                                                     <h4 class="modal-title" id="myModalLabel">{{ i[1] }}</h4>
                                                     <button type="button" style="color: white" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                 </div>
-                                                <div class="modal-body ">
+                                                <div class="modal-body">
                                                     <div class="row row-no-gutters font_Size modal_marger">
                                                         <div class="col-md-6">分值:<span class="modal_marger text-info">{{ i[2] }}</span></div>
                                                         <div class="col-md-6 col-md-auto" id="span{{ i[0] }}">
@@ -532,7 +556,7 @@
                                                         <div class="col-md-12">
                                                             <div class="card ctf-modal_card" style="width: 100%;">
                                                                 <div class="card-body ctf-modal_card-body">
-                                                                    <h5 class="card-title text-center"><p href="/">{{ i[6] }}</p></h5>
+                                                                    <h5 class="card-title text-center">{{ i[6] }}</h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -581,13 +605,13 @@
     </div>
     <script>
         setInterval(function() {
-            var EndTime = new Date('{{ end_time }}');
-            var NowTime = new Date();
-            var t = EndTime.getTime() - NowTime.getTime();
-            var d = 0;
-            var h = 0;
-            var m = 0;
-            var s = 0;
+            const EndTime = new Date('{{ end_time }}');
+            const NowTime = new Date();
+            const t = EndTime.getTime() - NowTime.getTime();
+            let d = 0;
+            let h = 0;
+            let m = 0;
+            let s = 0;
             if (t >= 0) {
                 d = Math.floor(t / 1000 / 60 / 60 / 24);
                 h = Math.floor(t / 1000 / 60 / 60 % 24);
@@ -604,9 +628,9 @@
 {% else %}
     <div class="row">
         <div class="col-md-12">
-            <h1 class="title text-center">现在不是比赛时间！</h1>
-            <p>开始时间:{{ competition_info[3] }}</p>
-            <p>结束时间:{{ competition_info[4] }}</p>
+            <h1 class="title text-center text-primary">现在不是比赛时间！</h1>
+            <p class="text-primary">开始时间:{{ competition_info[3] }}</p>
+            <p class="text-primary">结束时间:{{ competition_info[4] }}</p>
         </div>
     </div>
 {% endif %}
@@ -614,14 +638,14 @@
 
 <script type="text/javascript">
     function postflag(ctf_id,id){
-        var a = document.getElementById(id).value;
-        var ctf_id = ctf_id;
+        const a = document.getElementById(id).value;
+        let $;
         $.ajax({
                 url: "/checkCtfFlag",
                 type: "post",
                 data: {"flag": a,"ctf_id":ctf_id},
                 success: function (result) {
-                    if (result != "1") {
+                    if (result !== "1") {
                         alert("回答错误");
                     }
                     },
@@ -632,7 +656,12 @@
 
             }
         )
-    };
+    }
+
+    function $(document) {
+        
+    }
+
     $(document).ready(function () {
         function getCookie(name){
             var strcookie = document.cookie;//获取cookie字符串
@@ -640,12 +669,12 @@
             // 遍历匹配
             for ( var i = 0; i < arrcookie.length; i++) {
                 var arr = arrcookie[i].split("=");
-                if (arr[0] == name){
+                if (arr[0] === name){
                     return arr[1];
                 }
             }
             return "";
-        };
+        }
         var url = location.href;
         var socket = io.connect(url);
         //申请加入这个队伍
@@ -654,26 +683,31 @@
         //加入后接收消息回调
         socket.on("group_message", (res) => {
                 {#alert(res.challenge_id);#}
-
-                $("#button"+res.challenge_id).empty();
-                $("#button"+res.challenge_id).append('<button class="btn btn-success btn-lg btn-block" style="border-color: #696969" data-toggle="modal" data-target="#modal'+res.challenge_id+'">已解答</button>');
-                $('#div'+res.challenge_id).empty();
-                $('#div'+res.challenge_id).append('<div> <a class="text-success">已解答，获得'+res.score+'分</a></div>');
-                sum_score = $('#sum_score').text();
+                var button_res = $("#button"+res.challenge_id);
+                button_res.empty();
+                button_res.append('<button class="btn btn-success btn-lg btn-block" style="border-color: #696969" data-toggle="modal" data-target="#modal'+res.challenge_id+'">已解答</button>');
+                var divxxx = $('#div'+res.challenge_id);
+                divxxx.empty();
+                divxxx.append('<div> <a class="text-success">已解答，获得'+res.score+'分</a></div>');
+                var sum_score_var = $('#sum_score');
+                sum_score = sum_score_var.text();
                 sum_score_int = Number(sum_score)+Number(res.score);
-                $('#sum_score').text(sum_score_int.toString());
-                count_track = $('#track_sum').text();
+                sum_score_var.text(sum_score_int.toString());
+                var count_track_var = $('#track_sum');
+                count_track = count_track_var.text();
                 count_track_int = Number(count_track)+1;
-                $('#track_sum').text(count_track_int.toString());
-
-                count_hsm = $('#hsm'+res.challenge_id).text();
+                count_track_var.text(count_track_int.toString());
+                var count_hsm_var = $('#hsm'+res.challenge_id);
+                count_hsm = count_hsm_var.text();
                 count_hsm_int = Number(count_hsm)+1;
-                $('#hsm'+res.challenge_id).text(count_hsm_int.toString());
-                count_hsm2 = $('#hsm2'+res.challenge_id).text();
+                count_hsm_var.text(count_hsm_int.toString());
+                var count_hsm2_var = $('#hsm2'+res.challenge_id);
+                count_hsm2 = count_hsm2_var.text();
                 count_hsm2_int = Number(count_hsm2)+1;
-                $('#hsm2'+res.challenge_id).text(count_hsm2_int.toString());
-                $('#span'+res.challenge_id).empty();
-                $('#span'+res.challenge_id).append('<span class="text-success modal_marger ">已解答</span>');
+               count_hsm2_var.text(count_hsm2_int.toString());
+               var spanxxx = $('#span'+res.challenge_id);
+                spanxxx.empty();
+                spanxxx.append('<span class="text-success modal_marger ">已解答</span>');
 
 
         })

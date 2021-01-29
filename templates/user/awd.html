@@ -1,26 +1,52 @@
 {% include'user/header.html' %}
 <style>
-    .ctf-group-card{
+    .awd-group-card{
         border: 0.3rem solid #2c3e50;
         background-color: #0d1927;
         color: white;
+    }
+    .awd-group-card-x{
+        min-height: 10rem;
+        max-height: 10rem;
     }
     .awd-card{
         border: 0.3rem solid #005cbf;
         background-color: #0d1927;
         color: white;
     }
+    .card-competition-notice{
+       border: 0.3rem solid #2c3e50;
+        background-color: #0d1927;
+        color: white;
+
+    }
+    .card-competition-notice-x{
+        overflow-y:auto;
+        min-height: 10rem;
+        max-height: 10rem;
+        width: 100%
+    }
+    .table td{
+        padding: .2rem;
+    }
+    .awd-rank{
+        border: .2rem solid #31708f;
+        min-height: 28rem;
+        max-height: 28rem;
+
+    }
 </style>
 <div  class="container-fluid" >
     <br>
        <div class="row">
         <div class="col-md-3">
-            <div class="card ctf-group-card">
+            <div class="card awd-group-card">
                 <div class="card-header">队伍信息</div>
+{#                 # select group_id,name,info,user_id from user_group where group_id=#}
                 <div class="card-body">
-                    <div class="row">
-                          <div class="col-md-12">战队名:JJUSEC</div>
-                        <div class="col-md-12">战队token：<span style="color: red">432141328491237421jk1</span></div>
+                    <div class="row awd-group-card-x">
+                        <div class="col-md-12">用户名: <span class="text-info">{{ username }}</span></div>
+                        <div class="col-md-12">战队名: <span class="text-info">{{ groupInfo[1] }}</span></div>
                         <div class="col-md-12">战队排名：1154</div>
                         <div class="col-md-12">解题数量：1</div>
                         <div class="col-md-12">得分：9</div>
@@ -29,181 +55,327 @@
             </div>
         </div>
         <div class="col-md-6" >
-              <div class="card ctf-group-card">
-                <div class="card-header">比赛公告</div>
-                <div class="card-body">
-                    <div class="row">
-                         <span>1. 【最新】14:35 babyLWE更新附件，请重新下载。14:27 friendlyRE更新附件，请重新下载。</span><br>
-                <span>2.  本届赛事期间，请大家留意裁判人员的电话（尾号2710），并积极配合，如果以任何理由拒接，无法沟通以及不配合裁判质询要求，将进行禁赛处理。比赛期间禁止以任何形式进行跨队交流，一起维护公平、清朗的竞赛环境。</span><br>
-                <span>3. 比赛时间：2020年12月26日10：00-18：00</span><br>
-                <span>4. 本次比赛进行严格的作弊审查制度，所有破坏比赛公平性的行为一经发现确认，将取消比赛成绩。</span>
-                    </div>
-                </div>
-            </div>
+              <div class="card card-competition-notice">
+                  <div class="card-header text-info">比赛公告</div>
+                  <div class="card-body">
+                      <div class="row">
+                         <div class="col-md-12">
+                             <div class="card-competition-notice-x">
+                                 <ol>{#公告栏#}
+                                     {% for i in userNotice %}
+                                        <li>{{ i[1] }}</li>
+                                     {% endfor %}
+                                 </ol>
+                             </div>
+                         </div>
+                      </div>
+                  </div>
+              </div>
         </div>
         <div class="col-md-3">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card ctf-group-card">
+                    <div class="card awd-group-card">
                 <div class="card-header">解题动态</div>
                 <div class="card-body">
-                    <ul class="nav ">
-                        <li class="nav-item nav-divider">宝宝战队-</li>
-                        <li class="nav-item">解出了-</li>
-                        <li class="nav-item">问卷调查-</li>
-                        <li class="nav-item">17:59</li>
-                    </ul>
-                    <ul class="nav ">
-                        <li class="nav-item nav-divider">宝宝战队-</li>
-                        <li class="nav-item">解出了-</li>
-                        <li class="nav-item">问卷调查-</li>
-                        <li class="nav-item">17:59</li>
-                    </ul>
-                    <ul class="nav ">
-                        <li class="nav-item nav-divider">宝宝战队-</li>
-                        <li class="nav-item">解出了-</li>
-                        <li class="nav-item">问卷调查-</li>
-                        <li class="nav-item">17:59</li>
-                    </ul>
-                    <ul class="nav ">
-                        <li class="nav-item nav-divider">宝宝战队-</li>
-                        <li class="nav-item">解出了-</li>
-                        <li class="nav-item">问卷调查-</li>
-                        <li class="nav-item">17:59</li>
-                    </ul>
+                    <div class="awd-group-card-x">
+                        <table class="table table-borderless" id="challenge_list" style="color: white;font-size: 0.9rem">
+                            <tbody><tr>
+                                <td style="width: 30%">admin战队</td>
+                                <td style="width: 20%" class="text-danger">攻破了</td>
+                                <td style="width: 30%">web1</td>
+                                <td style="width: 20%">18:01:36</td>
+                            </tr>
+
+                            <tr>
+                                <td style="width: 30%">admin战队</td>
+                                <td style="width: 20%" class="text-danger">攻破了</td>
+                                <td style="width: 30%">misc2</td>
+                                <td style="width: 20%">18:02:02</td>
+                            </tr>
+                    </tbody>
+                    </table>
+                    </div>
+
                 </div>
             </div>
-                    <!--
-                    <div class="btn-group text-center">
-                    <button type="button" class="btn btn-success btn-lg">问题反馈</button>
-                    </div>
-                    <div class="btn-group text-right">
-                    <button type="button" class="btn btn-warning btn-lg">比赛未开始</button>
-                    </div>
-                    -->
                 </div>
             </div>
         </div>
     </div>
     <br>
     <div class="row">
-        <div class="col-md-9 col-xl-9 col-sm-12">
+        <div class="col-md-3">
+            <div style="border: .2rem solid #31708f">
+                <h3 class="title text-center" style="color: #4ec3ff">靶场列表</h3>
+                <div style="overflow-y:auto;max-height: 28rem;min-height: 27rem">
+                    <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th style="border-color: #1c2b36;color: #87CEFA">队伍</th>
+                        <th style="border-color: #1c2b36;color: #87CEFA">ip地址</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1</td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xl-6 col-sm-12">
             <div class="card-deck">
-                <div class="card awd-card " style="background-color:  #1c2b36;color: #ffffff">
+
+
+                <div class="card awd-card ">
                     <div class="card-header" style="position: relative">
-                            <div class="" style="float: left"><b>Test 2</b></div>
-                            <div class="" style="float: right;color: #B0C4DE;font-size: 20px">300</div>
-                    </div>
-                    <div class="card-body  ">
-                        <div class="row">
-                            <div class="col-md-6">题目: <b>WEB2</b></div>
-                            <div class="col-md-6">分值300</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12" >
-                                链接: <a  href="#">http://127.0.0.1:1235</a>
-                            </div>
-                            <div class="col-md-12" >
-                                   Hint: <a>This is easy WEB2</a>
-                                </div>
-                               <div class="col-md-12" >
-                                   附件: <a  href="#">http://127.0.0.1:1235/web2.zip</a>
-                                </div>
-                           </div>
-                            <div class="row">
-                                <div class="col-md-12 col-lg-12 btn input-group">
-                                <input type="text" class=""  placeholder="flag{...}">
-                                <button class="btn-primary">提交</button>
-                                </div>
-                            </div>
-                        </div>
-                </div>
-                <div class="card awd-card " style="background-color:  #1c2b36;color: #ffffff">
-                    <div class="card-header" style="position: relative">
-                            <div class="" style="float: left"><b>Test 2</b></div>
-                            <div class="" style="float: right;color: #B0C4DE;font-size: 20px">300</div>
-                    </div>
-                    <div class="card-body  ">
-                        <div class="row">
-                            <div class="col-md-6">题目: <b>WEB2</b></div>
-                            <div class="col-md-6">分值300</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12" >
-                                链接: <a  href="#">http://127.0.0.1:1235</a>
-                            </div>
-                            <div class="col-md-12" >
-                                   Hint: <a>This is easy WEB2</a>
-                                </div>
-                               <div class="col-md-12" >
-                                   附件: <a  href="#">http://127.0.0.1:1235/web2.zip</a>
-                                </div>
-                           </div>
-                            <div class="row">
-                                <div class="col-md-12 col-lg-12 btn input-group">
-                                <input type="text" class=""  placeholder="flag{...}">
-                                <button class="btn-primary">提交</button>
-                                </div>
-                            </div>
-                        </div>
-                </div>
-                <div class="card awd-card " style="background-color:  #1c2b36;color: #ffffff">
-                    <div class="card-header" style="position: relative">
-                            <div class="" style="float: left"><b>Test 2</b></div>
-                            <div class="" style="float: right;color: #B0C4DE;font-size: 20px">300</div>
+                        <div class="" style="float: left"><b>Test 2</b></div>
+                        <div class="text-success" style="float: right;font-size: 20px">300</div>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">题目: <b>WEB2</b></div>
-                            <div class="col-md-6">分值300</div>
+                            <div class="col-md-6">状态:<span class="text-success">正常</span></div>
                         </div>
+                        <br>
                         <div class="row">
-                            <div class="col-md-12" >
-                                链接: <a  href="#">http://127.0.0.1:1235</a>
-                            </div>
-                            <div class="col-md-12" >
-                                   Hint: <a>This is easy WEB2</a>
-                                </div>
-                               <div class="col-md-12" >
-                                   附件: <a  href="#">http://127.0.0.1:1235/web2.zip</a>
-                                </div>
-                           </div>
-                            <div class="row">
-                                <div class="col-md-12 col-lg-12 btn input-group">
-                                <input type="text" class=""  placeholder="flag{...}">
-                                <button class="btn btn-primary">提交</button>
-                                </div>
+                           <div class="col-md-12">
+                                <button style="width: 30%" class="btn btn-primary">更多</button>
+                                <button style="width: 30%" class="btn btn-success">提交</button>
+                                <button style="width: 30%" class="btn btn-danger">重置</button>
                             </div>
                         </div>
+                    </div>
                 </div>
+
+                <div class="card awd-card ">
+                    <div class="card-header" style="position: relative">
+                        <div class="" style="float: left"><b>Test 2</b></div>
+                        <div class="text-success" style="float: right;font-size: 20px">300</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">题目: <b>WEB2</b></div>
+                            <div class="col-md-6">状态:<span class="text-success">正常</span></div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button style="width: 30%" class="btn btn-primary">更多</button>
+                                <button style="width: 30%" class="btn btn-success">提交</button>
+                                <button style="width: 30%" class="btn btn-danger">重置</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card awd-card ">
+                    <div class="card-header" style="position: relative">
+                        <div class="" style="float: left"><b>Test 2</b></div>
+                        <div class="text-success" style="float: right;font-size: 20px">300</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">题目: <b>WEB2</b></div>
+                            <div class="col-md-6">状态:<span class="text-danger">异常</span></div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button style="width: 30%" class="btn btn-primary">更多</button>
+                                <button style="width: 30%" class="btn btn-success">提交</button>
+                                <button style="width: 30%" class="btn btn-danger">重置</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
         <div class="col-md-3 col-xl-3 col-sm-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="ctf_time time btn-group text-right ">
+                        <button class="btn btn-lg text-info">
+                            <span>距离比赛结束:</span>
+                            <span id="t_d">00天</span>
+                            <span id="t_h">00时</span>
+                            <span id="t_m">00分</span>
+                            <span id="t_s">00秒</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="awd-rank">
 
-             <div style="border: .2rem solid #31708f">
-                 <h3 class="title text-center" style="color: #4ec3ff">比赛排名</h3>
-                 <table class="table table-bordered">
+                <h3 class="title text-center" style="color: #4ec3ff">比赛排名</h3>
+                <div style="overflow-y:auto;max-height: 24rem">
+                    <table class="table table-bordered">
 {#                <caption>比赛排名</caption>#}
-               <thead>
-                  <tr>
-                     <th style="border-color: #1c2b36;color: #87CEFA">排名</th>
-                     <th style="border-color: #1c2b36;color: #87CEFA">队名</th>
-                      <th style="border-color: #1c2b36;color: #87CEFA">积分</th>
-                  </tr>
-               </thead>
-               <tbody>
-                  <tr>
-                      <td style="border-color: #1c2b36;color: #87CEFA">1</td>
-                      <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
-                      <td style="border-color: #1c2b36;color: #87CEFA">5010</td>
-                  </tr>
-                  <tr>
-                      <td style="border-color: #1c2b36;color: #87CEFA">2</td>
-                      <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
-                      <td style="border-color: #1c2b36;color: #87CEFA">5000</td>
-                  </tr>
+                    <thead>
+                    <tr>
+                        <th style="border-color: #1c2b36;color: #87CEFA">排名</th>
+                        <th style="border-color: #1c2b36;color: #87CEFA">队名</th>
+                        <th style="border-color: #1c2b36;color: #87CEFA">积分</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">1</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">5010</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">5000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">5000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">5000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">5000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">5000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">5000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">5000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">5000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">5000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">5000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">5000</td>
+                    </tr><tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">5000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">5000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">5000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">5000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">5000</td>
+                    </tr>
+                    <tr>
+                        <td style="border-color: #1c2b36;color: #87CEFA">2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">5000</td>
+                    </tr>
                </tbody>
             </table>
+                </div>
              </div>
         </div>
     </div>
@@ -211,4 +383,25 @@
 
     <p></p>
 </div>
+    <script>
+        setInterval(function() {
+            const EndTime = new Date('{{ end_time }}');
+            const NowTime = new Date();
+            const t = EndTime.getTime() - NowTime.getTime();
+            let d = 0;
+            let h = 0;
+            let m = 0;
+            let s = 0;
+            if (t >= 0) {
+                d = Math.floor(t / 1000 / 60 / 60 / 24);
+                h = Math.floor(t / 1000 / 60 / 60 % 24);
+                m = Math.floor(t / 1000 / 60 % 60);
+                s = Math.floor(t / 1000 % 60);
+            }
+            document.getElementById("t_d").innerHTML = d + "天";
+            document.getElementById("t_h").innerHTML = h + "时";
+            document.getElementById("t_m").innerHTML = m + "分";
+            document.getElementById("t_s").innerHTML = s + "秒";
+        }, 10);
+    </script>
 {% include'user/footer.html' %}
