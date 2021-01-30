@@ -1326,6 +1326,14 @@ def great_apply():
             return "501"
     else:
         return render_template('user/login.html')
+
+@app.route('/modificationUserInfo',methods=['POST'])
+def modificationUserInfo():
+    user = session.get('user')
+    if user:
+        return "200"
+    else:
+        return render_template('user/login.html')
 if __name__ == '__main__':
     # app.run()
     socketio.run(app,host='0.0.0.0',port=8000,debug=True)

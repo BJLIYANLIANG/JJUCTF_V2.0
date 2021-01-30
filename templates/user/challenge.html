@@ -639,7 +639,6 @@
 <script type="text/javascript">
     function postflag(ctf_id,id){
         const a = document.getElementById(id).value;
-        let $;
         $.ajax({
                 url: "/checkCtfFlag",
                 type: "post",
@@ -656,10 +655,6 @@
 
             }
         )
-    }
-
-    function $(document) {
-        
     }
 
     $(document).ready(function () {
