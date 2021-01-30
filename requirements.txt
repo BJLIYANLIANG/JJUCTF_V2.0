@@ -5,5 +5,11 @@ pycrypto=2.6.1
 redis=3.5.3
 Flask_socketio=5.0.1
 eventlet=0.30.0
-yagmail
-jsonify
+yagmail~=0.14.245
+jsonify~=0.5
+
+redis~=3.5.3
+Flask~=1.1.2
+Werkzeug~=1.0.1
+crypto~=1.4.1
+PyMySQL~=0.10.1

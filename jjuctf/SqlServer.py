@@ -957,6 +957,9 @@ class Mysqld:
         except:
             self.conn.rollback()
             return 0
+
+    def disableAdminById(self, admin_id):
+        pass
 # a = Mysqld()
 # b = a.select_challenge_list_Type_Count()
 
