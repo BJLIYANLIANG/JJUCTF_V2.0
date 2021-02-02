@@ -18,7 +18,6 @@ class Contain:
 
     def stopContain(self,containName):
         penv = dict(os.environ)
-        # cmd = "docker-compose -f jjuctf/CTF_CONTAINER/" + containName[:-4] + "/docker-compose.yml up -d "
         cmd = "docker-compose -f jjuctf/CTF_CONTAINER/"+containName[:-4]+"/docker-compose.yml stop"
         try:
             output = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
@@ -26,19 +25,24 @@ class Contain:
         except subprocess.CalledProcessError as e:
             time.sleep(15)
         raise Exception("failed to start docker-compose (called: %s): exit code: %d, output: %s" % (e.cmd, e.returncode, e.output))
-
-
-    #  得到ip和端口
-    #  [['0.0.0.0', '5000']]
-    def geturl(self,id):
-        url = []
+    def stopContainByDockerID(self,dockerID):
         penv = dict(os.environ)
+        cmd = "docker stop "+dockerID
+        try:
+            subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
+            return 1
+        except subprocess.CalledProcessError as e:
+            time.sleep(5)
+
+
+
+    def geturl(self,id):
+        #  得到ip和端口
+        #  [['0.0.0.0', '5000']]
         for i in id:
             cmd = 'docker ps |grep ' + i[:12]
             p = subprocess.Popen(cmd,shell=True,stdout=subprocess.PIPE)
             p.wait()
-            # print('the status code is:', p.returncode)
-            # out,err = p.communicate()
             out = p.stdout.read()
             print(out)
             re_result = re.search(r'\d\.\d\.\d\.\d\:\d*',str(out))
@@ -60,5 +64,7 @@ class Contain:
 
 #pr
 # # print(b.stopContain('EasyPython'))
-# c = Contain()
-# d = c.geturl(['7c7b10aff807fd2836'])
+c = Contain()
+d = c.stopContainByDockerID("7c7b10aff807")
+print(d)
+# b'7c7b10aff807\n'

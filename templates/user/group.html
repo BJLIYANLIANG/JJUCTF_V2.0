@@ -158,7 +158,7 @@
                     <div class="col-md-12">
                         <label for="search">搜索队伍:</label>
                         <div class="input-group mb-3">
-                            <input type="text" id="search_name" class="form-control" placeholder="Search">
+                            <label for="search_name"></label><input type="text" id="search_name" class="form-control" placeholder="Search">
                             <div class="input-group-append">
                                 <button class="btn btn-success"  onclick="search_group()">Go</button>
                             </div>
@@ -207,7 +207,7 @@
             <div class="modal-body">
                 <label for="demo">请输入您想创建的队伍名:</label>
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="队伍名"  name="groupname" id="groupname">
+                    <label for="groupname"></label><input type="text" class="form-control" placeholder="队伍名" name="groupname" id="groupname">
                 </div>
                 <label for="demo">队伍简介:</label>
                 <div class="input-group mb-3">
@@ -274,7 +274,18 @@
                         window.location.reload()
                     }
                     else{
-                        alert("创建失败，请换一个队名再试试！")
+                        if(result == '502'){
+                            alert('队伍名不能为空');
+
+                        }
+                        else {
+                            if(result == '501'){
+                            alert('队伍名长度不能大于10字节');
+                            }
+                            else {
+                                alert("创建失败，请换一个队名再试试！");
+                            }
+                        }
                     }},
              error:function () {
                 alert("发送请求失败，请检查网络连接窗台");

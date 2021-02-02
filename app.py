@@ -85,7 +85,9 @@ def login():
             # app.permanent_session_lifetime = timedelta(minutes=20)  # 设置session到期时间，单位分钟
             session['user'] = request.form.get('username')
             resp = make_response(redirect(url_for('index')))
+            # print(group_id)/
             message = str(group_id) + ':' + username
+            print(message)
             token = encrypt(message)
             # print(token)
             # 添加token信息
@@ -393,12 +395,18 @@ def checkCtfFlag():
                 mysql = Mysqld()
                 group_id = mysql.selectGroupInfoByUsername(user)[0]
                 groupname = mysql.selectGroupNameByGroupId(group_id)
+                # 检查队伍之前是否提交过这个flag
+                userPostFlag = mysql.checkUser_Post_Flag_OkByGroupIdAndCid(group_id,challenge_id)
                 # print(group_id)
+                # 如果返回值不为空,则表示之前已经提交过flag
+                if userPostFlag:
+                    return "501"
                 if group_id != 0:
+                    # 获取ctf类型和分数
                     (ctfType, score) = mysql.selectCtfTypeAndScoreByChallenge_id(challenge_id)
-                    # print(ctfType,score)
-                    # date = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+                    # 解答时间
                     challenge_time = time.strftime("%H:%M:%S", time.localtime())
+                    # 用户id
                     user_id = mysql.selectUserIdByUserName(user)
                     # 插入到得分表中
                     challengeinfo = mysql.selectChallengeInfoByChallengeId(challenge_id)
@@ -408,10 +416,10 @@ def checkCtfFlag():
                                 "challenge_id": challenge_id, "score": str(score)}
                         # 广播战况
                         emit('challenge_list', data, broadcast=True, namespace='/challenges')
+                        print(data)
                         emit('group_message', data, room=str(group_id), namespace='/challenges')
                         # print(str(group_id)+" :success track"+challengeinfo[0])
-                    adduserscore_result = mysql.addUserScore(group_id, ctfType, challenge_id, user_id, score,
-                                                             challenge_time)
+                    adduserscore_result = mysql.addUserScore(group_id, ctfType, challenge_id, user_id, score,challenge_time)
                     # print(adduserscore_result)
                     if adduserscore_result == 1:
                         return "1"
@@ -420,9 +428,9 @@ def checkCtfFlag():
                 else:
                     return "0"
             else:
-                return "0"
+                return "503"
         else:
-            return "0"
+            return "502"
     else:
         return "0"
 
@@ -723,10 +731,12 @@ def delete_ctf_instance():
         # group_id,docker_flag,ctf_exam_id
         # group_id为0表示为静态flag,只需要关闭
         if ctfinstanceinfo[0] == 0 and ctfinstanceinfo[1] == 1:
-            # 查找docker路径
-            pass
-
+            dockerID = ctfinstanceinfo[3]
+            # print(dockerID)
+            dockerServer = Contain()
+            dockerServer.stopContainByDockerID(dockerID)
         result = mysql.delUserCtfInstanceById(id)
+        # result = 1
         if result == 1:
             return "1"
         else:
@@ -828,6 +838,15 @@ def create_group():
     user = session.get('user')
     if user:
         groupName = request.form.get('groupname')
+        # 队伍名为空
+        if groupName == '':
+            print("502")
+            return "502"
+        # 队伍名不能查过10字节
+        if len(groupName)>10:
+            print("501")
+            return "501"
+
         groupInfo = request.form.get('groupinfo')
         mysql = Mysqld()
         userId = mysql.selectUserIdByUserName(user)
@@ -1254,12 +1273,15 @@ def group_apply():
 @socketio.on("join_group", namespace='/challenges')
 def on_join(data):
     token = data["token"]
-    # print(token)
+    print(token)
     if token:
         message = decrypt(token)
+        # print(message)
         arrmessage = message.split(':')
         group_id = arrmessage[0]
         username = arrmessage[1]
+        # print(group_id)
+        # print(username)
         # print(group_id)
         # print(username)
         join_room(group_id)
@@ -1389,6 +1411,14 @@ def modificationUserInfo():
     else:
         return render_template('user/login.html')
 
+
+@app.route('/stopAllCTFInstance')
+def stopAllCTFInstance():
+    admin = session.get('admin')
+    if admin:
+        return "1"
+    else:
+        return render_template("admin/login.html")
 
 if __name__ == '__main__':
     # app.run()
