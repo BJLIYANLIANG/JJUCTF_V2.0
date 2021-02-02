@@ -178,18 +178,31 @@ def index():
 @app.route('/ranks')
 def ranks():
     user = session.get('user')
+    type = request.args.get('type')
     if user:
         mysql = Mysqld()
         # 这个函数貌似没啥用了，有时间的话就把这个删除
         # GetChallengeList = mysql.select_user_challenge_list()
         # GetGroupInfo  = sqlcheck.
-        getUserCTFChallengeList = mysql.selectUserChallengeListDesc()
-        getUserCTFChallengeListNum = len(getUserCTFChallengeList)
-        GetUserNum = mysql.selectUserNum(user)  # 查数据库将排行榜数据传到template中，目前是测试阶段，使用的是用户表
-        competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
-        return render_template("user/ranks.html", username=user, headerType="rank", userNum=GetUserNum, a=1,
-                               getUserCTFChallengeList=getUserCTFChallengeList,
-                               getUserCTFChallengeListNum=getUserCTFChallengeListNum, competition_info=competition_info)
+        if type == 'ctf':
+            getUserCTFChallengeList = mysql.selectUserChallengeListDesc()
+            getUserCTFChallengeListNum = len(getUserCTFChallengeList)
+            GetUserNum = mysql.selectUserNum(user)  # 查数据库将排行榜数据传到template中，目前是测试阶段，使用的是用户表
+            competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
+            return render_template("user/ranks-ctf.html", username=user, headerType="rank", userNum=GetUserNum, a=1,
+                                   getUserCTFChallengeList=getUserCTFChallengeList,
+                                   getUserCTFChallengeListNum=getUserCTFChallengeListNum, competition_info=competition_info)
+        if type == 'awd':
+            getUserCTFChallengeList = mysql.selectUserChallengeListDesc()
+            getUserCTFChallengeListNum = len(getUserCTFChallengeList)
+            GetUserNum = mysql.selectUserNum(user)  # 查数据库将排行榜数据传到template中，目前是测试阶段，使用的是用户表
+            competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
+            return render_template("user/ranks-awd.html", username=user, headerType="rank", userNum=GetUserNum, a=1,
+                                   getUserCTFChallengeList=getUserCTFChallengeList,
+                                   getUserCTFChallengeListNum=getUserCTFChallengeListNum, competition_info=competition_info)
+        else:
+            return render_template("404.html")
+
     else:
         return render_template("user/login.html")
 

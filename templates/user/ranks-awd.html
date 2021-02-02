@@ -1,0 +1,58 @@
+{% include 'user/header.html' %}
+<style>
+    .rank-card{
+        border: 0.3rem solid #2c3e57;
+        background-color: rgba(0,0,0,0);
+        color: white;
+    }
+    .rank-table{
+        {#border-bottom: 1px solid #236532;#}
+        {#border-top: 1px solid #236532;#}
+    }
+</style>
+<div  class="container-fluid" >
+{#<script src="https://cdn.jsdelivr.net/npm/echarts@5.0.0/dist/echarts.min.js">#}
+{#</script>#}
+
+<br>
+<p></p>
+
+<div class="row">
+    <div class="col-md-offset-1 col-md-1"></div>
+    <div class="col-md-10">
+        <div class="card rank-card">
+            <div class="card-header">
+                <h3 class="card-title text-center text-primary">AWD排行榜</h3>
+            </div>
+            <div class="card-body">
+                <table class="table table-borderless table-hover rank-table">
+                    <tr class="text-success">
+                    <th>排名</th>
+                    <th>战队</th>
+                    <th>解题数量</th>
+                    <th>积分</th>
+                </tr>
+                {% for i in range(1,getUserCTFChallengeListNum + 1)  %}
+                <tr class="text-info">
+                    <td>{{ i }}</td>
+                   <td>{{ getUserCTFChallengeList[i-1][0] }}</td>
+                   <td>{{ getUserCTFChallengeList[i-1][2] }}</td>
+                   <td>{{ getUserCTFChallengeList[i-1][1] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-offset-1 col-md-1"></div>
+    <div class="col-md-12"><h3 class="title text-center"></h3></div>
+    <div class="col-md-offset-1 col-md-1 "></div>
+    <div class="col-md-10" >
+        <div>
+
+        </div>
+    </div>
+    <div class="col-md-offset-1 col-md-1"></div>
+</div>
+</div>
+{% include 'user/footer.html' %}

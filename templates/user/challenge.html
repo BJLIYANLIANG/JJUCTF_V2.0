@@ -115,8 +115,9 @@
             <div class="card card-competition-status">
                 <div class="card-header text-info">解题动态</div>
                 <div class="card-body" style="">
-                    {% if competition_StatusCode==1 %}
+
                     <div class="card-competition-status-x">
+                    {% if competition_StatusCode==1 %}
                         <table class="table table-borderless" id="challenge_list" style="color: white;font-size: 0.9rem">
                         {% for i in ctf_history_table %}
                             <tr>
@@ -127,8 +128,9 @@
                             </tr>
                         {% endfor %}
                     </table>
-                    </div>
                     {% endif %}
+                    </div>
+
                 </div>
             </div>
         </div>
