@@ -80,14 +80,14 @@ def login():
         mysql = Mysqld()
         # 查一下是否拥有队伍
         group_id = mysql.selectGroupidByusername(username)
-        #防止重复注册
+        # 防止重复注册
         result = mysql.checkuser(username, password)  # 对用户表进行操作，检查登录
         # result为1表示该用户名未注册过
         if result == 1:
             session.permanent = True  # 设置session为永久的
             # app.permanent_session_lifetime = timedelta(minutes=20)  # 设置session到期时间，单位分钟
             session['user'] = request.form.get('username')
-            if group_id !=0:
+            if group_id != 0:
                 resp = make_response(redirect(url_for('index')))
                 # print(group_id)/
                 message = str(group_id) + ':' + username
@@ -98,7 +98,7 @@ def login():
                 resp.set_cookie('token', token)
                 return resp
             else:
-                return render_template('user/index.html',message="登陆成功")
+                return render_template('user/index.html', message="登陆成功")
         else:
             return render_template("user/login.html", message="帐号或密码错误")
     else:
@@ -197,7 +197,8 @@ def ranks():
             competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
             return render_template("user/ranks-ctf.html", username=user, headerType="rank", userNum=GetUserNum, a=1,
                                    getUserCTFChallengeList=getUserCTFChallengeList,
-                                   getUserCTFChallengeListNum=getUserCTFChallengeListNum, competition_info=competition_info)
+                                   getUserCTFChallengeListNum=getUserCTFChallengeListNum,
+                                   competition_info=competition_info)
         if type == 'awd':
             getUserCTFChallengeList = mysql.selectUserChallengeListDesc()
             getUserCTFChallengeListNum = len(getUserCTFChallengeList)
@@ -205,7 +206,8 @@ def ranks():
             competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
             return render_template("user/ranks-awd.html", username=user, headerType="rank", userNum=GetUserNum, a=1,
                                    getUserCTFChallengeList=getUserCTFChallengeList,
-                                   getUserCTFChallengeListNum=getUserCTFChallengeListNum, competition_info=competition_info)
+                                   getUserCTFChallengeListNum=getUserCTFChallengeListNum,
+                                   competition_info=competition_info)
         else:
             return render_template("404.html")
 
@@ -310,7 +312,8 @@ def user():
         usergroupinfo = mysql.selectGroupInfoByUsername(user)
         # print(usergroupinfo)
         # print(usergroup)
-        return render_template('user/userinfo.html',username=username, headerType=username, userinfo=userinfo,usergroupinfo=usergroupinfo, competition_info=competition_info)
+        return render_template('user/userinfo.html', username=username, headerType=username, userinfo=userinfo,
+                               usergroupinfo=usergroupinfo, competition_info=competition_info)
         # return render_template("user/user.html", username=username, headerType=username, userinfo=userinfo,usergroupinfo=usergroupinfo, competition_info=competition_info)
     else:
         return render_template("user/login.html")
@@ -415,7 +418,7 @@ def checkCtfFlag():
                 group_id = mysql.selectGroupInfoByUsername(user)[0]
                 groupname = mysql.selectGroupNameByGroupId(group_id)
                 # 检查队伍之前是否提交过这个flag
-                userPostFlag = mysql.checkUser_Post_Flag_OkByGroupIdAndCid(group_id,challenge_id)
+                userPostFlag = mysql.checkUser_Post_Flag_OkByGroupIdAndCid(group_id, challenge_id)
                 # print(group_id)
                 # 如果返回值不为空,则表示之前已经提交过flag
                 if userPostFlag:
@@ -438,7 +441,8 @@ def checkCtfFlag():
                         print(data)
                         emit('group_message', data, room=str(group_id), namespace='/challenges')
                         # print(str(group_id)+" :success track"+challengeinfo[0])
-                    adduserscore_result = mysql.addUserScore(group_id, ctfType, challenge_id, user_id, score,challenge_time)
+                    adduserscore_result = mysql.addUserScore(group_id, ctfType, challenge_id, user_id, score,
+                                                             challenge_time)
                     # print(adduserscore_result)
                     if adduserscore_result == 1:
                         return "1"
@@ -862,7 +866,7 @@ def create_group():
             # print("502")
             return "502"
         # 队伍名不能查过10字节
-        if len(groupName)>10:
+        if len(groupName) > 10:
             # print("501")
             return "501"
         groupInfo = request.form.get('groupinfo')
@@ -1440,6 +1444,7 @@ def stopAllCTFInstance():
         return "1"
     else:
         return render_template("admin/login.html")
+
 
 if __name__ == '__main__':
     # app.run()

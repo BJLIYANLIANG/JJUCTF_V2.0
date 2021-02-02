@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <title>404</title>
     <meta charSet="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" class="next-head"/>
 
@@ -13,7 +14,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            background-image: url(/static/image/bg.ctf.png)!important;
+            background-size: 100% 100%!important;
+            background-repeat: no-repeat;
+            background-attachment: fixed!important;
+            background-color: #000;
         }
+
 
         h1 {
             border-right: 1px solid rgba(0, 0, 0, .3);
@@ -21,19 +28,24 @@
             padding: 10px 23px 10px 0;
             font-size: 150%;
             font-weight: bold;
+            color: cadetblue;
 
         }
 
         h2 {
             font-size: 150%;
             font-weight: normal;
+            color: cadetblue;
 
+        }
+        a {
+             text-decoration:none;
         }
     </style>
 
 </head>
 <body>
-    <h1>404</h1>
-    <h2>This page could not be found</h2>
+    <h1 class="text-light">404</h1>
+    <a href="/"><h2 class="text-light">This page could not be found</h2></a>
 </body>
 </html>
