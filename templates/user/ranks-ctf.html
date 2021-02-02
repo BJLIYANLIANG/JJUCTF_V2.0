@@ -5,14 +5,13 @@
         background-color: rgba(0,0,0,0);
         color: white;
     }
-    .rank-table{
-        {#border-bottom: 1px solid #236532;#}
-        {#border-top: 1px solid #236532;#}
+    .ctf-rank-card{
+        min-height: 35rem;
+        max-height: 35rem;
+        overflow-y: auto
     }
 </style>
 <div  class="container-fluid" >
-{#<script src="https://cdn.jsdelivr.net/npm/echarts@5.0.0/dist/echarts.min.js">#}
-{#</script>#}
 
 <br>
 <p></p>
@@ -23,7 +22,7 @@
             <div class="card-header">
                 <h3 class="card-title text-center text-primary">CTF排行榜</h3>
             </div>
-            <div class="card-body">
+            <div class="card-body ctf-rank-card">
                 <table class="table table-borderless table-hover rank-table">
                     <tr class="text-success">
                     <th>排名</th>

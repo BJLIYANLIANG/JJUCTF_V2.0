@@ -34,7 +34,15 @@
         border: .2rem solid #31708f;
         min-height: 28rem;
         max-height: 28rem;
-
+    }
+    /*修改模态框出现的位置*/
+    .modal_location{
+        top: 35%;
+    }
+    .awd-modal-content{
+        background-color: rgba(15,37,73,0.98);
+        border: .2rem solid #005cbf;
+        color: white;
     }
 </style>
 <div  class="container-fluid" >
@@ -204,13 +212,49 @@
                         <br>
                         <div class="row">
                            <div class="col-md-12">
-                                <button style="width: 30%" class="btn btn-primary">更多</button>
+                                <button style="width: 30%" class="btn btn-primary" data-toggle="modal" data-target="#more1">更多</button>
                                 <button style="width: 30%" class="btn btn-success">提交</button>
                                 <button style="width: 30%" class="btn btn-danger">重置</button>
                             </div>
                         </div>
                     </div>
                 </div>
+                <!-- 模态框（Modal） -->
+                <div class="modal fade modal_location" id="more1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content awd-modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close text-light" data-dismiss="modal"
+                                        aria-hidden="true">×
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        题目：<span class="text-info">WEB1</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        IP：<span class="text-info">192.168.1.1</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        PORT：<span class="text-info">8080</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        登陆用户：<span class="text-info">root</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        登陆密码：<span class="text-info">root</span>
+                                    </div>
+                                </div>
+                            </div>
+{#                            <div class="modal-footer">#}
+{#                            </div>#}
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
+
+
 
                 <div class="card awd-card ">
                     <div class="card-header" style="position: relative">

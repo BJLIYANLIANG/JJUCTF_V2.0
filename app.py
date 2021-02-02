@@ -78,21 +78,27 @@ def login():
         if username == '' or password == '':  # 检查用户名和密码是否为空
             return render_template("user/login.html", message="用户名或密码不能为空")
         mysql = Mysqld()
+        # 查一下是否拥有队伍
         group_id = mysql.selectGroupidByusername(username)
+        #防止重复注册
         result = mysql.checkuser(username, password)  # 对用户表进行操作，检查登录
+        # result为1表示该用户名未注册过
         if result == 1:
             session.permanent = True  # 设置session为永久的
             # app.permanent_session_lifetime = timedelta(minutes=20)  # 设置session到期时间，单位分钟
             session['user'] = request.form.get('username')
-            resp = make_response(redirect(url_for('index')))
-            # print(group_id)/
-            message = str(group_id) + ':' + username
-            print(message)
-            token = encrypt(message)
-            # print(token)
-            # 添加token信息
-            resp.set_cookie('token', token)
-            return resp
+            if group_id !=0:
+                resp = make_response(redirect(url_for('index')))
+                # print(group_id)/
+                message = str(group_id) + ':' + username
+                # print(message)
+                token = encrypt(message)
+                # print(token)
+                # 添加token信息
+                resp.set_cookie('token', token)
+                return resp
+            else:
+                return render_template('user/index.html',message="登陆成功")
         else:
             return render_template("user/login.html", message="帐号或密码错误")
     else:
@@ -304,8 +310,8 @@ def user():
         usergroupinfo = mysql.selectGroupInfoByUsername(user)
         # print(usergroupinfo)
         # print(usergroup)
-        return render_template("user/user.html", username=username, headerType=username, userinfo=userinfo,
-                               usergroupinfo=usergroupinfo, competition_info=competition_info)
+        return render_template('user/userinfo.html',username=username, headerType=username, userinfo=userinfo,usergroupinfo=usergroupinfo, competition_info=competition_info)
+        # return render_template("user/user.html", username=username, headerType=username, userinfo=userinfo,usergroupinfo=usergroupinfo, competition_info=competition_info)
     else:
         return render_template("user/login.html")
 
@@ -853,13 +859,12 @@ def create_group():
         groupName = request.form.get('groupname')
         # 队伍名为空
         if groupName == '':
-            print("502")
+            # print("502")
             return "502"
         # 队伍名不能查过10字节
         if len(groupName)>10:
-            print("501")
+            # print("501")
             return "501"
-
         groupInfo = request.form.get('groupinfo')
         mysql = Mysqld()
         userId = mysql.selectUserIdByUserName(user)
@@ -867,16 +872,19 @@ def create_group():
             addgroup = mysql.addGroup(groupName, groupInfo, userId)
             if addgroup == 1:
                 groupinfo = mysql.selectGroupInfoByGroupName(groupName)
-                # print(groupinfo)
                 group_id = groupinfo[0]
-                # print(group_id)
-                # print(userId)
                 if group_id != 0:
-                    # print("id:",end='')
-                    # print(groupid)
                     addusergrouplistResult = mysql.addUser_group_list(group_id, userId, 1)
                     if addusergrouplistResult == 1:
-                        return "1"
+                        resp = make_response("1")
+                        # print(group_id)/
+                        message = str(group_id) + ':' + user
+                        # print(message)
+                        token = encrypt(message)
+                        # 添加token信息
+                        resp.set_cookie('token', token)
+                        return resp
+                        # return "1"
                     else:
                         return "0"
                 else:
