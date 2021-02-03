@@ -378,12 +378,12 @@ def groupSetting():
             # (('hsm', 1),)
             # (('web1', 0, 'hsm', 100, datetime.datetime(2021, 1, 5, 11, 5, 43)),)
             # print(userinfo)
-            return render_template("user/group.html", username=username, headerType="userSetting", userinfo=userinfo,
+            return render_template("user/groupinfo.html", username=username, headerType="userSetting", userinfo=userinfo,
                                    group_id=group_id, groupinfo=groupinfo, userGroupList=userGroupList,
                                    competition_info=competition_info, userScoreList=userScoreList,
                                    UserApplyList=UserApplyList)
         else:
-            return render_template("user/group.html", username=username, headerType="userSetting",
+            return render_template("user/groupinfo.html", username=username, headerType="userSetting",
                                    competition_info=competition_info, userinfo=userinfo, group_id=group_id)
 
     else:
@@ -1349,7 +1349,7 @@ def user_competition_list():
         mysql = Mysqld()
         competitionlist = mysql.selectCompetitionInfoList()
         # print(competitionlist)
-        return render_template('user/competition_list.html', competitionlist=competitionlist)
+        return render_template('user/competition_list.html', username=user,competitionlist=competitionlist)
     else:
         # return render_template('user/login.html')
         return render_template('user/login.html')

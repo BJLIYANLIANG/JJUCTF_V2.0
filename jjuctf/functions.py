@@ -1,4 +1,6 @@
 from jjuctf.SqlServer import *
+
+# 查找CTF排名用的，大概用在app.py的400行
 def ctf_search_rank(group_name):
     mysql = Mysqld()
     a = mysql.selectUserChallengeListDesc()
@@ -10,6 +12,3 @@ def ctf_search_rank(group_name):
         else:
             j += 1
     return j
-#
-# b = ctf_search_rank('juu')
-# print(b)

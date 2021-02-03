@@ -1,23 +1,7 @@
 {% include 'user/header.html' %}
 <style>
-    .ctf-list-group-item{
-        background-color: rgba(13,25,39,0.85);
-        color: white;
-        font-size: 1.1rem;
-    }
-    .ctf-card-group{
-        border: 0.3rem solid #2c3e60;
-        background-color: #0d1927;
-        color: white;
-    }
-    td{
-        border: none;
-    }
-    .ctf-td{
-        border: 1px solid #0d1927;
-    }
-    .group-card-apply{
-        border: 0.3rem solid #2c3e60;
+    .rank-card{
+        border: 0.3rem solid #2c3e57;
         background-color: rgba(0,0,0,0);
         color: white;
     }
@@ -26,134 +10,148 @@
         border: 0.1rem solid #2c3e60;
     }
 </style>
-<div class="container-fluid">
+<div  class="container-fluid">
 <div class="row">
     <br>
-    </div>
+</div>
 {% if group_id !=0 %}
     <div class="row">
-        <div class="col-md-4">
-            <div class="row">
-                <div class="col-md-12">
-{#                    group_id,name,info,user_id#}
-                    <ul class="list-group ctf-card-group">
-                    <li class="list-group-item ctf-list-group-item" style="background-color: #1c2b36">队伍信息</li>
-                    <li class="list-group-item ctf-list-group-item">队伍名称：<span class="text-info">{{ groupinfo[1] }}</span></li>
-                    <li class="list-group-item ctf-list-group-item">队伍ID：<span class="text-info">{{ groupinfo[0] }}</span></li>
-                    <li class="list-group-item ctf-list-group-item">队伍简介：<span class="text-info">{{ groupinfo[2] }}</span></li>
-                    <li class="list-group-item ctf-list-group-item">队长ID：<span class="text-info">{{ groupinfo[3] }}</span></li>
-                </ul>
+        <div class="col-md-offset-1 col-md-1"></div>
+        <div class="col-md-10">
+            <div class="card rank-card">
+                <div class="card-header">
+                    <h3 class="card-title text-center text-primary">队伍管理</h3>
                 </div>
-            <br>
-                <div class="col-md-12">
-                    <div class="btn-group">
-                        <button class="btn btn-info btn-ctf-group" data-toggle="modal" data-target="#search_group">加入队伍</button>
-                    </div>
-                    <div class="btn-group">
-                        <button class="btn btn-danger btn-ctf-group">退出队伍</button>
-                    </div>
-                    <p></p>
-                    <div class="card group-card-apply">
-                        <div class="card-header">
-                            <h5 class="card-title">通知</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 text-center">
+                            <h4 class="title text-primary">队伍信息</h4>
+                            <table class="table table-borderless text-light">
+                                <tr><td>队伍名称：</td><td><span class="text-info">{{ groupinfo[1] }}</span></td></tr>
+                                <tr><td>队伍ID:</td><td><span class="text-info">{{ groupinfo[0] }}</span></td></tr>
+                                <tr><td>队伍简介：</td><td><span class="text-info">{{ groupinfo[2] }}</span></td></tr>
+                                <tr><td>队长ID：</td><td><span class="text-info">{{ groupinfo[3] }}</span></td></tr>
+                            </table>
                         </div>
-                        <div class="card-body">
-                        {% if UserApplyList %}
-                            <label>申请列表</label>
-                            <table class="table table-bordered table-hover ">
-                                <tr class="text-primary">
-                                    <th width="60%">用户名</th>
-                                    <th width="40%">操作</th>
-                                </tr>
-
-                                {%  for i in UserApplyList %}
+                        <div class="col-md-6 text-center">
+                            <h4 class="title text-primary">队员信息</h4>
+                            <table class="table text-light table-center table-borderless" >
+                                <thead>
+                                {% for i in userGroupList %}
+                                    <tr class="text-info">
+                                        <td>{{ i[0] }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                     <hr style="border-bottom: .1rem solid #2c3e57">
+                    <div class="row">
+                        <div class="col-md-12 text-center"><h4 class="title text-primary">基本设置</h4></div>
+                        <br>
+                        <div class="col-md-12">
+                            <div class="btn-group">
+                                <button class="btn btn-info btn-ctf-group" data-toggle="modal" data-target="#search_group">加入队伍</button>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-danger btn-ctf-group">退出队伍</button>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-success btn-ctf-group">队伍信息修改</button>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="border-bottom: .1rem solid #2c3e57">
+                    <div class="row">
+                    <div class="col-md-12 text-center"><h4 class="title text-primary">通知管理</h4></div>
+                        <div class="col-md-12 text-center">
+                            {% if UserApplyList %}
+                                <label class="text-success">申请通知</label>
+                                <table class="table table-borderless table-hover ">
+                                    <tr class="text-primary">
+                                        <th width="60%">用户名</th>
+                                        <th width="40%">操作</th>
+                                    </tr>
+                                    {%  for i in UserApplyList %}
                                 <tr class="text-success">
                                     <td width="60%">{{ i[1] }}</td>
                                     <td width="40%">
                                         <div class="btn-group"><button class="btn btn-success" onclick="great_apply({{ i[0] }})">同意</button></div>
                                         <div class="btn-group"><button class="btn btn-danger">拒绝</button></div>
                                     </td>
-                                </tr>{% endfor %}
-                            </table>
-                            {% else %}
-                            无通知！
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-8">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card ctf-card-group">
-                        <div class="card-header text-light">
-                            <h4 class="card-title ">队员信息</h4>
-                        </div>
-                        <div class="card-body">
-                            <table class="table text-light table-center table-bordered" >
-                            <thead>
-                                <tr>
-                                <th style="border: 1px solid #005cbf;">用户名</th>
                                 </tr>
-                                {% for i in userGroupList %}
-                                    <tr >
-                                        <td style="border: 1px solid #005cbf;">{{ i[0] }}</td>
-                                    </tr>{% endfor %}
-                        </thead>
+                            {% endfor %}
                         </table>
+                    {% else %}
+                        无通知！
+                    {% endif %}
                         </div>
                     </div>
-                </div>
-                <div class="col-md-12">
-                    <p></p>
-                </div>
-                <div class="col-md-12">
-                    <div class="card ctf-card-group">
-                        <div class="card-header  text-light">
-                            <h4 class="card-title">得分信息</h4>
-                        </div>
-                        <div class="card-body">
-
+                <hr style="border-bottom: .1rem solid #2c3e57">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <h4 class="text-primary title">解题情况</h4>
+                            <table class="table table-borderless">
+                                <thead>
+                                <tr class="text-success" >
+                                    <th class="ctf-td">题目名称</th>
+                                    <th class="ctf-td">题目类型</th>
+                                    <th class="ctf-td">题目分值</th>
+                                    <th class="ctf-td">解题选手</th>
+                                    <th class="ctf-td">答对时间</th>
+                                </tr>
+                                {% for i in userScoreList %}
+                                <tr class="text-light" >
+                                    <td>{{ i[0] }}</td>
+                                    {% if i[1]==0 %}<td>Web</td>{% elif i[1]==1 %}<td>Misc</td>{% elif i[1]==2 %}<td>Crypto</td>{% elif i[1]==3 %}<td>Reverse</td>{% else %}<td>Pwn</td>{% endif %}
+                                    <td>{{ i[3] }}</td>
+                                    <td>{{ i[2] }}</td>
+                                    <td>{{ i[4] }}</td>
+                                </tr>
+                                {% endfor %}
+                                </thead>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="search_group">
-    <div class="modal-dialog">
-        <div class="modal-content">
-      <!-- 模态框头部 -->
-            <div class="modal-header">
-                <h4 class="modal-title">加入其他队伍</h4>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-      <!-- 模态框主体 -->
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <label for="search">搜索队伍:</label>
-                        <div class="input-group mb-3">
-                            <label for="search_name"></label><input type="text" id="search_name" class="form-control" placeholder="Search">
-                            <div class="input-group-append">
-                                <button class="btn btn-success"  onclick="search_group()">Go</button>
+            <div class="modal fade" id="search_group">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- 模态框头部 -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">加入其他队伍</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+                        <!-- 模态框主体 -->
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="search">搜索队伍:</label>
+                                    <div class="input-group mb-3">
+                                        <label for="search_name"></label><input type="text" id="search_name" class="form-control" placeholder="Search">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-success"  onclick="search_group()">Go</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <table class="table table-bordered" id="search_result_table">
+                                    </table>
+                                </div>
+                                <div class="col-md-12">
+                                    <i class="text-danger">加入其他队伍后将主动退出本队伍</i>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12">
-                        <table class="table table-bordered" id="search_result_table">
-                        </table>
-                    </div>
-                    <div class="col-md-12">
-                        <i class="text-danger">加入其他队伍后将主动退出本队伍</i>
-                    </div>
                 </div>
             </div>
         </div>
+        <div class="col-md-offset-1 col-md-1"></div>
     </div>
-</div>
+
 {% else %}
     <div class="row" style="min-height: 40rem">
         <div class="col-md-12 jumbotron-fluid">
@@ -236,6 +234,7 @@
 </div>
     {% endif %}
 </div>
+
 
 
 <script>
@@ -344,5 +343,6 @@ function great_apply(uid){
         })
 }
 </script>
+
 
 {% include 'user/footer.html' %}

@@ -8,6 +8,10 @@
     .user-col{
          height: 2rem;
     }
+    .btn-ctf-group{
+        background-color: rgba(0,0,0,0);
+        border: 0.1rem solid #2c3e60;
+    }
 
 </style>
 <div  class="container-fluid">
@@ -50,6 +54,22 @@
                         </div>
                         <div class="col-md-4 text-center user-col">
                            所属队伍：<span class="text-info">{% if usergroupinfo[1] %}{{ usergroupinfo[1] }}{% else %}未设置{% endif %}</span>
+                        </div>
+                    </div>
+                <hr style="border-bottom: .1rem solid #2c3e57">
+                <div class="row">
+                        <div class="col-md-12 text-center"><h4 class="title text-primary">基本设置</h4></div>
+                        <br>
+                        <div class="col-md-12">
+                            <div class="btn-group">
+                                <button class="btn btn-info btn-ctf-group" data-toggle="modal" data-target="#search_group">加入队伍</button>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-danger btn-ctf-group">退出队伍</button>
+                            </div>
+                            <div class="btn-group">
+                                <button class="btn btn-success btn-ctf-group">队伍信息修改</button>
+                            </div>
                         </div>
                     </div>
                 <hr style="border-bottom: .1rem solid #2c3e57">

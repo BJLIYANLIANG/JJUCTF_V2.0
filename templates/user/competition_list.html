@@ -25,25 +25,39 @@
   <a class="navbar-brand" href="/">JJUCTF</a>
   <!-- Links -->
   <ul class="navbar-nav">
-    <li class="nav-item">
-      <a class="nav-link" href="#">大数据展示</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/user_competition_list">比赛列表</a>
-    </li>
-
+      <li class="nav-item">
+          <a class="nav-link" href="#">大数据展示</a>
+      </li>
+      <li class="nav-item active">
+          <a class="nav-link" href="/user_competition_list">比赛列表</a>
+      </li>
     <!-- Dropdown -->
-    <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-        关于
-      </a>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="#">Link 1</a>
-        <a class="dropdown-item" href="#">Link 2</a>
-        <a class="dropdown-item" href="#">Link 3</a>
-      </div>
-    </li>
+      <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+            关于
+          </a>
+          <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">Link 1</a>
+              <a class="dropdown-item" href="#">Link 2</a>
+              <a class="dropdown-item" href="#">Link 3</a>
+          </div>
+      </li>
   </ul>
+    <ul class="nav navbar-nav text-light navbar-right ml-auto">{% if username %}
+         <li class="dropdown text-light">
+             <a class="dropdown-toggle" data-toggle="dropdown">
+                 <span class="caret text-primary"><img class="navbar-brand img-circle" style="width: 3rem;height: 3rem"  src="https://www.hsm.cool/usr/uploads/2020/07/3375162998.jpeg" alt="User">{{ username }}</span>
+             </a>
+             <ul class="dropdown-menu dropdown-menu-md-right text-light" style="background-color: rgba(13,25,39,0.9);border: .1rem solid #2c3e50">
+                 <li class="dropdown-item"><a href="/group?user={{ username }}">队伍管理</a></li>
+                 <li class="dropdown-item"><a href="/user?user={{ username }}">个人中心</a></li>
+                 <li class="dropdown-item"><a href="/logout">退出帐号</a></li>
+             </ul>
+         </li>
+     {% else %}
+        <li class="nav-item"><a class="nav-link" href="/login">登录</a></li>
+        <li class="nav-item"><a class="nav-link" href="/register">注册</a></li>{% endif %}
+      </ul>
 </nav>
 <div class="container-fluid">
     <br>
