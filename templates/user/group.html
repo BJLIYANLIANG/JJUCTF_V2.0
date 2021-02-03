@@ -27,7 +27,9 @@
     }
 </style>
 <div class="container-fluid">
-<br>
+<div class="row">
+    <br>
+    </div>
 {% if group_id !=0 %}
     <div class="row">
         <div class="col-md-4">
@@ -41,8 +43,8 @@
                     <li class="list-group-item ctf-list-group-item">队伍简介：<span class="text-info">{{ groupinfo[2] }}</span></li>
                     <li class="list-group-item ctf-list-group-item">队长ID：<span class="text-info">{{ groupinfo[3] }}</span></li>
                 </ul>
-                    <br>
                 </div>
+            <br>
                 <div class="col-md-12">
                     <div class="btn-group">
                         <button class="btn btn-info btn-ctf-group" data-toggle="modal" data-target="#search_group">加入队伍</button>

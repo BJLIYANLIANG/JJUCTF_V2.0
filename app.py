@@ -10,11 +10,12 @@ import os
 from flask_socketio import SocketIO, emit, join_room, leave_room, send
 import redis
 from jjuctf.config import *
-from jjuctf.Check import Check
+from jjuctf.Check import *
 import time
 from jjuctf.Crypto import *
 import datetime
 from jjuctf.Contain import Contain
+from jjuctf.functions import *
 
 redis_instance = redis.Redis(host=redis_address, port=redis_port, decode_responses=True)
 
@@ -70,10 +71,9 @@ def login():
     if request.method == 'GET':
         return render_template('user/login.html')
     if request.method == 'POST':
-        check = Check()
         username = request.form.get('username')
         password = request.form.get('password')
-        if check.checksqlSecure(username) == 0 or check.checksqlSecure(password) == 0:
+        if checksqlSecure(username) == 0 or checksqlSecure(password) == 0:
             return render_template("user/login.html", message="请勿攻击靶场，违者做违规处理！")
         if username == '' or password == '':  # 检查用户名和密码是否为空
             return render_template("user/login.html", message="用户名或密码不能为空")
@@ -120,7 +120,6 @@ def challenge():
         # challengeTypeNum = getChallengeListByType.selectCtfChallengeTypeNum(user)   #用这个代替上面那个！今天不写了，难受，我写的垃圾代码。。。
         # 查找队伍信息
         groupInfo = mysql.selectGroupInfoByUsername(user)
-
         #
         UserTypeNum = mysql.selectCtfTypeNum()
         # 如果该用户没有创建队伍，那么跳转让他创建队伍
@@ -410,7 +409,6 @@ def checkCtfFlag():
             # 每创建一个题目都会创建一个或者多个ctf_id,静态flag只需要创建一个id即可
             a = Mysqld()
             result = a.checkFalg(flag, challenge_id)
-            # result = 1
             # 如果result为1则正确，0为不正确
             # print(result)
             if result == 1:  # 查到flag正确
@@ -423,6 +421,7 @@ def checkCtfFlag():
                 # 如果返回值不为空,则表示之前已经提交过flag
                 if userPostFlag:
                     return "501"
+                # group_id!=0表示...
                 if group_id != 0:
                     # 获取ctf类型和分数
                     (ctfType, score) = mysql.selectCtfTypeAndScoreByChallenge_id(challenge_id)
@@ -433,19 +432,22 @@ def checkCtfFlag():
                     # 插入到得分表中
                     challengeinfo = mysql.selectChallengeInfoByChallengeId(challenge_id)
                     if challengeinfo:
-                        # print(challengeinfo)
                         data = {'name': groupname, "target": challengeinfo[0], "date": challenge_time,
                                 "challenge_id": challenge_id, "score": str(score)}
                         # 广播战况
                         emit('challenge_list', data, broadcast=True, namespace='/challenges')
-                        print(data)
-                        emit('group_message', data, room=str(group_id), namespace='/challenges')
-                        # print(str(group_id)+" :success track"+challengeinfo[0])
-                    adduserscore_result = mysql.addUserScore(group_id, ctfType, challenge_id, user_id, score,
-                                                             challenge_time)
-                    # print(adduserscore_result)
-                    if adduserscore_result == 1:
-                        return "1"
+                        # 更新队伍答题记录
+                        adduserscore_result = mysql.addUserScore(group_id, ctfType, challenge_id, user_id, score,
+                                                                 challenge_time)
+                        ranknum = ctf_search_rank(groupname)
+                        # print(ranknum)
+                        data2 = {'name': groupname, "target": challengeinfo[0], "date": challenge_time,
+                                "challenge_id": challenge_id, "score": str(score),"ranks":ranknum}
+                        emit('group_message', data2, room=str(group_id), namespace='/challenges')
+                        if adduserscore_result == 1:
+                            return "1"
+                        else:
+                            return '0'
                     else:
                         return "0"
                 else:
@@ -1119,13 +1121,20 @@ def delUser():
     admin = session.get("admin")
     if admin:
         if request.method == "POST":
-            id = int(request.form.get('id'))
+            uid = int(request.form.get('id'))
+            # print(uid)
             mysql = Mysqld()
-            result = mysql.delUserByUserId(id)
-            if result == 1:
-                return "1"
+            group_id = mysql.selectGroupidByusername(uid)
+            print(group_id)
+            # 0 表示未加入队伍
+            if group_id == 0:
+                result = mysql.delUserByUserId(uid)
+                if result == 1:
+                    return "1"
+                else:
+                    return "0"
             else:
-                return "0"
+                return "1"
         else:
             return "0"
     return "0"
@@ -1305,10 +1314,6 @@ def on_join(data):
         arrmessage = message.split(':')
         group_id = arrmessage[0]
         username = arrmessage[1]
-        # print(group_id)
-        # print(username)
-        # print(group_id)
-        # print(username)
         join_room(group_id)
         print(f"client {username} wants to join: {group_id}")
     else:
@@ -1445,7 +1450,13 @@ def stopAllCTFInstance():
     else:
         return render_template("admin/login.html")
 
-
+@app.route('/index_ddw')
+def index_ddw():
+    username = session.get('user')
+    if username:
+        return render_template('user/index_bak.html')
+    else:
+        return render_template('user/login.html')
 if __name__ == '__main__':
     # app.run()
     socketio.run(app, host='0.0.0.0', port=8000, debug=True)

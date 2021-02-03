@@ -11,7 +11,9 @@
 
 </style>
 <div  class="container-fluid">
-<br>
+<div class="row">
+    <br>
+    </div>
     <div class="row">
         <div class="col-md-offset-1 col-md-1"></div>
         <div class="col-md-10">
@@ -50,7 +52,7 @@
                            所属队伍：<span class="text-info">{% if usergroupinfo[1] %}{{ usergroupinfo[1] }}{% else %}未设置{% endif %}</span>
                         </div>
                     </div>
-                <br>
+                <hr style="border-bottom: .1rem solid #2c3e57">
                     <div class="row">
                         <div class="col-md-12 text-center"><h3 class="title text-success">个人技能树</h3></div>
                         <div class="col-md-6" >
@@ -61,14 +63,13 @@
                         </div>
                     </div>
 
-
                 </div>
             </div>
         </div>
         <div class="col-md-offset-1 col-md-1"></div>
     </div>
 </div>
-
+<script type="text/javascript" src="/static/js/echarts.js"></script>
 <script>
     var scorechart = echarts.init(document.getElementById('scorechart'))
     option =  {

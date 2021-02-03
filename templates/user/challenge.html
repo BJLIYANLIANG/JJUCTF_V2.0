@@ -79,7 +79,9 @@
 </style>
 <link rel="stylesheet" href="/static/css/user/challenges.css">
 <div class="container-fluid">
-<br>
+<div class="row">
+    <br>
+    </div>
     <div class="row">
         <div class="col-md-3">
             <div class="card card-userinfo">
@@ -89,7 +91,7 @@
                         <div class="col-md-12">战队名：<span class="text-info">{{ groupInfo[1] }}</span></div>
                         <div class="col-md-12">队员名：<span class="text-info">{{ username }}</span></div>
                         <div class="col-md-12">队伍简介：<span class="text-info">{{ groupInfo[3] }}</span></div>
-                        <div class="col-md-12">战队排名：<span class="text-info">{{ rank }}</span></div>
+                        <div class="col-md-12">战队排名：<span id="rank_num" class="text-info">{{ rank }}</span></div>
                         <div class="col-md-12">解题数量：<span id="track_sum" class="text-info">{{ Challenge_Count }}</span></div>
                         <div class="col-md-12">得分： <span id="sum_score" class="text-info">{{ sum_score }}</span></div>
                     </div>
@@ -718,6 +720,9 @@
                var spanxxx = $('#span'+res.challenge_id);
                 spanxxx.empty();
                 spanxxx.append('<span class="text-success modal_marger ">已解答</span>');
+                /*更新排名*/
+                var rank_num = $('#rank_num');
+                rank_num.text(res.ranks.toString())
 
 
         })

@@ -711,14 +711,13 @@ class Mysqld:
 
     def delUserByUserId(self, id):
         sql = 'DELETE FROM `user` WHERE id=%d' % (id)
+        print(sql)
         try:
             self.cursor.execute(sql)
             self.conn.commit()
-            # self.conn.close()
             return 1
         except:
             self.conn.rollback()
-            # self.conn.close()
             print("删除公告失败!")
             return 0
 
