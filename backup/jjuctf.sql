@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主机： localhost
--- 生成日期： 2021-01-12 14:03:23
+-- 生成日期： 2021-02-03 07:59:17
 -- 服务器版本： 10.5.8-MariaDB
--- PHP 版本： 7.4.13
+-- PHP 版本： 7.4.14
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -43,7 +43,7 @@ CREATE TABLE `admin` (
 
 INSERT INTO `admin` (`admin_id`, `admin_name`, `admin_email`, `admin_mobile`, `admin_photo`, `admin_password`, `status`) VALUES
 (12, 'hsm', '905008677@qq.com', '18579266908', NULL, '6f8c33aa2d7257eb96a3852b32e9ac9a', 0),
-(21, 'admin1', 'admin@qq.com', '123456', NULL, 'e00cf25ad42683b3df678c61f42c6bda', 1);
+(21, 'admin', 'admin@qq.com', '123456', NULL, '21232f297a57a5a743894a0e4a801fc3', 1);
 
 -- --------------------------------------------------------
 
@@ -60,6 +60,7 @@ CREATE TABLE `challenge_list` (
   `hint` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `type` int(11) NOT NULL,
   `docker_flag` int(11) NOT NULL,
+  `docker_id` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `docker_info` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `file_flag` int(11) NOT NULL,
   `file_path` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -71,13 +72,14 @@ CREATE TABLE `challenge_list` (
 -- 转存表中的数据 `challenge_list`
 --
 
-INSERT INTO `challenge_list` (`group_id`, `id`, `ctf_exam_id`, `name`, `score`, `hint`, `type`, `docker_flag`, `docker_info`, `file_flag`, `file_path`, `flag`, `date`) VALUES
-(0, 33, 20, 'misc1', 100, 'misc1', 1, 0, NULL, 0, '', 'flag{misc1}', '2021-01-12 21:59:23'),
-(0, 34, 21, 'web1', 100, 'web1', 0, 0, NULL, 0, '', 'flag{web1}', '2021-01-12 21:59:26'),
-(0, 35, 22, 'crypto1', 200, 'crypto1', 2, 0, NULL, 0, '', 'flag{crypto1}', '2021-01-12 22:01:22'),
-(0, 36, 23, 'Reverse1', 150, 'Reverse1', 3, 0, NULL, 0, '', 'flag{Reverse1}', '2021-01-12 22:01:24'),
-(0, 37, 24, 'pwn1', 300, 'pwn1', 4, 0, NULL, 0, '', 'flag{pwn1}', '2021-01-12 22:01:28'),
-(0, 38, 25, 'misc2', 300, 'misc2', 1, 0, NULL, 0, '', 'flag{misc2}', '2021-01-12 22:01:31');
+INSERT INTO `challenge_list` (`group_id`, `id`, `ctf_exam_id`, `name`, `score`, `hint`, `type`, `docker_flag`, `docker_id`, `docker_info`, `file_flag`, `file_path`, `flag`, `date`) VALUES
+(0, 33, 20, 'misc1', 100, 'misc1', 1, 0, NULL, NULL, 0, '', 'flag{misc1}', '2021-01-12 21:59:23'),
+(0, 34, 21, 'web1', 100, 'web1', 0, 0, NULL, NULL, 0, '', 'flag{web1}', '2021-01-12 21:59:26'),
+(0, 35, 22, 'crypto1', 200, 'crypto1', 2, 0, NULL, NULL, 0, '', 'flag{crypto1}', '2021-01-12 22:01:22'),
+(0, 36, 23, 'Reverse1', 150, 'Reverse1', 3, 0, NULL, NULL, 0, '', 'flag{Reverse1}', '2021-01-12 22:01:24'),
+(0, 37, 24, 'pwn1', 300, 'pwn1', 4, 0, NULL, NULL, 0, '', 'flag{pwn1}', '2021-01-12 22:01:28'),
+(0, 38, 25, 'misc2', 300, 'misc2', 1, 0, NULL, NULL, 0, '', 'flag{misc2}', '2021-01-12 22:01:31'),
+(0, 39, 31, 'web2', 200, 'easy web2', 0, 0, NULL, NULL, 0, '', 'flag{web2}', '2021-01-19 16:28:45');
 
 -- --------------------------------------------------------
 
@@ -122,7 +124,7 @@ CREATE TABLE `competition` (
 --
 
 INSERT INTO `competition` (`id`, `status`, `name`, `info`, `start_date`, `end_date`) VALUES
-(0, 0, '九江学院网络安全大赛', '九江学院网络安全大赛', '2021-01-05 20:46:00', '2021-01-21 20:47:00');
+(0, 0, '九江学院第一届网络安全大赛', '', '2021-02-01 20:01:00', '2021-02-18 20:01:00');
 
 -- --------------------------------------------------------
 
@@ -158,7 +160,9 @@ INSERT INTO `ctf_exam` (`id`, `own_id`, `type`, `name`, `hint`, `base_score`, `s
 (22, 12, 2, 'crypto1', 'crypto1', 200, 1, 0, 'flag{crypto1}', 0, '', 0, '', '2021-01-12 21:59:58', ''),
 (23, 12, 3, 'Reverse1', 'Reverse1', 150, 1, 0, 'flag{Reverse1}', 0, '', 0, '', '2021-01-12 22:00:19', ''),
 (24, 12, 4, 'pwn1', 'pwn1', 300, 1, 0, 'flag{pwn1}', 0, '', 0, '', '2021-01-12 22:00:40', ''),
-(25, 12, 1, 'misc2', 'misc2', 300, 1, 0, 'flag{misc2}', 0, '', 0, '', '2021-01-12 22:01:03', '');
+(25, 12, 1, 'misc2', 'misc2', 300, 1, 0, 'flag{misc2}', 0, '', 0, '', '2021-01-12 22:01:03', ''),
+(31, 21, 0, 'web2', 'easy web2', 200, 1, 0, 'flag{web2}', 0, '', 0, '', '2021-01-19 16:28:41', ''),
+(34, 21, 1, 'python', 'python', 200, 1, 0, '123', 0, '', 1, 'EasyPython.zip', '2021-01-20 14:41:04', '');
 
 -- --------------------------------------------------------
 
@@ -187,7 +191,23 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `user_id`, `real_name`, `role`, `status`, `password`, `email`, `mobile`, `class_id`, `user_photo`, `user_name`) VALUES
 (30, NULL, 'HSM', 0, 0, 'ff2e81f586eb5b79490294d06920f462', '905008677@qq.com', '18579266908', 'A1861', NULL, 'hsm'),
 (33, NULL, 'hsm', 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'test1@qq.com', '1234567', 'A1861', NULL, 'hsm123'),
-(34, NULL, NULL, 0, 0, '21232f297a57a5a743894a0e4a801fc3', 'admin@qq.com', NULL, NULL, NULL, 'admin');
+(34, NULL, NULL, 0, 0, '21232f297a57a5a743894a0e4a801fc3', 'admin@qq.com', NULL, NULL, NULL, 'admin'),
+(35, NULL, NULL, 0, 0, '513772ee53011ad9f4dc374b2d34d0e9', 'group1@hsm.cool', NULL, NULL, NULL, 'group1'),
+(36, NULL, NULL, 0, 0, 'f617868bd8c41043dc4bebc7952c7024', 'group2@hsm.cool', NULL, NULL, NULL, 'group2'),
+(37, NULL, NULL, 0, 0, '78733d0dd44e9bbca1d931c569676531', 'group3@hsm.cool', NULL, NULL, NULL, 'group3'),
+(38, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'admin1@hsm.cool', NULL, NULL, NULL, 'admin1'),
+(39, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', '905008@qq.com', NULL, NULL, NULL, '905008'),
+(40, NULL, NULL, 0, 0, '9de4a97425678c5b1288aa70c1669a64', 'register@qq.com', NULL, NULL, NULL, 'register'),
+(42, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'test001@hsm.cool', NULL, NULL, NULL, 'test001'),
+(43, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'xxx@xx.xx', NULL, NULL, NULL, 'xxx'),
+(44, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'xxx1@qq.com', NULL, NULL, NULL, 'xxx1'),
+(45, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'qqq@qq.com', NULL, NULL, NULL, 'qqq'),
+(46, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'test124@qq.com', NULL, NULL, NULL, 'test123'),
+(47, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'admin1231@123.com', NULL, NULL, NULL, 'admin1231'),
+(48, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', '44884ddd3264@qq.com', NULL, NULL, NULL, 'zxc'),
+(49, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', '9050018677@qq.com', NULL, NULL, NULL, '905008677'),
+(50, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'adminxx@qq.com', NULL, NULL, NULL, 'adminxx'),
+(51, NULL, NULL, 0, 0, '328bd945cdea809717c77f278d9fcd4b', '1841181516@qq.com', NULL, NULL, NULL, 'llz');
 
 -- --------------------------------------------------------
 
@@ -205,6 +225,27 @@ CREATE TABLE `user_challenge_list` (
   `score` int(11) NOT NULL,
   `date` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- 转存表中的数据 `user_challenge_list`
+--
+
+INSERT INTO `user_challenge_list` (`id`, `group_id`, `ctf_exam_id`, `type`, `challenge_id`, `user_id`, `score`, `date`) VALUES
+(17, 50, 21, 0, 34, 30, 100, '22:28:52'),
+(18, 64, 21, 0, 34, 48, 100, '22:57:09'),
+(19, 65, 21, 0, 34, 49, 100, '23:16:53'),
+(20, 55, 20, 1, 33, 34, 100, '13:10:21'),
+(21, 55, 21, 0, 34, 34, 100, '13:30:27'),
+(22, 50, 31, 0, 39, 30, 200, '13:32:01'),
+(23, 55, 22, 2, 35, 34, 200, '13:36:04'),
+(24, 55, 25, 1, 38, 34, 300, '13:36:40'),
+(25, 55, 31, 0, 39, 34, 200, '13:37:05'),
+(26, 55, 23, 3, 36, 34, 150, '13:37:15'),
+(27, 67, 23, 3, 36, 51, 150, '14:25:44'),
+(28, 67, 24, 4, 37, 51, 300, '14:26:35'),
+(29, 55, 24, 4, 37, 34, 300, '15:31:32'),
+(30, 66, 21, 0, 34, 50, 100, '15:43:57'),
+(31, 66, 20, 1, 33, 50, 100, '15:56:45');
 
 -- --------------------------------------------------------
 
@@ -241,7 +282,19 @@ CREATE TABLE `user_group` (
 
 INSERT INTO `user_group` (`group_id`, `name`, `info`, `user_id`, `create_time`, `token`) VALUES
 (50, 'jjusec123', '1234', 0, '2021-01-05 16:54:16', NULL),
-(55, 'admin', 'admin', 34, '2021-01-12 21:54:07', NULL);
+(55, 'admin', 'admin', 34, '2021-01-12 21:54:07', NULL),
+(56, 'admin1', 'hahaha admin1 is 666', 38, '2021-01-28 15:15:29', NULL),
+(57, '905008', '', 39, '2021-01-29 21:02:35', NULL),
+(58, 'test123', '9000', 42, '2021-01-29 23:16:48', NULL),
+(59, '', 'ddd', 43, '2021-02-02 17:43:53', NULL),
+(60, '你好四大发的撒发撒地', 'fsadf', 44, '2021-02-02 17:54:57', NULL),
+(61, 'ytt', '', 45, '2021-02-02 20:09:02', NULL),
+(62, 'test123134', '', 46, '2021-02-02 21:36:31', NULL),
+(63, '12345', '', 47, '2021-02-02 21:44:54', NULL),
+(64, 'xxx', '', 48, '2021-02-02 21:48:45', NULL),
+(65, 'juu', '', 49, '2021-02-02 23:15:19', NULL),
+(66, 'adminxx', '', 50, '2021-02-03 13:59:19', NULL),
+(67, '巴啦啦小魔仙', '巴啦啦能量', 51, '2021-02-03 14:21:43', NULL);
 
 -- --------------------------------------------------------
 
@@ -254,6 +307,13 @@ CREATE TABLE `user_group_apply` (
   `user_id` int(11) NOT NULL,
   `group_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- 转存表中的数据 `user_group_apply`
+--
+
+INSERT INTO `user_group_apply` (`id`, `user_id`, `group_id`) VALUES
+(1, 34, 50);
 
 -- --------------------------------------------------------
 
@@ -274,7 +334,22 @@ CREATE TABLE `user_group_list` (
 
 INSERT INTO `user_group_list` (`id`, `group_id`, `user_id`, `role`) VALUES
 (15, 50, 30, 1),
-(16, 55, 34, 1);
+(16, 55, 34, 1),
+(17, 55, 35, 0),
+(18, 55, 36, 0),
+(19, 55, 37, 0),
+(20, 56, 38, 1),
+(21, 57, 39, 1),
+(23, 58, 42, 1),
+(24, 59, 43, 1),
+(25, 60, 44, 1),
+(26, 61, 45, 1),
+(27, 62, 46, 1),
+(28, 63, 47, 1),
+(29, 64, 48, 1),
+(30, 65, 49, 1),
+(31, 66, 50, 1),
+(32, 67, 51, 1);
 
 -- --------------------------------------------------------
 
@@ -299,7 +374,7 @@ INSERT INTO `user_notice` (`id`, `uid`, `info`, `date`) VALUES
 (4, 0, '注意：请选手时刻关注比赛公告，大赛执行规则以比赛公告为准。', '2020-12-27 00:00:00'),
 (5, 0, '积分模式：动态积分模式（即每道题目的分值将根据解出队伍的数量动态变化），前3血没有额外奖励。', '2020-12-27 00:00:00'),
 (6, 0, '注意：请选手时刻关注比赛公告，大赛执行规则以比赛公告为准。', '2020-12-27 00:00:00'),
-(19, 12, 'hello world!', '2021-01-12 22:02:26');
+(19, 21, '比赛过程中遇到问题请技术反馈到九江学院网络安全靶场实训平台团队', '2021-01-28 15:31:52');
 
 -- --------------------------------------------------------
 
@@ -428,7 +503,7 @@ ALTER TABLE `admin`
 -- 使用表AUTO_INCREMENT `challenge_list`
 --
 ALTER TABLE `challenge_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- 使用表AUTO_INCREMENT `challenge_type_num`
@@ -446,19 +521,19 @@ ALTER TABLE `competition`
 -- 使用表AUTO_INCREMENT `ctf_exam`
 --
 ALTER TABLE `ctf_exam`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- 使用表AUTO_INCREMENT `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- 使用表AUTO_INCREMENT `user_challenge_list`
 --
 ALTER TABLE `user_challenge_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- 使用表AUTO_INCREMENT `user_ctf_docker_list`
@@ -470,19 +545,19 @@ ALTER TABLE `user_ctf_docker_list`
 -- 使用表AUTO_INCREMENT `user_group`
 --
 ALTER TABLE `user_group`
-  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
 -- 使用表AUTO_INCREMENT `user_group_apply`
 --
 ALTER TABLE `user_group_apply`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- 使用表AUTO_INCREMENT `user_group_list`
 --
 ALTER TABLE `user_group_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- 使用表AUTO_INCREMENT `user_notice`
