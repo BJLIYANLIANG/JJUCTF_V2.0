@@ -59,12 +59,3 @@ class Contain:
             return id
         else:
             return []
-        # print(a.readlines())
-#
-
-#pr
-# # print(b.stopContain('EasyPython'))
-c = Contain()
-d = c.stopContainByDockerID("7c7b10aff807")
-print(d)
-# b'7c7b10aff807\n'

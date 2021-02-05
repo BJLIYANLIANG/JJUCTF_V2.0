@@ -3,6 +3,7 @@ from flask import session, redirect, Response
 from datetime import timedelta
 import zipfile
 import shutil
+import hashlib
 import jsonify
 from jjuctf.SqlServer import Mysqld
 from werkzeug.utils import secure_filename
@@ -62,6 +63,7 @@ def disconnect_msg():
 app.config['UPLOAD_FOLDER'] = 'jjuctf/upload_file/'
 app.config['UPLOAD_CTF_FILE'] = 'jjuctf/CTF_FILE/'
 app.config['UPLOAD_CTF_CONTAINER'] = 'jjuctf/CTF_CONTAINER/'
+app.config['UPLOAD_AWD_CONTAINER'] = 'jjuctf/AWD_CONTAINER/'
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -618,6 +620,7 @@ def man_ctf_add_exam():
             flag = request.form.get('flag')
             # 得到附件文件
             file_path = request.files['file']
+            # file_path.save(os.path.join(app.config['UPLOAD_CTF_FILE'], secure_filename(file_path.filename)))
             # 得到docker-compose文件
             docker_file = request.files['docker_file']
             # 题目备注
@@ -1457,6 +1460,48 @@ def index_ddw():
         return render_template('user/index_bak.html')
     else:
         return render_template('user/login.html')
+
+
+@app.route('/man_awd_exam',methods=['GET','POST'])
+def man_awd_exam():
+    admin = session.get('admin')
+    if admin:
+        if request.method == "POST":
+            docker_name = request.form.get('docker_name')
+            docker_file = request.files['zipfile']
+            # 检查输入
+            if docker_name == '':
+                return render_template("admin/man_awd_exam.html", message="上传题目名字不能为空！")
+            if docker_file == '':
+                return render_template("admin/man_awd_exam.html", message="上传容器不能为空！")
+            if docker_file.filename[-4:] != '.zip':
+                return render_template("admin/man_awd_exam.html", message="上传容器一定要是zip压缩包格式！")
+            mysql = Mysqld()
+            file_hash = hash(docker_file.filename+docker_name)
+            mysql.insert_awd_exam_table(docker_name,docker_file.filename[:-4],file_hash)
+            docker_file.save(os.path.join(app.config['UPLOAD_AWD_CONTAINER'], secure_filename(docker_file.filename)))
+            # =======解压zip包=====
+            zip = zipfile.ZipFile(app.config['UPLOAD_AWD_CONTAINER'] + docker_file.filename, 'r')
+            try:
+
+                zip.extractall(app.config['UPLOAD_AWD_CONTAINER'])
+                # 删除源文件
+                os.remove(app.config['UPLOAD_AWD_CONTAINER'] + docker_file.filename)
+            except:
+
+                return render_temp了late("admin/man_awd_exam.html", message="文件解压失败！")
+            zip.close()
+            return redirect(url_for('man_awd_exam',message="上传文件成功"))
+        # GET请求
+        else:
+            mysql = Mysqld()
+            awd_exam_table = mysql.select_awd_exam()
+            # print(awd_exam_table)
+            return render_template('admin/man_awd_exam.html',awd_exam_table=awd_exam_table)
+    else:
+        return render_template('admin/login.html')
+
+
 if __name__ == '__main__':
     # app.run()
     socketio.run(app, host='0.0.0.0', port=8000, debug=True)

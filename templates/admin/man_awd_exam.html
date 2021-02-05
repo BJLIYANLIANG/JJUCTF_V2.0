@@ -1,0 +1,152 @@
+{% include "admin/header.html" %}
+<style>
+    .modal_location{
+        top: 26%;
+
+    }
+</style>
+    <div class="main-container">
+        <div class="padding">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="admin">首页</a>
+                <a class="breadcrumb-item" href="#ctf_man">AWD管理</a>
+                <span class="breadcrumb-item active">题目管理</span>
+            </nav>
+        </div>
+{#            table#}
+        <div class="padding">
+            <div class="box">
+                <div class="heading">
+                    <h3 class="title">题目管理</h3>
+                </div>
+                <div class="box-inner">
+                    <div class="btn-group">
+                        <input  type="button" value="上传题目" class="btn btn-info" data-toggle="modal" data-target="#upload_awd_exam">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade modal_location" id="upload_awd_exam" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content awd-modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-info">上传题目</h4>
+                        <button type="button" class="close text-light" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p><span class="text-danger">注意: </span>请将靶场做成zip压缩包格式后上传，并且docker-compose.yml文件要在首目录中。</p>
+                                <p class="text-info">xxx.zip</p>
+                                <p>|解压</p>
+                                <p class="text-success">|--> src</p>
+                                <p class="text-success">|-->docker-compose.yml</p>
+                                <br>
+                                <form enctype="multipart/form-data" method="post">
+                                    <input type="text" name="docker_name" placeholder="题目名称">
+                                    <input type="file" name="zipfile">
+                                    <button type="submit">上传</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+        <div class="padding">
+            <div class="box">
+                <div class="heading">
+                    <h3 class="title">题目列表</h3>
+                </div>
+{#                `group_id`, `id`, `ctf_exam_id`, `name`, `score`--4, `hint`, `type`--6, `docker_flag`, `docker_id`,`docker_info`--9, `file_flag`, `file_path`, `flag`, `date`#}
+                <div class="box-inner">
+                     <table class="table table-bordered table-striped">
+                         <thead>
+                         <tr style="color: #005cbf">
+                             <th width="10%"><input type="checkbox" class="all-cb"></th>
+                             <th width="25%">题目名称</th>
+                             <th width="25%">容器名称</th>
+                             <th width="">上传时间</th>
+                             <th>操作</th>
+                         </tr>
+                         </thead>
+                         <tbody>
+                         {% for i in awd_exam_table %}
+                         <tr>
+                             <td><input type="checkbox" class="all-cb"></td>
+                             <td>{{ i[1] }}</td>
+                             <td>{{ i[2] }}</td>
+                             <td>{{ i[3] }}</td>
+                             <td>
+                                 <button type="button" class="btn  btn-success" onclick="">更多</button>
+                                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="">开启题目</button>
+                                 <button type="button" class="btn btn-xs  btn-danger" onclick="">关闭题目</button></td>
+                         </tr>
+                         {% endfor %}
+                         </tbody>
+                     </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="padding">
+            <div class="box">
+                <div class="heading">
+                    <h3 class="title">题目信息</h3>
+                </div>
+{#                `group_id`, `id`, `ctf_exam_id`, `name`, `score`--4, `hint`, `type`--6, `docker_flag`, `docker_id`,`docker_info`--9, `file_flag`, `file_path`, `flag`, `date`#}
+                <div class="box-inner">
+                    <div class="card-deck">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Test1</h4>
+                            </div>
+                            <div class="card-body">
+                                <p>类型：<span class="text-info">WEB</span></p>
+                                <P>描述：<span class="text-info">这是WEB1</span></P>
+                                <P>描述：<span class="text-info">WEB1</span></P>
+                                <P>文件大小：<span class="text-info">100M</span></P>
+                                <P>上传时间：<span class="text-info">2020-22-22 12:12:21</span></P>
+                                <button class="btn btn-success">开启题目</button>
+                                <button class="btn btn-danger">删除题目</button>
+                                <button class="btn btn-success">开启题目</button>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Test1</h4>
+                            </div>
+                            <div class="card-body">
+                                <p>类型：<span class="text-info">WEB</span></p>
+                                <P>描述：<span class="text-info">WEB1</span></P>
+                                <P>描述：<span class="text-info">WEB1</span></P>
+                                <P>描述：<span class="text-info">WEB1</span></P>
+                                <P>描述：<span class="text-info">WEB1</span></P>
+                                <button class="btn btn-success">开启题目</button>
+                                <button class="btn btn-success">开启题目</button>
+                                <button class="btn btn-success">开启题目</button>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Test1</h4>
+                            </div>
+                            <div class="card-body">
+                                <p>类型：<span class="text-info">WEB</span></p>
+                                <P>描述：<span class="text-info">WEB1</span></P>
+                                <P>描述：<span class="text-info">WEB1</span></P>
+                                <P>描述：<span class="text-info">WEB1</span></P>
+                                <P>描述：<span class="text-info">WEB1</span></P>
+                                <button class="btn btn-success">开启题目</button>
+                                <button class="btn btn-success">开启题目</button>
+                                <button class="btn btn-success">开启题目</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+   {% include "admin/footer.html" %}

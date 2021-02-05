@@ -985,31 +985,30 @@ class Mysqld:
         except BaseException:
             print("函数：checkUser_Post_Flag_OkByGroupIdAndCid")
             return 0
+
+
+    def insert_awd_exam_table(self,name,path,file_hash):
+        date_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        sql = 'insert into awd_exam (name,path,time,file_hash) values ("%s","%s","%s","%s")' % (name,path,date_time,file_hash)
+        # print(sql)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            return 1
+        except:
+            self.conn.rollback()
+            return 0
+
+    def select_awd_exam(self):
+        sql = 'SELECT id,name,path,time FROM `awd_exam`'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+        except Exception:
+            print(Exception)
+            return 0
 # a = Mysqld()
-# b = a.delAllUserChallengeList()
+# b = a.insert_awd_exam_table('WEB1','EasyPython132512352315342','sadfasd')
 # print(b)
-# ===============后台-end===============
-#
-# 间可以使用‘+’，‘*’,即允许元组进行组合连接和重复复制，运算后生成一个新的元组。
 
-# ===============user-start===============
-#
-
-
-# print(b)
-# 完整内容
-# id
-# group_id
-# ctf_exam_id
-# type
-# challenge_id
-# user_id
-# score
-# date
-
-# # # ===============user-end===============
-# #
-# a = Mysqld()
-# b = a.checkUser_Post_Flag_OkByGroupIdAndCid(60,33)
-# print(b)
-# INSERT INTO `user_group_list` (`id`, `group_id`, `user_id`, `role`) VALUES (NULL, '', '', '')

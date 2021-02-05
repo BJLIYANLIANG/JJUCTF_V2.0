@@ -2,7 +2,6 @@
 redis_address = 'localhost'
 redis_port = '6379'
 # user='',,host='smtp.163.com'
-
 # Mail Config
 mail_user = 'hsmcool@163.com'
 # 授权码

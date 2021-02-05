@@ -43,15 +43,16 @@
         top: 35%;
     }
     .awd-modal-content{
-        background-color: rgba(15,37,73,0.98);
+        background-color: rgba(45,45,45,0.87);
         border: .2rem solid #005cbf;
         color: white;
     }
+    .btn{
+        font-size: .9rem;
+    }
 </style>
 <div  class="container-fluid" >
-    <div class="row">
     <br>
-    </div>
        <div class="row">
         <div class="col-md-3">
             <div class="card awd-group-card">
@@ -122,9 +123,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
     <br>
-    </div>
     <div class="row">
         <div class="col-md-3">
             <div style="border: .2rem solid #31708f">
@@ -210,7 +209,6 @@
         <div class="col-md-6 col-xl-6 col-sm-12">
             <div class="card-deck">
 
-
                 <div class="card awd-card ">
                     <div class="card-header" style="position: relative">
                         <div class="" style="float: left"><b>Test 2</b></div>
@@ -218,16 +216,15 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
+
                             <div class="col-md-6">题目: <b>WEB2</b></div>
                             <div class="col-md-6">状态:<span class="text-success">正常</span></div>
                         </div>
                         <br>
                         <div class="row">
-                           <div class="col-md-12">
-                                <button style="width: 30%" class="btn btn-primary" data-toggle="modal" data-target="#more1">更多</button>
-                                <button style="width: 30%" class="btn btn-success">提交</button>
-                                <button style="width: 30%" class="btn btn-danger">重置</button>
-                            </div>
+                                <div class="col-md-4" style="padding: .1rem"><button  class="btn btn-lg btn-primary " data-toggle="modal" data-target="#more1">更多</button></div>
+                            <div class="col-md-4" style="padding: .1rem"><button  class="btn btn-lg btn-success" data-toggle="modal" data-target="#post_flag_1">提交</button></div>
+                            <div class="col-md-4" style="padding: .1rem"><button  class="btn btn-lg btn btn-danger" data-toggle="modal" data-target="#reset_1">重置</button></div>
                         </div>
                     </div>
                 </div>
@@ -236,6 +233,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content awd-modal-content">
                             <div class="modal-header">
+                                <h4 class="modal-title text-primary">更多信息</h4>
                                 <button type="button" class="close text-light" data-dismiss="modal"
                                         aria-hidden="true">×
                                 </button>
@@ -259,8 +257,155 @@
                                     </div>
                                 </div>
                             </div>
-{#                            <div class="modal-footer">#}
-{#                            </div>#}
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
+                <div class="modal fade modal_location" id="post_flag_1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content awd-modal-content">
+                            <div class="modal-header">
+                                 <h4 class="modal-title text-success">提交FLAG</h4>
+                                <button type="button" class="close text-light" data-dismiss="modal"
+                                        aria-hidden="true">×
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+
+                                    <div class="col-md-12 text-center">
+                                        <div class="form-group">
+                                          <label for="flag">FLAG</label>
+                                          <input type="text" class="form-control" id="flag">
+                                        </div>
+                                        <button class="btn btn-primary">提交</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
+
+                                <div class="modal fade modal_location" id="reset_1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content awd-modal-content">
+                            <div class="modal-header">
+                                 <h4 class="modal-title text-warning">重置靶场</h4>
+                                <button type="button" class="close text-light" data-dismiss="modal"
+                                        aria-hidden="true">×
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+
+                                    <div class="col-md-12 text-center">
+                                        <p>重置靶场后，将扣除您50积分</p>
+                                        <button class="btn btn-danger">重置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
+
+
+                <div class="card awd-card ">
+                    <div class="card-header" style="position: relative">
+                        <div class="" style="float: left"><b>Test 2</b></div>
+                        <div class="text-success" style="float: right;font-size: 20px">300</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">题目: <b>WEB2</b></div>
+                            <div class="col-md-6">状态:<span class="text-warning">异常</span></div>
+                        </div>
+                        <br>
+                        <div class="row">
+                                <div class="col-md-4" style="padding: .1rem"><button  class="btn btn-lg btn-primary " data-toggle="modal" data-target="#more2">更多</button></div>
+                            <div class="col-md-4" style="padding: .1rem"><button  class="btn btn-lg btn-success" data-toggle="modal" data-target="#post_flag_2">提交</button></div>
+                            <div class="col-md-4" style="padding: .1rem"><button  class="btn btn-lg btn btn-danger" data-toggle="modal" data-target="#reset_2">重置</button></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 模态框（Modal） -->
+                <div class="modal fade modal_location" id="more2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content awd-modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title text-primary">更多信息</h4>
+                                <button type="button" class="close text-light" data-dismiss="modal"
+                                        aria-hidden="true">×
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        题目：<span class="text-info">WEB1</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        IP：<span class="text-info">192.168.1.1</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        PORT：<span class="text-info">8080</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        登陆用户：<span class="text-info">root</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        登陆密码：<span class="text-info">root</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
+                <div class="modal fade modal_location" id="post_flag_2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content awd-modal-content">
+                            <div class="modal-header">
+                                 <h4 class="modal-title text-success">提交FLAG</h4>
+                                <button type="button" class="close text-light" data-dismiss="modal"
+                                        aria-hidden="true">×
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+
+                                    <div class="col-md-12 text-center">
+                                        <div class="form-group">
+                                          <label for="flag">FLAG</label>
+                                          <input type="text" class="form-control" id="flag">
+                                        </div>
+                                        <button class="btn btn-primary">提交</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
+
+                <div class="modal fade modal_location" id="reset_2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content awd-modal-content">
+                            <div class="modal-header">
+                                 <h4 class="modal-title text-warning">重置靶场</h4>
+                                <button type="button" class="close text-light" data-dismiss="modal"
+                                        aria-hidden="true">×
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+
+                                    <div class="col-md-12 text-center">
+                                        <p>重置靶场后，将扣除您50积分</p>
+                                        <button class="btn btn-danger">重置</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div><!-- /.modal-content -->
                     </div><!-- /.modal-dialog -->
                 </div><!-- /.modal -->
@@ -280,36 +425,92 @@
                         </div>
                         <br>
                         <div class="row">
-                            <div class="col-md-12">
-                                <button style="width: 30%" class="btn btn-primary">更多</button>
-                                <button style="width: 30%" class="btn btn-success">提交</button>
-                                <button style="width: 30%" class="btn btn-danger">重置</button>
-                            </div>
+                                <div class="col-md-4" style="padding: .1rem"><button  class="btn btn-lg btn-primary " data-toggle="modal" data-target="#more3">更多</button></div>
+                            <div class="col-md-4" style="padding: .1rem"><button  class="btn btn-lg btn-success" data-toggle="modal" data-target="#post_flag_3">提交</button></div>
+                            <div class="col-md-4" style="padding: .1rem"><button  class="btn btn-lg btn btn-danger" data-toggle="modal" data-target="#reset_3">重置</button></div>
                         </div>
                     </div>
                 </div>
-
-                <div class="card awd-card ">
-                    <div class="card-header" style="position: relative">
-                        <div class="" style="float: left"><b>Test 2</b></div>
-                        <div class="text-success" style="float: right;font-size: 20px">300</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">题目: <b>WEB2</b></div>
-                            <div class="col-md-6">状态:<span class="text-danger">异常</span></div>
-                        </div>
-                        <br>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <button style="width: 30%" class="btn btn-primary">更多</button>
-                                <button style="width: 30%" class="btn btn-success">提交</button>
-                                <button style="width: 30%" class="btn btn-danger">重置</button>
+                <!-- 模态框（Modal） -->
+                <div class="modal fade modal_location" id="more3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content awd-modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title text-primary">更多信息</h4>
+                                <button type="button" class="close text-light" data-dismiss="modal"
+                                        aria-hidden="true">×
+                                </button>
                             </div>
-                        </div>
-                    </div>
-                </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        题目：<span class="text-info">WEB1</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        IP：<span class="text-info">192.168.1.1</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        PORT：<span class="text-info">8080</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        登陆用户：<span class="text-info">root</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        登陆密码：<span class="text-info">root</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
 
+                <div class="modal fade modal_location" id="post_flag_3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content awd-modal-content">
+                            <div class="modal-header">
+                                 <h4 class="modal-title text-success">提交FLAG</h4>
+                                <button type="button" class="close text-light" data-dismiss="modal"
+                                        aria-hidden="true">×
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+
+                                    <div class="col-md-12 text-center">
+                                        <div class="form-group">
+                                          <label for="flag">FLAG</label>
+                                          <input type="text" class="form-control" id="flag">
+                                        </div>
+                                        <button class="btn btn-primary">提交</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
+
+                                <div class="modal fade modal_location" id="reset_3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content awd-modal-content">
+                            <div class="modal-header">
+                                 <h4 class="modal-title text-warning">重置靶场</h4>
+                                <button type="button" class="close text-light" data-dismiss="modal"
+                                        aria-hidden="true">×
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+
+                                    <div class="col-md-12 text-center">
+                                        <p>重置靶场后，将扣除您50积分</p>
+                                        <button class="btn btn-danger">重置</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
 
             </div>
         </div>
