@@ -531,7 +531,12 @@ def checkAdminLogin():
 def adminIndex():
     admin = session.get('admin')
     if admin:
-        return render_template("admin/index.html")
+        mysql = Mysqld()
+        userNum = len(mysql.selectUserList())
+        groupNum = len(mysql.selectUserGroupList())
+        # 用户挑战数的
+        user_Challenge_List_Num = len(mysql.select_user_challenge_list())
+        return render_template("admin/index.html",userNum=userNum,groupNum=groupNum,user_Challenge_List_Num=user_Challenge_List_Num)
     else:
         return render_template("admin/login.html")
 
@@ -968,16 +973,11 @@ def man_ctf_exam_info():
     admin = session.get("admin")
     if admin:
         mysql = Mysqld()
-        userNum = len(mysql.selectUserList())
-        groupNum = len(mysql.selectUserGroupList())
+
         # groupNum = len(mysql.selectUserGroupListByGroupId())
-        # 用户挑战数的
-        user_Challenge_List_Num = len(mysql.select_user_challenge_list())
         # 查找CTF解题情况
         user_succcess_challenge_list = mysql.selectUserChallengeList()
-        return render_template("admin/man_ctf_exam_info.html", userNum=userNum, groupNum=groupNum,
-                               user_Challenge_List_Num=user_Challenge_List_Num,
-                               user_succcess_challenge_list=user_succcess_challenge_list)
+        return render_template("admin/man_ctf_exam_info.html",user_succcess_challenge_list=user_succcess_challenge_list)
     else:
         return render_template("admin/login.html")
 
@@ -1466,6 +1466,7 @@ def index_ddw():
 def man_awd_exam():
     admin = session.get('admin')
     if admin:
+        # 上传题目
         if request.method == "POST":
             docker_name = request.form.get('docker_name')
             docker_file = request.files['zipfile']
@@ -1483,14 +1484,15 @@ def man_awd_exam():
             # =======解压zip包=====
             zip = zipfile.ZipFile(app.config['UPLOAD_AWD_CONTAINER'] + docker_file.filename, 'r')
             try:
-
                 zip.extractall(app.config['UPLOAD_AWD_CONTAINER'])
                 # 删除源文件
                 os.remove(app.config['UPLOAD_AWD_CONTAINER'] + docker_file.filename)
             except:
-
                 return render_template("admin/man_awd_exam.html", message="文件解压失败！")
             zip.close()
+            # 构建镜像，并且将镜像id写入到题目中
+            # mysql.insert_awd_exam_table(docker_name, docker_file.filename[:-4], file_hash)
+            mysql.insert_awd_exam_table(docker_name, docker_file.filename[:-4], file_hash)
             return redirect(url_for('man_awd_exam',message="上传文件成功"))
         # GET请求
         else:
@@ -1501,6 +1503,15 @@ def man_awd_exam():
     else:
         return render_template('admin/login.html')
 
+
+
+@app.route('/man_awd_setting_config',methods=['POST','GET'])
+def man_awd_setting_config():
+    admin = session.get('admin')
+    if admin:
+        return render_template('admin/man_awd_setting_config.html')
+    else:
+        return render_template('admin/login.html')
 
 if __name__ == '__main__':
     # app.run()

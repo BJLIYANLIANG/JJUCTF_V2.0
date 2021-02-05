@@ -25,6 +25,8 @@ class Contain:
         except subprocess.CalledProcessError as e:
             time.sleep(15)
         raise Exception("failed to start docker-compose (called: %s): exit code: %d, output: %s" % (e.cmd, e.returncode, e.output))
+
+
     def stopContainByDockerID(self,dockerID):
         penv = dict(os.environ)
         cmd = "docker stop "+dockerID
@@ -34,6 +36,14 @@ class Contain:
         except subprocess.CalledProcessError as e:
             time.sleep(5)
 
+    def dockerBuild(self):
+        penv = dict(os.environ)
+        cmd = ""
+        try:
+            subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
+            return 1
+        except subprocess.CalledProcessError as e:
+            time.sleep(5)
 
 
     def geturl(self,id):

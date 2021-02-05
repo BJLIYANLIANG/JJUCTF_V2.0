@@ -23,6 +23,9 @@
                     <div class="btn-group">
                         <input  type="button" value="上传题目" class="btn btn-info" data-toggle="modal" data-target="#upload_awd_exam">
                     </div>
+                    <div class="btn-group">
+                        <input  type="button" value="通过镜像ID开启AWD实例" class="btn btn-success" data-toggle="modal" data-target="#upload_awd_exam_by_id">
+                    </div>
                 </div>
             </div>
         </div>
@@ -53,6 +56,33 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
+
+        <div class="modal fade modal_location" id="upload_awd_exam_by_id" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content awd-modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-success">通过镜像ID开启AWD实例</h4>
+                        <button type="button" class="close text-light" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p><span class="text-danger">注意: </span>请提供Docker容器内EXPOSE的端口号，格式如: 22,8080</p>
+                                <form enctype="multipart/form-data" method="post">
+                                    <p><input type="text" name="cid" placeholder="AWD 镜像ID"></p>
+                                    <hr>
+                                    <p><input type="text" name="ssh_port" placeholder="ssh端口号"></p>
+                                    <p><input type="text" name="other_port" placeholder="其他端口，如80,8080"></p>
+                                    <button class="btn btn-info" type="submit">构建题目</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+
         <div class="padding">
             <div class="box">
                 <div class="heading">
