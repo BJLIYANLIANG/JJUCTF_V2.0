@@ -1489,7 +1489,7 @@ def man_awd_exam():
                 os.remove(app.config['UPLOAD_AWD_CONTAINER'] + docker_file.filename)
             except:
 
-                return render_temp了late("admin/man_awd_exam.html", message="文件解压失败！")
+                return render_template("admin/man_awd_exam.html", message="文件解压失败！")
             zip.close()
             return redirect(url_for('man_awd_exam',message="上传文件成功"))
         # GET请求
