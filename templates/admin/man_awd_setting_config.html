@@ -20,34 +20,35 @@
                     <h3 class="title">配置信息</h3>
                 </div>
                 <div class="box-inner">
+{#                    start_time`, `end_time`, `update_time`, `check_time`, `score`, `check_down_score`, `salt`#}
                     <table class="table table-bordered">
                         <tr>
                             <td>比赛开始时间</td>
-                            <td class="text-info">2021-01-05 00:00:00</td>
+                            <td class="text-info">{{ awd_config[0] }}</td>
                         </tr>
                         <tr>
                             <td>比赛结束时间</td>
-                            <td class="text-info">2021-01-06 00:00:00</td>
+                            <td class="text-info">{{ awd_config[1] }}</td>
                         </tr>
                         <tr>
                             <td>Check 时间间隔</td>
-                            <td class="text-info">2分钟</td>
+                            <td class="text-info">{{ awd_config[3] }}</td>
                         </tr>
                         <tr>
                             <td>Check Down扣分</td>
-                            <td class="text-info">50</td>
+                            <td class="text-info">{{ awd_config[5] }}</td>
                         </tr>
                         <tr>
                             <td>更新flag间隔</td>
-                            <td class="text-info">30分钟</td>
+                            <td class="text-info">{{ awd_config[2] }}</td>
                         </tr>
                         <tr>
                             <td>提交Flag得分</td>
-                            <td class="text-info">50</td>
+                            <td class="text-info">{{ awd_config[4] }}</td>
                         </tr>
                         <tr>
                             <td>Salt</td>
-                            <td class="text-info">FASDFSADFsaasfASDF234dfasfas234</td>
+                            <td class="text-info">{{ awd_config[6] }}</td>
                         </tr>
                     </table>
                 </div>
@@ -59,35 +60,35 @@
                     <h3 class="title">配置</h3>
                 </div>
                 <div class="box-inner">
-                    <form>
+                    <form method="post">
                         <table class="table table-bordered">
                         <tr>
                             <td>比赛开始时间</td>
-                            <td class="text-info"><input type="datetime-local" placeholder="2021-01-05 00:00:00"></td>
+                            <td class="text-info"><input name="start_time" type="datetime-local" placeholder="2021-01-05 00:00:00"></td>
                         </tr>
                         <tr>
                             <td>比赛结束时间</td>
-                            <td class="text-info"><input type="datetime-local" placeholder="2021-01-05 00:00:00"></td>
+                            <td class="text-info"><input name="end_time" type="datetime-local" placeholder="2021-01-05 00:00:00"></td>
                         </tr>
                         <tr>
                             <td>Check 时间间隔</td>
-                            <td class="text-info"><input type="text"> 分钟</td>
+                            <td class="text-info"><input name="check_time" type="text"> 分钟</td>
                         </tr>
                         <tr>
                             <td>Check Down扣分</td>
-                            <td class="text-info"><input type="text"></td>
+                            <td class="text-info"><input name="check_down_score" type="text"></td>
                         </tr>
                         <tr>
                             <td>更新flag间隔</td>
-                            <td class="text-info"><input type="text"> 分钟</td>
+                            <td class="text-info"><input name="update_time" type="text"> 分钟</td>
                         </tr>
                         <tr>
                             <td>提交Flag得分</td>
-                            <td class="text-info"><input type="text"></td>
+                            <td class="text-info"><input name="score" type="text"></td>
                         </tr>
                         <tr>
                             <td>Salt</td>
-                            <td class="text-info"><input type="text"></td>
+                            <td class="text-info"><input name="salt" type="text"></td>
                         </tr>
                     </table>
                         <button class="btn btn-primary" type="submit">提交配置</button>

@@ -45,7 +45,18 @@ class Contain:
         except subprocess.CalledProcessError as e:
             time.sleep(5)
 
+    def docker_start_by_imagesID(self,group_name,images_id,ip):
+        penv = dict(os.environ)
+        cmd = 'docker run --name %s  --network awd --ip %s  -d  %s'%(group_name,ip,images_id)
+        print(cmd)
+        try:
+            result = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
+            return str(result)[2:14]
 
+        except subprocess.CalledProcessError as e:
+            time.sleep(1)
+
+    # def docker_gen_dockerIP(self,):
     def geturl(self,id):
         #  得到ip和端口
         #  [['0.0.0.0', '5000']]
@@ -69,3 +80,6 @@ class Contain:
             return id
         else:
             return []
+docker = Contain()
+a = docker.docker_start_by_imagesID('test123','42941dbd1f82','172.18.0.1')
+print(a)

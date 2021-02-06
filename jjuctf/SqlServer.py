@@ -120,7 +120,7 @@ class Mysqld:
     # 通过用户名查队伍id
     def selectGroupidByusername(self, user):
         userid = self.selectUserIdByUserName(user)
-        sql = 'select group_id from user_group_list where user_id="%d"' % (userid)
+        sql = 'select g_id from user_group_list where user_id="%d"' % (userid)
         # print(sql)
         # sql = 'select b.group_id from user as a  join user_group_list as b on a.id=b.user_id and a.user_name="%s";' % (
         #     user)
@@ -167,7 +167,7 @@ class Mysqld:
             return 0
 
     def addUser_group_list(self, group_id, user_id, role):
-        sql = 'insert into user_group_list (group_id,user_id,role) values (%d,%d,%d)' % (group_id, user_id, role)
+        sql = 'insert into user_group_list (g_id,user_id,role) values (%d,%d,%d)' % (group_id, user_id, role)
         # print(sql)
         try:
             self.cursor.execute(sql)
@@ -190,7 +190,7 @@ class Mysqld:
             return 0
 
     def selectUserGroupListByGroupId(self, group_id):
-        sql = 'select a.user_name from user as a inner join (select * from user_group_list where group_id=%d) as b on a.id=b.user_id;' % (
+        sql = 'select a.user_name from user as a inner join (select * from user_group_list where g_id=%d) as b on a.id=b.user_id;' % (
             group_id)
         # print(sql)
         try:
@@ -653,15 +653,13 @@ class Mysqld:
 
     def delGroupByGroup_Id(self, group_id):
         sql = 'delete from user_group where group_id=%d' % (group_id)
-        # print(sql)
+        print(sql)
         try:
             self.cursor.execute(sql)
             self.conn.commit()
-            # self.conn.close()
             return 1
         except:
             self.conn.rollback()
-            # self.conn.close()
             print("删除队伍失败!")
             return 0
 
@@ -722,7 +720,7 @@ class Mysqld:
             return 0
 
     def deluser_group_listByGroupId(self, id):
-        sql = ' delete from user_group_list where group_id=%d' % (id)
+        sql = ' delete from user_group_list where g_id=%d' % (id)
         try:
             self.cursor.execute(sql)
             self.conn.commit()
@@ -903,7 +901,7 @@ class Mysqld:
 
     # 检查用户目前是不是已经加入到队伍中了
     def checkUserGroupApplyByGIdAndUId(self, groupId, UserId):
-        sql = 'select * from user_group_list where group_id=%d and user_id=%d' % (groupId, UserId)
+        sql = 'select * from user_group_list where g_id=%d and user_id=%d' % (groupId, UserId)
         # print(sql)
         try:
             self.cursor.execute(sql)
@@ -987,10 +985,9 @@ class Mysqld:
             return 0
 
 
-    def insert_awd_exam_table(self,name,path,file_hash):
+    def insert_awd_exam_table(self,name,image_id):
         date_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        sql = 'insert into awd_exam (name,path,time,file_hash) values ("%s","%s","%s","%s")' % (name,path,date_time,file_hash)
-        # print(sql)
+        sql = 'insert into awd_exam (name,time,image_id) values ("%s","%s","%s")' % (name,date_time,image_id)
         try:
             self.cursor.execute(sql)
             self.conn.commit()
@@ -1000,7 +997,7 @@ class Mysqld:
             return 0
 
     def select_awd_exam(self):
-        sql = 'SELECT id,name,path,time FROM `awd_exam`'
+        sql = 'SELECT id,name,image_id,time,ssh,other_port FROM `awd_exam`'
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchall()
@@ -1008,7 +1005,56 @@ class Mysqld:
         except Exception:
             print(Exception)
             return 0
-# a = Mysqld()
-# b = a.insert_awd_exam_table('WEB1','EasyPython132512352315342','sadfasd')
-# print(b)
+    def select_awd_exam_by_imageID(self,image_id):
+        sql = 'SELECT id,name,image_id,time,ssh,other_port FROM `awd_exam` where image_id="%s"'%(image_id)
+        # print(sql)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            return result
+        except Exception:
+            print(Exception)
+            return 0
+
+
+    def awd_config_setting(self,start_time,end_time,update_time,check_time,score,check_dowm_score,salt):
+        # sql = 'INSERT INTO `awd_config` (`id`, `start_time`, `end_time`, `update_time`, `check_time`, `score`, `check_down_score`, `salt`) VALUES (NULL, "%s", "%s", %d, %d, %d, %d, "%s")'%(start_time,end_time,update_time,check_time,score,check_dowm_score,salt)
+        sql = 'UPDATE `awd_config` SET `start_time` = "%s", `end_time` = "%s", `update_time` = %d, check_time=%d, `score` = %d, `check_down_score` = %d, `salt` = "%s" WHERE `awd_config`.`id` = 2'%(start_time,end_time,update_time,check_time,score,check_dowm_score,salt)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            return 1
+        except:
+            self.conn.rollback()
+            return 0
+    def select_awd_config(self):
+        sql = 'SELECT `start_time`, `end_time`, `update_time`, `check_time`, `score`, `check_down_score`, `salt` FROM awd_config'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            return result
+        except Exception:
+            print(Exception)
+            return 0
+    def select_groupname(self):
+        sql = 'select group_id,name from user_group'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+        except Exception:
+            return 0
+    def insert_awd_instance(self,container_id,name,ssh_port,other_port,time,flag,ip,tag):
+        sql = 'insert into awd_exam_instance (container_id,name,ssh_port,other_port,time,flag,ip,tag) values ("%s","%s",%d,%d,"%s","%s","%s","%s")' % (container_id,name,ssh_port,other_port,time,flag,ip,tag)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            return 1
+        except:
+            self.conn.rollback()
+            return 0
+# id,container_id,name,ssh_port,other_port,time,flag,ip,tag
+a = Mysqld()
+b = a.select_groupname()
+print(b)
 

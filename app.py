@@ -86,7 +86,7 @@ def login():
         result = mysql.checkuser(username, password)  # 对用户表进行操作，检查登录
         # result为1表示该用户名未注册过
         if result == 1:
-            session.permanent = True  # 设置session为永久的
+            session.permanent = False  # 设置session为永久的
             # app.permanent_session_lifetime = timedelta(minutes=20)  # 设置session到期时间，单位分钟
             session['user'] = request.form.get('username')
             if group_id != 0:
@@ -806,7 +806,6 @@ def man_admin():
     else:
         return render_template('admin/login.html')
 
-
 # 管理员登录退出
 @app.route("/adminLogout")
 def adminLogout():
@@ -824,18 +823,57 @@ def run_target_import():
         return render_template("admin/login.html")
 
 
-# run_target_table
-@app.route("/run_target_table")
-def run_target_table():
+# 打开一个awd实例，必须知道images镜像id
+@app.route("/start_awd_instance",methods=['GET','POST'])
+def start_awd_instance():
     admin = session.get('admin')
     if admin:
-        return render_template("admin/run_target_table.html")
+        # 如果不是get请求
+        if request.method == 'GET':
+            redirect(url_for('man_awd_exam'))
+        # image_id = '42941dbd1f82'
+        image_id = request.form.get('image_id')
+        mysql = Mysqld()
+        # 得到队伍信息
+        # ((50, 'jjusec123'), (55, 'admin'))形式
+        groupname_list = mysql.select_groupname()
+        awd_info = mysql.select_awd_exam_by_imageID(image_id)
+        # id,name,image_id,time,ssh,other_port
+        status = start_awd_instance_for(groupname_list,image_id,awd_info[1],awd_info[4],awd_info[5])
+        if status == 1:
+            data = {'status':'1'}
+        else:
+            data = {'status': '0'}
+        return data
     else:
         return render_template("admin/login.html")
+def start_awd_instance_for(group_list,images_id,name,ssh_port,other_port):
+    docker = Contain()
+    mysql = Mysqld()
+    open_time = time.strftime("%H:%M:%S", time.localtime())
+    base_ip = '172.18.0.'
+    ip_v = 2
+    ip_dic = {}
+    # 得到ip
+    try:
+        for i in group_list:
+            # (55, 'admin')
+
+            tag = i[1] + "/" + name
+            print(tag)
+            ip = base_ip + str(ip_v)
+            ip_dic[i[1]] = ip
+            container_id = docker.docker_start_by_imagesID(tag,images_id,ip)
+            print(container_id)
+            mysql.insert_awd_instance(container_id, name, ssh_port, other_port, open_time, '',ip,tag)
+            ip_v += 1
+        print(ip_dic)
+        return 1
+    except:
+        return -1
 
 
 # ==================404=====================
-
 # 404错误
 @app.errorhandler(404)
 def page_not_found(error):
@@ -1000,10 +1038,14 @@ def man_group():
 def delUserGroup():
     if session.get("admin"):
         if request.method == "POST":
+            # 获取队伍id
             id = int(request.form.get('id'))
             mysql = Mysqld()
+            # 删除队伍里面的成员
             rel = mysql.deluser_group_listByGroupId(id)
+            # print('rel',rel)
             if rel == 1:
+                # 如果成功就再删除队伍
                 result = mysql.delGroupByGroup_Id(id)
             else:
                 result = 0
@@ -1509,7 +1551,24 @@ def man_awd_exam():
 def man_awd_setting_config():
     admin = session.get('admin')
     if admin:
-        return render_template('admin/man_awd_setting_config.html')
+        if request.method == 'POST':
+            start_time = request.form.get('start_time')
+            end_time = request.form.get('end_time')
+            score = int(request.form.get('score'))
+            update_time = int(request.form.get('update_time'))
+            check_time = int(request.form.get('check_time'))
+            check_down_score = int(request.form.get('check_down_score'))
+            salt = request.form.get('salt')
+            mysql = Mysqld()
+            result = mysql.awd_config_setting(start_time,end_time,update_time,check_time,score,check_down_score,salt)
+            if result == 1:
+                return redirect(url_for('man_awd_setting_config',message='修改成功'))
+            else:
+                return redirect(url_for('man_awd_setting_config', message='修改失败'))
+        else:
+            mysql = Mysqld()
+            awd_config = mysql.select_awd_config()
+            return render_template('admin/man_awd_setting_config.html',awd_config=awd_config)
     else:
         return render_template('admin/login.html')
 

@@ -95,8 +95,8 @@
                          <tr style="color: #005cbf">
                              <th width="10%"><input type="checkbox" class="all-cb"></th>
                              <th width="25%">题目名称</th>
-                             <th width="25%">容器名称</th>
-                             <th width="">上传时间</th>
+                             <th width="25%">容器ID</th>
+                             <th width="">构建时间</th>
                              <th>操作</th>
                          </tr>
                          </thead>
@@ -109,7 +109,7 @@
                              <td>{{ i[3] }}</td>
                              <td>
                                  <button type="button" class="btn  btn-success" onclick="">更多</button>
-                                 <button type="button" class="btn btn-info" data-toggle="modal" data-target="">开启题目</button>
+                                 <button type="button" class="btn btn-info" onclick="start_instance('{{ i[2] }}')">开启题目</button>
                                  <button type="button" class="btn btn-xs  btn-danger" onclick="">关闭题目</button></td>
                          </tr>
                          {% endfor %}
@@ -179,4 +179,25 @@
 
 
     </div>
+<script>
+    function start_instance(id) {
+        $.ajax({
+            url: "/start_awd_instance",
+            type: "post",
+            data: {"image_id": id,},
+            success: function (result) {
+                if (result.status == '1') {
+                    alert('开启成功');
+                    window.location.href = '/man_awd_exam';
+                }
+                else {
+                    alert('开启失败');
+                }
+            },
+            error:function () {
+                alert("发送请求失败，请检查网络链接状况！");
+            }
+        })
+    }
+</script>
    {% include "admin/footer.html" %}
