@@ -1,30 +1,39 @@
-from flask import Flask, url_for, send_from_directory, render_template, abort, request, make_response
-from flask import session, redirect, Response
+from flask import Flask, url_for, send_from_directory, render_template, abort, request, make_response, session, redirect, Response
 from datetime import timedelta
 import zipfile
 import shutil
-import hashlib
+import logging
 import jsonify
-from jjuctf.SqlServer import Mysqld
 from werkzeug.utils import secure_filename
-import os
 from flask_socketio import SocketIO, emit, join_room, leave_room, send
 import redis
+import datetime
 from jjuctf.config import *
 from jjuctf.Check import *
-import time
 from jjuctf.Crypto import *
-import datetime
-from jjuctf.Contain import Contain
+from jjuctf.Contain import *
 from jjuctf.functions import *
 
+# redis 连接
 redis_instance = redis.Redis(host=redis_address, port=redis_port, decode_responses=True)
 
 app = Flask(__name__)
 app.secret_key = '905008'  # session 密钥
-# app.debug = True
+handler = logging.FileHandler('jjuctf.log')
+app.logger.addHandler(handler)
 socketio = SocketIO(app, cors_allowed_origins='*')
 
+# 命名空间
+name_space = '/test'
+
+# 常量
+app.config['UPLOAD_FOLDER'] = 'jjuctf/upload_file/'
+app.config['UPLOAD_CTF_FILE'] = 'jjuctf/CTF_FILE/'
+app.config['UPLOAD_CTF_CONTAINER'] = 'jjuctf/CTF_CONTAINER/'
+app.config['UPLOAD_AWD_CONTAINER'] = 'jjuctf/AWD_CONTAINER/'
+
+if __name__ == '__main__':
+    socketio.run(app, host='0.0.0.0', port=8000, debug=True)
 
 # 没啥用测试用的
 @socketio.on('test')
@@ -45,10 +54,6 @@ def push():
     emit(event_name, broadcast_data, broadcast=True, namespace=name_space)
     return "done!"
 
-
-name_space = '/test'
-
-
 @socketio.on('connect', namespace=name_space)
 def connected_msg():
     print('client connected.')
@@ -57,13 +62,6 @@ def connected_msg():
 @socketio.on('disconnect', namespace=name_space)
 def disconnect_msg():
     print('client disconnected.')
-
-
-# 常量
-app.config['UPLOAD_FOLDER'] = 'jjuctf/upload_file/'
-app.config['UPLOAD_CTF_FILE'] = 'jjuctf/CTF_FILE/'
-app.config['UPLOAD_CTF_CONTAINER'] = 'jjuctf/CTF_CONTAINER/'
-app.config['UPLOAD_AWD_CONTAINER'] = 'jjuctf/AWD_CONTAINER/'
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -100,6 +98,7 @@ def login():
                 resp.set_cookie('token', token)
                 return resp
             else:
+
                 return render_template('user/index.html', message="登陆成功")
         else:
             return render_template("user/login.html", message="帐号或密码错误")
@@ -107,9 +106,11 @@ def login():
         return redirect('/login')
 
 
+
 # ctf解题模式
 @app.route('/challenges')
 def challenge():
+    app.logger.info("success")
     user = session.get('user')
     if user:  # 如果登录成功
         # 获取CTf实例列表
@@ -269,6 +270,7 @@ def userRegister():
             return render_template("user/login.html", message="注册成功，请到队伍管理添加队伍！")
 
 
+
 @app.route("/logout")
 def logout():
     session.clear()
@@ -285,17 +287,23 @@ def awd():
     user = session.get('user')
     if user:
         mysql = Mysqld()
+        groupInfo = mysql.selectGroupInfoByUsername(user)
+        # 如果该用户没有创建队伍，那么跳转让他创建队伍
+        #
+        if groupInfo == 0:
+            return redirect('/group')
         # 比赛信息
         competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
         # 公告栏
         userNotice = mysql.selectUserNotice()
-        groupInfo = mysql.selectGroupInfoByUsername(user)
-        # select group_id,name,info,user_id from user_group where group_id=
-        # 如果该用户没有创建队伍，那么跳转让他创建队伍
-        if groupInfo == 0:
-            return redirect('/group')
+        # 挑战列表信息
+        # (('test1234', 'awd_b4', '172.18.0.2', 0), ('admin', 'awd_b4', '172.18.0.3', 0))
+        awd_target_list = mysql.select_awd_target_list()
+        # awd挑战列表,最多有三个
+        awd_list = mysql.select_awd_target_by_groupname(groupInfo[1])
         return render_template("user/awd.html", username=user, headerType="awd", groupInfo=groupInfo,
-                               competition_info=competition_info, userNotice=userNotice)
+                               competition_info=competition_info, userNotice=userNotice,awd_target_list=awd_target_list
+                               ,awd_list=awd_list)
     else:
         return render_template("user/login.html")
 
@@ -847,10 +855,13 @@ def start_awd_instance():
         return data
     else:
         return render_template("admin/login.html")
+
+
+
 def start_awd_instance_for(group_list,images_id,name,ssh_port,other_port):
     docker = Contain()
     mysql = Mysqld()
-    open_time = time.strftime("%H:%M:%S", time.localtime())
+    now_time=str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
     base_ip = '172.18.0.'
     ip_v = 2
     ip_dic = {}
@@ -858,14 +869,14 @@ def start_awd_instance_for(group_list,images_id,name,ssh_port,other_port):
     try:
         for i in group_list:
             # (55, 'admin')
-
-            tag = i[1] + "/" + name
+            # i[1] 为队伍名
+            tag = i[1] + "." + name
             print(tag)
             ip = base_ip + str(ip_v)
             ip_dic[i[1]] = ip
             container_id = docker.docker_start_by_imagesID(tag,images_id,ip)
             print(container_id)
-            mysql.insert_awd_instance(container_id, name, ssh_port, other_port, open_time, '',ip,tag)
+            mysql.insert_awd_instance(container_id, name, ssh_port, other_port, now_time, '',ip,tag,i[1])
             ip_v += 1
         print(ip_dic)
         return 1
@@ -1393,11 +1404,10 @@ def user_competition_list():
     if user:
         mysql = Mysqld()
         competitionlist = mysql.selectCompetitionInfoList()
-        # print(competitionlist)
         return render_template('user/competition_list.html', username=user,competitionlist=competitionlist)
     else:
-        # return render_template('user/login.html')
         return render_template('user/login.html')
+
 
 
 @app.route('/getChallengeTypeNum', methods=['POST'])
@@ -1571,7 +1581,3 @@ def man_awd_setting_config():
             return render_template('admin/man_awd_setting_config.html',awd_config=awd_config)
     else:
         return render_template('admin/login.html')
-
-if __name__ == '__main__':
-    # app.run()
-    socketio.run(app, host='0.0.0.0', port=8000, debug=True)

@@ -48,7 +48,7 @@ class Contain:
     def docker_start_by_imagesID(self,group_name,images_id,ip):
         penv = dict(os.environ)
         cmd = 'docker run --name %s  --network awd --ip %s  -d  %s'%(group_name,ip,images_id)
-        print(cmd)
+        # print(cmd)
         try:
             result = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
             return str(result)[2:14]
@@ -80,6 +80,20 @@ class Contain:
             return id
         else:
             return []
-docker = Contain()
-a = docker.docker_start_by_imagesID('test123','42941dbd1f82','172.18.0.1')
-print(a)
+    # 为容器添加flag
+    def insert_awd_flag(self,image_id,flag,file_path):
+        penv = dict(os.environ)
+        cmd = "docker exec -u root %s bash -c 'echo '%s' > %s'"%(image_id,flag,file_path)
+        # print(cmd)
+        try:
+            subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
+            return 1
+        except subprocess.CalledProcessError as e:
+            print(e.output)
+            return -1
+    def check_awd_status(self,images):
+        pass
+
+# docker = Contain()
+# a = docker.insert_awd_flag('ef49418c0de4234','flag{test}','/flag')
+# print(a)

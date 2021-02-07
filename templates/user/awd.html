@@ -16,6 +16,12 @@
         border: 0.3rem solid #005cbf;
         background-color: #0d1927;
         color: white;
+        margin: 1rem;
+        width: 30rem;
+    }
+    .card-body-awd{
+        padding: .3rem;
+        padding-bottom: .7rem;
     }
     .card-competition-notice{
         border: 0.3rem solid #2c3e50;
@@ -133,102 +139,48 @@
                     <thead>
                     <tr>
                         <th style="border-color: #1c2b36;color: #87CEFA">队伍</th>
+                        <th style="border-color: #1c2b36;color: #87CEFA">题目</th>
                         <th style="border-color: #1c2b36;color: #87CEFA">ip地址</th>
                     </tr>
                     </thead>
                     <tbody>
+                    {% for target in awd_target_list %}
                     <tr>
-                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
-                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">{{ target[0] }}</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">{{ target[1] }}</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">{{ target[2] }}</td>
                     </tr>
-                    <tr>
-                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
-                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
-                    </tr>
-                    <tr>
-                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
-                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
-                    </tr>
-                    <tr>
-                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
-                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
-                    </tr>
-                    <tr>
-                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
-                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
-                    </tr>
-                    <tr>
-                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
-                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
-                    </tr>
-                    <tr>
-                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
-                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
-                    </tr>
-                    <tr>
-                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
-                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
-                    </tr>
-                    <tr>
-                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
-                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
-                    </tr>
-                    <tr>
-                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
-                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
-                    </tr>
-                    <tr>
-                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
-                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
-                    </tr>
-                    <tr>
-                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
-                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
-                    </tr>
-                    <tr>
-                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
-                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
-                    </tr>
-                    <tr>
-                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
-                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
-                    </tr>
-                    <tr>
-                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC1</td>
-                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1:1000</td>
-                    </tr>
-                    <tr>
-                        <td style="border-color: #1c2b36;color: #87CEFA">JJUSEC2</td>
-                        <td style="border-color: #1c2b36;color: #87CEFA">192.168.1.1</td>
-                    </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
                 </div>
             </div>
         </div>
         <div class="col-md-6 col-xl-6 col-sm-12">
-            <div class="card-deck">
-
-                <div class="card awd-card ">
+            <div class="row">
+                {% for i in awd_list %}
+{#                    name,ssh_port,other_port,time,ip,status,ssh_user,password from awd_exam_instance#}
+                <div class="card awd-card col-md-3">
                     <div class="card-header" style="position: relative">
-                        <div class="" style="float: left"><b>Test 2</b></div>
-                        <div class="text-success" style="float: right;font-size: 20px">300</div>
+                        <div class="" style="float: left"><b>{{ i[0] }}</b></div>
+{#                        <div class="text-success" style="float: right;font-size: 20px">300</div>#}
                     </div>
-                    <div class="card-body">
+                    <div class="card-body card-body-awd">
                         <div class="row">
-
-                            <div class="col-md-6">题目: <b>WEB2</b></div>
-                            <div class="col-md-6">状态:<span class="text-success">正常</span></div>
+                            <div class="col-md-12">题目: <b>{{ i[0] }}</b></div>
+                            <div class="col-md-12">状态: {% if i[5]==1 %}<span class="text-success">正常</span>{% else %}<span class="text-warning">异常</span>{% endif %}</div>
                         </div>
                         <br>
-                        <div class="row">
-                                <div class="col-md-4" style="padding: .1rem"><button  class="btn btn-lg btn-primary " data-toggle="modal" data-target="#more1">更多</button></div>
-                            <div class="col-md-4" style="padding: .1rem"><button  class="btn btn-lg btn-success" data-toggle="modal" data-target="#post_flag_1">提交</button></div>
-                            <div class="col-md-4" style="padding: .1rem"><button  class="btn btn-lg btn btn-danger" data-toggle="modal" data-target="#reset_1">重置</button></div>
+                        <div class="row text-center">
+                            <div class="col-md-4" style="padding: .1rem"><a class="text-info"  data-toggle="modal" data-target="#more1">更多</a></div>
+                            <div class="col-md-4" style="padding: .1rem"><a class="text-primary" data-toggle="modal" data-target="#post_flag_1">提交</a></div>
+                            <div class="col-md-4" style="padding: .1rem"><a class="text-danger"  data-toggle="modal" data-target="#reset_1">重置</a></div>
                         </div>
                     </div>
                 </div>
-                <!-- 模态框（Modal） -->
+
+
+                     <!-- 模态框（Modal） -->
                 <div class="modal fade modal_location" id="more1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content awd-modal-content">
@@ -241,19 +193,23 @@
                             <div class="modal-body">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        题目：<span class="text-info">WEB1</span>
+{#                                        name,ssh_port,other_port,time,ip,status,ssh_user,password#}
+                                        题目：<span class="text-info">{{ i[0] }}</span>
                                     </div>
                                     <div class="col-md-12">
-                                        IP：<span class="text-info">192.168.1.1</span>
+                                        IP：<span class="text-info">{{ i[4] }}</span>
                                     </div>
                                     <div class="col-md-12">
-                                        PORT：<span class="text-info">8080</span>
+                                        端口：<span class="text-info">{{ i[2] }}</span>
                                     </div>
                                     <div class="col-md-12">
-                                        登陆用户：<span class="text-info">root</span>
+                                        SSH 端口：<span class="text-info">{{ i[1] }}</span>
                                     </div>
                                     <div class="col-md-12">
-                                        登陆密码：<span class="text-info">root</span>
+                                        登陆用户：<span class="text-info">{{ i[6] }}</span>
+                                    </div>
+                                    <div class="col-md-12">
+                                        登陆密码：<span class="text-info">{{ i[7] }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -309,212 +265,16 @@
                     </div><!-- /.modal-dialog -->
                 </div><!-- /.modal -->
 
-
-
-                <div class="card awd-card ">
-                    <div class="card-header" style="position: relative">
-                        <div class="" style="float: left"><b>Test 2</b></div>
-                        <div class="text-success" style="float: right;font-size: 20px">300</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">题目: <b>WEB2</b></div>
-                            <div class="col-md-6">状态:<span class="text-warning">异常</span></div>
-                        </div>
-                        <br>
-                        <div class="row">
-                                <div class="col-md-4" style="padding: .1rem"><button  class="btn btn-lg btn-primary " data-toggle="modal" data-target="#more2">更多</button></div>
-                            <div class="col-md-4" style="padding: .1rem"><button  class="btn btn-lg btn-success" data-toggle="modal" data-target="#post_flag_2">提交</button></div>
-                            <div class="col-md-4" style="padding: .1rem"><button  class="btn btn-lg btn btn-danger" data-toggle="modal" data-target="#reset_2">重置</button></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 模态框（Modal） -->
-                <div class="modal fade modal_location" id="more2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content awd-modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title text-primary">更多信息</h4>
-                                <button type="button" class="close text-light" data-dismiss="modal"
-                                        aria-hidden="true">×
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        题目：<span class="text-info">WEB1</span>
-                                    </div>
-                                    <div class="col-md-12">
-                                        IP：<span class="text-info">192.168.1.1</span>
-                                    </div>
-                                    <div class="col-md-12">
-                                        PORT：<span class="text-info">8080</span>
-                                    </div>
-                                    <div class="col-md-12">
-                                        登陆用户：<span class="text-info">root</span>
-                                    </div>
-                                    <div class="col-md-12">
-                                        登陆密码：<span class="text-info">root</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
-
-                <div class="modal fade modal_location" id="post_flag_2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content awd-modal-content">
-                            <div class="modal-header">
-                                 <h4 class="modal-title text-success">提交FLAG</h4>
-                                <button type="button" class="close text-light" data-dismiss="modal"
-                                        aria-hidden="true">×
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-
-                                    <div class="col-md-12 text-center">
-                                        <div class="form-group">
-                                          <label for="flag">FLAG</label>
-                                          <input type="text" class="form-control" id="flag">
-                                        </div>
-                                        <button class="btn btn-primary">提交</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
-
-
-                <div class="modal fade modal_location" id="reset_2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content awd-modal-content">
-                            <div class="modal-header">
-                                 <h4 class="modal-title text-warning">重置靶场</h4>
-                                <button type="button" class="close text-light" data-dismiss="modal"
-                                        aria-hidden="true">×
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-
-                                    <div class="col-md-12 text-center">
-                                        <p>重置靶场后，将扣除您50积分</p>
-                                        <button class="btn btn-danger">重置</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
+                {% endfor %}
 
 
 
 
-                <div class="card awd-card ">
-                    <div class="card-header" style="position: relative">
-                        <div class="" style="float: left"><b>Test 2</b></div>
-                        <div class="text-success" style="float: right;font-size: 20px">300</div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">题目: <b>WEB2</b></div>
-                            <div class="col-md-6">状态:<span class="text-success">正常</span></div>
-                        </div>
-                        <br>
-                        <div class="row">
-                                <div class="col-md-4" style="padding: .1rem"><button  class="btn btn-lg btn-primary " data-toggle="modal" data-target="#more3">更多</button></div>
-                            <div class="col-md-4" style="padding: .1rem"><button  class="btn btn-lg btn-success" data-toggle="modal" data-target="#post_flag_3">提交</button></div>
-                            <div class="col-md-4" style="padding: .1rem"><button  class="btn btn-lg btn btn-danger" data-toggle="modal" data-target="#reset_3">重置</button></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 模态框（Modal） -->
-                <div class="modal fade modal_location" id="more3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content awd-modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title text-primary">更多信息</h4>
-                                <button type="button" class="close text-light" data-dismiss="modal"
-                                        aria-hidden="true">×
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        题目：<span class="text-info">WEB1</span>
-                                    </div>
-                                    <div class="col-md-12">
-                                        IP：<span class="text-info">192.168.1.1</span>
-                                    </div>
-                                    <div class="col-md-12">
-                                        PORT：<span class="text-info">8080</span>
-                                    </div>
-                                    <div class="col-md-12">
-                                        登陆用户：<span class="text-info">root</span>
-                                    </div>
-                                    <div class="col-md-12">
-                                        登陆密码：<span class="text-info">root</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
 
-                <div class="modal fade modal_location" id="post_flag_3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content awd-modal-content">
-                            <div class="modal-header">
-                                 <h4 class="modal-title text-success">提交FLAG</h4>
-                                <button type="button" class="close text-light" data-dismiss="modal"
-                                        aria-hidden="true">×
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-
-                                    <div class="col-md-12 text-center">
-                                        <div class="form-group">
-                                          <label for="flag">FLAG</label>
-                                          <input type="text" class="form-control" id="flag">
-                                        </div>
-                                        <button class="btn btn-primary">提交</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
-
-
-                                <div class="modal fade modal_location" id="reset_3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content awd-modal-content">
-                            <div class="modal-header">
-                                 <h4 class="modal-title text-warning">重置靶场</h4>
-                                <button type="button" class="close text-light" data-dismiss="modal"
-                                        aria-hidden="true">×
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-
-                                    <div class="col-md-12 text-center">
-                                        <p>重置靶场后，将扣除您50积分</p>
-                                        <button class="btn btn-danger">重置</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
 
             </div>
         </div>
-        <div class="col-md-3 col-xl-3 col-sm-12">
+        <div class="col-md-3">
             <div class="row">
                 <div class="col-md-12">
                     <div class="ctf_time time btn-group text-right ">

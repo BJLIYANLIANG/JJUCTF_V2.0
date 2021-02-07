@@ -1044,8 +1044,10 @@ class Mysqld:
             return result
         except Exception:
             return 0
-    def insert_awd_instance(self,container_id,name,ssh_port,other_port,time,flag,ip,tag):
-        sql = 'insert into awd_exam_instance (container_id,name,ssh_port,other_port,time,flag,ip,tag) values ("%s","%s",%d,%d,"%s","%s","%s","%s")' % (container_id,name,ssh_port,other_port,time,flag,ip,tag)
+    # 当打开awd实例的时候，将记录到数据库中
+    def insert_awd_instance(self,container_id,name,ssh_port,other_port,time,flag,ip,tag,groupname):
+        sql = 'insert into awd_exam_instance (container_id,name,ssh_port,other_port,time,flag,ip,tag,groupname) values ("%s","%s",%d,%d,"%s","%s","%s","%s","%s")' % (container_id,name,ssh_port,other_port,time,flag,ip,tag,groupname)
+        print(sql)
         try:
             self.cursor.execute(sql)
             self.conn.commit()
@@ -1053,8 +1055,26 @@ class Mysqld:
         except:
             self.conn.rollback()
             return 0
-# id,container_id,name,ssh_port,other_port,time,flag,ip,tag
-a = Mysqld()
-b = a.select_groupname()
-print(b)
+    # AWD页面中的
+    def select_awd_target_list(self):
+        sql = 'select groupname,name,ip,status from awd_exam_instance'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+        except Exception:
+            return 0
+    # select name,ssh_port,other_port,time,ip,status from awd_exam_instance where groupname='admin';
+
+    def select_awd_target_by_groupname(self,groupname):
+        sql = 'select name,ssh_port,other_port,time,ip,status,ssh_user,password from awd_exam_instance where groupname="%s"'%(groupname)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+        except Exception:
+            return 0
+# a = Mysqld()
+# b = a.select_awd_target_by_groupname('admin')
+# print(b)
 
