@@ -1,0 +1,50 @@
+{% include "admin/header.html" %}
+
+    <div class="main-container">
+        <div class="padding">
+              <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="admin">首页</a>
+                <a class="breadcrumb-item" href="#">AWD管理</a>
+                <span class="breadcrumb-item active">题目实例</span>
+            </nav>
+        </div>
+        <div class="padding">
+            <div class="box">
+                <div class="heading">
+                    <h3 class="title">题目列表</h3>
+                </div>
+                <div class="box-inner">
+                     <table class="table table-bordered table-striped">
+                         <thead>
+                         <tr style="color: #005cbf">
+                             <th width="5%"><input type="checkbox" class="all-cb"></th>
+                             <th width="19%">队伍名称</th>
+                             <th width="19%">题目名称</th>
+                             <th width="7%">状态</th>
+                             <th width="20">构建时间</th>
+                             <th width="30%">操作</th>
+                         </tr>
+                         </thead>
+                         <tbody>
+{#                         group_name,name,ssh_port,other_port,time,ip,status,ssh_user,password,id#}
+                         {% for i in awd_instance_list %}
+                         <tr>
+                             <td><input type="checkbox" class="all-cb"></td>
+                             <td>{{ i[0] }}</td>
+                             <td>{{ i[1] }}</td>
+                             <td>{% if i[6]==1 %}<span class="text-success">正常</span>{% else %}<span class="text-danger">异常</span>{% endif %}</td>
+                         <td>{{ i[4] }}</td>
+                             <td>
+                                 <a href="man_awd_instance_detail?id={{ i[9] }}"><button type="button" class="btn  btn-success" onclick="">更多</button></a>
+                                 <button type="button" class="btn btn-xs  btn-danger" onclick="">重启实例</button></td>
+                         </tr>
+                         {% endfor %}
+                         </tbody>
+                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+   {% include "admin/footer.html" %}

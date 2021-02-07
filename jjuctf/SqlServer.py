@@ -1074,7 +1074,61 @@ class Mysqld:
             return result
         except Exception:
             return 0
-# a = Mysqld()
-# b = a.select_awd_target_by_groupname('admin')
-# print(b)
+
+    def select_groupname_list(self):
+        sql = 'select name from user_group'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+        except Exception:
+            return 0
+
+    # 清空awd排行榜数据库信息
+    def delete_awd_ranks_all(self):
+        sql = 'DELETE FROM awd_ranks'
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            return 1
+        except:
+            self.conn.rollback()
+            return 0
+
+    def exec(self,sql):
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            return 1
+        except:
+            self.conn.rollback()
+            return 0
+
+    def select_awd_instance_list(self):
+        sql = 'select groupname,name,ssh_port,other_port,time,ip,status,ssh_user,password,id from awd_exam_instance'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+        except Exception:
+            return 0
+    def select_awd_instance_detail_by_id(self,id):
+        sql = 'select groupname,name,ssh_port,other_port,time,ip,status,ssh_user,password,container_id,flag from awd_exam_instance where id=%d'%(id)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            return result
+        except Exception:
+            return 0
+
+    # awd降序排行榜
+    def select_awd_rank_desc(self):
+        sql = 'select id,group_name,score from awd_ranks order by score desc'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            return result
+        except Exception:
+            return 0
+
 

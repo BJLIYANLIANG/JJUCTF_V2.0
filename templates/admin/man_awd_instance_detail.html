@@ -1,0 +1,72 @@
+{% include "admin/header.html" %}
+
+    <div class="main-container">
+        <div class="padding">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="/admin">首页</a>
+                <a class="breadcrumb-item" href="#">AWD管理</a>
+                <a class="breadcrumb-item" href="/man_awd_instance">题目实例</a>
+                <span class="breadcrumb-item active">实例信息</span>
+            </nav>
+        </div>
+        <div class="padding">
+            <div class="box">
+                <div class="heading">
+                    <h3 class="title">题目信息</h3>
+                </div>
+                <div class="box-inner">
+{#                   select groupname,name,ssh_port,other_port,time,ip,status,ssh_user,password,container_id,flag#}
+                    <table class="table table-bordered table-hover">
+                        <tr>
+                            <th class="text-info">队伍</th>
+                            <td>{{ instance_detail[0] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">题目</th>
+                            <td>{{ instance_detail[1] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">ssh端口</th>
+                            <td>{{ instance_detail[2] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">端口</th>
+                            <td>{{ instance_detail[3] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">创建时间</th>
+                            <td>{{ instance_detail[4] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">ip</th>
+                            <td>{{ instance_detail[5] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">状态</th>
+                            <td>{{ instance_detail[6] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">ssh_user</th>
+                            <td>{{ instance_detail[7] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">密码</th>
+                            <td>{{ instance_detail[8] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">container_id</th>
+                            <td>{{ instance_detail[9] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">flag</th>
+                            <td>{{ instance_detail[10] }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+   {% include "admin/footer.html" %}

@@ -68,3 +68,69 @@ Traceback (most recent call last):
   File "/home/hsm/PycharmProjects/jjuctf/templates/user/awd.html", line 264, in template
     {% num +=1 %}
 jinja2.exceptions.TemplateSyntaxError: Encountered unknown tag 'num'. Jinja was looking for the following tags: 'endfor' or 'else'. The innermost block that needs to be closed is 'for'.
+Exception on /man_awd_instance [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1953, in full_dispatch_request
+    return self.finalize_request(rv)
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1968, in finalize_request
+    response = self.make_response(rv)
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 2097, in make_response
+    raise TypeError(
+TypeError: The view function did not return a valid response. The function either returned None or ended without a return statement.
+Exception on /man_awd_instance [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1953, in full_dispatch_request
+    return self.finalize_request(rv)
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1968, in finalize_request
+    response = self.make_response(rv)
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 2097, in make_response
+    raise TypeError(
+TypeError: The view function did not return a valid response. The function either returned None or ended without a return statement.
+Exception on /man_awd_instance [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1953, in full_dispatch_request
+    return self.finalize_request(rv)
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1968, in finalize_request
+    response = self.make_response(rv)
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 2097, in make_response
+    raise TypeError(
+TypeError: The view function did not return a valid response. The function either returned None or ended without a return statement.
+Exception on /man_awd_instance [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1953, in full_dispatch_request
+    return self.finalize_request(rv)
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1968, in finalize_request
+    response = self.make_response(rv)
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 2097, in make_response
+    raise TypeError(
+TypeError: The view function did not return a valid response. The function either returned None or ended without a return statement.
+Exception on /man_awd_instance_detail [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1953, in full_dispatch_request
+    return self.finalize_request(rv)
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1968, in finalize_request
+    response = self.make_response(rv)
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 2097, in make_response
+    raise TypeError(
+TypeError: The view function did not return a valid response. The function either returned None or ended without a return statement.
+Exception on /man_awd_instance_detail [GET]
+Traceback (most recent call last):
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1953, in full_dispatch_request
+    return self.finalize_request(rv)
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1968, in finalize_request
+    response = self.make_response(rv)
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 2097, in make_response
+    raise TypeError(
+TypeError: The view function did not return a valid response. The function either returned None or ended without a return statement.

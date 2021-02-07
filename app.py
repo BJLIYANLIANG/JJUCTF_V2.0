@@ -202,13 +202,13 @@ def ranks():
                                    getUserCTFChallengeListNum=getUserCTFChallengeListNum,
                                    competition_info=competition_info)
         if type == 'awd':
-            getUserCTFChallengeList = mysql.selectUserChallengeListDesc()
-            getUserCTFChallengeListNum = len(getUserCTFChallengeList)
+            getUserAWDChallengeList = mysql.select_awd_rank_desc()
+            getUserAWDChallengeListNum = len(getUserAWDChallengeList)
             GetUserNum = mysql.selectUserNum(user)  # 查数据库将排行榜数据传到template中，目前是测试阶段，使用的是用户表
             competition_info = mysql.selectCompetition_InfoByStatus(0)[0]
             return render_template("user/ranks-awd.html", username=user, headerType="rank", userNum=GetUserNum, a=1,
-                                   getUserCTFChallengeList=getUserCTFChallengeList,
-                                   getUserCTFChallengeListNum=getUserCTFChallengeListNum,
+                                   getUserAWDChallengeList=getUserAWDChallengeList,
+                                   getUserAWDChallengeListNum=getUserAWDChallengeListNum,
                                    competition_info=competition_info)
         else:
             return render_template("404.html")
@@ -1581,3 +1581,28 @@ def man_awd_setting_config():
             return render_template('admin/man_awd_setting_config.html',awd_config=awd_config)
     else:
         return render_template('admin/login.html')
+
+
+@app.route('/man_awd_instance')
+def man_awd_instance():
+    admin = session.get('admin')
+    if admin:
+        mysql = Mysqld()
+        awd_instance_list = mysql.select_awd_instance_list()
+        return render_template('admin/man_awd_instance.html',awd_instance_list=awd_instance_list)
+    else:
+        return render_template('admin/login.html')
+
+@app.route('/man_awd_instance_detail')
+def man_awd_instance_detail():
+    admin = session.get('admin')
+    if admin:
+        id = int(request.args.get('id'))
+        if id:
+            mysql = Mysqld()
+            instance_detail = mysql.select_awd_instance_detail_by_id(id)
+            print(instance_detail)
+            if instance_detail:
+                return  render_template('admin/man_awd_instance_detail.html',instance_detail=instance_detail)
+    else:
+        return  render_template('admin/login.html')
