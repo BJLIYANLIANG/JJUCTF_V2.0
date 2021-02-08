@@ -1005,6 +1005,17 @@ class Mysqld:
         except Exception:
             print(Exception)
             return 0
+
+    def select_awd_exam_user_by_man_awd_exam_detail(self):
+        sql = 'SELECT id,name,image_id,time,ssh,other_port FROM `awd_exam`'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            return result
+        except Exception:
+            print(Exception)
+            return 0
+
     def select_awd_exam_by_imageID(self,image_id):
         sql = 'SELECT id,name,image_id,time,ssh,other_port FROM `awd_exam` where image_id="%s"'%(image_id)
         # print(sql)
@@ -1130,5 +1141,3 @@ class Mysqld:
             return result
         except Exception:
             return 0
-
-

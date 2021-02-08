@@ -9,7 +9,7 @@
         <div class="padding">
             <nav class="breadcrumb">
                 <a class="breadcrumb-item" href="admin">首页</a>
-                <a class="breadcrumb-item" href="#ctf_man">AWD管理</a>
+                <a class="breadcrumb-item" href="#awd_man">AWD管理</a>
                 <span class="breadcrumb-item active">题目管理</span>
             </nav>
         </div>
@@ -25,6 +25,9 @@
                     </div>
                     <div class="btn-group">
                         <input  type="button" value="通过镜像ID开启AWD实例" class="btn btn-success" data-toggle="modal" data-target="#upload_awd_exam_by_id">
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-primary text-light" data-toggle="modal" data-target="#init_awd_score">初始化分数</a>
                     </div>
                 </div>
             </div>
@@ -81,7 +84,28 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
-
+            <div class="modal fade modal_location" id="init_awd_score" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content awd-modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-primary">初始化队伍分数</h4>
+                        <button type="button" class="close text-light" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p><span class="text-danger">注意: </span>初始化分数，默认5000</p>
+                                <form  method="post">
+                                    <label>分数</label>
+                                    <p><input type="text" name="init_awd_score" placeholder="5000"></p>
+                                    <button class="btn btn-info" type="submit">构建题目</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
 
         <div class="padding">
             <div class="box">
@@ -108,7 +132,7 @@
                              <td>{{ i[2] }}</td>
                              <td>{{ i[3] }}</td>
                              <td>
-                                 <button type="button" class="btn  btn-success" onclick="">更多</button>
+                                 <a href="/man_awd_exam_detail?id={{ i[0] }}"><button type="button" class="btn  btn-success" onclick="">更多</button></a>
                                  <button type="button" class="btn btn-info" onclick="start_instance('{{ i[2] }}')">开启题目</button>
                                  <button type="button" class="btn btn-xs  btn-danger" onclick="">关闭题目</button></td>
                          </tr>
@@ -134,7 +158,10 @@
                     window.location.href = '/man_awd_exam';
                 }
                 else {
-                    alert('开启失败');
+                    if (result.status == '20') {
+                    alert(result.message);
+                    {#window.location.href = '/man_awd_exam';#}
+                    }
                 }
             },
             error:function () {

@@ -82,7 +82,7 @@ class Contain:
             result = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
             return str(result)[2:14]
         except subprocess.CalledProcessError as e:
-            time.sleep(1)
+            return -1
 
     # def docker_gen_dockerIP(self,):
     def geturl(self,id):
@@ -142,7 +142,6 @@ class Contain:
             return -2
         return 1
 
-docker = Contain()
-a = docker.docker_add_user('c0480fca03e8','hsm1','passwd')
-
+# docker = Contain()
+# a = docker.docker_add_user('c0480fca03e8','hsm1','passwd')
 # print(a)

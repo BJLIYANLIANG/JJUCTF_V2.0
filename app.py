@@ -821,14 +821,6 @@ def adminLogout():
     return render_template("admin/login.html", message="退出帐号成功，请重新登录")
 
 
-# 靶场导入
-@app.route("/run_target_import")
-def run_target_import():
-    admin = session.get('admin')
-    if admin:
-        return render_template("admin/run_target_import.html")
-    else:
-        return render_template("admin/login.html")
 
 
 # 打开一个awd实例，必须知道images镜像id
@@ -848,10 +840,10 @@ def start_awd_instance():
         awd_info = mysql.select_awd_exam_by_imageID(image_id)
         # id,name,image_id,time,ssh,other_port
         status = start_awd_instance_for(groupname_list,image_id,awd_info[1],awd_info[4],awd_info[5])
+        if status == -1:
+            data = {'status': '20','message':'容器启动错误！'}
         if status == 1:
             data = {'status':'1'}
-        else:
-            data = {'status': '0'}
         return data
     else:
         return render_template("admin/login.html")
@@ -875,6 +867,8 @@ def start_awd_instance_for(group_list,images_id,name,ssh_port,other_port):
             ip = base_ip + str(ip_v)
             ip_dic[i[1]] = ip
             container_id = docker.docker_start_by_imagesID(tag,images_id,ip)
+            if container_id == -1:
+                return -1
             print(container_id)
             mysql.insert_awd_instance(container_id, name, ssh_port, other_port, now_time, '',ip,tag,i[1])
             ip_v += 1
@@ -1604,5 +1598,18 @@ def man_awd_instance_detail():
             print(instance_detail)
             if instance_detail:
                 return  render_template('admin/man_awd_instance_detail.html',instance_detail=instance_detail)
+    else:
+        return  render_template('admin/login.html')
+
+
+@app.route('/man_awd_exam_detail')
+def man_awd_exam_detail():
+    admin = session.get('admin')
+    if admin:
+        id = int(request.args.get('id'))
+        if id:
+            mysql = Mysqld()
+            awd_exam_detail = mysql.select_awd_exam_user_by_man_awd_exam_detail()
+            return  render_template('admin/man_awd_exam_detail.html',awd_exam_detail=awd_exam_detail)
     else:
         return  render_template('admin/login.html')
