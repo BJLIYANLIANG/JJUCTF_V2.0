@@ -22,9 +22,9 @@ def check_Username_And_Passwd_And_Email(username, password, useremail):
         return 0
     if len(username) > 6 or len(password) > 6 or len(useremail) > 6:
         if len(username) < 100 or len(password) < 100 or len(useremail) < 100:
-            if check_login(username):
-                if check_login(password):
-                    if check_login(useremail):
+            if check_input(username):
+                if check_input(password):
+                    if check_input(useremail):
                         return 1
                     return 0
                 return 0
