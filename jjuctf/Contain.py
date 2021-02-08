@@ -6,6 +6,35 @@ import subprocess
 class Contain:
     def __init__(self):
         self.path = "./Container/" # jjuctf目录下的
+
+    # Function to execute any command
+    def cmd_exec(self,exec_loc, cmd, remote_ip=" "):
+        if exec_loc == 1:
+            output = subprocess.run(["ssh", "root@{r}".format(r=remote_ip), cmd],
+                                    shell=False,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE, check=True)
+        else:
+            output = subprocess.run(cmd,
+                                    shell=True,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE, check=True)
+
+        result = output.stdout
+        if (result == "b\'\'"):
+            error = output.stderr
+            print("Error: {e}".format(e=error.decode('utf-8')))
+        else:
+            print(result.decode('utf-8'))
+        # print()
+
+    # Function to stop docker container
+    def docker_con_stop(self,exec_loc, docker_container_id, remote_ip):
+        cmd = "docker stop " + docker_container_id
+        a = self.cmd_exec(exec_loc, cmd, remote_ip)
+        print(a)
+
+
     def startContain(self,containName):
         penv = dict(os.environ)
         cmd  = "docker-compose -f jjuctf/CTF_CONTAINER/"+containName[:-4]+"/docker-compose.yml up -d "
@@ -52,7 +81,6 @@ class Contain:
         try:
             result = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
             return str(result)[2:14]
-
         except subprocess.CalledProcessError as e:
             time.sleep(1)
 
@@ -94,6 +122,27 @@ class Contain:
     def check_awd_status(self,images):
         pass
 
-# docker = Contain()
-# a = docker.insert_awd_flag('ef49418c0de4234','flag{test}','/flag')
+    def docker_add_user(self,container_id,user,passwd):
+        # 生成密码
+        penv = dict(os.environ)
+        create_user_cmd = 'docker exec -u root %s useradd -m %s'%(container_id,user)
+        add_passwd_status = subprocess.call(create_user_cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
+        # print(type(add_passwd_status),add_passwd_status)
+        if add_passwd_status==1:
+            # -3表示当前容器可能未运行
+            return -3
+        if add_passwd_status!=0:
+            # -1表示当前容器用户已经存在
+            return -1
+
+        passwd = subprocess.getoutput("openssl passwd -1 '%s'"%(passwd))
+        create_passwd_cmd = "docker exec -u root %s sed -i 's/^%s:!/%s:%s/g' /etc/shadow"%(container_id,user,user,passwd)
+        add_passwd_status = subprocess.call(create_passwd_cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
+        if add_passwd_status!=0:
+            return -2
+        return 1
+
+docker = Contain()
+a = docker.docker_add_user('c0480fca03e8','hsm1','passwd')
+
 # print(a)
