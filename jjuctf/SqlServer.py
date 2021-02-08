@@ -33,7 +33,7 @@ class Mysqld:
     def checkuser(self, username, password):
         sql = 'select user_name from user where user_name="%s" and password=md5("%s")' % (username, password)
         self.cursor.execute(sql)
-        # print(sql)
+        print(sql)
         a = self.cursor.fetchall()
         if a:
             return 1

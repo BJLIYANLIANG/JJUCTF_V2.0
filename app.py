@@ -32,8 +32,7 @@ app.config['UPLOAD_CTF_FILE'] = 'jjuctf/CTF_FILE/'
 app.config['UPLOAD_CTF_CONTAINER'] = 'jjuctf/CTF_CONTAINER/'
 app.config['UPLOAD_AWD_CONTAINER'] = 'jjuctf/AWD_CONTAINER/'
 
-if __name__ == '__main__':
-    socketio.run(app, host='0.0.0.0', port=8000, debug=True)
+
 
 # 没啥用测试用的
 @socketio.on('test')
@@ -73,7 +72,7 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        if checksqlSecure(username) == 0 or checksqlSecure(password) == 0:
+        if check_input(username) == 0 or check_input(password) == 0:
             return render_template("user/login.html", message="请勿攻击靶场，违者做违规处理！")
         if username == '' or password == '':  # 检查用户名和密码是否为空
             return render_template("user/login.html", message="用户名或密码不能为空")
@@ -81,6 +80,7 @@ def login():
         # 查一下是否拥有队伍
         group_id = mysql.selectGroupidByusername(username)
         # 防止重复注册
+
         result = mysql.checkuser(username, password)  # 对用户表进行操作，检查登录
         # result为1表示该用户名未注册过
         if result == 1:
@@ -826,6 +826,7 @@ def adminLogout():
 # 打开一个awd实例，必须知道images镜像id
 @app.route("/start_awd_instance",methods=['GET','POST'])
 def start_awd_instance():
+    global data
     admin = session.get('admin')
     if admin:
         # 如果不是get请求
@@ -1613,3 +1614,9 @@ def man_awd_exam_detail():
             return  render_template('admin/man_awd_exam_detail.html',awd_exam_detail=awd_exam_detail)
     else:
         return  render_template('admin/login.html')
+
+
+
+# 一定要放到最后
+if __name__ == '__main__':
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True)

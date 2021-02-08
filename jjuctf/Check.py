@@ -2,18 +2,19 @@ import re
 import time
 
 
-def checksqlSecure(sql):
-    sql = str(sql).lower()
-    pattern = r"\b(and|like|exec|insert|select|drop|grant|alter|delete|update|count|chr|mid|master|truncate|char" \
-              r"|delclare|or)\b|(\*|;) "
-    r = re.search(pattern, sql)
-    # print(r)
+def check_input(login_string):
+    login_string = str(login_string).lower()
+    pattern = r"\b(and|like|exec|insert|select|drop|grant|alter|delete|update|count|chr|mid|master|truncate|char|delclare|or)\b|(\*|;)"
+    r = re.search(pattern, login_string)
     if r:
         print('检测到有sql注入！')
         return 0
     else:
+        print(login_string.find('\''))
+        if login_string.find('\'') != -1 or login_string.find('\"') != -1 or login_string.find('\#') != -1:
+            return 0
         return 1
-
+# 只能有大小写字符和数字
 
 def check_Username_And_Passwd_And_Email(username, password, useremail):
     if username == '' or password == '' or useremail == '':
@@ -21,9 +22,9 @@ def check_Username_And_Passwd_And_Email(username, password, useremail):
         return 0
     if len(username) > 6 or len(password) > 6 or len(useremail) > 6:
         if len(username) < 100 or len(password) < 100 or len(useremail) < 100:
-            if checksqlSecure(username):
-                if checksqlSecure(password):
-                    if checksqlSecure(useremail):
+            if check_login(username):
+                if check_login(password):
+                    if check_login(useremail):
                         return 1
                     return 0
                 return 0
