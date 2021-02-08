@@ -37,6 +37,6 @@ def init_awd_ranks(init_score):
             return 1
         else:
             return -1
-init_awd_ranks(4999)
+# init_awd_ranks(5000)
 
 
