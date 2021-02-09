@@ -269,3 +269,66 @@ Traceback (most recent call last):
   File "/usr/lib/python3.9/site-packages/jinja2/environment.py", line 452, in getitem
     return obj[argument]
 jinja2.exceptions.UndefinedError: 'instance_detail' is undefined
+Exception on /login [POST]
+Traceback (most recent call last):
+  File "/home/hsm/.local/lib/python3.9/site-packages/pymysql/connections.py", line 569, in connect
+    sock = socket.create_connection(
+  File "/usr/lib/python3.9/socket.py", line 843, in create_connection
+    raise err
+  File "/usr/lib/python3.9/socket.py", line 831, in create_connection
+    sock.connect(sa)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python3.9/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/hsm/PycharmProjects/jjuctf/app.py", line 79, in login
+    mysql = Mysqld()
+  File "/home/hsm/PycharmProjects/jjuctf/jjuctf/SqlServer.py", line 13, in __init__
+    self.conn = pymysql.connect(server, user, password, config.database)  # 连接到jjuctf数据库
+  File "/home/hsm/.local/lib/python3.9/site-packages/pymysql/__init__.py", line 94, in Connect
+    return Connection(*args, **kwargs)
+  File "/home/hsm/.local/lib/python3.9/site-packages/pymysql/connections.py", line 327, in __init__
+    self.connect()
+  File "/home/hsm/.local/lib/python3.9/site-packages/pymysql/connections.py", line 619, in connect
+    raise exc
+pymysql.err.OperationalError: (2003, "Can't connect to MySQL server on 'localhost' ([Errno 111] Connection refused)")
+Exception on /init_awd_score [POST]
+Traceback (most recent call last):
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python3.9/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "/home/hsm/PycharmProjects/jjuctf/app.py", line 1626, in init_awd_score
+    return redirect(url_for('/man_awd_exam',message='初始化队伍分数成功！'))
+  File "/usr/lib/python3.9/site-packages/flask/helpers.py", line 370, in url_for
+    return appctx.app.handle_url_build_error(error, endpoint, values)
+  File "/usr/lib/python3.9/site-packages/flask/app.py", line 2216, in handle_url_build_error
+    reraise(exc_type, exc_value, tb)
+  File "/usr/lib/python3.9/site-packages/flask/_compat.py", line 39, in reraise
+    raise value
+  File "/usr/lib/python3.9/site-packages/flask/helpers.py", line 357, in url_for
+    rv = url_adapter.build(
+  File "/usr/lib/python3.9/site-packages/werkzeug/routing.py", line 2179, in build
+    raise BuildError(endpoint, values, method, self)
+werkzeug.routing.BuildError: Could not build url for endpoint '/man_awd_exam' with values ['message']. Did you mean 'man_awd_exam' instead?

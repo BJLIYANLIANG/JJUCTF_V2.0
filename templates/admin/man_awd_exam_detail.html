@@ -27,6 +27,10 @@
                             <td>{{ awd_exam_detail[1] }}</td>
                         </tr>
                         <tr>
+                            <th class="text-info">题目状态</th>
+                            <td>{% if awd_exam_detail[7]==0 %}<span >未开启</span>{% else %}<span class="text-success">已打开</span>{% endif %}</td>
+                        </tr>
+                        <tr>
                             <th class="text-info">镜像id</th>
                             <td>{{ awd_exam_detail[2] }}</td>
                         </tr>
@@ -37,6 +41,10 @@
                         <tr>
                             <th class="text-info">AWD端口</th>
                             <td>{{ awd_exam_detail[5] }}</td>
+                        </tr>
+                        <tr>
+                            <th class="text-info">登陆用户</th>
+                            <td>{{ awd_exam_detail[6] }}</td>
                         </tr>
                         <tr>
                             <th class="text-info">创建时间</th>

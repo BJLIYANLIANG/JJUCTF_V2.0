@@ -96,7 +96,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <p><span class="text-danger">注意: </span>初始化分数，默认5000</p>
-                                <form  method="post">
+                                <form  method="post" action="/init_awd_score">
                                     <label>分数</label>
                                     <p><input type="text" name="init_awd_score" placeholder="5000"></p>
                                     <button class="btn btn-info" type="submit">构建题目</button>
@@ -122,6 +122,7 @@
                              <th width="25%">题目名称</th>
                              <th width="25%">容器ID</th>
                              <th width="">构建时间</th>
+                             <th>题目状态</th>
                              <th>操作</th>
                          </tr>
                          </thead>
@@ -132,6 +133,7 @@
                              <td>{{ i[1] }}</td>
                              <td>{{ i[2] }}</td>
                              <td>{{ i[3] }}</td>
+                             <td>{% if i[6]==0 %}<span class="text-info">未开启</span>{% else %}<span class="text-success">已打开</span>{% endif %}</td>
                              <td>
                                  <a href="/man_awd_exam_detail?id={{ i[0] }}"><button type="button" class="btn  btn-success" onclick="">更多</button></a>
                                  <button type="button" class="btn btn-info" onclick="start_instance('{{ i[2] }}')">开启题目</button>

@@ -1,42 +1,34 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-       <script type="text/javascript" src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.5/socket.io.js"></script>
-<script>
-  $(function() {
-      $( "#dialog" ).dialog({
-       autoOpen: false,
-       show: {
-        effect: "blind",
-        duration: 1000
-           },
-   hide: {
-        effect: "explode",
-        duration: 1000
-       }
-    });
+{% include 'user/header.html' %}
+<div class="container">
+        <ul class="list-group">
+            <li class="list-group-item"><span class="badge">30</span>我是程序员</li>
+            <li class="list-group-item">我是程序员</li>
+            <li class="list-group-item"><span class="badge">20</span>我是程序员</li>
+            <li class="list-group-item"><span class="badge">450</span>我是程序员</li>
+        </ul>
 
-      $("#bt").click(function(){
-         $("#dialog").dialog("open");
-         setTimeout(function () {$( "#dialog" ).dialog("close");}, 1000);
-      });
-  });
-  </script>
-</head>
-<body>
- <button id="bt">打开</button>
-<div id="dialog" title="基本的对话框bai">
-  <p>这是一个默认的对话框，用于显示信息。对话框窗口可以移动，调整尺寸，默认可通过 'x' 图标关闭。</p>
-</div>
-</body>
-</html>
+        <div class="list-group">
+            <a href="#" class="list-group-item active">我是程序员</a>
+            <a href="#" class="list-group-item">我是程序员</a>
+            <a href="#" class="list-group-item">我是程序员</a>
+            <a href="#" class="list-group-item">我是程序员</a>
+        </div>
 
+        <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-danger">我是程序员</a>
+            <a href="#" class="list-group-item list-group-item-success">我是程序员</a>
+            <a href="#" class="list-group-item list-group-item-warning">我是程序员</a>
+            <a href="#" class="list-group-item list-group-item-info">我是程序员</a>
+        </div>
 
-
-
+        <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-danger">
+                <h4>我是一个程序员</h4>
+                <p>我知道</p>
+            </a>
+            <a href="#" class="list-group-item list-group-item-success">我是程序员</a>
+            <a href="#" class="list-group-item list-group-item-warning">我是程序员</a>
+            <a href="#" class="list-group-item list-group-item-info">我是程序员</a>
+        </div>
+    </div>
+{% include 'user/footer.html' %}

@@ -11,8 +11,9 @@ import datetime
 from jjuctf.config import *
 from jjuctf.Check import *
 from jjuctf.Crypto import *
-from jjuctf.Contain import *
+from jjuctf.Container import *
 from jjuctf.functions import *
+import random
 
 # redis 连接
 redis_instance = redis.Redis(host=redis_address, port=redis_port, decode_responses=True)
@@ -217,9 +218,6 @@ def ranks():
         return render_template("user/login.html")
 
 
-import random
-
-
 @app.route('/register', methods=['POST', 'GET'])
 def userRegister():
     if request.method != 'POST':  # 用户不是使用
@@ -301,9 +299,10 @@ def awd():
         awd_target_list = mysql.select_awd_target_list()
         # awd挑战列表,最多有三个
         awd_list = mysql.select_awd_target_by_groupname(groupInfo[1])
+        awd_rank_list = mysql.select_awd_rank_desc()
         return render_template("user/awd.html", username=user, headerType="awd", groupInfo=groupInfo,
                                competition_info=competition_info, userNotice=userNotice,awd_target_list=awd_target_list
-                               ,awd_list=awd_list)
+                               ,awd_list=awd_list,awd_rank_list=awd_rank_list)
     else:
         return render_template("user/login.html")
 
@@ -1615,7 +1614,19 @@ def man_awd_exam_detail():
     else:
         return  render_template('admin/login.html')
 
-
+@app.route('/init_awd_score',methods=["POST"])
+def init_awd_score():
+    admin = session.get('admin')
+    if admin:
+        score_str = request.form.get('init_awd_score')
+        score = int(score_str)
+        status_code = init_awd_ranks(score)
+        if status_code == 1:
+            return redirect(url_for('man_awd_exam',message='初始化队伍分数成功！'))
+        else:
+            return redirect(url_for('man_awd_exam',message='初始化队伍分数失败！'))
+    else:
+        return render_template('admin/login.html')
 
 # 一定要放到最后
 if __name__ == '__main__':

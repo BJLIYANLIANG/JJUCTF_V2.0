@@ -39,4 +39,43 @@ def init_awd_ranks(init_score):
             return -1
 # init_awd_ranks(5000)
 
+def docker_get_ip():
+    mysql = Mysqld()
+    ip_pool = mysql.select_ip_pool()
+    start_ip = ip_pool[0]
+    end_ip = ip_pool[1]
+    point_ip = ip_pool[2]
+    # ip都已经分配完毕
+    if point_ip == end_ip:
+        return -1
+    else:
+        split_ip = point_ip.split('.')
+        tmp0 = split_ip[0]
+        tmp1 = split_ip[1]
+        tmp2 = split_ip[2]
+        tmp3 = int(split_ip[3])
+        tmp3= tmp3 + 1
+        next_point_ip = tmp0+'.'+tmp1+'.'+tmp2+'.'+str(tmp3)
+        mysql.update_ip_pool(next_point_ip)
+        return point_ip
 
+# 释放docker ip
+def docker_release_ip():
+    mysql = Mysqld()
+    ip_pool = mysql.select_ip_pool()
+    start_ip = ip_pool[0]
+    end_ip = ip_pool[1]
+    point_ip = ip_pool[2]
+    # ip都已经释放完毕
+    if point_ip == start_ip:
+        return -1
+    else:
+        split_ip = point_ip.split('.')
+        tmp0 = split_ip[0]
+        tmp1 = split_ip[1]
+        tmp2 = split_ip[2]
+        tmp3 = int(split_ip[3])
+        tmp3= tmp3 - 1
+        next_point_ip = tmp0+'.'+tmp1+'.'+tmp2+'.'+str(tmp3)
+        mysql.update_ip_pool(next_point_ip)
+        return next_point_ip

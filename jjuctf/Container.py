@@ -134,14 +134,39 @@ class Contain:
         if add_passwd_status!=0:
             # -1表示当前容器用户已经存在
             return -1
-
-        passwd = subprocess.getoutput("openssl passwd -1 '%s'"%(passwd))
-        create_passwd_cmd = "docker exec -u root %s sed -i 's/^%s:!/%s:%s/g' /etc/shadow"%(container_id,user,user,passwd)
-        add_passwd_status = subprocess.call(create_passwd_cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
-        if add_passwd_status!=0:
-            return -2
+        sum = 0
+        flag = 0
+        while(flag == 0):
+            passwd = subprocess.getoutput("openssl passwd -1 '%s'"%(passwd))
+            create_passwd_cmd = "docker exec -u root %s sed -i 's/^%s\:\!/%s:%s/g' /etc/shadow"%(container_id,user,user,passwd)
+            print(create_passwd_cmd)
+            add_passwd_status = subprocess.call(create_passwd_cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
+            if add_passwd_status == 0:
+                flag = 1
+            sum += 1
+            if sum > 100:
+                return -1
         return 1
 
-# docker = Contain()
-# a = docker.docker_add_user('c0480fca03e8','hsm1','passwd')
-# print(a)
+    # 修改密码
+    def docker_change_passwd(self, container_id, user, new_passwd):
+        # 得到初始密码
+        penv = dict(os.environ)
+        get_passwd = "docker exec -u root %s awk -F: '{if($1 == \"%s\") {print $2} }' /etc/shadow"%(container_id,user)
+        current_passwd = subprocess.check_output(get_passwd, stderr=subprocess.STDOUT, shell=True, env=penv)
+        current_passwd = current_passwd.decode('utf-8').replace('\n','')
+        print(current_passwd.replace('\n',''))
+        # 修改密码
+        flag = 0
+        sum = 0
+        while(flag == 0):
+            passwd = subprocess.getoutput("openssl passwd -1 -salt 'abcdefg' '%s'" % (new_passwd))
+            create_passwd_cmd = "docker exec -u root %s sed -i 's/^%s\:%s/%s:%s/g' /etc/shadow" % (container_id, user,current_passwd, user, passwd)
+            print(create_passwd_cmd)
+            add_passwd_status = subprocess.call(create_passwd_cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
+            if add_passwd_status == 0:
+                flag = 1
+            sum += 1
+            if sum >100:
+                return -1
+        return 1

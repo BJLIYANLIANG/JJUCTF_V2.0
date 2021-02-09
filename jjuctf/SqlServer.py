@@ -997,7 +997,7 @@ class Mysqld:
             return 0
 
     def select_awd_exam(self):
-        sql = 'SELECT id,name,image_id,time,ssh,other_port FROM `awd_exam`'
+        sql = 'SELECT id,name,image_id,time,ssh,other_port,status FROM `awd_exam`'
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchall()
@@ -1007,7 +1007,7 @@ class Mysqld:
             return 0
 
     def select_awd_exam_user_by_man_awd_exam_detail(self):
-        sql = 'SELECT id,name,image_id,time,ssh,other_port FROM `awd_exam`'
+        sql = 'SELECT id,name,image_id,time,ssh,other_port,user,status FROM `awd_exam`'
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchone()
@@ -1017,7 +1017,7 @@ class Mysqld:
             return 0
 
     def select_awd_exam_by_imageID(self,image_id):
-        sql = 'SELECT id,name,image_id,time,ssh,other_port FROM `awd_exam` where image_id="%s"'%(image_id)
+        sql = 'SELECT id,name,image_id,time,ssh,other_port,status FROM `awd_exam` where image_id="%s"'%(image_id)
         # print(sql)
         try:
             self.cursor.execute(sql)
@@ -1106,6 +1106,7 @@ class Mysqld:
             self.conn.rollback()
             return 0
 
+# 直接通过sql语句执行sql命令
     def exec(self,sql):
         try:
             self.cursor.execute(sql)
@@ -1123,6 +1124,7 @@ class Mysqld:
             return result
         except Exception:
             return 0
+
     def select_awd_instance_detail_by_id(self,id):
         sql = 'select groupname,name,ssh_port,other_port,time,ip,status,ssh_user,password,container_id,flag from awd_exam_instance where id=%d'%(id)
         try:
@@ -1140,4 +1142,25 @@ class Mysqld:
             result = self.cursor.fetchall()
             return result
         except Exception:
+            return 0
+
+    def select_ip_pool(self):
+        sql = 'SELECT start_ip,end_ip,point_ip FROM awd_config_ip_pool'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            return result
+        except Exception:
+            return 0
+
+
+
+    def update_ip_pool(self,point_ip):
+        sql = 'update awd_config_ip_pool set point_ip="%s"'%(point_ip)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            return 1
+        except:
+            self.conn.rollback()
             return 0
