@@ -1,4 +1,6 @@
 from jjuctf.SqlServer import Mysqld
+import hashlib
+import random
 # 查找CTF排名用的，大概用在app.py的400行
 def ctf_search_rank(group_name):
     mysql = Mysqld()
@@ -79,3 +81,13 @@ def docker_release_ip():
         next_point_ip = tmp0+'.'+tmp1+'.'+tmp2+'.'+str(tmp3)
         mysql.update_ip_pool(next_point_ip)
         return next_point_ip
+
+#加密方法
+def get_md5(s):
+  return hashlib.md5(s.encode('utf-8')).hexdigest()
+
+
+def get_random_password(str_user):
+    salt = str(random.randint(1,1000))
+    salt2 = 'hsmcool'
+    return get_md5(salt+str_user+salt2)[:12]

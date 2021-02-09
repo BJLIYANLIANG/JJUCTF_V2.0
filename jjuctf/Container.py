@@ -138,8 +138,9 @@ class Contain:
         flag = 0
         while(flag == 0):
             passwd = subprocess.getoutput("openssl passwd -1 '%s'"%(passwd))
-            create_passwd_cmd = "docker exec -u root %s sed -i 's/^%s\:\!/%s:%s/g' /etc/shadow"%(container_id,user,user,passwd)
-            print(create_passwd_cmd)
+            create_passwd_cmd = "docker exec -u root %s sed -i 's/^%s:!/%s:%s/g' /etc/shadow"%(container_id,user,user,passwd)
+            create_passwd_cmd = "docker exec -u root %s sed -i 's/^%s:!/%s:%s/g' /etc/shadow" % (container_id, user, user, passwd)
+            # print(create_passwd_cmd)
             add_passwd_status = subprocess.call(create_passwd_cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
             if add_passwd_status == 0:
                 flag = 1
@@ -155,13 +156,13 @@ class Contain:
         get_passwd = "docker exec -u root %s awk -F: '{if($1 == \"%s\") {print $2} }' /etc/shadow"%(container_id,user)
         current_passwd = subprocess.check_output(get_passwd, stderr=subprocess.STDOUT, shell=True, env=penv)
         current_passwd = current_passwd.decode('utf-8').replace('\n','')
-        print(current_passwd.replace('\n',''))
+        # print(current_passwd.replace('\n',''))
         # 修改密码
         flag = 0
         sum = 0
         while(flag == 0):
-            passwd = subprocess.getoutput("openssl passwd -1 -salt 'abcdefg' '%s'" % (new_passwd))
-            create_passwd_cmd = "docker exec -u root %s sed -i 's/^%s\:%s/%s:%s/g' /etc/shadow" % (container_id, user,current_passwd, user, passwd)
+            passwd = subprocess.getoutput("openssl passwd -1 '%s'" % (new_passwd))
+            create_passwd_cmd = "docker exec -u root %s sed -i 's/^%s:%s/%s:%s/g' /etc/shadow" % (container_id, user,current_passwd, user, passwd)
             print(create_passwd_cmd)
             add_passwd_status = subprocess.call(create_passwd_cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
             if add_passwd_status == 0:
@@ -170,3 +171,7 @@ class Contain:
             if sum >100:
                 return -1
         return 1
+# a = Contain()
+# c = a.insert_awd_flag('961c7f885b4d','flag{jjusec}','/flag')
+# # b = a.docker_change_passwd('e08a9dc21581','glzjin','123456')
+# print(c)

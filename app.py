@@ -839,7 +839,8 @@ def start_awd_instance():
         groupname_list = mysql.select_groupname()
         awd_info = mysql.select_awd_exam_by_imageID(image_id)
         # id,name,image_id,time,ssh,other_port
-        status = start_awd_instance_for(groupname_list,image_id,awd_info[1],awd_info[4],awd_info[5])
+        ssh_user = awd_info[7]
+        status = start_awd_instance_for(groupname_list,image_id,awd_info[1],awd_info[4],awd_info[5],ssh_user)
         if status == -1:
             data = {'status': '20','message':'容器启动错误！'}
         if status == 1:
@@ -850,28 +851,31 @@ def start_awd_instance():
 
 
 
-def start_awd_instance_for(group_list,images_id,name,ssh_port,other_port):
+def start_awd_instance_for(group_list,images_id,name,ssh_port,other_port,ssh_user):
     docker = Contain()
     mysql = Mysqld()
     now_time=str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-    base_ip = '172.18.0.'
-    ip_v = 2
     ip_dic = {}
     # 得到ip
     try:
         for i in group_list:
             # (55, 'admin')
             # i[1] 为队伍名
+            # docker容器名字，目前还不知道能干啥用
             tag = i[1] + "." + name
-            print(tag)
-            ip = base_ip + str(ip_v)
+            # 从ip池中获取一个ip
+            ip = docker_get_ip()
+            # log
             ip_dic[i[1]] = ip
             container_id = docker.docker_start_by_imagesID(tag,images_id,ip)
             if container_id == -1:
                 return -1
-            print(container_id)
-            mysql.insert_awd_instance(container_id, name, ssh_port, other_port, now_time, '',ip,tag,i[1])
-            ip_v += 1
+            # 这里修改docker用户密码
+            passwd = get_random_password(ssh_user)
+            result = docker.docker_change_passwd(container_id,ssh_user,passwd)
+            if result == -1:
+                return -1
+            mysql.insert_awd_instance(container_id, name, ssh_port, other_port, now_time, '',ip,tag,i[1],1,ssh_user,passwd)
         print(ip_dic)
         return 1
     except:
@@ -1605,12 +1609,27 @@ def man_awd_instance_detail():
 @app.route('/man_awd_exam_detail')
 def man_awd_exam_detail():
     admin = session.get('admin')
+    id_s = request.args.get('id')
+    # return render_template('admin/man_awd_exam.html')
     if admin:
-        id = int(request.args.get('id'))
+        try:
+            id = int(id_s)
+        except:
+            id = ''
         if id:
-            mysql = Mysqld()
-            awd_exam_detail = mysql.select_awd_exam_user_by_man_awd_exam_detail()
-            return  render_template('admin/man_awd_exam_detail.html',awd_exam_detail=awd_exam_detail)
+            if id == 0:
+                return redirect(url_for('man_awd_exam', message='请正确输入参数！'))
+            else:
+                mysql = Mysqld()
+                awd_exam_detail = mysql.select_awd_exam_user_by_man_awd_exam_detail_by_id(id)
+                print(awd_exam_detail)
+                if awd_exam_detail is not None:
+                    return  render_template('admin/man_awd_exam_detail.html',awd_exam_detail=awd_exam_detail)
+                else:
+                    return redirect(url_for('man_awd_exam',message='未找到内容！'))
+        else:
+            return redirect(url_for('man_awd_exam'))
+
     else:
         return  render_template('admin/login.html')
 

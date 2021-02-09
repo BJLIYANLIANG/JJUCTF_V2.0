@@ -1006,8 +1006,8 @@ class Mysqld:
             print(Exception)
             return 0
 
-    def select_awd_exam_user_by_man_awd_exam_detail(self):
-        sql = 'SELECT id,name,image_id,time,ssh,other_port,user,status FROM `awd_exam`'
+    def select_awd_exam_user_by_man_awd_exam_detail_by_id(self,id):
+        sql = 'SELECT id,name,image_id,time,ssh,other_port,user,status FROM `awd_exam` where id=%d'%(id)
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchone()
@@ -1016,8 +1016,10 @@ class Mysqld:
             print(Exception)
             return 0
 
+
     def select_awd_exam_by_imageID(self,image_id):
-        sql = 'SELECT id,name,image_id,time,ssh,other_port,status FROM `awd_exam` where image_id="%s"'%(image_id)
+        # status可以表示是否开启容器
+        sql = 'SELECT id,name,image_id,time,ssh,other_port,status,user FROM `awd_exam` where image_id="%s"'%(image_id)
         # print(sql)
         try:
             self.cursor.execute(sql)
@@ -1056,8 +1058,8 @@ class Mysqld:
         except Exception:
             return 0
     # 当打开awd实例的时候，将记录到数据库中
-    def insert_awd_instance(self,container_id,name,ssh_port,other_port,time,flag,ip,tag,groupname):
-        sql = 'insert into awd_exam_instance (container_id,name,ssh_port,other_port,time,flag,ip,tag,groupname) values ("%s","%s",%d,%d,"%s","%s","%s","%s","%s")' % (container_id,name,ssh_port,other_port,time,flag,ip,tag,groupname)
+    def insert_awd_instance(self,container_id,name,ssh_port,other_port,time,flag,ip,tag,groupname,status,ssh_user,password):
+        sql = 'insert into awd_exam_instance (container_id,name,ssh_port,other_port,time,flag,ip,tag,groupname,status,ssh_user,password) values ("%s","%s",%d,%d,"%s","%s","%s","%s","%s",%d,"%s","%s")' % (container_id,name,ssh_port,other_port,time,flag,ip,tag,groupname,status,ssh_user,password)
         print(sql)
         try:
             self.cursor.execute(sql)
