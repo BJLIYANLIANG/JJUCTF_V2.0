@@ -11,7 +11,7 @@
     <div class="main-container">
         <div class="padding">
             <nav class="breadcrumb">
-                <a class="breadcrumb-item" href="admin">首页</a>
+                <a class="breadcrumb-item" href="/admin">首页</a>
                 <a class="breadcrumb-item" href="#awd_man">AWD管理</a>
                 <span class="breadcrumb-item active">题目管理</span>
             </nav>
@@ -29,6 +29,8 @@
                     <div class="btn-group">
                         <a class="btn btn-primary text-light" data-toggle="modal" data-target="#init_awd_score">初始化分数</a>
                     </div>
+
+
                 </div>
             </div>
         </div>
@@ -137,16 +139,14 @@
                              <td>
                                  <a href="/man_awd_exam_detail?id={{ i[0] }}"><button type="button" class="btn  btn-success" onclick="">更多</button></a>
                                  <button type="button" class="btn btn-info" onclick="start_instance('{{ i[2] }}')">开启题目</button>
-                                 <button type="button" class="btn btn-xs  btn-danger" onclick="">关闭题目</button></td>
+                                 <button type="button" class="btn btn-xs  btn-danger" onclick="stop_awd_instance('{{ i[1] }}')">关闭题目</button></td>
                          </tr>
                          {% endfor %}
-                         </tbody>
+                        </tbody>
                      </table>
                 </div>
             </div>
         </div>
-
-
 
     </div>
 <script>
@@ -171,6 +171,26 @@
                 alert("发送请求失败，请检查网络链接状况！");
             }
         })
+    }
+
+    function stop_awd_instance(name) {
+        var a  = confirm('确定关闭该题目下的所以实例?');
+        if(a == true){
+            $.ajax({
+            url: "/pl_stop_awd_instance",
+            type: "post",
+            data: {"name": name,},
+            success: function (result) {
+                if (result == '200') {
+                    alert('成功关闭');
+                    window.location.href = '/man_awd_exam';
+                }
+            },
+            error:function () {
+                alert("发送请求失败，请检查网络链接状况！");
+            }
+        })
+        }
     }
 </script>
    {% include "admin/footer.html" %}

@@ -24,6 +24,9 @@ handler = logging.FileHandler('jjuctf.log')
 app.logger.addHandler(handler)
 socketio = SocketIO(app, cors_allowed_origins='*')
 
+
+
+
 # 命名空间
 name_space = '/test'
 
@@ -1646,6 +1649,30 @@ def init_awd_score():
             return redirect(url_for('man_awd_exam',message='初始化队伍分数失败！'))
     else:
         return render_template('admin/login.html')
+
+# ajax
+@app.route('/pl_stop_awd_instance',methods=['POST'])
+def pl_stop_awd_instance():
+    admin = session.get('admin')
+    if admin:
+        mysql = Mysqld()
+        exam_name = request.form.get('name')
+        print(exam_name)
+        if exam_name:
+            get_container_id = mysql.select_awd_exam_instance_container_id_by_exam_name(exam_name)
+            docker = Contain()
+            for container_id in get_container_id:
+                # 停止容器
+                code = docker.docker_stop_by_docker_id(container_id)
+                # 删除容器
+                # 释放ip
+                if code != 1:
+                    return '501'
+            return '200'
+        else:
+            return '502'
+    else:
+        return '503'
 
 # 一定要放到最后
 if __name__ == '__main__':

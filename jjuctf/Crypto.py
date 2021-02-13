@@ -12,6 +12,7 @@ def add_to_16(text):
 
 
 
+
 # 加密函数
 def encrypt(text):
     key = '9999999999999999'.encode('utf-8')

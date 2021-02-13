@@ -32,8 +32,6 @@ class Contain:
     def docker_con_stop(self,exec_loc, docker_container_id, remote_ip):
         cmd = "docker stop " + docker_container_id
         a = self.cmd_exec(exec_loc, cmd, remote_ip)
-        print(a)
-
 
     def startContain(self,containName):
         penv = dict(os.environ)
@@ -56,6 +54,7 @@ class Contain:
         raise Exception("failed to start docker-compose (called: %s): exit code: %d, output: %s" % (e.cmd, e.returncode, e.output))
 
 
+
     def stopContainByDockerID(self,dockerID):
         penv = dict(os.environ)
         cmd = "docker stop "+dockerID
@@ -63,7 +62,21 @@ class Contain:
             subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
             return 1
         except subprocess.CalledProcessError as e:
-            time.sleep(5)
+            return -1
+
+
+# test
+    def docker_stop_by_docker_id(self,dockerID):
+        penv = dict(os.environ)
+        try:
+            tmp = subprocess.Popen(['docker','stop',dockerID],shell=False,env=penv)
+            print(tmp.stderr)
+            return 1
+        except subprocess.CalledProcessError as e:
+            return -1
+
+
+
 
     def dockerBuild(self):
         penv = dict(os.environ)
@@ -112,7 +125,6 @@ class Contain:
     def insert_awd_flag(self,image_id,flag,file_path):
         penv = dict(os.environ)
         cmd = "docker exec -u root %s bash -c 'echo '%s' > %s'"%(image_id,flag,file_path)
-        # print(cmd)
         try:
             subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
             return 1
@@ -172,6 +184,6 @@ class Contain:
                 return -1
         return 1
 # a = Contain()
-# c = a.insert_awd_flag('961c7f885b4d','flag{jjusec}','/flag')
+# c = a.docker_stop_by_docker_id('727dd0d701279c')
 # # b = a.docker_change_passwd('e08a9dc21581','glzjin','123456')
 # print(c)
