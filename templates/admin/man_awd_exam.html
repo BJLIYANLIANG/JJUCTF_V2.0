@@ -2,7 +2,7 @@
 
 <style>
     .modal_location{
-        top: 21%;
+        top: 15%;
 
     }
 
@@ -53,12 +53,12 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <p><span class="text-danger">注意: </span>请提供Docker容器内EXPOSE的端口号，格式如: 22,8080</p>
-                                                <form enctype="multipart/form-data" method="post">
-                                                    <label>AWD 镜像id</label>
-                                                    <p><input type="text" name="cid" ></p>
+                                                <form action="/post_exam_by_type_1" method="post">
+                                                    <p><input type="text" name="exam_name" placeholder="题目名称"></p>
+                                                    <p><input type="text" name="image_id"  placeholder="镜像id"></p>
                                                     <hr>
                                                     <p><input type="text" name="ssh_port" placeholder="ssh端口号"></p>
-                                                    <p><input type="text" name="ssh_port" placeholder="Linux容器用户名"></p>
+                                                    <p><input type="text" name="user" placeholder="Linux容器用户名"></p>
                                                     <p><input type="text" name="other_port" placeholder="其他端口，如80,8080"></p>
                                                     <button class="btn btn-info" type="submit">构建题目</button>
                                                 </form>
@@ -77,7 +77,6 @@
                                                 <input type="file" name="zipfile">
                                                 <button type="submit">上传</button>
                                             </form>
-
                                     </div>
                                 </div>
                             </div>
@@ -120,9 +119,9 @@
                      <table class="table table-bordered table-striped">
                          <thead>
                          <tr style="color: #005cbf">
-                             <th width="10%"><input type="checkbox" class="all-cb"></th>
-                             <th width="25%">题目名称</th>
-                             <th width="25%">容器ID</th>
+                             <th width="5%"><input type="checkbox" class="all-cb"></th>
+                             <th width="20%">题目名称</th>
+                             <th width="20%">容器ID</th>
                              <th width="">构建时间</th>
                              <th>题目状态</th>
                              <th>操作</th>
@@ -139,7 +138,12 @@
                              <td>
                                  <a href="/man_awd_exam_detail?id={{ i[0] }}"><button type="button" class="btn  btn-success" onclick="">更多</button></a>
                                  <button type="button" class="btn btn-info" onclick="start_instance('{{ i[2] }}')">开启题目</button>
-                                 <button type="button" class="btn btn-xs  btn-danger" onclick="stop_awd_instance('{{ i[1] }}')">关闭题目</button></td>
+                                 <button type="button" class="btn btn-xs  btn-warning" onclick="stop_awd_instance('{{ i[1] }}')">关闭题目</button>
+                                 <button type="button" class="btn btn-xs  btn-danger" onclick="del_awd_exam('{{ i[1] }}')">删除题目</button>
+                             </td>
+
+
+
                          </tr>
                          {% endfor %}
                         </tbody>
@@ -173,6 +177,26 @@
         })
     }
 
+
+     function del_awd_exam(name) {
+        var del_awd_exam_confrim  = confirm('确定删除该题目下的所以实例?');
+        if(del_awd_exam_confrim == true){
+            $.ajax({
+            url: "/del_awd_exam_by_name",
+            type: "post",
+            data: {"name": name,},
+            success: function (result) {
+                if (result == '200') {
+                    alert('删除关闭');
+                    window.location.href = '/man_awd_exam';
+                }
+            },
+            error:function () {
+                alert("发送请求失败，请检查网络链接状况！");
+            }
+        })
+        }
+    }
     function stop_awd_instance(name) {
         var a  = confirm('确定关闭该题目下的所以实例?');
         if(a == true){

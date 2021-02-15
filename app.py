@@ -25,8 +25,6 @@ app.logger.addHandler(handler)
 socketio = SocketIO(app, cors_allowed_origins='*')
 
 
-
-
 # 命名空间
 name_space = '/test'
 
@@ -836,6 +834,11 @@ def start_awd_instance():
             redirect(url_for('man_awd_exam'))
         # image_id = '42941dbd1f82'
         image_id = request.form.get('image_id')
+        docker = Contain()
+        docker_status_code = docker.search_docker_image_in_system(image_id)
+        if docker_status_code == -1:
+            data = {'status': '20','message':'系统不存在该镜像！'}
+            return data
         mysql = Mysqld()
         # 得到队伍信息
         # ((50, 'jjusec123'), (55, 'admin'))形式
@@ -843,7 +846,9 @@ def start_awd_instance():
         awd_info = mysql.select_awd_exam_by_imageID(image_id)
         # id,name,image_id,time,ssh,other_port
         ssh_user = awd_info[7]
+
         status = start_awd_instance_for(groupname_list,image_id,awd_info[1],awd_info[4],awd_info[5],ssh_user)
+        print(status)
         if status == -1:
             data = {'status': '20','message':'容器启动错误！'}
         if status == 1:
@@ -859,6 +864,7 @@ def start_awd_instance_for(group_list,images_id,name,ssh_port,other_port,ssh_use
     mysql = Mysqld()
     now_time=str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
     ip_dic = {}
+    print(now_time)
     # 得到ip
     try:
         for i in group_list:
@@ -868,14 +874,17 @@ def start_awd_instance_for(group_list,images_id,name,ssh_port,other_port,ssh_use
             tag = i[1] + "." + name
             # 从ip池中获取一个ip
             ip = docker_get_ip()
+            # print(ip)
             # log
             ip_dic[i[1]] = ip
             container_id = docker.docker_start_by_imagesID(tag,images_id,ip)
+            print(container_id)
             if container_id == -1:
                 return -1
             # 这里修改docker用户密码
             passwd = get_random_password(ssh_user)
             result = docker.docker_change_passwd(container_id,ssh_user,passwd)
+            # print('result:',result)
             if result == -1:
                 return -1
             mysql.insert_awd_instance(container_id, name, ssh_port, other_port, now_time, '',ip,tag,i[1],1,ssh_user,passwd)
@@ -1661,6 +1670,7 @@ def pl_stop_awd_instance():
         if exam_name:
             get_container_id = mysql.select_awd_exam_instance_container_id_by_exam_name(exam_name)
             docker = Contain()
+            # 一个个关闭容器
             for container_id in get_container_id:
                 # 停止容器
                 code = docker.docker_stop_by_docker_id(container_id)
@@ -1668,12 +1678,52 @@ def pl_stop_awd_instance():
                 # 释放ip
                 if code != 1:
                     return '501'
+
+            # 关闭之后更改状态码
+            mysql.change_awd_exam_status_to_0_by_name(exam_name)
             return '200'
         else:
             return '502'
     else:
         return '503'
 
+
+# 上传题目通过镜像id
+@app.route('/post_exam_by_type_1',methods=['POST'])
+def post_exam_by_type_1():
+    admin = session.get('admin')
+    if admin:
+        exam_name = request.form.get('exam_name')
+        docker_image_id = request.form.get('image_id')
+        ssh_user = request.form.get('user')
+        ssh_port_tmp = request.form.get('ssh_port')
+        ssh_port = int(ssh_port_tmp)
+        other_port_tmp = request.form.get('other_port')
+        other_port = int(other_port_tmp)
+        mysql = Mysqld()
+        status_code = mysql.insert_awd_exam_table(exam_name,docker_image_id,ssh_user,ssh_port,other_port)
+        if status_code == 1:
+            return redirect(url_for('man_awd_exam',message='上传题目成功'))
+        else:
+            return redirect(url_for('man_awd_exam',message='上传题目失败！'))
+    else:
+        return render_template('admin/login.html')
+
+
+
+@app.route('/del_awd_exam_by_name',methods=["POST"])
+def del_awd_exam_by_name():
+    admin = session.get('admin')
+    if admin:
+        name = request.form.get('name')
+        mysql = Mysqld()
+        status_code = mysql.delete_awd_exam_by_exam_name(name)
+        if status_code == 1:
+            return '200'
+        else:
+            return '-1'
+    else:
+        return '0'
 # 一定要放到最后
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)

@@ -1,23 +1,24 @@
 import pymysql
-from jjuctf.config import Config
+from jjuctf.config import *
 import time
 
-config = Config()
 
 
 class Mysqld:
     def __init__(self):
-        server = config.serverIp
-        user = config.user
-        password = config.password  # 数据库密码，宝塔面板
-        self.conn = pymysql.connect(server, user, password, config.database)  # 连接到jjuctf数据库
+        # server = config.serverIp
+        # user = config.user
+        # password = config.password  # 数据库密码，宝塔面板
+        server = mariadb_server_ip
+        user = mariadb_user
+        password = mariadb_password  # 数据库密码，宝塔面板
+        self.conn = pymysql.connect(server, user, password, mariadb_database)  # 连接到jjuctf数据库
         self.cursor = self.conn.cursor()  # 执行方法
         # self.mysqlclose = self.conn.close()
 
     # 增加用户
     def adduser(self, user_name, password, email):
-        sql = 'insert into user (role,password,email,user_name) values ("%d",md5("%s"),"%s","%s")' % (
-            0, password, email, user_name)
+        sql = 'insert into user (role,password,email,user_name) values ("%d",md5("%s"),"%s","%s")' % (0, password, email, user_name)
         # print(sql)
         try:
             self.cursor.execute(sql)
@@ -985,9 +986,10 @@ class Mysqld:
             return 0
 
 
-    def insert_awd_exam_table(self,name,image_id):
+    def insert_awd_exam_table(self,name,image_id,user,ssh_port,other_port):
         date_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        sql = 'insert into awd_exam (name,time,image_id) values ("%s","%s","%s")' % (name,date_time,image_id)
+        sql = 'insert into awd_exam (name,time,image_id,user,ssh,other_port,status) values ("%s","%s","%s","%s",%d,%d,%d)' % (name,date_time,image_id,user,ssh_port,other_port,0)
+        print(sql)
         try:
             self.cursor.execute(sql)
             self.conn.commit()
@@ -1192,6 +1194,35 @@ class Mysqld:
             self.conn.rollback()
             return 0
 
+    def delete_awd_exam_by_exam_name(self,exam_name):
+        sql = 'delete from awd_exam where name="%s"' % (exam_name)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            return 1
+        except:
+            self.conn.rollback()
+            return 0
+
+
+    def change_awd_exam_status_to_0_by_name(self,name):
+        sql = 'update awd_exam set status=%d where name="%s"' % (0,name)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            return 1
+        except:
+            self.conn.rollback()
+            return 0
+    def change_awd_exam_status_to_1_by_name(self,name):
+        sql = 'update awd_exam set status=%d where name="%s"' % (1,name)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            return 1
+        except:
+            self.conn.rollback()
+            return 0
 # a = Mysqld()
-# b = a.select_awd_exam_instance_container_id_by_exam_name('awd_b4')
+# b = a.change_awd_exam_status_to_0_by_name('awd_b4')
 # print(b)

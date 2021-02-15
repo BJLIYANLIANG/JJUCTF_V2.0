@@ -89,7 +89,10 @@ class Contain:
 
     def docker_start_by_imagesID(self,group_name,images_id,ip):
         penv = dict(os.environ)
-        cmd = 'docker run --name %s  --network awd --ip %s  -d  %s'%(group_name,ip,images_id)
+        # cmd = 'docker run --name %s  --network awd --ip %s  -d  %s'%(group_name,ip,images_id)
+        cmd = 'docker run   --network awd --ip %s  -d  %s'%(ip,images_id)
+
+        # print(cmd)
         # print(cmd)
         try:
             result = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
@@ -131,6 +134,7 @@ class Contain:
         except subprocess.CalledProcessError as e:
             print(e.output)
             return -1
+
     def check_awd_status(self,images):
         pass
 
@@ -149,7 +153,11 @@ class Contain:
         sum = 0
         flag = 0
         while(flag == 0):
-            passwd = subprocess.getoutput("openssl passwd -1 '%s'"%(passwd))
+            if os.name == 'nt':
+                cmd = "wsl openssl passwd -1 '%s'" % (passwd)
+            else:
+                cmd = "openssl passwd -1 '%s'"%(passwd)
+            passwd = subprocess.getoutput()
             create_passwd_cmd = "docker exec -u root %s sed -i 's/^%s:!/%s:%s/g' /etc/shadow"%(container_id,user,user,passwd)
             create_passwd_cmd = "docker exec -u root %s sed -i 's/^%s:!/%s:%s/g' /etc/shadow" % (container_id, user, user, passwd)
             # print(create_passwd_cmd)
@@ -166,14 +174,21 @@ class Contain:
         # 得到初始密码
         penv = dict(os.environ)
         get_passwd = "docker exec -u root %s awk -F: '{if($1 == \"%s\") {print $2} }' /etc/shadow"%(container_id,user)
-        current_passwd = subprocess.check_output(get_passwd, stderr=subprocess.STDOUT, shell=True, env=penv)
-        current_passwd = current_passwd.decode('utf-8').replace('\n','')
+        print(get_passwd)
+        print('-------------------------------------')
+        current_passwd = subprocess.run(get_passwd, stderr=subprocess.STDOUT, shell=True, env=penv)
+        print(current_passwd)
+        # current_passwd = current_passwd.replace('\n','')
         # print(current_passwd.replace('\n',''))
         # 修改密码
         flag = 0
         sum = 0
         while(flag == 0):
-            passwd = subprocess.getoutput("openssl passwd -1 '%s'" % (new_passwd))
+            if os.name == 'nt':
+                cmd = "wsl openssl passwd -1 '%s'" % (new_passwd)
+            else:
+                cmd = "openssl passwd -1 '%s'" % (new_passwd)
+            passwd = subprocess.getoutput(cmd)
             create_passwd_cmd = "docker exec -u root %s sed -i 's/^%s:%s/%s:%s/g' /etc/shadow" % (container_id, user,current_passwd, user, passwd)
             print(create_passwd_cmd)
             add_passwd_status = subprocess.call(create_passwd_cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
@@ -183,7 +198,23 @@ class Contain:
             if sum >100:
                 return -1
         return 1
-# a = Contain()
-# c = a.docker_stop_by_docker_id('727dd0d701279c')
-# # b = a.docker_change_passwd('e08a9dc21581','glzjin','123456')
+    # 检查这个镜像是否在这个系统中
+    def search_docker_image_in_system(self,image_id):
+        cmd = 'docker images'
+        a = subprocess.getoutput(cmd)
+        if image_id in a:
+            return 1
+        else:
+            return -1
+
+
+
+a = Contain()
+b = a.docker_change_passwd('83e97f9d10ec','glzjin','123456')
+print(b)
+# print('----')
 # print(c)
+# for i in c.split('\n'):
+#     print(i)
+# print(type(c))
+    # print('hahah')

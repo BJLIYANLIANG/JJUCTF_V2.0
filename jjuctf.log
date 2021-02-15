@@ -592,3 +592,333 @@ Traceback (most recent call last):
   File "/usr/lib/python3.9/site-packages/flask/app.py", line 2097, in make_response
     raise TypeError(
 TypeError: The view function did not return a valid response. The function either returned None or ended without a return statement.
+Exception on /challenges [GET]
+Traceback (most recent call last):
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\app.py", line 120, in challenge
+    mysql = Mysqld()
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\jjuctf\SqlServer.py", line 16, in __init__
+    self.conn = pymysql.connect(server, user, password, config.database)  # 连接到jjuctf数据库
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\__init__.py", line 94, in Connect
+    return Connection(*args, **kwargs)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 327, in __init__
+    self.connect()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 588, in connect
+    self._request_authentication()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 853, in _request_authentication
+    auth_packet = self._read_packet()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 676, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\protocol.py", line 223, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\err.py", line 107, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1045, "Access denied for user 'HSM'@'localhost' (using password: YES)")
+Exception on / [GET]
+Traceback (most recent call last):
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\app.py", line 181, in index
+    mysql = Mysqld()
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\jjuctf\SqlServer.py", line 16, in __init__
+    self.conn = pymysql.connect(server, user, password, config.database)  # 连接到jjuctf数据库
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\__init__.py", line 94, in Connect
+    return Connection(*args, **kwargs)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 327, in __init__
+    self.connect()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 588, in connect
+    self._request_authentication()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 853, in _request_authentication
+    auth_packet = self._read_packet()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 676, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\protocol.py", line 223, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\err.py", line 107, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1045, "Access denied for user 'HSM'@'localhost' (using password: YES)")
+Exception on / [GET]
+Traceback (most recent call last):
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\app.py", line 181, in index
+    mysql = Mysqld()
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\jjuctf\SqlServer.py", line 16, in __init__
+    self.conn = pymysql.connect(server, user, password, config.database)  # 连接到jjuctf数据库
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\__init__.py", line 94, in Connect
+    return Connection(*args, **kwargs)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 327, in __init__
+    self.connect()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 588, in connect
+    self._request_authentication()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 853, in _request_authentication
+    auth_packet = self._read_packet()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 676, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\protocol.py", line 223, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\err.py", line 107, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1045, "Access denied for user 'HSM'@'localhost' (using password: YES)")
+Exception on / [GET]
+Traceback (most recent call last):
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\app.py", line 181, in index
+    mysql = Mysqld()
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\jjuctf\SqlServer.py", line 16, in __init__
+    self.conn = pymysql.connect(server, user, password, config.database)  # 连接到jjuctf数据库
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\__init__.py", line 94, in Connect
+    return Connection(*args, **kwargs)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 327, in __init__
+    self.connect()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 588, in connect
+    self._request_authentication()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 853, in _request_authentication
+    auth_packet = self._read_packet()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 676, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\protocol.py", line 223, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\err.py", line 107, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1045, "Access denied for user 'HSM'@'localhost' (using password: YES)")
+Exception on / [GET]
+Traceback (most recent call last):
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\app.py", line 181, in index
+    mysql = Mysqld()
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\jjuctf\SqlServer.py", line 16, in __init__
+    self.conn = pymysql.connect(server, user, password, config.database)  # 连接到jjuctf数据库
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\__init__.py", line 94, in Connect
+    return Connection(*args, **kwargs)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 327, in __init__
+    self.connect()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 588, in connect
+    self._request_authentication()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 853, in _request_authentication
+    auth_packet = self._read_packet()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 676, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\protocol.py", line 223, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\err.py", line 107, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1045, "Access denied for user 'HSM'@'localhost' (using password: YES)")
+Exception on / [GET]
+Traceback (most recent call last):
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\app.py", line 181, in index
+    mysql = Mysqld()
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\jjuctf\SqlServer.py", line 16, in __init__
+    self.conn = pymysql.connect(server, user, password, config.database)  # 连接到jjuctf数据库
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\__init__.py", line 94, in Connect
+    return Connection(*args, **kwargs)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 327, in __init__
+    self.connect()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 588, in connect
+    self._request_authentication()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 853, in _request_authentication
+    auth_packet = self._read_packet()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 676, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\protocol.py", line 223, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\err.py", line 107, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1045, "Access denied for user 'HSM'@'localhost' (using password: YES)")
+Exception on / [GET]
+Traceback (most recent call last):
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\app.py", line 181, in index
+    mysql = Mysqld()
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\jjuctf\SqlServer.py", line 16, in __init__
+    self.conn = pymysql.connect(server, user, password, config.database)  # 连接到jjuctf数据库
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\__init__.py", line 94, in Connect
+    return Connection(*args, **kwargs)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 327, in __init__
+    self.connect()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 588, in connect
+    self._request_authentication()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 853, in _request_authentication
+    auth_packet = self._read_packet()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 676, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\protocol.py", line 223, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\err.py", line 107, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1045, "Access denied for user 'HSM'@'localhost' (using password: YES)")
+Exception on / [GET]
+Traceback (most recent call last):
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\app.py", line 181, in index
+    mysql = Mysqld()
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\jjuctf\SqlServer.py", line 16, in __init__
+    self.conn = pymysql.connect(server, user, password, config.database)  # 连接到jjuctf数据库
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\__init__.py", line 94, in Connect
+    return Connection(*args, **kwargs)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 327, in __init__
+    self.connect()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 588, in connect
+    self._request_authentication()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 853, in _request_authentication
+    auth_packet = self._read_packet()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 676, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\protocol.py", line 223, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\err.py", line 107, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1045, "Access denied for user 'HSM'@'localhost' (using password: YES)")
+Exception on / [GET]
+Traceback (most recent call last):
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\app.py", line 181, in index
+    mysql = Mysqld()
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\jjuctf\SqlServer.py", line 16, in __init__
+    self.conn = pymysql.connect(server, user, password, config.database)  # 连接到jjuctf数据库
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\__init__.py", line 94, in Connect
+    return Connection(*args, **kwargs)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 327, in __init__
+    self.connect()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 588, in connect
+    self._request_authentication()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 853, in _request_authentication
+    auth_packet = self._read_packet()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 676, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\protocol.py", line 223, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\err.py", line 107, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1045, "Access denied for user 'HSM'@'localhost' (using password: YES)")
+Exception on / [GET]
+Traceback (most recent call last):
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 2447, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1952, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1821, in handle_user_exception
+    reraise(exc_type, exc_value, tb)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\_compat.py", line 39, in reraise
+    raise value
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1950, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\flask\app.py", line 1936, in dispatch_request
+    return self.view_functions[rule.endpoint](**req.view_args)
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\app.py", line 181, in index
+    mysql = Mysqld()
+  File "C:\Users\HSM\Desktop\PycharmProjects\jjuctf\jjuctf\SqlServer.py", line 16, in __init__
+    self.conn = pymysql.connect(server, user, password, config.database)  # 连接到jjuctf数据库
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\__init__.py", line 94, in Connect
+    return Connection(*args, **kwargs)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 327, in __init__
+    self.connect()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 588, in connect
+    self._request_authentication()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 853, in _request_authentication
+    auth_packet = self._read_packet()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\connections.py", line 676, in _read_packet
+    packet.raise_for_error()
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\protocol.py", line 223, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "C:\Users\HSM\AppData\Local\Programs\Python\Python39\lib\site-packages\pymysql\err.py", line 107, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.OperationalError: (1045, "Access denied for user 'HSM'@'localhost' (using password: YES)")
