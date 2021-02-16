@@ -1,6 +1,7 @@
 import pymysql
 from jjuctf.config import *
 import time
+import hashlib
 
 
 
@@ -732,10 +733,9 @@ class Mysqld:
             # self.conn.close()
             return 0
 
-    def changeUserinfo(self, user_name, real_name, email, mobile, class_name, id):
-        sql = 'update user set user_name="%s",real_name="%s",email="%s",mobile="%s",class_id="%s" where id=%d' % (
-            user_name, real_name, email, mobile, class_name, id)
-        # print(sql)
+    def changeUserinfo(self,user_id, user_name, real_name, email, mobile, class_name, id):
+        sql = 'update user set user_id="%s",user_name="%s",real_name="%s",email="%s",mobile="%s",class_id="%s" where id=%d' % (user_id,user_name, real_name, email, mobile, class_name, id)
+        print(sql)
         try:
             self.cursor.execute(sql)
             self.conn.commit()
@@ -1216,6 +1216,17 @@ class Mysqld:
             return 0
     def change_awd_exam_status_to_1_by_name(self,name):
         sql = 'update awd_exam set status=%d where name="%s"' % (1,name)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            return 1
+        except:
+            self.conn.rollback()
+            return 0
+    def update_user_passwd(self,uid,old_pwd,new_pwd):
+        old_pwd_md5 = hashlib.md5(str(old_pwd).encode('utf-8')).hexdigest()
+        sql = 'update user set password=md5("%s") where password="%s" and id=%d' % (new_pwd,old_pwd_md5,uid)
+        print(sql)
         try:
             self.cursor.execute(sql)
             self.conn.commit()

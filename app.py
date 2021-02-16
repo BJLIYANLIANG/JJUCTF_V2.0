@@ -145,6 +145,7 @@ def challenge():
         userNotice = mysql.selectUserNotice()
         # 解题动态 CTF_History_table
         ctf_history_table = mysql.selectCtfHistoryTable()
+
         # 0为web 以此类推
         return render_template("user/challenge.html", username=user, headerType="challenges",
                                challengeResult=challengeResult, ctf_history_table=ctf_history_table,
@@ -1244,16 +1245,16 @@ def man_user_change():
 def man_user_change_save():
     admin = session.get('admin')
     if admin:
-
         name = request.form.get('user_name')
         real_name = request.form.get('real_name')
         class_id = request.form.get('cid')
         email = request.form.get('email')
         mobile = request.form.get('mobile')
         # print(name,real_name,sid,email,mobile)
+        user_id = None
         mysql = Mysqld()
         id = mysql.selectUserIdByUserName(name)
-        result = mysql.changeUserinfo(name, real_name, email, mobile, class_id, id)
+        result = mysql.changeUserinfo(user_id,name, real_name, email, mobile, class_id, id)
         if result == 1:
             return redirect(url_for('man_user', message="修改成功！"))
         else:
@@ -1731,23 +1732,47 @@ def del_awd_exam_by_name():
         return '0'
 
 
-@app.route('/change_user_info',methods=['POST'])
+@app.route('/change_user_info',methods=['POST','GET'])
 def change_user_info():
     user = session.get('user')
+    if request.method == 'GET':
+        return redirect(url_for('user'))
     if user:
         name = request.form.get('name')
         real_name = request.form.get('real_name')
         email = request.form.get('email')
         mobile = request.form.get('mobile')
         class_name = request.form.get('class_name')
-
+        # 学号
+        user_id = request.form.get('user_id')
         mysql = Mysqld()
-        mysql.changeUserinfo(name,real_name,email,mobile,class_name)
+        id = mysql.selectUserIdByUserName(user)
+        status_code = mysql.changeUserinfo(user_id,name,real_name,email,mobile,class_name,id)
+        if status_code == 1:
+            return redirect(url_for('user', message='用户修改成功'))
+        else:
+            return redirect(url_for('user', message='用户修改失败'))
     else:
         return redirect(url_for('user',message='用户修改失败'))
 
 
+@app.route('/update_user_passwd',methods=['POST'])
+def update_user_passwd():
+    user = session.get('user')
 
+    if user:
+        mysql = Mysqld()
+        uid = mysql.selectUserIdByUserName(user)
+        old_pwd = request.form.get('old_pwd')
+        new_pwd = request.form.get('pwd')
+        status_code = mysql.update_user_passwd(uid,old_pwd,new_pwd)
+        if status_code == 1:
+            return redirect(url_for('user',message='密码修改成功'))
+
+        else:
+            return redirect(url_for('user',message='密码修改失败'))
+    else:
+        return redirect('login')
 # 一定要放到最后
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)

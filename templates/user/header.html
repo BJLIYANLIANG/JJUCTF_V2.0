@@ -10,7 +10,11 @@
     <link rel="stylesheet" href="/static/css/bootstrap-icons.css">
     <script type="text/javascript" src="/static/js/socket.io.js"></script>
     <script type="text/javascript" src="/static/js/echarts.js"></script>
+    <script src="/static/js/alert_message.js"></script>
     <title>JJUCTF</title>
+     <script language="JavaScript">
+        {% if message %}alert("{{ message}}"){% endif %}
+    </script>
 </head>
 <style>
     body{
