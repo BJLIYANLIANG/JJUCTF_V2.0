@@ -1,12 +1,15 @@
-# from threading import Timer
-# import datetime
-# # 每隔两秒执行一次任务
-# def printHello():
-#     print('TimeNow:%s' % (datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
-#     t = Timer(60, printHello)
-#     t.start()
-#
-# if __name__ == "__main__":
-#     printHello()
-import os
-print(os.name)
+import turtle
+
+turtle.speed(1000)
+turtle.tracer(0)
+
+for i in range(72000):
+    angle = i / 100
+    repeat = int(angle * 1.5)
+    for i in range(0, repeat):
+        turtle.forward(i * 2)
+        turtle.right(angle)
+    turtle.tracer(0)
+    turtle.tracer(1)
+    turtle.tracer(0)
+    turtle.reset()

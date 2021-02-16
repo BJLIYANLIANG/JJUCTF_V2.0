@@ -33,9 +33,3 @@ def decrypt(text):
     plain_text = cryptos.decrypt(a2b_hex(text))
     return bytes.decode(plain_text).rstrip('\0')
 
-#
-# if __name__ == '__main__':
-#     e = encrypt("hello world")  # 加密
-#     d = decrypt(e)  # 解密
-#     print("加密:", e)
-#     print("解密:", d)

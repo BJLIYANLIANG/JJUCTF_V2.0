@@ -177,9 +177,9 @@ class Contain:
         print(get_passwd)
         print('-------------------------------------')
         current_passwd = subprocess.run(get_passwd, stderr=subprocess.STDOUT, shell=True, env=penv)
+        current_passwd = subprocess.run(get_passwd)
+
         print(current_passwd)
-        # current_passwd = current_passwd.replace('\n','')
-        # print(current_passwd.replace('\n',''))
         # 修改密码
         flag = 0
         sum = 0
@@ -208,13 +208,7 @@ class Contain:
             return -1
 
 
-
-a = Contain()
-b = a.docker_change_passwd('83e97f9d10ec','glzjin','123456')
-print(b)
-# print('----')
-# print(c)
-# for i in c.split('\n'):
-#     print(i)
-# print(type(c))
-    # print('hahah')
+#
+# a = Contain()
+# b = a.docker_change_passwd('83e97f9d10ec','glzjin','123456')
+# print(b)

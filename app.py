@@ -45,7 +45,7 @@ def test123():
 @app.route("/test")
 @app.route("/test", methods=["POST", "GET"])
 def test():
-    return render_template("user/test.html")
+    return render_template("user/index_bak.html")
 
 
 @app.route('/push')
@@ -555,8 +555,14 @@ def setting_info():
     admin = session.get("admin")
     admin_ip = request.remote_addr
     user_agent = request.user_agent
+    # 操作系统信息
+    system_info = {}
+    if os.name == 'nt':
+        system_info['system_os'] = 'Windows'
+    else:
+        system_info['system_os'] = 'Linux'
     if admin:
-        return render_template("admin/setting_info.html", admin_ip=admin_ip, adminname=admin, user_agent=user_agent)
+        return render_template("admin/setting_info.html", admin_ip=admin_ip, adminname=admin, user_agent=user_agent,system_info=system_info)
     else:
         return render_template("admin/login.html")
 
@@ -1641,7 +1647,6 @@ def man_awd_exam_detail():
                     return redirect(url_for('man_awd_exam',message='未找到内容！'))
         else:
             return redirect(url_for('man_awd_exam'))
-
     else:
         return  render_template('admin/login.html')
 
@@ -1724,6 +1729,25 @@ def del_awd_exam_by_name():
             return '-1'
     else:
         return '0'
+
+
+@app.route('/change_user_info',methods=['POST'])
+def change_user_info():
+    user = session.get('user')
+    if user:
+        name = request.form.get('name')
+        real_name = request.form.get('real_name')
+        email = request.form.get('email')
+        mobile = request.form.get('mobile')
+        class_name = request.form.get('class_name')
+
+        mysql = Mysqld()
+        mysql.changeUserinfo(name,real_name,email,mobile,class_name)
+    else:
+        return redirect(url_for('user',message='用户修改失败'))
+
+
+
 # 一定要放到最后
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)

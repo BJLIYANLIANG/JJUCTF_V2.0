@@ -9,9 +9,10 @@ class MailServer:
         mail_server.close()
 
 
-#
-# email_to = '905008677@qq.com'
-# email_title = 'JJUCTF注册'
-# email_content = '欢迎注册九江学院网络安全靶场实训平台，注册码：897799'
-# a = MailServer()
-# a.sendMail(email_to)
+
+
+email_to = '2621861508@qq.com'
+email_title = 'JJUCTF注册'
+email_content = 'hello world'
+a = MailServer()
+a.sendMail(email_to,email_title,email_content)
