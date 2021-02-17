@@ -171,28 +171,33 @@ class Contain:
 
     # 修改密码
     def docker_change_passwd(self, container_id, user, new_passwd):
-        # 得到初始密码
-        penv = dict(os.environ)
-        get_passwd = "docker exec -u root %s awk -F: '{if($1 == \"%s\") {print $2} }' /etc/shadow"%(container_id,user)
-        print(get_passwd)
-        print('-------------------------------------')
-        current_passwd = subprocess.run(get_passwd, stderr=subprocess.STDOUT, shell=True, env=penv)
-        current_passwd = subprocess.run(get_passwd)
-
-        print(current_passwd)
-        # 修改密码
+        # 定义变量
         flag = 0
         sum = 0
+
+        # 得到容器中的初始密码
+        penv = dict(os.environ)
+        shell = "awk -F: '{if($1 == \"%s\") {print $2} }' /etc/shadow" % (user)
+        print(shell)
+        current_passwd = self.docker_exec(container_id,shell)
+        print('current_passwd:',current_passwd)
+        # 修改密码
+
         while(flag == 0):
+            # 生成新密码 nt表示windows系统，则使用wsl中的linux生成密码
             if os.name == 'nt':
-                cmd = "wsl openssl passwd -1 '%s'" % (new_passwd)
+                shell = "wsl openssl passwd -1 '%s'" % (new_passwd)
             else:
-                cmd = "openssl passwd -1 '%s'" % (new_passwd)
-            passwd = subprocess.getoutput(cmd)
-            create_passwd_cmd = "docker exec -u root %s sed -i 's/^%s:%s/%s:%s/g' /etc/shadow" % (container_id, user,current_passwd, user, passwd)
-            print(create_passwd_cmd)
-            add_passwd_status = subprocess.call(create_passwd_cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
-            if add_passwd_status == 0:
+                # Linux 系统
+                shell = "openssl passwd -1 '%s'" % (new_passwd)
+            new_passwd = subprocess.getoutput(shell)
+            # 修改密码，将旧密码替换成新密码
+            shell = "sed -i 's/^%s:%s/%s:%s/g' /etc/shadow"% (user,current_passwd, user, new_passwd)
+
+            # 返回执行状态，0表示成功执行，
+            status_code = self.docker_exec_return_status_code(container_id,shell)
+
+            if status_code == 0:
                 flag = 1
             sum += 1
             if sum >100:
@@ -207,8 +212,44 @@ class Contain:
         else:
             return -1
 
+    def show_docker_version(self):
+        cmd = 'docker --version'
+        result = subprocess.getoutput(cmd)
+        return  result
 
-#
+
+
+    def docker_clean(self):
+        containers = subprocess.getoutput(['docker', 'ps', '-a', '-q'])
+        if containers:
+            print("[DOCKER] Stop and remove all contaners: ")
+            for container in containers.split():
+                subprocess.call(["docker", "stop", container])
+                subprocess.call(["docker", "rm", "-f", container])
+        else:
+            print("[DOCKER] No containers")
+
+
+
+    # 返回执行结果
+    def docker_exec(self,container_id,shell):
+        try:
+            b = subprocess.getoutput(['docker', 'exec', '-u', 'root', container_id, '/bin/bash', '-c', shell])
+            return b
+        except:
+            return -1
+
+
+
+    # 执行shell，并且返回执行结果
+    def docker_exec_return_status_code(self,container_id,shell):
+        try:
+            b = subprocess.run(['docker', 'exec', '-u', 'root', container_id, '/bin/bash', '-c', shell])
+            return b.returncode
+        except:
+            return -1
+
+
 # a = Contain()
-# b = a.docker_change_passwd('83e97f9d10ec','glzjin','123456')
-# print(b)
+# a.docker_clean()
+# b = a.docker_change_passwd('47d32060aa8f','glzjin','123456')

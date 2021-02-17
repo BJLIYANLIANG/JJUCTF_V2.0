@@ -42,8 +42,10 @@
                 <div class="box-inner">
                     <p>操作系统：&nbsp;<span class="text-success">{{ system_info['system_os'] }}</span></p>
 {#                    <p>内核版本：&nbsp;<span  class="text-success">5.9.11-3-MANJARO</span></p>#}
-                    <p>Python版本：&nbsp;<span  class="text-success">3.8.6</span></p>
-                    <p>Mysql版本：&nbsp;<span  class="text-success">8.0.0</span></p>
+                    <p>Python版本：&nbsp;<span  class="text-success">{{ system_info['python_version'] }}</span></p>
+                    <p>数据库版本：&nbsp;<span  class="text-success">{{ system_info['sql_version'] }}</span></p>
+                    <p>虚拟化：&nbsp;<span  class="text-success">{{ system_info['docker_version'] }}</span></p>
+
                 </div>
             </div>
         </div>

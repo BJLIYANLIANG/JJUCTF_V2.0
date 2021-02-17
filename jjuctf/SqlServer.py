@@ -1234,6 +1234,28 @@ class Mysqld:
         except:
             self.conn.rollback()
             return 0
-# a = Mysqld()
-# b = a.change_awd_exam_status_to_0_by_name('awd_b4')
-# print(b)
+
+
+    def select_sql_version(self):
+        sql = 'select version()'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()[0]
+            if result:
+                return result
+            else:
+                return -1
+        except Exception:
+            return 0
+
+
+    # 管理员重置密码
+    def reset_user_passwd(self,uid,passwd):
+        sql = ''
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            return 1
+        except:
+            self.conn.rollback()
+            return 0

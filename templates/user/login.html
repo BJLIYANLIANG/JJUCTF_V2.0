@@ -36,7 +36,7 @@
             line-height: 40px;
         }
         #login_bg{
-            background-image: url("/static/image/bg/2021-01-14 151457_gaitubao_1099x803.jpg");
+            background-image: url(/static/image/bg.ctf.png)!important;
             {#background-image: url("/static/image/bg.ctf.png");#}
 
             background-size: cover;
@@ -52,7 +52,7 @@
             color: white;
         }
         .login{
-            height: 900px;
+            height: 300px;
         }
     </style>
 </head>
@@ -64,7 +64,7 @@
             <div class="col-md-7">
                 <div style="height: 10rem"></div>
                 <div class="text-center">
-                    <div class="jumbotron-fluid text-light">
+                    <div class="jumbotron-fluid text-primary">
                     <h1 style="font-size: 3rem">JJUCTF</h1>
                     <p style="font-size: 2rem">九江学院网络安全实训平台</p>
                 </div>
@@ -72,32 +72,31 @@
             </div>
             <div class="col-md-5">
                 <div class="wrapper" >
-            <div class="sign-in-wrapper">
-                <div class="sign-in-inner">
-                    <div class="">
-{#                        <h3 class="text-center">JJUCTF-登录</h3>#}
-                        <h4 class="text-left" style="color: white">登录</h4>
-                    </div>
-                    <form class="form-sign-in" method="post" action="/login">
-                        <div class="form-group">
-                            <input type="text" name="username" class="form-control" placeholder="用户名">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" name="password" class="form-control" placeholder="密码">
-                        </div>
-                        <div class="checkbox">
-                            <label class="text-light">
-                                <input  type="checkbox" value="remember-me"> 记住账号
-                            </label>
-                            |
-                            <label><a class="text-light" href="/register">注册</a></label>
-                        </div>
+                    <div class="sign-in-wrapper">
+                        <div class="sign-in-inner">
+                            <div class="">
+                                <h4 class="text-left" style="color: white">登录</h4>
+                            </div>
+                            <form class="form-sign-in" method="post" action="/login">
+                                <div class="form-group">
+                                    <input type="text" name="username" class="form-control" placeholder="用户名">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" name="password" class="form-control" placeholder="密码">
+                                </div>
+                                <div class="checkbox">
+                                    <label class="text-light">
+                                        <input  type="checkbox" value="remember-me"> 记住账号
+                                    </label>
+                                    |
+                                    <label><a class="text-light" href="/register">注册</a></label>
+                                </div>
 
-                        <button class="btn btn-lg btn-primary btn-block" type="submit">立即登录</button>
-                        <div class="separator-30"></div>
-                    </form>
-                </div>
-            </div>
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">立即登录</button>
+                                <div class="separator-30"></div>
+                            </form>
+                        </div>
+                    </div>
         </div>
             </div>
         </div>
@@ -119,7 +118,7 @@
     </script>
 </body>
 </html>
-<div>
+
 
 
 {#{% include "user/footer.html" %}#}

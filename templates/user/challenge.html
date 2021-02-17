@@ -124,10 +124,10 @@
                         {% set num = ctf_history_table|length %}
                         {% for i in range(num-1,-1,-1) %}
                             <tr>
-                                <td style="width: 30%">{{ctf_history_table[i][0] }}战队</td>
+                                <td style="width: 30%" class="text-primary">{{ctf_history_table[i][0] }}战队</td>
                                 <td style="width: 20%" class="text-danger">攻破了</td>
-                                <td style="width: 30%">{{ ctf_history_table[i][1] }}</td>
-                                <td style="width: 20%">{{ ctf_history_table[i][3] }}</td>
+                                <td style="width: 30%" class="text-primary">{{ ctf_history_table[i][1] }}</td>
+                                <td style="width: 20%" class="text-info">{{ ctf_history_table[i][3] }}</td>
                             </tr>
                         {% endfor %}
                     </table>
@@ -724,7 +724,7 @@
         })
         socket.on('challenge_list',function (res){
             var t = res;
-            $('#challenge_list').prepend('<tr><td>'+t.name+'战队</td><td class="text-danger">攻破了</td><td>'+t.target+'</td><td>'+t.date+'</td></tr>');
+            $('#challenge_list').prepend('<tr><td class="text-primary">'+t.name+'战队</td><td class="text-danger">攻破了</td><td class="text-primary">'+t.target+'</td><td class="text-info">'+t.date+'</td></tr>');
         })
         socket.on('timeout',function () {
             window.location.href='/logout';

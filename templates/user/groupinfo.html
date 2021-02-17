@@ -9,6 +9,9 @@
         background-color: rgba(0,0,0,0);
         border: 0.1rem solid #2c3e60;
     }
+    .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active{
+  background: #c4e3f3;
+}
 </style>
 <div  class="container-fluid">
 <div class="row">
@@ -24,29 +27,49 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-6 text-center">
-                            <h4 class="title text-primary">队伍信息</h4>
-                            <table class="table table-borderless text-light">
-                                <tr><td>队伍名称：</td><td><span class="text-info">{{ groupinfo[1] }}</span></td></tr>
-                                <tr><td>队伍ID:</td><td><span class="text-info">{{ groupinfo[0] }}</span></td></tr>
-                                <tr><td>队伍简介：</td><td><span class="text-info">{{ groupinfo[2] }}</span></td></tr>
-                                <tr><td>队长ID：</td><td><span class="text-info">{{ groupinfo[3] }}</span></td></tr>
-                            </table>
-                        </div>
-                        <div class="col-md-6 text-center">
-                            <h4 class="title text-primary">队员信息</h4>
-                            <table class="table text-light table-center table-borderless" >
-                                <thead>
-                                {% for i in userGroupList %}
-                                    <tr class="text-info">
-                                        <td>{{ i[0] }}</td>
-                                    </tr>
-                                {% endfor %}
-                                </thead>
-                            </table>
+                    <div class="col-md-12">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist" style="border-bottom: 1px solid #2c3e57;">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#group_info" role="tab" aria-controls="home" aria-selected="true">
+                                <h6>战队信息</h6>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#group_user_list" role="tab" aria-controls="profile" aria-selected="false">
+                                <h6>战队队员</h6>
+                            </a>
+                        </li>
+                    </ul>
+                    </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="tab-content" id="myTabContent" >
+                                <div class="tab-pane fade show active" id="group_info" role="tabpanel" aria-labelledby="home-tab">
+{#                                    <p><span>队伍名称：</span><span class="text-info">{{ groupinfo[1] }}</span></p>#}
+                                    <table class="table table-borderless text-light">
+                                                <tr><td>队伍名称：</td><td><span class="text-info">{{ groupinfo[1] }}</span></td></tr>
+                                                <tr><td>队伍ID:</td><td><span class="text-info">{{ groupinfo[0] }}</span></td></tr>
+                                                <tr><td>队伍简介：</td><td><span class="text-info">{{ groupinfo[2] }}</span></td></tr>
+                                                <tr><td>队长ID：</td><td><span class="text-info">{{ groupinfo[3] }}</span></td></tr>
+                                            </table>
+                                </div><!--tab-pane-->
+
+                                <div class="tab-pane fade" id="group_user_list" role="tabpanel" aria-labelledby="profile-tab">
+                                    <table class="table text-light table-center table-borderless" >
+                                        <thead>
+                                        {% for i in userGroupList %}
+                                            <tr class="text-info">
+                                                <td>{{ i[0] }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                     <hr style="border-bottom: .1rem solid #2c3e57">
+                    <hr style="border-bottom: .1rem solid #2c3e57">
                     <div class="row">
                         <div class="col-md-12 text-center"><h4 class="title text-primary">基本设置</h4></div>
                         <br>
@@ -232,6 +255,7 @@
         </div>
     </div>
 </div>
+
     {% endif %}
 </div>
 

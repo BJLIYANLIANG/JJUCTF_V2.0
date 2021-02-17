@@ -10,7 +10,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/css/jjuctf.css">
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    <style>
+
+</head>
+<body>
+
+<style>
         html, body {
             height: 100%;
         }
@@ -30,7 +34,7 @@
             line-height: 40px;
         }
         #login_bg{
-            background-image: url("/static/image/bg/2021-01-14 151457_gaitubao_1099x803.jpg");
+            background-image: url(/static/image/bg.ctf.png)!important;
             background-size: cover;
             height: 1000px;
             width:100%;
@@ -45,8 +49,6 @@
             height: 900px;
         }
     </style>
-</head>
-<body>
 <div class="login">
     <div id="login_bg" >
     <div  class="container-fluid" >
@@ -54,7 +56,7 @@
             <div class="col-md-7">
                 <div style="height: 10rem"></div>
                 <div class="text-center">
-                    <div class="jumbotron-fluid text-light">
+                    <div class="jumbotron-fluid text-primary">
                     <h1 style="font-size: 3rem">JJUCTF</h1>
                     <p style="font-size: 2rem">九江学院网络安全实训平台</p>
                 </div>
@@ -65,7 +67,7 @@
                     <div class="sign-in-wrapper ">
                         <div class="sign-in-inner">
                             <div class="text-center">
-                                <p class="text-right text-light">已有账号，点击 <a href="/login" class="text-dark">立即登录</a></p>
+                                <p class="text-right text-light">已有账号，点击 <a href="/login" class="text-primary">立即登录</a></p>
                                 <h4 class="text-left text-light">注册</h4>
                             </div>
                             <form class="form-sign-in" method="post" action="/register">
@@ -76,11 +78,12 @@
                                     <input type="email" name="email" class="form-control" placeholder="邮箱">
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" name="passwd" class="form-control" placeholder="密码">
+                                    <input type="password" name="passwd" class="form-control" id="pwd" placeholder="密码">
                                 </div>
                                 <div class="form-group">
-                                    <input type="password" name="passwd2" class="form-control" placeholder="确认密码">
+                                    <input type="password" name="passwd" class="form-control" id="pwd1" onkeyup="validate()" placeholder="确认密码">
                                 </div>
+                                <div class="form-group" id="tishi"></div>
                                 <div class="checkbox">
 
                                     <label class="text-light">
@@ -93,7 +96,7 @@
                                     </label>
                                 </div>
 
-                                <button class="btn btn-lg btn-primary btn-block text-light" type="submit">注册</button>
+                                <button class="btn btn-lg btn-primary btn-block text-light" type="submit" id="button">注册</button>
                                 <div class="separator-30"></div>
                             </form>
                         </div>
@@ -116,11 +119,34 @@
         {% if message  %} alert("{{ message}}"){% endif %}
     </script>
 </div>
+
+
+<script>
+    // 验证确认密码
+function validate() {
+    var pwd1 = document.getElementById("pwd").value;
+    var pwd2 = document.getElementById("pwd1").value;
+<!-- 对比两次输入的密码 -->
+    if(pwd1 == pwd2)
+     {
+         if(pwd1.toString().length<6){
+             document.getElementById("tishi").innerHTML="<span class='text-danger'>密码长度必须大于或等于6字节</span>";
+            document.getElementById("button").disabled = true;
+         }
+         else {
+             document.getElementById("tishi").innerHTML="<span class='text-danger'></span>";
+             document.getElementById("button").disabled = false;
+         }
+     }
+    else {
+        document.getElementById("tishi").innerHTML="<span class='text-danger'>两次输入密码不相同</span>";
+        document.getElementById("button").disabled = true;
+     }
+}
+</script>
+
+
 <script src="/static/js/jquery-3.5.1.min.js"></script>
 <script src="/static/js/bootstrap.min.js"></script>
 </body>
 </html>
-<div>
-
-
-{#{% include "user/footer.html" %}#}

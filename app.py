@@ -2,6 +2,7 @@ from flask import Flask, url_for, send_from_directory, render_template, abort, r
 from datetime import timedelta
 import zipfile
 import shutil
+import sys
 import logging
 import jsonify
 from werkzeug.utils import secure_filename
@@ -100,8 +101,8 @@ def login():
                 resp.set_cookie('token', token)
                 return resp
             else:
-
-                return render_template('user/index.html', message="登陆成功")
+                return redirect(url_for('index'))
+                # return render_template('user/index.html', message="登陆成功")
         else:
             return render_template("user/login.html", message="帐号或密码错误")
     else:
@@ -222,6 +223,8 @@ def ranks():
 
 @app.route('/register', methods=['POST', 'GET'])
 def userRegister():
+    if session.get('user'):
+        return redirect(url_for('index',message='您已经登录，无需注册！'))
     if request.method != 'POST':  # 用户不是使用
         # =====start ====
         # 等号里面的代码可以随时删除
@@ -247,18 +250,11 @@ def userRegister():
         mobile = request.form.get('mobile')
         class_id = request.form.get('classid')
         passwd = request.form.get('passwd')
-        passwd2 = request.form.get('passwd2')
-
-        def eheck(passwd, ):  # 这个函数用来代替下面的代码验证字符串
-            pass
 
         resultEmpty = 0
         # result = checkstr.checkUserString(username=username,password=passwd,useremail=email,)  #检查用户输入的字符串
-        if passwd2 == '' or passwd == '' or username == '' or email == '' or mobile == '' or uid == '' or realname == '' or class_id == '':
+        if passwd == '' or username == '' or email == '' or mobile == '' or uid == '' or realname == '' or class_id == '':
             resultEmpty = 1
-
-        if passwd != passwd2:
-            return render_template("user/register.html", message="两次输入的密码不同，请重新输入")
 
         if resultEmpty == 1:
             return render_template("user/register.html", message="提交异常，请重新输入")
@@ -401,9 +397,7 @@ def groupSetting():
         return render_template("user/login.html")
 
 
-@app.route("/settings")
-def setting():
-    return render_template("user/index.html")
+
 
 
 # 检查CTF答题模式flag是否正确
@@ -562,6 +556,22 @@ def setting_info():
         system_info['system_os'] = 'Windows'
     else:
         system_info['system_os'] = 'Linux'
+    # python 版本
+
+    python_version = sys.version
+    system_info['python_version'] = python_version
+
+    # 数据库版本
+
+    mysql = Mysqld()
+    sql_version = mysql.select_sql_version()
+    system_info['sql_version'] = sql_version
+
+    # docker版本
+
+    docker = Contain()
+    docker_version = docker.show_docker_version()
+    system_info['docker_version'] = docker_version
     if admin:
         return render_template("admin/setting_info.html", admin_ip=admin_ip, adminname=admin, user_agent=user_agent,system_info=system_info)
     else:
@@ -804,7 +814,11 @@ def man_user():
         #     return redirect(url_for('man_user'))
         manAdmin = Mysqld()
         userList = manAdmin.selectUserList()
-        return render_template("admin/man_user.html", userList=userList)
+        if userList:
+            return render_template("admin/man_user.html", userList=userList)
+        else:
+            userList = ()
+            return render_template("admin/man_user.html", userList=userList)
     else:
         return render_template("admin/login.html")
 
@@ -1651,6 +1665,8 @@ def man_awd_exam_detail():
     else:
         return  render_template('admin/login.html')
 
+
+
 @app.route('/init_awd_score',methods=["POST"])
 def init_awd_score():
     admin = session.get('admin')
@@ -1664,6 +1680,8 @@ def init_awd_score():
             return redirect(url_for('man_awd_exam',message='初始化队伍分数失败！'))
     else:
         return render_template('admin/login.html')
+
+
 
 # ajax
 @app.route('/pl_stop_awd_instance',methods=['POST'])
@@ -1694,8 +1712,9 @@ def pl_stop_awd_instance():
         return '503'
 
 
+
 # 上传题目通过镜像id
-@app.route('/post_exam_by_type_1',methods=['POST'])
+@app.route('/post_exam_by_type_1', methods=['POST'])
 def post_exam_by_type_1():
     admin = session.get('admin')
     if admin:
@@ -1717,6 +1736,7 @@ def post_exam_by_type_1():
 
 
 
+
 @app.route('/del_awd_exam_by_name',methods=["POST"])
 def del_awd_exam_by_name():
     admin = session.get('admin')
@@ -1730,6 +1750,7 @@ def del_awd_exam_by_name():
             return '-1'
     else:
         return '0'
+
 
 
 @app.route('/change_user_info',methods=['POST','GET'])
@@ -1756,6 +1777,7 @@ def change_user_info():
         return redirect(url_for('user',message='用户修改失败'))
 
 
+
 @app.route('/update_user_passwd',methods=['POST'])
 def update_user_passwd():
     user = session.get('user')
@@ -1773,6 +1795,8 @@ def update_user_passwd():
             return redirect(url_for('user',message='密码修改失败'))
     else:
         return redirect('login')
+
+
 # 一定要放到最后
 if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
