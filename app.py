@@ -15,6 +15,7 @@ from jjuctf.Crypto import *
 from jjuctf.Container import *
 from jjuctf.functions import *
 import random
+import json
 
 # redis 连接
 redis_instance = redis.Redis(host=redis_address, port=redis_port, decode_responses=True)
@@ -542,6 +543,34 @@ def adminIndex():
         return render_template("admin/index.html",userNum=userNum,groupNum=groupNum,user_Challenge_List_Num=user_Challenge_List_Num)
     else:
         return render_template("admin/login.html")
+
+
+# ajax
+# /admin 里面的echart数据更新
+@app.route('/get_ctf_type')
+def get_ctf_type():
+    admin = session.get('admin')
+    if admin:
+        typename = ['WEB', 'MISC', 'Crypto', 'Pwn', 'Reverse']
+        mysql = Mysqld()
+        ctf_type_num = mysql.select_ctf_type_num()
+        for i in ctf_type_num:
+            # web
+            if i[0] == 0:
+                web_num = i[1]
+            if i[0] == 1:
+                misc_num = i[1]
+            if i[0] == 2:
+                crypto_num = i[1]
+            if i[0] == 3:
+                reverse_num = i[1]
+            if i[0] == 4:
+                pwn_num = i[1]
+        type_num = [{'value': web_num, 'name': 'WEB'},{'value': misc_num, 'name': 'MISC'},{'value': crypto_num, 'name': 'Crypto'},{'value': pwn_num, 'name': 'Pwn'},{'value': reverse_num, 'name': 'Reverse'}]
+        return json.dumps({'typename':typename,'type_num':type_num},ensure_ascii=False)
+    else:
+        return ''
+
 
 
 # 管理员系统设置

@@ -1269,7 +1269,18 @@ class Mysqld:
             self.conn.rollback()
             return 0
 
-
-a = Mysqld()
-b = a.select_awd_exam_instance_container_id_by_exam_name('test1')
-print(b)
+    # admin中的echart
+    def select_ctf_type_num(self):
+        sql = 'select type,count(id) from challenge_list group by type'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            if result:
+                return result
+            else:
+                return -1
+        except Exception:
+            return 0
+# a = Mysqld()
+# b = a.select_ctf_type_num()
+# print(b)
