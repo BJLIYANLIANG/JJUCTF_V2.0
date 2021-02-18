@@ -867,52 +867,19 @@ def start_awd_instance():
         awd_info = mysql.select_awd_exam_by_imageID(image_id)
         # id,name,image_id,time,ssh,other_port
         ssh_user = awd_info[7]
-
-        status = start_awd_instance_for(groupname_list,image_id,awd_info[1],awd_info[4],awd_info[5],ssh_user)
+        awd_name = awd_info[1]
+        ssh_port = awd_info[4]
+        other_port = awd_info[5]
+        status = start_awd_instance_for(groupname_list,image_id,awd_name,ssh_port,other_port,ssh_user)
         print(status)
         if status == -1:
             data = {'status': '20','message':'容器启动错误！'}
         if status == 1:
+            mysql.change_awd_exam_status_to_1_by_name(awd_name)
             data = {'status':'1'}
         return data
     else:
         return render_template("admin/login.html")
-
-
-
-def start_awd_instance_for(group_list,images_id,name,ssh_port,other_port,ssh_user):
-    docker = Contain()
-    mysql = Mysqld()
-    now_time=str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-    ip_dic = {}
-    print(now_time)
-    # 得到ip
-    try:
-        for i in group_list:
-            # (55, 'admin')
-            # i[1] 为队伍名
-            # docker容器名字，目前还不知道能干啥用
-            tag = i[1] + "." + name
-            # 从ip池中获取一个ip
-            ip = docker_get_ip()
-            # print(ip)
-            # log
-            ip_dic[i[1]] = ip
-            container_id = docker.docker_start_by_imagesID(tag,images_id,ip)
-            print(container_id)
-            if container_id == -1:
-                return -1
-            # 这里修改docker用户密码
-            passwd = get_random_password(ssh_user)
-            result = docker.docker_change_passwd(container_id,ssh_user,passwd)
-            # print('result:',result)
-            if result == -1:
-                return -1
-            mysql.insert_awd_instance(container_id, name, ssh_port, other_port, now_time, '',ip,tag,i[1],1,ssh_user,passwd)
-        print(ip_dic)
-        return 1
-    except:
-        return -1
 
 
 # ==================404=====================
@@ -1682,7 +1649,7 @@ def init_awd_score():
         return render_template('admin/login.html')
 
 
-
+# 关闭awd实例
 # ajax
 @app.route('/pl_stop_awd_instance',methods=['POST'])
 def pl_stop_awd_instance():
@@ -1692,19 +1659,30 @@ def pl_stop_awd_instance():
         exam_name = request.form.get('name')
         print(exam_name)
         if exam_name:
-            get_container_id = mysql.select_awd_exam_instance_container_id_by_exam_name(exam_name)
+            get_container_list = mysql.select_awd_exam_instance_container_id_by_exam_name(exam_name)
             docker = Contain()
+            print(get_container_list)
             # 一个个关闭容器
-            for container_id in get_container_id:
+            # container_id,ip
+            for container in get_container_list:
                 # 停止容器
+                container_id = container[0]
+                container_ip = container[1]
                 code = docker.docker_stop_by_docker_id(container_id)
-                # 删除容器
+                if code !=1:
+                    print('关闭实例失败',container_id)
                 # 释放ip
-                if code != 1:
-                    return '501'
+                print('container_ip:',container_ip)
+                docker_release_ip(container_ip)
+
 
             # 关闭之后更改状态码
             mysql.change_awd_exam_status_to_0_by_name(exam_name)
+
+            # 更新数据库
+            status_code = mysql.del_awd_instance_list_by_awdExamName(exam_name)
+            if status_code != 1:
+                return "501"
             return '200'
         else:
             return '502'
@@ -1797,6 +1775,10 @@ def update_user_passwd():
         return redirect('login')
 
 
+
 # 一定要放到最后
 if __name__ == '__main__':
+
+    # 初始化ip池
+    init_ip_pool()
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)

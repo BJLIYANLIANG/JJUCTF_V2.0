@@ -1172,16 +1172,14 @@ class Mysqld:
 
 
     def select_awd_exam_instance_container_id_by_exam_name(self,exam_name):
-        sql = 'select container_id from awd_exam_instance where name="%s"'%(exam_name)
+        sql = 'select container_id,ip from awd_exam_instance where name="%s"'%(exam_name)
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchall()
-            tmp = []
-            for i in result:
-                tmp.append(i[0])
-            return tmp
+            return result
         except Exception:
             return 0
+
 
 
     def delete_pl_awd_exam_instance_by_exam_name(self,exam_name):
@@ -1259,3 +1257,19 @@ class Mysqld:
         except:
             self.conn.rollback()
             return 0
+
+    def del_awd_instance_list_by_awdExamName(self,name):
+        sql = 'delete from `awd_exam_instance` WHERE name="%s"' % (name)
+        print(sql)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            return 1
+        except:
+            self.conn.rollback()
+            return 0
+
+
+a = Mysqld()
+b = a.select_awd_exam_instance_container_id_by_exam_name('test1')
+print(b)

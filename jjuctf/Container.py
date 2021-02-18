@@ -69,10 +69,10 @@ class Contain:
     def docker_stop_by_docker_id(self,dockerID):
         penv = dict(os.environ)
         try:
-            tmp = subprocess.Popen(['docker','stop',dockerID],shell=False,env=penv)
-            print(tmp.stderr)
+            subprocess.Popen(['docker','stop',dockerID],shell=False,env=penv)
             return 1
         except subprocess.CalledProcessError as e:
+            print(e.output)
             return -1
 
 
@@ -89,11 +89,8 @@ class Contain:
 
     def docker_start_by_imagesID(self,group_name,images_id,ip):
         penv = dict(os.environ)
-        # cmd = 'docker run --name %s  --network awd --ip %s  -d  %s'%(group_name,ip,images_id)
-        cmd = 'docker run   --network awd --ip %s  -d  %s'%(ip,images_id)
-
-        # print(cmd)
-        # print(cmd)
+        cmd = 'docker run --rm --network=awd --ip %s  -d  %s'%(ip,images_id)
+        print(cmd)
         try:
             result = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
             return str(result)[2:14]
@@ -157,7 +154,7 @@ class Contain:
                 cmd = "wsl openssl passwd -1 '%s'" % (passwd)
             else:
                 cmd = "openssl passwd -1 '%s'"%(passwd)
-            passwd = subprocess.getoutput()
+            # passwd = subprocess.getoutput()
             create_passwd_cmd = "docker exec -u root %s sed -i 's/^%s:!/%s:%s/g' /etc/shadow"%(container_id,user,user,passwd)
             create_passwd_cmd = "docker exec -u root %s sed -i 's/^%s:!/%s:%s/g' /etc/shadow" % (container_id, user, user, passwd)
             # print(create_passwd_cmd)
@@ -249,7 +246,12 @@ class Contain:
         except:
             return -1
 
-
+    def docker_del_container(self,container_id):
+        try:
+            b = subprocess.run(['docker', 'rm', container_id])
+            return b.returncode
+        except:
+            return -1
 # a = Contain()
 # a.docker_clean()
 # b = a.docker_change_passwd('47d32060aa8f','glzjin','123456')
