@@ -30,7 +30,12 @@ user
 
 
 ## 搭建
-####  1. 安装依赖
+#### 修改pip镜像源
+```angular2html
+pip install pip -U
+pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+```
+####  安装依赖
 ```angular2html
 pip install -r requirement.txt
 ```
@@ -47,11 +52,11 @@ python 在 `Linux`下使用AES时要安装的是`pycrypto`模块
  pip install pycrypto 
 ```
 
-#### 2. 创建AWD靶场网络
+#### 创建AWD靶场网络
 ```angular2html
 docker network create --subnet=172.18.0.0/16 awd
 ```
-#### 3. 多线程模式工作
+#### 多线程模式工作
 ```angular2html
 gunicorn -w 2 -b 0.0.0.0:8080   app:app
 ```

@@ -4,6 +4,7 @@
         border: 0.3rem solid #2c3e50;
         background-color: #0d1927;
         color: white;
+        font-size: .9rem;
     }
     .modal-header{
         border-bottom: none;
@@ -101,7 +102,7 @@
                 <div class="card-header text-info">解题动态</div>
                 <div class="card-body">
                     <div class="awd-group-card-x">
-                        <table class="table table-borderless" id="challenge_list" style="color: white;font-size: 0.9rem">
+                        <table class="table table-borderless" id="challenge_list" style="color: white;font-size: 0.65rem">
                             <tbody>
                             <tr>
                                 <td style="width: 80%">admin战队 <span class="text-danger">攻击了 </span><span>jjusec战队 </span>的 <span></span><span class="text-info">WEB1</span></td>
@@ -197,97 +198,96 @@
                         </div>
                         <br>
                         <div class="row text-center">
-                            <div class="col-md-4" style="padding: .1rem"><a class="text-info"  data-toggle="modal" data-target="#more1">更多</a></div>
+                            <div class="col-md-4" style="padding: .1rem"><a class="text-info"  data-toggle="modal" data-target="#more{{ i[0] }}">更多</a></div>
                             <div class="col-md-4" style="padding: .1rem"><a class="text-primary" data-toggle="modal" data-target="#post_flag_1">提交</a></div>
                             <div class="col-md-4" style="padding: .1rem"><a class="text-danger"  data-toggle="modal" data-target="#reset_1">重置</a></div>
                         </div>
                     </div>
-                </div>
 
-
-                     <!-- 模态框（Modal） -->
-                <div class="modal fade modal_location" id="more1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content awd-modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title text-primary ">更多信息</h4>
-                                <button type="button" class="close text-light" data-dismiss="modal" aria-hidden="true">×</button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-md-12">
-{#                                        name,ssh_port,other_port,time,ip,status,ssh_user,password#}
-                                        题目：<span class="text-info">{{ i[0] }}</span>
-                                    </div>
-                                    <div class="col-md-12">
-                                        IP：<span class="text-info">{{ i[4] }}</span>
-                                    </div>
-                                    <div class="col-md-12">
-                                        端口：<span class="text-info">{{ i[2] }}</span>
-                                    </div>
-                                    <div class="col-md-12">
-                                        SSH 端口：<span class="text-info">{{ i[1] }}</span>
-                                    </div>
-                                    <div class="col-md-12">
-                                        登陆用户：<span class="text-info">{{ i[6] }}</span>
-                                    </div>
-                                    <div class="col-md-12">
-                                        登陆密码：<span class="text-info">{{ i[7] }}</span>
-                                    </div>
+                         <!-- 模态框（Modal） -->
+                    <div class="modal fade modal_location" id="more{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content awd-modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title text-primary ">更多信息</h4>
+                                    <button type="button" class="close text-light" data-dismiss="modal" aria-hidden="true">×</button>
                                 </div>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
-
-                <div class="modal fade modal_location" id="post_flag_1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content awd-modal-content">
-                            <div class="modal-header">
-                                 <h4 class="modal-title text-success">提交FLAG</h4>
-                                <button type="button" class="close text-light" data-dismiss="modal"
-                                        aria-hidden="true">×
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-
-                                    <div class="col-md-12 text-center">
-                                        <div class="form-group">
-                                          <label for="flag">FLAG</label>
-                                          <input type="text" class="form-control" id="flag">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+    {#                                        name,ssh_port,other_port,time,ip,status,ssh_user,password#}
+                                            题目：<span class="text-info">{{ i[0] }}</span>
                                         </div>
-                                        <button class="btn btn-primary">提交</button>
+                                        <div class="col-md-12">
+                                            IP：<span class="text-info">{{ i[4] }}</span>
+                                        </div>
+                                        <div class="col-md-12">
+                                            端口：<span class="text-info">{{ i[2] }}</span>
+                                        </div>
+                                        <div class="col-md-12">
+                                            SSH 端口：<span class="text-info">{{ i[1] }}</span>
+                                        </div>
+                                        <div class="col-md-12">
+                                            登陆用户：<span class="text-info">{{ i[6] }}</span>
+                                        </div>
+                                        <div class="col-md-12">
+                                            登陆密码：<span class="text-info">{{ i[7] }}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
 
+                    <div class="modal fade modal_location" id="post_flag_1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content awd-modal-content">
+                                <div class="modal-header">
+                                     <h4 class="modal-title text-success">提交FLAG</h4>
+                                    <button type="button" class="close text-light" data-dismiss="modal"
+                                            aria-hidden="true">×
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
 
-                                <div class="modal fade modal_location" id="reset_1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content awd-modal-content">
-                            <div class="modal-header">
-                                 <h4 class="modal-title text-warning">重置靶场</h4>
-                                <button type="button" class="close text-light" data-dismiss="modal"
-                                        aria-hidden="true">×
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-
-                                    <div class="col-md-12 text-center">
-                                        <p>重置靶场后，将扣除您50积分</p>
-                                        <button class="btn btn-danger">重置</button>
+                                        <div class="col-md-12 text-center">
+                                            <div class="form-group">
+                                              <label for="flag">FLAG</label>
+                                              <input type="text" class="form-control" id="flag">
+                                            </div>
+                                            <button class="btn btn-primary">提交</button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div><!-- /.modal-content -->
-                    </div><!-- /.modal-dialog -->
-                </div><!-- /.modal -->
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
 
+
+                                    <div class="modal fade modal_location" id="reset_1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content awd-modal-content">
+                                <div class="modal-header">
+                                     <h4 class="modal-title text-warning">重置靶场</h4>
+                                    <button type="button" class="close text-light" data-dismiss="modal"
+                                            aria-hidden="true">×
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+
+                                        <div class="col-md-12 text-center">
+                                            <p>重置靶场后，将扣除您50积分</p>
+                                            <button class="btn btn-danger">重置</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal-dialog -->
+                    </div><!-- /.modal -->
+
+                </div>
                 {% endfor %}
 
 

@@ -70,36 +70,3 @@ def get_random_password(str_user):
     salt2 = 'hsmcool'
     return get_md5(salt+str_user+salt2)[:12]
 
-
-
-# 打开awd实例
-def start_awd_instance_for(group_list,images_id,name,ssh_port,other_port,ssh_user):
-    docker = Contain()
-    mysql = Mysqld()
-    now_time=str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-    ip_dic = {}
-    print(now_time)
-    # 得到ip
-    try:
-        for i in group_list:
-            print(ip_pool)
-            # 从ip池中获取一个ip
-            ip = docker_get_ip()
-            print('image_id:',images_id)
-            container_id = docker.docker_start_by_imagesID('tag',images_id,ip)
-            print('ip:',ip,'container_id:',container_id)
-            if container_id == -1:
-                return -1
-            # 这里修改docker用户密码
-            passwd = get_random_password(ssh_user)
-            result = docker.docker_change_passwd(container_id,ssh_user,passwd)
-
-            if result == -1:
-                return -1
-            status_code = mysql.insert_awd_instance(container_id, name, ssh_port, other_port, now_time, '',ip,'tag',i[1],1,ssh_user,passwd)
-
-        return 1
-    except:
-        return -1
-
-

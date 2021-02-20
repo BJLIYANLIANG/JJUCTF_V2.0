@@ -1,6 +1,7 @@
 import os
 import time
 import re
+import base64
 import subprocess
 
 class Contain:
@@ -174,9 +175,10 @@ class Contain:
 
         # 得到容器中的初始密码
         penv = dict(os.environ)
-        shell = "awk -F: '{if($1 == \"%s\") {print $2} }' /etc/shadow" % (user)
+        shell = '''awk -F: '{if($1 == "%s") {print $2} }' /etc/shadow''' % (user)
         print(shell)
-        current_passwd = self.docker_exec(container_id,shell)
+        # current_passwd
+        current_passwd = self.docker_exec_get_return(container_id,shell)
         print('current_passwd:',current_passwd)
         # 修改密码
 
@@ -190,10 +192,12 @@ class Contain:
             new_passwd = subprocess.getoutput(shell)
             # 修改密码，将旧密码替换成新密码
             shell = "sed -i 's/^%s:%s/%s:%s/g' /etc/shadow"% (user,current_passwd, user, new_passwd)
-
+            print(shell)
             # 返回执行状态，0表示成功执行，
             status_code = self.docker_exec_return_status_code(container_id,shell)
-
+            if status_code == 0:
+                print('成功插入密码')
+            # print('status_code:',status_code)
             if status_code == 0:
                 flag = 1
             sum += 1
@@ -217,7 +221,8 @@ class Contain:
 
 
     def docker_clean(self):
-        containers = subprocess.getoutput(['docker', 'ps', '-a', '-q'])
+        containers = subprocess.getoutput('docker ps -a -q')
+        # print(containers)
         if containers:
             print("[DOCKER] Stop and remove all contaners: ")
             for container in containers.split():
@@ -229,11 +234,20 @@ class Contain:
 
 
     # 返回执行结果
-    def docker_exec(self,container_id,shell):
+    def docker_exec_get_return(self,container_id,shell):
+        penv = dict(os.environ)
         try:
-            b = subprocess.getoutput(['docker', 'exec', '-u', 'root', container_id, '/bin/bash', '-c', shell])
+            shell_base64_encode = self.docker_shell_base64(shell)
+            shell = "echo {0} | base64 -d|bash".format(shell_base64_encode)
+            cmd = '''docker exec -u root {0} /bin/bash -c "{1}"'''.format(container_id,shell)
+            # passing = ['docker', 'exec', '-u', 'root', container_id, '/bin/bash', '-c', shell]
+            # print(passing)
+            b = subprocess.getoutput(cmd)
+            # print(b.stdout)
+
             return b
-        except:
+        except Exception as e:
+            print(e)
             return -1
 
 
@@ -246,12 +260,15 @@ class Contain:
         except:
             return -1
 
+
+
     def docker_del_container(self,container_id):
         try:
             b = subprocess.run(['docker', 'rm', container_id])
             return b.returncode
         except:
             return -1
-# a = Contain()
-# a.docker_clean()
-# b = a.docker_change_passwd('47d32060aa8f','glzjin','123456')
+    def docker_shell_base64(self,shell):
+        return base64.b64encode(str(shell).encode('utf-8')).decode('utf-8')
+
+

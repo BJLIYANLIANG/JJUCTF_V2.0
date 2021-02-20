@@ -1281,6 +1281,21 @@ class Mysqld:
                 return -1
         except Exception:
             return 0
+
+    def get_awd_exam_open_status(self,name):
+        sql = 'select status from awd_exam where name="%s"'%(name)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            # print('result:',result[0])
+            # 1为已经打开，0为未开启
+            return result[0]
+        except Exception as e:
+            print(e)
+            return -1
+    # # 检查该题目是否已经打开过
+    # def check_awd_exam_container_open_by_name(self,name):
+    #     sql = 'select status from awd_exam where name="%s"'%(name)
 # a = Mysqld()
-# b = a.select_ctf_type_num()
+# b = a.get_awd_exam_open_status('Pwn1')
 # print(b)

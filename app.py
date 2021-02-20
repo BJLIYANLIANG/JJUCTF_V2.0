@@ -899,6 +899,13 @@ def start_awd_instance():
         awd_name = awd_info[1]
         ssh_port = awd_info[4]
         other_port = awd_info[5]
+        # 检查容器之前是否已经开启过
+        open_status_code = mysql.get_awd_exam_open_status(awd_name)
+        #
+        if open_status_code == 1:
+            data = {'status_code': '201', 'task_num': '1', 'task_total': '1','id': awd_name,'message':'该实例之前已经打开！'}
+            emit('start_awd_exam', data, broadcast=True, namespace='/man_awd_exam')
+            return '1'
         status = start_awd_instance_for(groupname_list,image_id,awd_name,ssh_port,other_port,ssh_user)
         print(status)
         if status == -1:
@@ -910,6 +917,51 @@ def start_awd_instance():
     else:
         return render_template("admin/login.html")
 
+
+# 打开awd实例
+def start_awd_instance_for(group_list, images_id, name, ssh_port, other_port, ssh_user):
+    docker = Contain()
+    mysql = Mysqld()
+    now_time = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    # print(now_time)
+    # 得到ip
+    task_num = 0
+    task_total = len(group_list)
+    try:
+        # 初始化
+        data = {'status_code': '200', 'task_num': str(task_num), 'task_total': task_total,'id': name}
+        emit('start_awd_exam', data, broadcast=True, namespace='/man_awd_exam')
+        task_num = 1
+        for i in group_list:
+            # 从ip池中获取一个ip
+            ip = docker_get_ip()
+            # print('image_id:',images_id)
+            container_id = docker.docker_start_by_imagesID('tag', images_id, ip)
+            # print('ip:',ip,'container_id:',container_id)
+            if container_id == -1:
+                data = {'status_code': '500', 'id': container_id, 'task_num': str(task_num - 1),'task_total': task_total, 'message': '启动镜像失败,image_id:'+images_id}
+                emit('start_awd_exam', data, broadcast=True, namespace='/man_awd_exam')
+                return -1
+            print('启动容器成功', container_id)
+            # 这里修改docker用户密码
+            passwd = get_random_password(ssh_user)
+            print('随机密码', passwd)
+            result = docker.docker_change_passwd(container_id, ssh_user, passwd)
+            if result == 1:
+                print('修改密码成功', container_id)
+            if result == -1:
+                return -1
+            status_code = mysql.insert_awd_instance(container_id, name, ssh_port, other_port, now_time, '', ip, 'tag',i[1], 1, ssh_user, passwd)
+            if status_code == 0:
+                data = {'status_code': '500', 'id': container_id, 'task_num': str(task_num-1), 'task_total': task_total,'message':'更新数据库错误'}
+                emit('start_awd_exam', data, broadcast=True, namespace='/man_awd_exam')
+
+            data = {'status_code':'200','task_num':str(task_num),'task_total':task_total,'id':name}
+            emit('start_awd_exam', data, broadcast=True, namespace='/man_awd_exam')
+            task_num += 1
+        return 1
+    except:
+        return -1
 
 # ==================404=====================
 # 404错误
@@ -1743,20 +1795,37 @@ def post_exam_by_type_1():
 
 
 
-
+# ajax
 @app.route('/del_awd_exam_by_name',methods=["POST"])
 def del_awd_exam_by_name():
     admin = session.get('admin')
+    data = {}
     if admin:
         name = request.form.get('name')
-        mysql = Mysqld()
-        status_code = mysql.delete_awd_exam_by_exam_name(name)
-        if status_code == 1:
-            return '200'
+        if name:
+            mysql = Mysqld()
+            awd_exam_open_status = mysql.get_awd_exam_open_status(name)
+            if awd_exam_open_status == 1:
+                data['message'] = '删除失败！请先停止AWD靶场实例！'
+                data['code'] = '500'
+                return data
+            del_status_code = mysql.delete_awd_exam_by_exam_name(name)
+            if del_status_code == 1:
+                data['message'] = '删除成功！'
+                data['code'] = '200'
+                return data
+            else:
+                data['message'] = '删除失败！请检查参数是否正确！'
+                data['code'] = '500'
+                return data
         else:
-            return '-1'
+            data['message'] = '删除失败！参数不能为空'
+            data['code'] = '500'
+            return data
     else:
-        return '0'
+        data['message'] = '未登录！'
+        data['code'] = '500'
+        return data
 
 
 
@@ -1788,12 +1857,15 @@ def change_user_info():
 @app.route('/update_user_passwd',methods=['POST'])
 def update_user_passwd():
     user = session.get('user')
-
     if user:
         mysql = Mysqld()
         uid = mysql.selectUserIdByUserName(user)
         old_pwd = request.form.get('old_pwd')
         new_pwd = request.form.get('pwd')
+        if old_pwd =='' or new_pwd == '':
+            return redirect(url_for('user', message='输入不能为空'))
+        if check_input(old_pwd) != 1 or check_input(new_pwd) != 1:
+            return redirect(url_for('user', message='输入信息潜在危险，已被拦截，请重新输入！'))
         status_code = mysql.update_user_passwd(uid,old_pwd,new_pwd)
         if status_code == 1:
             return redirect(url_for('user',message='密码修改成功'))
@@ -1807,7 +1879,6 @@ def update_user_passwd():
 
 # 一定要放到最后
 if __name__ == '__main__':
-
     # 初始化ip池
     init_ip_pool()
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)

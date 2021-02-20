@@ -16,6 +16,6 @@ mail_host = 'smtp.163.com'
 
 # ===数据库配置===
 mariadb_server_ip = '127.0.0.1'
-mariadb_user = 'root'
+mariadb_user = 'jjuctf'
 mariadb_database = 'jjuctf'
 mariadb_password = '905008'
