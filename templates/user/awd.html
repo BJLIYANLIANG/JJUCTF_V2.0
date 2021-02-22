@@ -290,11 +290,6 @@
                 </div>
                 {% endfor %}
 
-
-
-
-
-
             </div>
         </div>
         <div class="col-md-3">
@@ -325,12 +320,14 @@
                     </tr>
                     </thead>
                     <tbody>
+                    {% set n = 0 %}
                  {% for i in awd_rank_list %}
                     <tr>
-                        <td style="border-color: #1c2b36;color: #87CEFA">2</td>
+                        <td style="border-color: #1c2b36;color: #87CEFA">{{ loop.index  }} </td>
                         <td style="border-color: #1c2b36;color: #87CEFA">{{ i[1] }}</td>
                         <td style="border-color: #1c2b36;color: #87CEFA">{{ i[2] }}</td>
                     </tr>
+
                     {% endfor %}
                </tbody>
             </table>

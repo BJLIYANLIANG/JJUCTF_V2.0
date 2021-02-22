@@ -16,6 +16,7 @@ from jjuctf.Container import *
 from jjuctf.functions import *
 import random
 import json
+import threading
 
 # redis 连接
 redis_instance = redis.Redis(host=redis_address, port=redis_port, decode_responses=True)
@@ -871,6 +872,69 @@ def adminLogout():
     return render_template("admin/login.html", message="退出帐号成功，请重新登录")
 
 
+# 打开awd实例
+def start_awd_instance_for(group_list, images_id, name, ssh_port, other_port, ssh_user):
+    docker = Contain()
+    mysql = Mysqld()
+    now_time = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+    print(now_time)
+    # 初始化当前任务索引
+    task_num = 0
+    # 总任务数
+    task_total = len(group_list)
+    print(task_total)
+    try:
+            #初始化
+        data = {'status_code': '200', 'task_num': str(task_num), 'task_total': task_total,'id': name}
+        emit('start_awd_exam', data, broadcast=True, namespace='/man_awd_exam')
+        task_num = 1
+        tmp_container_id_list = []
+        print('hello')
+        for i in group_list:
+                # 从ip池中获取一个ip
+            ip = docker_get_ip()
+                # print('image_id:',images_id)
+            container_id = docker.docker_start_by_imagesID('tag', images_id, ip)
+            print('ip:',ip)
+            if container_id == -1:
+                data = {'status_code': '500', 'id': container_id, 'task_num': str(task_num - 1),'task_total': task_total, 'message': '启动镜像失败,image_id:'+images_id}
+                emit('start_awd_exam', data, broadcast=True, namespace='/man_awd_exam')
+                docker.docker_stop_container_by_list(tmp_container_id_list)
+                return -1
+            print('启动容器成功', container_id)
+                # 加入到临时列表中，当这个任务中断时，将之前开启的容器也一并关闭
+            tmp_container_id_list.append(container_id)
+                # 这里修改docker用户密码
+            passwd = get_random_password(ssh_user)
+            print('随机密码', passwd)
+            result = docker.docker_change_passwd(container_id, ssh_user, passwd)
+            if result == -1:
+                docker.docker_stop_container_by_list(tmp_container_id_list)
+                return -1
+            else:
+                status_code = mysql.insert_awd_instance(container_id, name, ssh_port, other_port, now_time, '', ip, 'tag',i[1], 1, ssh_user, passwd)
+                if status_code == 0:
+                    data = {'status_code': '500', 'id': container_id, 'task_num': str(task_num-1), 'task_total': task_total,'message':'更新数据库错误'}
+                    emit('start_awd_exam', data, broadcast=True, namespace='/man_awd_exam')
+                    docker.docker_stop_container_by_list(tmp_container_id_list)
+                else:
+                    print('progress:',task_num/task_total)
+                    data = {'status_code':'200','task_num':task_num,'task_total':task_total,'id':name}
+                    emit('start_awd_exam', data, broadcast=True, namespace='/man_awd_exam')
+            print('task_num', task_num, 'total_task', task_total)
+            task_num += 1
+            print('status_code:',status_code)
+            # 修改awd开启状态
+        change_awd_exam_status_to_1_code = mysql.change_awd_exam_status_to_1_by_name(name)
+        if change_awd_exam_status_to_1_code == 1:
+            return 1
+        else:
+
+            return -1
+    except Exception as e:
+        # print('ddd')
+        print(e)
+        return -1
 
 
 # 打开一个awd实例，必须知道images镜像id
@@ -879,11 +943,8 @@ def start_awd_instance():
     global data
     admin = session.get('admin')
     if admin:
-        # 如果不是get请求
-        if request.method == 'GET':
-            redirect(url_for('man_awd_exam'))
         # image_id = '42941dbd1f82'
-        image_id = request.form.get('image_id')
+        image_id = request.args.get('image_id')
         docker = Contain()
         docker_status_code = docker.search_docker_image_in_system(image_id)
         if docker_status_code == -1:
@@ -906,62 +967,16 @@ def start_awd_instance():
             data = {'status_code': '201', 'task_num': '1', 'task_total': '1','id': awd_name,'message':'该实例之前已经打开！'}
             emit('start_awd_exam', data, broadcast=True, namespace='/man_awd_exam')
             return '1'
-        status = start_awd_instance_for(groupname_list,image_id,awd_name,ssh_port,other_port,ssh_user)
-        print(status)
-        if status == -1:
-            data = {'status': '20','message':'容器启动错误！'}
-        if status == 1:
-            mysql.change_awd_exam_status_to_1_by_name(awd_name)
-            data = {'status':'1'}
-        return data
+        # 循环开启容器
+        # bbb = (groupname_list, image_id, awd_name, ssh_port, other_port, ssh_user)
+        # a = threading.Thread(target=print,kwargs=kwargs_tmp)
+        # a = threading.Thread(target=start_awd_instance_for,args=(groupname_list, image_id, awd_name, ssh_port, other_port, ssh_user))
+        start_awd_instance_for(groupname_list,image_id,awd_name,ssh_port,other_port,ssh_user)
+        return '200'
     else:
-        return render_template("admin/login.html")
+        return '500'
 
 
-# 打开awd实例
-def start_awd_instance_for(group_list, images_id, name, ssh_port, other_port, ssh_user):
-    docker = Contain()
-    mysql = Mysqld()
-    now_time = str(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-    # print(now_time)
-    # 得到ip
-    task_num = 0
-    task_total = len(group_list)
-    try:
-        # 初始化
-        data = {'status_code': '200', 'task_num': str(task_num), 'task_total': task_total,'id': name}
-        emit('start_awd_exam', data, broadcast=True, namespace='/man_awd_exam')
-        task_num = 1
-        for i in group_list:
-            # 从ip池中获取一个ip
-            ip = docker_get_ip()
-            # print('image_id:',images_id)
-            container_id = docker.docker_start_by_imagesID('tag', images_id, ip)
-            # print('ip:',ip,'container_id:',container_id)
-            if container_id == -1:
-                data = {'status_code': '500', 'id': container_id, 'task_num': str(task_num - 1),'task_total': task_total, 'message': '启动镜像失败,image_id:'+images_id}
-                emit('start_awd_exam', data, broadcast=True, namespace='/man_awd_exam')
-                return -1
-            print('启动容器成功', container_id)
-            # 这里修改docker用户密码
-            passwd = get_random_password(ssh_user)
-            print('随机密码', passwd)
-            result = docker.docker_change_passwd(container_id, ssh_user, passwd)
-            if result == 1:
-                print('修改密码成功', container_id)
-            if result == -1:
-                return -1
-            status_code = mysql.insert_awd_instance(container_id, name, ssh_port, other_port, now_time, '', ip, 'tag',i[1], 1, ssh_user, passwd)
-            if status_code == 0:
-                data = {'status_code': '500', 'id': container_id, 'task_num': str(task_num-1), 'task_total': task_total,'message':'更新数据库错误'}
-                emit('start_awd_exam', data, broadcast=True, namespace='/man_awd_exam')
-
-            data = {'status_code':'200','task_num':str(task_num),'task_total':task_total,'id':name}
-            emit('start_awd_exam', data, broadcast=True, namespace='/man_awd_exam')
-            task_num += 1
-        return 1
-    except:
-        return -1
 
 # ==================404=====================
 # 404错误
@@ -1720,7 +1735,11 @@ def init_awd_score():
     admin = session.get('admin')
     if admin:
         score_str = request.form.get('init_awd_score')
-        score = int(score_str)
+        try:
+            score = int(score_str)
+        except Exception as e:
+            print(e)
+            return redirect(url_for('man_awd_exam',message='初始化队伍分数失败！,输入分数不是数字，请重新输入'))
         status_code = init_awd_ranks(score)
         if status_code == 1:
             return redirect(url_for('man_awd_exam',message='初始化队伍分数成功！'))
@@ -1869,7 +1888,6 @@ def update_user_passwd():
         status_code = mysql.update_user_passwd(uid,old_pwd,new_pwd)
         if status_code == 1:
             return redirect(url_for('user',message='密码修改成功'))
-
         else:
             return redirect(url_for('user',message='密码修改失败'))
     else:

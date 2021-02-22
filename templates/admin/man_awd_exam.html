@@ -42,7 +42,7 @@
                 <div class="modal-content awd-modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title text-info">创建题目</h4>
-                        <button type="button" class="close text-light" data-dismiss="modal" aria-hidden="true">×</button>
+                        <button type="button" class="close text-dark" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -94,7 +94,7 @@
                 <div class="modal-content awd-modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title text-primary">初始化队伍分数</h4>
-                        <button type="button" class="close text-light" data-dismiss="modal" aria-hidden="true">×</button>
+                        <button type="button" class="close text-dark" data-dismiss="modal" aria-hidden="true">×</button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
@@ -127,7 +127,7 @@
                             <div id="awd-open-progress" class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
                         </div>
                         <div id="awd-open-progress-info">
-                            <p class="text-primary">正在开启</p>
+                            <p class="text-primary">开启中...</p>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -179,11 +179,14 @@
     </div>
 <script>
     function start_instance(id) {
+        // 初始化进度条
         $('#awd-open-progress').css('width','0%');
         $('#start_awd_exam_modal').modal('show');
+        $('#awd-open-progress-info').empty();
+        $('#awd-open-progress-info').append('<p class="text-primary">开启中...</p>');
         $.ajax({
             url: "/start_awd_instance",
-            type: "post",
+            type: "get",
             data: {"image_id": id,},
             success: function (result) {
             },
@@ -242,22 +245,30 @@
     $(document).ready(function () {
         var url = location.href;
         var socket = io.connect(url);
+        //监听事件并且回调
         socket.on('start_awd_exam',(data)=>{
+            {#document.write(data.task_num+data.task_total);#}
             width_float = parseInt(data.task_num)/parseInt(data.task_total);
             width_percent = toPercent(width_float);
             $('#awd-open-progress').css('width',width_percent);
+            $('#awd-open-progress').text(width_percent);
             if(data.status_code == '200'){
-                if(width_float == 1 ){
+                if(width_float == 1){
                     $('#awd-open-progress-info').empty();
                     $('#awd-open-progress-info').append('<p class="text-success">开启成功</p>');
                     $('#awd_open_status_'+data.id).text('已打开');
                     $('#awd-open-progress-btn').removeClass('btn-secondary');
-                    {#$('#awd_open_status_'+data.id).removeClass('');#}
                     $('#awd_open_status_'+data.id).addClass('text-primary');
+                }
+                else {
+                    $('#awd-open-progress-info').empty();
+                    $('#awd-open-progress-info').append('<p class="text-primary">开启中...</p>');
                 }
             }
             else {
+
                 if(data.status_code == '201'){
+                    //当再次开启已经打开的题目
                     if(width_float == 1 ){
                     $('#awd-open-progress-info').empty();
                     var tmp= '<p class="text-success">开启成功:'+data.message+'</p>'
@@ -277,7 +288,7 @@
     })
     //小数转百分比
     function toPercent(point){
-    var str=Number(point*100).toFixed(1);
+    var str=Number(point*100).toFixed(0);
     str+="%";
     return str;
     }

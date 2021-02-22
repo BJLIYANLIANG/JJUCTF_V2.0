@@ -77,8 +77,6 @@ class Contain:
             return -1
 
 
-
-
     def dockerBuild(self):
         penv = dict(os.environ)
         cmd = ""
@@ -96,6 +94,7 @@ class Contain:
             result = subprocess.check_output(cmd, stderr=subprocess.STDOUT, shell=True, env=penv)
             return str(result)[2:14]
         except subprocess.CalledProcessError as e:
+            print(e.output)
             return -1
 
     # def docker_gen_dockerIP(self,):
@@ -167,19 +166,20 @@ class Contain:
                 return -1
         return 1
 
+
+
     # 修改密码
     def docker_change_passwd(self, container_id, user, new_passwd):
         # 定义变量
         flag = 0
         sum = 0
-
         # 得到容器中的初始密码
         penv = dict(os.environ)
         shell = '''awk -F: '{if($1 == "%s") {print $2} }' /etc/shadow''' % (user)
-        print(shell)
+        # print(shell)
         # current_passwd
         current_passwd = self.docker_exec_get_return(container_id,shell)
-        print('current_passwd:',current_passwd)
+        # print('current_passwd:',current_passwd)
         # 修改密码
 
         while(flag == 0):
@@ -192,18 +192,20 @@ class Contain:
             new_passwd = subprocess.getoutput(shell)
             # 修改密码，将旧密码替换成新密码
             shell = "sed -i 's/^%s:%s/%s:%s/g' /etc/shadow"% (user,current_passwd, user, new_passwd)
-            print(shell)
+            # print(shell)
             # 返回执行状态，0表示成功执行，
             status_code = self.docker_exec_return_status_code(container_id,shell)
             if status_code == 0:
-                print('成功插入密码')
-            # print('status_code:',status_code)
-            if status_code == 0:
+                # print('成功插入密码')
                 flag = 1
             sum += 1
             if sum >100:
                 return -1
         return 1
+
+
+
+
     # 检查这个镜像是否在这个系统中
     def search_docker_image_in_system(self,image_id):
         cmd = 'docker images'
@@ -255,8 +257,13 @@ class Contain:
     # 执行shell，并且返回执行结果
     def docker_exec_return_status_code(self,container_id,shell):
         try:
+            shell_base64_encode = self.docker_shell_base64(shell)
+            shell = "echo {0} | base64 -d|bash".format(shell_base64_encode)
             b = subprocess.run(['docker', 'exec', '-u', 'root', container_id, '/bin/bash', '-c', shell])
+            # 0表示成功执行
+            # subprocess.getstatusoutput()
             return b.returncode
+
         except:
             return -1
 
@@ -268,7 +275,19 @@ class Contain:
             return b.returncode
         except:
             return -1
+
+
     def docker_shell_base64(self,shell):
         return base64.b64encode(str(shell).encode('utf-8')).decode('utf-8')
 
+
+
+    def docker_stop_container_by_list(self,container_list):
+        for container_id in container_list:
+            try:
+                self.docker_stop_by_docker_id(container_id)
+            except Exception as e:
+                print(e)
+                return -1
+        return 1
 
