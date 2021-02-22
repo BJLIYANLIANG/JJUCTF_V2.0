@@ -108,15 +108,14 @@ class Mysqld:
         try:
             group_id = self.selectGroupidByusername(user)
             if group_id:
-                # print("group_id:"+str(group_id))
-                # sql = 'select a.group_id,a.name,a.info,b.role from user_group as a left join user_group_list as b on a.group_id = b.group_id and b.user_id=%d'%()
                 sql = 'select group_id,name,info,user_id from user_group where group_id="%s"' % (group_id)
                 # print(sql)
                 exec = self.cursor
                 exec.execute(sql)
                 return exec.fetchone()
             return 0
-        except:
+        except Exception as e:
+            print(e)
             return 0
 
     # 通过用户名查队伍id
@@ -1082,7 +1081,7 @@ class Mysqld:
     # select name,ssh_port,other_port,time,ip,status from awd_exam_instance where groupname='admin';
 
     def select_awd_target_by_groupname(self,groupname):
-        sql = 'select name,ssh_port,other_port,time,ip,status,ssh_user,password from awd_exam_instance where groupname="%s"'%(groupname)
+        sql = 'select name,ssh_port,other_port,time,ip,status,ssh_user,password,id from awd_exam_instance where groupname="%s"'%(groupname)
         try:
             self.cursor.execute(sql)
             result = self.cursor.fetchall()
@@ -1279,7 +1278,8 @@ class Mysqld:
                 return result
             else:
                 return -1
-        except Exception:
+        except Exception as e:
+            print(e)
             return 0
 
     def get_awd_exam_open_status(self,name):
@@ -1293,9 +1293,35 @@ class Mysqld:
         except Exception as e:
             print(e)
             return -1
-    # # 检查该题目是否已经打开过
-    # def check_awd_exam_container_open_by_name(self,name):
-    #     sql = 'select status from awd_exam where name="%s"'%(name)
+
+
+    def check_awd_flag(self,flag):
+        sql = 'select id,groupname,name from awd_exam_instance where flag="%s"'%(flag)
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchone()
+            if result:
+                return result
+            else:
+                return 0
+        except Exception as e:
+            print(e)
+            return -1
+
+
+    def insert_awd_challenge_list(self,username,groupname,score,target_id,target_name,target_group):
+        datetime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        sql = 'insert into awd_ranks_detail (username,groupname,score,target_id,target_name,target_group,time) value ("%s", "%s", %d, %d, "%s", "%s", "%s")'%(username,groupname,score,target_id,target_name,target_group,datetime)
+        print(sql)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            return 1
+        except Exception as e:
+            print(e)
+            self.conn.rollback()
+            return 0
+
 # a = Mysqld()
-# b = a.get_awd_exam_open_status('Pwn1')
+# b = a.insert_awd_challenge_list('test','ddd',50,223,'web1','admin')
 # print(b)

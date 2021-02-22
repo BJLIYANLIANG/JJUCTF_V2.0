@@ -254,9 +254,9 @@
                                         <div class="col-md-12 text-center">
                                             <div class="form-group">
                                               <label for="flag">FLAG</label>
-                                              <input type="text" class="form-control" id="flag">
+                                              <input type="text" class="form-control" id="flag-{{ i[8] }}" value="">
                                             </div>
-                                            <button class="btn btn-primary">提交</button>
+                                            <button class="btn btn-primary" onclick="post_flag({{ i[8] }})">提交</button>
                                         </div>
                                     </div>
                                 </div>
@@ -339,6 +339,35 @@
 
     <p></p>
 </div>
+<script>
+    function post_flag(eid) {
+        var flag = $('#flag-'+eid).val();
+        {#alert(flag);#}
+        $.ajax({
+            url: "/check_awd_flag",
+            type: "post",
+            data: {"flag": flag},
+            success: function (rel) {
+                if(rel.statuscode == '200'){
+                    var target = rel.target+rel.target_id;
+                    alert('恭喜答对!');
+                }
+                else {
+                    if(rel.statuscode == '500'){
+                        alert(rel.message);
+                    }
+                    else {
+                        alert('回答错误!');
+                    }
+                }
+            },
+            error: function () {
+                alert("发送请求失败");
+            }
+
+        })
+    }
+</script>
     <script>
         setInterval(function() {
             const EndTime = new Date('{{ end_time }}');
@@ -359,5 +388,6 @@
             document.getElementById("t_m").innerHTML = m + "分";
             document.getElementById("t_s").innerHTML = s + "秒";
         }, 10);
+
     </script>
 {% include'user/footer.html' %}

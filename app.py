@@ -987,7 +987,6 @@ def page_not_found(error):
         return render_template("404.html", username=user), 404
     return render_template("404.html"), 404
 
-
 # ===============函数====================
 
 
@@ -1893,6 +1892,42 @@ def update_user_passwd():
     else:
         return redirect('login')
 
+
+@app.route('/check_awd_flag',methods=['POST'])
+def check_awd_flag():
+    user = session.get('user')
+    if user:
+        rel = {}
+        flag = request.form.get('flag')
+        mysql = Mysqld()
+        tmp_v1 = mysql.check_awd_flag(flag)
+        print('tmp:',tmp_v1)
+        if tmp_v1 != 0 and tmp_v1 !=-1:
+            target_id  = tmp_v1[0]
+            target_group_name = tmp_v1[1]
+            target_exam_name = tmp_v1[2]
+            username = user
+            score = 50
+            tmp_v2 = mysql.selectGroupInfoByUsername(user)
+            if tmp_v2 != 0:
+                group_name = tmp_v2[1]
+                if target_group_name == group_name:
+                    rel['statuscode'] = '500'
+                    rel['message'] = '不能提交自己的flag!'
+                    return rel
+                else:
+                    rel['statuscode'] = '200'
+                    rel['target'] = target_group_name
+                    rel['target_id'] = target_id
+                mysql.insert_awd_challenge_list(username,group_name,score,target_id,target_exam_name,target_group_name)
+                return rel
+            else:
+                return '500'
+        else:
+            return '500'
+
+    else:
+        return '500'
 
 
 # 一定要放到最后
