@@ -1867,8 +1867,14 @@ def change_user_info():
         return redirect(url_for('user'))
     if user:
         name = request.form.get('name')
+        if check_input(name) == 0:
+            return redirect(url_for('user', message='用户修改失败,姓名输入敏感信息！'))
         real_name = request.form.get('real_name')
+        if check_input(real_name) == 0:
+            return redirect(url_for('user', message='用户修改失败,姓名输入敏感信息！'))
         email = request.form.get('email')
+        if check_is_valid_email(email) == -1:
+            return redirect(url_for('user', message='用户修改失败,邮箱输入有误！'))
         mobile = request.form.get('mobile')
         class_name = request.form.get('class_name')
         # 学号
@@ -1888,6 +1894,7 @@ def change_user_info():
 @app.route('/update_user_passwd',methods=['POST'])
 def update_user_passwd():
     user = session.get('user')
+
     if user:
         mysql = Mysqld()
         uid = mysql.selectUserIdByUserName(user)
@@ -1912,6 +1919,15 @@ def check_awd_flag():
     if user:
         rel = {}
         flag = request.form.get('flag')
+        if check_input(flag) == '':
+            rel['statuscode'] = '500'
+            rel['message'] = 'flag输入为空！'
+            return rel
+        # 防止sql注入
+        if check_input(flag) == 0:
+            rel['statuscode'] = '500'
+            rel['message'] = 'flag输入信息有误！'
+            return rel
         mysql = Mysqld()
         tmp_v1 = mysql.check_awd_flag(flag)
         print('tmp:',tmp_v1)

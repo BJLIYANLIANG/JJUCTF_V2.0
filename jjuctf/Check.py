@@ -37,11 +37,30 @@ def check_Username_And_Passwd_And_Email(username, password, useremail):
         return 0
 
 
+
+def check_sql_insert(str):
+    # 检查sql注入
+    if str == '':
+        return 0
+    else:
+        return 1
+def check_is_valid_email(email):
+    ex_email = re.compile(r'^[1-9][0-9]{4,10}@.*\..*')
+    result = ex_email.match(email)
+    # print(result)
+    if result:
+        # 邮箱合法
+        return 1
+    else:
+        # 不合法
+        return -1
+
 class Check:
     def __init__(self):
         pass
 
     # 检测sql注入
+
 
     # 检查是否是比赛时间，如果是则返回1,不是则返回0
     def checkCompetition_start(self, start_time, end_time):

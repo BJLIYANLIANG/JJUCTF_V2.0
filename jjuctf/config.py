@@ -1,6 +1,9 @@
 # ===redis 配置===
+redis_host = 'localhost'
+redis_db  = 0
 redis_address = 'localhost'
 redis_port = '6379'
+redis_password = ''
 # user='',,host='smtp.163.com'
 
 # ===电子邮件配置====

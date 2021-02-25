@@ -30,22 +30,44 @@ user
 
 
 ## 搭建
+### 运行环境
+- 操作系统
+> Ubuntu Server 20.10 
+- 软件包
+> 1. Docker.io
+> 2. Python3
+> 3. Redis
+
+#### 安装Docker
+```angular2html
+sudo apt-get install docker.io
+```
+#### 安装Redis
+```angular2html
+sudo apt-get install redis-server
+```
+检查Redis运行情况
+```angular2html
+sudo service redis status
+```
 #### 修改pip镜像源
+
 ```angular2html
 pip install pip -U
 pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 ```
+
 ####  安装依赖
 ```angular2html
 pip install -r requirement.txt
 ```
+
 ***需要注意***：
 
 python 在 `Windows`下使用AES时要安装的是`pycryptodome`模块
 ```angular2html
 pip install pycryptodome 
 ```
-
 
 python 在 `Linux`下使用AES时要安装的是`pycrypto`模块 
 ```angular2html

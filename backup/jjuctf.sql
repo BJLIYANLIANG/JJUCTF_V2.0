@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.4
+-- version 4.9.7deb1
 -- https://www.phpmyadmin.net/
 --
--- 主机： localhost
--- 生成日期： 2021-02-03 07:59:17
--- 服务器版本： 10.5.8-MariaDB
--- PHP 版本： 7.4.14
+-- 主机： localhost:3306
+-- 生成日期： 2021-02-25 07:17:21
+-- 服务器版本： 10.3.25-MariaDB-0ubuntu1
+-- PHP 版本： 7.4.9
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -48,6 +49,184 @@ INSERT INTO `admin` (`admin_id`, `admin_name`, `admin_email`, `admin_mobile`, `a
 -- --------------------------------------------------------
 
 --
+-- 表的结构 `awd_config`
+--
+
+CREATE TABLE `awd_config` (
+  `id` int(11) NOT NULL,
+  `start_time` datetime NOT NULL,
+  `end_time` datetime NOT NULL,
+  `update_time` int(11) NOT NULL,
+  `check_time` int(11) NOT NULL,
+  `score` int(11) NOT NULL,
+  `check_down_score` int(11) NOT NULL,
+  `salt` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- 转存表中的数据 `awd_config`
+--
+
+INSERT INTO `awd_config` (`id`, `start_time`, `end_time`, `update_time`, `check_time`, `score`, `check_down_score`, `salt`) VALUES
+(2, '2021-02-20 14:19:00', '2021-02-27 14:19:00', 10, 10, 10, 50, '10');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `awd_config_ip_pool`
+--
+
+CREATE TABLE `awd_config_ip_pool` (
+  `id` int(11) NOT NULL,
+  `start_ip` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `end_ip` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `point_ip` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- 转存表中的数据 `awd_config_ip_pool`
+--
+
+INSERT INTO `awd_config_ip_pool` (`id`, `start_ip`, `end_ip`, `point_ip`) VALUES
+(1, '172.18.0.2', '172.18.0.254', '172.18.0.35');
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `awd_exam`
+--
+
+CREATE TABLE `awd_exam` (
+  `id` int(11) NOT NULL,
+  `image_id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ssh` int(11) NOT NULL,
+  `other_port` int(11) NOT NULL,
+  `user` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `time` datetime NOT NULL,
+  `status` int(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- 转存表中的数据 `awd_exam`
+--
+
+INSERT INTO `awd_exam` (`id`, `image_id`, `name`, `ssh`, `other_port`, `user`, `time`, `status`) VALUES
+(25, '56d86fcbf109', 'Pwn1', 22, 80, 'glzjin', '2021-02-19 14:08:57', 1),
+(27, ' fd216fa6d0f7', 'WEB1', 22, 80, ' glzjin', '2021-02-20 11:01:15', 1),
+(28, '0f3eddf395aa', 'new_web1', 22, 80, 'glzjin', '2021-02-21 15:26:23', 1);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `awd_exam_instance`
+--
+
+CREATE TABLE `awd_exam_instance` (
+  `id` int(11) NOT NULL,
+  `awd_exam_id` int(11) DEFAULT NULL,
+  `groupname` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `container_id` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ssh_port` int(11) NOT NULL,
+  `other_port` int(11) NOT NULL,
+  `time` datetime NOT NULL,
+  `flag` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `ip` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tag` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` int(11) NOT NULL,
+  `ssh_user` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `arrangement` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT=' 完整内容	 id image_id name ssh other_port time';
+
+--
+-- 转存表中的数据 `awd_exam_instance`
+--
+
+INSERT INTO `awd_exam_instance` (`id`, `awd_exam_id`, `groupname`, `container_id`, `name`, `ssh_port`, `other_port`, `time`, `flag`, `ip`, `tag`, `status`, `ssh_user`, `password`, `arrangement`) VALUES
+(825, NULL, 'admin', '414f0c7c3898', 'Pwn1', 22, 80, '2021-02-24 13:39:23', '', '172.18.0.245', 'tag', 1, 'glzjin', '048c375eb414', 0),
+(826, NULL, 'HSM', 'f044f41dcce0', 'Pwn1', 22, 80, '2021-02-24 13:39:23', '', '172.18.0.244', 'tag', 1, 'glzjin', '74ddcdc6d755', 0),
+(827, NULL, 'test1', '2cf2d403fb53', 'Pwn1', 22, 80, '2021-02-24 13:39:23', '', '172.18.0.243', 'tag', 1, 'glzjin', '068aa61a42dc', 0),
+(828, NULL, 'test2', '141dfa6e88c9', 'Pwn1', 22, 80, '2021-02-24 13:39:23', '', '172.18.0.242', 'tag', 1, 'glzjin', '99c9cb8583a9', 0),
+(829, NULL, 'test3', '11068d1219a7', 'Pwn1', 22, 80, '2021-02-24 13:39:23', '', '172.18.0.241', 'tag', 1, 'glzjin', 'd5a2f0bda151', 0),
+(830, NULL, 'test4', 'a011c611f28f', 'Pwn1', 22, 80, '2021-02-24 13:39:23', '', '172.18.0.240', 'tag', 1, 'glzjin', '72192a572f37', 0),
+(831, NULL, 'test5', '5dc75e454fa8', 'Pwn1', 22, 80, '2021-02-24 13:39:23', '', '172.18.0.239', 'tag', 1, 'glzjin', 'aa1ee3d9977a', 0),
+(832, NULL, '葫芦娃', 'bfb573d4e51d', 'Pwn1', 22, 80, '2021-02-24 13:39:23', '', '172.18.0.238', 'tag', 1, 'glzjin', 'f93cb39f0a20', 0),
+(833, NULL, 'test123', '74796a81498b', 'Pwn1', 22, 80, '2021-02-24 13:39:23', '', '172.18.0.237', 'tag', 1, 'glzjin', 'ed6104f48779', 0),
+(834, NULL, 'admin', 'e703e9c3f7db', 'WEB1', 22, 80, '2021-02-24 13:39:34', '', '172.18.0.254', 'tag', 1, ' glzjin', 'e2f61c891c70', 0),
+(835, NULL, 'HSM', '09c6abc0a4a9', 'WEB1', 22, 80, '2021-02-24 13:39:34', '', '172.18.0.253', 'tag', 1, ' glzjin', 'a5b5f3c3483c', 0),
+(836, NULL, 'test1', '97b19f631ecf', 'WEB1', 22, 80, '2021-02-24 13:39:34', '', '172.18.0.252', 'tag', 1, ' glzjin', '4f50040083b0', 0),
+(837, NULL, 'test2', '007391fa8a12', 'WEB1', 22, 80, '2021-02-24 13:39:34', '', '172.18.0.251', 'tag', 1, ' glzjin', 'c19195c415b3', 0),
+(838, NULL, 'test3', '25cc018fa917', 'WEB1', 22, 80, '2021-02-24 13:39:34', '', '172.18.0.250', 'tag', 1, ' glzjin', '5c9a464b0c18', 0),
+(839, NULL, 'test4', '9fb425228203', 'WEB1', 22, 80, '2021-02-24 13:39:34', '', '172.18.0.249', 'tag', 1, ' glzjin', '3fd298cd33b6', 0),
+(840, NULL, 'test5', '62a5581e3d39', 'WEB1', 22, 80, '2021-02-24 13:39:34', '', '172.18.0.248', 'tag', 1, ' glzjin', 'e3c56eacd04f', 0),
+(841, NULL, '葫芦娃', '0f07f41d41b7', 'WEB1', 22, 80, '2021-02-24 13:39:34', '', '172.18.0.247', 'tag', 1, ' glzjin', '52eaa4d84f78', 0),
+(842, NULL, 'test123', 'bea847ce8dd9', 'WEB1', 22, 80, '2021-02-24 13:39:34', '', '172.18.0.246', 'tag', 1, ' glzjin', 'ad545894cb34', 0),
+(843, NULL, 'admin', 'a7901dcb7358', 'new_web1', 22, 80, '2021-02-24 13:39:46', '', '172.18.0.236', 'tag', 1, 'glzjin', 'c98351bbcdac', 0),
+(844, NULL, 'HSM', 'd82f50608124', 'new_web1', 22, 80, '2021-02-24 13:39:46', '', '172.18.0.235', 'tag', 1, 'glzjin', '09c43f479633', 0),
+(845, NULL, 'test1', '1ced6a739a9b', 'new_web1', 22, 80, '2021-02-24 13:39:46', '', '172.18.0.234', 'tag', 1, 'glzjin', 'c719025d9af6', 0),
+(846, NULL, 'test2', '4710c36efea1', 'new_web1', 22, 80, '2021-02-24 13:39:46', '', '172.18.0.233', 'tag', 1, 'glzjin', '6848d24ec475', 0),
+(847, NULL, 'test3', '3a58eca47ff7', 'new_web1', 22, 80, '2021-02-24 13:39:46', '', '172.18.0.232', 'tag', 1, 'glzjin', '2ae097fd3acf', 0),
+(848, NULL, 'test4', '24cb7da1a1f8', 'new_web1', 22, 80, '2021-02-24 13:39:46', '', '172.18.0.231', 'tag', 1, 'glzjin', 'c043d1f1da32', 0),
+(849, NULL, 'test5', '6d4642f962b2', 'new_web1', 22, 80, '2021-02-24 13:39:46', '', '172.18.0.230', 'tag', 1, 'glzjin', '2d57f57f12fa', 0),
+(850, NULL, '葫芦娃', '7b9e398d3f90', 'new_web1', 22, 80, '2021-02-24 13:39:46', '', '172.18.0.229', 'tag', 1, 'glzjin', 'fed93cb7e981', 0),
+(851, NULL, 'test123', '65a581ad7d65', 'new_web1', 22, 80, '2021-02-24 13:39:46', '', '172.18.0.228', 'tag', 1, 'glzjin', '5af2bd6e8569', 0);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `awd_ranks`
+--
+
+CREATE TABLE `awd_ranks` (
+  `id` int(11) NOT NULL,
+  `group_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `score` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- 转存表中的数据 `awd_ranks`
+--
+
+INSERT INTO `awd_ranks` (`id`, `group_name`, `score`) VALUES
+(394, 'admin', 5000),
+(395, 'HSM', 5000),
+(396, 'test1', 5000),
+(397, 'test2', 5000),
+(398, 'test3', 5000),
+(399, 'test4', 5000),
+(400, 'test5', 5000),
+(401, '葫芦娃', 5000);
+
+-- --------------------------------------------------------
+
+--
+-- 表的结构 `awd_ranks_detail`
+--
+
+CREATE TABLE `awd_ranks_detail` (
+  `id` int(11) NOT NULL,
+  `username` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `groupname` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `score` int(10) NOT NULL,
+  `target_id` int(11) NOT NULL,
+  `target_name` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `target_group` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `time` datetime NOT NULL,
+  `arrangement` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- 转存表中的数据 `awd_ranks_detail`
+--
+
+INSERT INTO `awd_ranks_detail` (`id`, `username`, `groupname`, `score`, `target_id`, `target_name`, `target_group`, `time`, `arrangement`) VALUES
+(6, 'admin', 'admin', 50, 699, 'Pwn1', 'test5', '2021-02-22 14:19:51', 0);
+
+-- --------------------------------------------------------
+
+--
 -- 表的结构 `challenge_list`
 --
 
@@ -79,7 +258,8 @@ INSERT INTO `challenge_list` (`group_id`, `id`, `ctf_exam_id`, `name`, `score`, 
 (0, 36, 23, 'Reverse1', 150, 'Reverse1', 3, 0, NULL, NULL, 0, '', 'flag{Reverse1}', '2021-01-12 22:01:24'),
 (0, 37, 24, 'pwn1', 300, 'pwn1', 4, 0, NULL, NULL, 0, '', 'flag{pwn1}', '2021-01-12 22:01:28'),
 (0, 38, 25, 'misc2', 300, 'misc2', 1, 0, NULL, NULL, 0, '', 'flag{misc2}', '2021-01-12 22:01:31'),
-(0, 39, 31, 'web2', 200, 'easy web2', 0, 0, NULL, NULL, 0, '', 'flag{web2}', '2021-01-19 16:28:45');
+(0, 39, 31, 'web2', 200, 'easy web2', 0, 0, NULL, NULL, 0, '', 'flag{web2}', '2021-01-19 16:28:45'),
+(0, 53, 35, 'easymisc1', 150, 'easymisc1 hhh!', 1, 0, 'None', '', 1, 'test.zip', 'flag{easymisc1}', '2021-02-05 13:58:17');
 
 -- --------------------------------------------------------
 
@@ -124,7 +304,7 @@ CREATE TABLE `competition` (
 --
 
 INSERT INTO `competition` (`id`, `status`, `name`, `info`, `start_date`, `end_date`) VALUES
-(0, 0, '九江学院第一届网络安全大赛', '', '2021-02-01 20:01:00', '2021-02-18 20:01:00');
+(0, 0, '九江学院第一届网络安全大赛', 'zzz', '2021-02-11 20:45:00', '2021-02-28 20:45:00');
 
 -- --------------------------------------------------------
 
@@ -162,7 +342,8 @@ INSERT INTO `ctf_exam` (`id`, `own_id`, `type`, `name`, `hint`, `base_score`, `s
 (24, 12, 4, 'pwn1', 'pwn1', 300, 1, 0, 'flag{pwn1}', 0, '', 0, '', '2021-01-12 22:00:40', ''),
 (25, 12, 1, 'misc2', 'misc2', 300, 1, 0, 'flag{misc2}', 0, '', 0, '', '2021-01-12 22:01:03', ''),
 (31, 21, 0, 'web2', 'easy web2', 200, 1, 0, 'flag{web2}', 0, '', 0, '', '2021-01-19 16:28:41', ''),
-(34, 21, 1, 'python', 'python', 200, 1, 0, '123', 0, '', 1, 'EasyPython.zip', '2021-01-20 14:41:04', '');
+(34, 21, 1, 'python', 'python', 200, 1, 0, '123', 0, '', 1, 'EasyPython.zip', '2021-01-20 14:41:04', ''),
+(35, 21, 1, 'easymisc1', 'easymisc1 hhh!', 150, 1, 0, 'flag{easymisc1}', 1, 'test.zip', 0, '', '2021-02-05 13:58:09', '');
 
 -- --------------------------------------------------------
 
@@ -189,25 +370,15 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `user_id`, `real_name`, `role`, `status`, `password`, `email`, `mobile`, `class_id`, `user_photo`, `user_name`) VALUES
-(30, NULL, 'HSM', 0, 0, 'ff2e81f586eb5b79490294d06920f462', '905008677@qq.com', '18579266908', 'A1861', NULL, 'hsm'),
-(33, NULL, 'hsm', 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'test1@qq.com', '1234567', 'A1861', NULL, 'hsm123'),
-(34, NULL, NULL, 0, 0, '21232f297a57a5a743894a0e4a801fc3', 'admin@qq.com', NULL, NULL, NULL, 'admin'),
-(35, NULL, NULL, 0, 0, '513772ee53011ad9f4dc374b2d34d0e9', 'group1@hsm.cool', NULL, NULL, NULL, 'group1'),
-(36, NULL, NULL, 0, 0, 'f617868bd8c41043dc4bebc7952c7024', 'group2@hsm.cool', NULL, NULL, NULL, 'group2'),
-(37, NULL, NULL, 0, 0, '78733d0dd44e9bbca1d931c569676531', 'group3@hsm.cool', NULL, NULL, NULL, 'group3'),
-(38, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'admin1@hsm.cool', NULL, NULL, NULL, 'admin1'),
-(39, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', '905008@qq.com', NULL, NULL, NULL, '905008'),
-(40, NULL, NULL, 0, 0, '9de4a97425678c5b1288aa70c1669a64', 'register@qq.com', NULL, NULL, NULL, 'register'),
-(42, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'test001@hsm.cool', NULL, NULL, NULL, 'test001'),
-(43, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'xxx@xx.xx', NULL, NULL, NULL, 'xxx'),
-(44, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'xxx1@qq.com', NULL, NULL, NULL, 'xxx1'),
-(45, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'qqq@qq.com', NULL, NULL, NULL, 'qqq'),
-(46, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'test124@qq.com', NULL, NULL, NULL, 'test123'),
-(47, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'admin1231@123.com', NULL, NULL, NULL, 'admin1231'),
-(48, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', '44884ddd3264@qq.com', NULL, NULL, NULL, 'zxc'),
-(49, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', '9050018677@qq.com', NULL, NULL, NULL, '905008677'),
-(50, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'adminxx@qq.com', NULL, NULL, NULL, 'adminxx'),
-(51, NULL, NULL, 0, 0, '328bd945cdea809717c77f278d9fcd4b', '1841181516@qq.com', NULL, NULL, NULL, 'llz');
+(55, '20180201420', '管理员', 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'admin@qq.com', '18579266908', 'A1861', NULL, 'admin'),
+(56, '20180201420', '贺述明', 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'hsmcool@163.com', '18579266908', 'A1861', NULL, 'hsm'),
+(57, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'test1@hsm.cool', NULL, NULL, NULL, 'test1'),
+(58, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'test2@cc.io', NULL, NULL, NULL, 'test2'),
+(59, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'test3@qq.com', NULL, NULL, NULL, 'test3'),
+(60, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'test4@qq.com', NULL, NULL, NULL, 'test4'),
+(61, NULL, NULL, 0, 0, 'c22169dd8be57624603d20faf855a75f', '2329825358@qq.com', NULL, NULL, NULL, 'fzbangbangda'),
+(62, NULL, NULL, 0, 0, '6f8c33aa2d7257eb96a3852b32e9ac9a', 'test5@hsm.cool', NULL, NULL, NULL, 'test5'),
+(63, NULL, NULL, 0, 0, 'e10adc3949ba59abbe56e057f20f883e', 'test123@qq.com', NULL, NULL, NULL, 'test123');
 
 -- --------------------------------------------------------
 
@@ -231,21 +402,11 @@ CREATE TABLE `user_challenge_list` (
 --
 
 INSERT INTO `user_challenge_list` (`id`, `group_id`, `ctf_exam_id`, `type`, `challenge_id`, `user_id`, `score`, `date`) VALUES
-(17, 50, 21, 0, 34, 30, 100, '22:28:52'),
-(18, 64, 21, 0, 34, 48, 100, '22:57:09'),
-(19, 65, 21, 0, 34, 49, 100, '23:16:53'),
-(20, 55, 20, 1, 33, 34, 100, '13:10:21'),
-(21, 55, 21, 0, 34, 34, 100, '13:30:27'),
-(22, 50, 31, 0, 39, 30, 200, '13:32:01'),
-(23, 55, 22, 2, 35, 34, 200, '13:36:04'),
-(24, 55, 25, 1, 38, 34, 300, '13:36:40'),
-(25, 55, 31, 0, 39, 34, 200, '13:37:05'),
-(26, 55, 23, 3, 36, 34, 150, '13:37:15'),
-(27, 67, 23, 3, 36, 51, 150, '14:25:44'),
-(28, 67, 24, 4, 37, 51, 300, '14:26:35'),
-(29, 55, 24, 4, 37, 34, 300, '15:31:32'),
-(30, 66, 21, 0, 34, 50, 100, '15:43:57'),
-(31, 66, 20, 1, 33, 50, 100, '15:56:45');
+(68, 18, 21, 0, 34, 63, 100, '12:48:49'),
+(69, 18, 25, 1, 38, 63, 300, '13:01:04'),
+(70, 18, 20, 1, 33, 63, 100, '13:02:40'),
+(71, 10, 21, 0, 34, 55, 100, '13:42:47'),
+(72, 10, 31, 0, 39, 55, 200, '13:44:35');
 
 -- --------------------------------------------------------
 
@@ -281,20 +442,14 @@ CREATE TABLE `user_group` (
 --
 
 INSERT INTO `user_group` (`group_id`, `name`, `info`, `user_id`, `create_time`, `token`) VALUES
-(50, 'jjusec123', '1234', 0, '2021-01-05 16:54:16', NULL),
-(55, 'admin', 'admin', 34, '2021-01-12 21:54:07', NULL),
-(56, 'admin1', 'hahaha admin1 is 666', 38, '2021-01-28 15:15:29', NULL),
-(57, '905008', '', 39, '2021-01-29 21:02:35', NULL),
-(58, 'test123', '9000', 42, '2021-01-29 23:16:48', NULL),
-(59, '', 'ddd', 43, '2021-02-02 17:43:53', NULL),
-(60, '你好四大发的撒发撒地', 'fsadf', 44, '2021-02-02 17:54:57', NULL),
-(61, 'ytt', '', 45, '2021-02-02 20:09:02', NULL),
-(62, 'test123134', '', 46, '2021-02-02 21:36:31', NULL),
-(63, '12345', '', 47, '2021-02-02 21:44:54', NULL),
-(64, 'xxx', '', 48, '2021-02-02 21:48:45', NULL),
-(65, 'juu', '', 49, '2021-02-02 23:15:19', NULL),
-(66, 'adminxx', '', 50, '2021-02-03 13:59:19', NULL),
-(67, '巴啦啦小魔仙', '巴啦啦能量', 51, '2021-02-03 14:21:43', NULL);
+(10, 'admin', 'admin yes', 55, '2021-02-16 15:54:57', NULL),
+(11, 'HSM', 'HSM YES', 56, '2021-02-16 16:21:51', NULL),
+(12, 'test1', 'test1', 57, '2021-02-22 05:14:26', NULL),
+(13, 'test2', '', 58, '2021-02-22 05:15:08', NULL),
+(14, 'test3', '', 59, '2021-02-22 05:44:28', NULL),
+(15, 'test4', '', 60, '2021-02-22 05:45:03', NULL),
+(16, 'test5', '', 62, '2021-02-22 05:46:46', NULL),
+(18, 'test123', '', 63, '2021-02-24 11:33:12', NULL);
 
 -- --------------------------------------------------------
 
@@ -313,7 +468,8 @@ CREATE TABLE `user_group_apply` (
 --
 
 INSERT INTO `user_group_apply` (`id`, `user_id`, `group_id`) VALUES
-(1, 34, 50);
+(1, 34, 50),
+(7, 55, 13);
 
 -- --------------------------------------------------------
 
@@ -323,7 +479,7 @@ INSERT INTO `user_group_apply` (`id`, `user_id`, `group_id`) VALUES
 
 CREATE TABLE `user_group_list` (
   `id` int(11) NOT NULL,
-  `group_id` int(11) NOT NULL,
+  `g_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `role` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -332,24 +488,14 @@ CREATE TABLE `user_group_list` (
 -- 转存表中的数据 `user_group_list`
 --
 
-INSERT INTO `user_group_list` (`id`, `group_id`, `user_id`, `role`) VALUES
-(15, 50, 30, 1),
-(16, 55, 34, 1),
-(17, 55, 35, 0),
-(18, 55, 36, 0),
-(19, 55, 37, 0),
-(20, 56, 38, 1),
-(21, 57, 39, 1),
-(23, 58, 42, 1),
-(24, 59, 43, 1),
-(25, 60, 44, 1),
-(26, 61, 45, 1),
-(27, 62, 46, 1),
-(28, 63, 47, 1),
-(29, 64, 48, 1),
-(30, 65, 49, 1),
-(31, 66, 50, 1),
-(32, 67, 51, 1);
+INSERT INTO `user_group_list` (`id`, `g_id`, `user_id`, `role`) VALUES
+(44, 10, 55, 1),
+(45, 11, 56, 1),
+(46, 12, 57, 1),
+(47, 13, 58, 1),
+(48, 14, 59, 1),
+(49, 15, 60, 1),
+(50, 16, 62, 1);
 
 -- --------------------------------------------------------
 
@@ -372,7 +518,6 @@ INSERT INTO `user_notice` (`id`, `uid`, `info`, `date`) VALUES
 (2, 0, '本届赛事期间，请大家留意裁判人员的电话（尾号2710），并积极配合，如果以任何理由拒接，无法沟通以及不配合裁判质询要求，将进行禁赛处理。比赛期间禁止以任何形式进行跨队交流，一起维护公平、清朗的竞赛环境。', '2020-12-27 00:00:00'),
 (3, 0, '比赛时间：2020年12月26日10：00-18：00', '2020-12-27 00:00:00'),
 (4, 0, '注意：请选手时刻关注比赛公告，大赛执行规则以比赛公告为准。', '2020-12-27 00:00:00'),
-(5, 0, '积分模式：动态积分模式（即每道题目的分值将根据解出队伍的数量动态变化），前3血没有额外奖励。', '2020-12-27 00:00:00'),
 (6, 0, '注意：请选手时刻关注比赛公告，大赛执行规则以比赛公告为准。', '2020-12-27 00:00:00'),
 (19, 21, '比赛过程中遇到问题请技术反馈到九江学院网络安全靶场实训平台团队', '2021-01-28 15:31:52');
 
@@ -410,6 +555,42 @@ INSERT INTO `user_score_list` (`id`, `uid`, `gid`, `ctf_exam_id`, `score`, `date
 --
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`admin_id`);
+
+--
+-- 表的索引 `awd_config`
+--
+ALTER TABLE `awd_config`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- 表的索引 `awd_config_ip_pool`
+--
+ALTER TABLE `awd_config_ip_pool`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- 表的索引 `awd_exam`
+--
+ALTER TABLE `awd_exam`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- 表的索引 `awd_exam_instance`
+--
+ALTER TABLE `awd_exam_instance`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- 表的索引 `awd_ranks`
+--
+ALTER TABLE `awd_ranks`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- 表的索引 `awd_ranks_detail`
+--
+ALTER TABLE `awd_ranks_detail`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- 表的索引 `challenge_list`
@@ -461,7 +642,7 @@ ALTER TABLE `user_ctf_docker_list`
 -- 表的索引 `user_group`
 --
 ALTER TABLE `user_group`
-  ADD PRIMARY KEY (`group_id`,`name`) USING BTREE;
+  ADD PRIMARY KEY (`group_id`) USING BTREE;
 
 --
 -- 表的索引 `user_group_apply`
@@ -474,7 +655,7 @@ ALTER TABLE `user_group_apply`
 --
 ALTER TABLE `user_group_list`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `group` (`group_id`),
+  ADD KEY `group` (`g_id`),
   ADD KEY `user` (`user_id`);
 
 --
@@ -500,10 +681,46 @@ ALTER TABLE `admin`
   MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
+-- 使用表AUTO_INCREMENT `awd_config`
+--
+ALTER TABLE `awd_config`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- 使用表AUTO_INCREMENT `awd_config_ip_pool`
+--
+ALTER TABLE `awd_config_ip_pool`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- 使用表AUTO_INCREMENT `awd_exam`
+--
+ALTER TABLE `awd_exam`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
+-- 使用表AUTO_INCREMENT `awd_exam_instance`
+--
+ALTER TABLE `awd_exam_instance`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=852;
+
+--
+-- 使用表AUTO_INCREMENT `awd_ranks`
+--
+ALTER TABLE `awd_ranks`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=402;
+
+--
+-- 使用表AUTO_INCREMENT `awd_ranks_detail`
+--
+ALTER TABLE `awd_ranks_detail`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- 使用表AUTO_INCREMENT `challenge_list`
 --
 ALTER TABLE `challenge_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 
 --
 -- 使用表AUTO_INCREMENT `challenge_type_num`
@@ -521,19 +738,19 @@ ALTER TABLE `competition`
 -- 使用表AUTO_INCREMENT `ctf_exam`
 --
 ALTER TABLE `ctf_exam`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- 使用表AUTO_INCREMENT `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 
 --
 -- 使用表AUTO_INCREMENT `user_challenge_list`
 --
 ALTER TABLE `user_challenge_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
 -- 使用表AUTO_INCREMENT `user_ctf_docker_list`
@@ -545,19 +762,19 @@ ALTER TABLE `user_ctf_docker_list`
 -- 使用表AUTO_INCREMENT `user_group`
 --
 ALTER TABLE `user_group`
-  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `group_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- 使用表AUTO_INCREMENT `user_group_apply`
 --
 ALTER TABLE `user_group_apply`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- 使用表AUTO_INCREMENT `user_group_list`
 --
 ALTER TABLE `user_group_list`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- 使用表AUTO_INCREMENT `user_notice`
@@ -598,7 +815,7 @@ ALTER TABLE `user_challenge_list`
 -- 限制表 `user_group_list`
 --
 ALTER TABLE `user_group_list`
-  ADD CONSTRAINT `group` FOREIGN KEY (`group_id`) REFERENCES `user_group` (`group_id`),
+  ADD CONSTRAINT `group` FOREIGN KEY (`g_id`) REFERENCES `user_group` (`group_id`),
   ADD CONSTRAINT `user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 COMMIT;
 
