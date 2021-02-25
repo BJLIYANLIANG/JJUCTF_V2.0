@@ -189,6 +189,9 @@
             type: "get",
             data: {"image_id": id,},
             success: function (result) {
+                if(result.status_code == 500){
+                    alert(result.message);
+                }
             },
             error:function () {
                 alert("发送请求失败，请检查网络链接状况！");
@@ -246,6 +249,7 @@
         var url = location.href;
         var socket = io.connect(url);
         //监听事件并且回调
+
         socket.on('start_awd_exam',(data)=>{
             {#document.write(data.task_num+data.task_total);#}
             width_float = parseInt(data.task_num)/parseInt(data.task_total);

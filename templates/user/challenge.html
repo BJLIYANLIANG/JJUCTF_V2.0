@@ -4,7 +4,7 @@
         border: 0.3rem solid #005cbf;
         background-color:#0d1927;
         color: #ffffff;
-        font-size: 1.1rem;
+        font-size: .9rem;
     }
     .ctf-group-card-x{
         min-height: 12rem;
@@ -20,16 +20,19 @@
         border: 0.3rem solid #2c3e50;
         background-color: #0d1927;
         color: white;
+        font-size: .9rem;
     }
     .card-competition-notice{
        border: 0.3rem solid #2c3e50;
         background-color: #0d1927;
         color: white;
+        font-size: .9rem;
     }
     .card-competition-status{
         border: 0.3rem solid #2c3e50;
         background-color: #0d1927;
         color: white;
+        font-size: .5rem;
     }
     .modal_content-ctf{
         background-color: rgba(13,25,39,0.99);
@@ -46,11 +49,7 @@
         color: white
     }
     .font_Size{
-            font-size: 1.2rem;
-        }
-    .modal_marger{
-            margin: 4px;
-            height:20%;
+            font-size: 0.9rem;
         }
     .ctf-modal_card-body{
         background-color: rgb(39,72,89);
@@ -71,7 +70,9 @@
         width: 100%;
     }
     .card-body{
-        padding: .3rem;
+        {#padding: .3rem;#}
+        padding-bottom: .1rem;
+        padding-top: .1rem;
     }
     .list-group-item-dark.list-group-item-action.active{
         background-color:rgba(13,25,39,0.95);
@@ -85,7 +86,7 @@
             <div class="card card-userinfo">
                 <div class="card-header text-info">比赛信息</div>
                 <div class="card-body">
-                    <div class="row ctf-group-card-x" style="font-size: 1.1rem;">
+                    <div class="row ctf-group-card-x">
                         <div class="col-md-12">战队名：<span class="text-info">{{ groupInfo[1] }}</span></div>
                         <div class="col-md-12">队员名：<span class="text-info">{{ username }}</span></div>
                         <div class="col-md-12">队伍简介：<span class="text-info">{{ groupInfo[3] }}</span></div>
@@ -120,7 +121,7 @@
                 <div class="card-body" style="">
                     <div class="card-competition-status-x">
                     {% if competition_StatusCode==1 %}
-                        <table class="table table-borderless" id="challenge_list" style="color: white;font-size: 0.9rem">
+                        <table class="table table-borderless" id="challenge_list">
                         {% set num = ctf_history_table|length %}
                         {% for i in range(num-1,-1,-1) %}
                             <tr>
@@ -191,21 +192,21 @@
                                                     <button type="button" style="color: white" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                 </div>
                                                 <div class="modal-body ">
-                                                    <div class="row row-no-gutters font_Size modal_marger">
-                                                        <div class="col-md-6">分值:<span class="modal_marger text-info">{{ i[2] }}</span></div>
+                                                    <div class="row row-no-gutters font_Size ">
+                                                        <div class="col-md-6">分值:<span class=" text-info">{{ i[2] }}</span></div>
                                                         <div class="col-md-6 col-md-auto" id="span{{ i[0] }}">
                                                             {% if i[11] != None %}
-                                                                <span  class="text-success modal_marger ">已解答</span>
+                                                                <span  class="text-success ">已解答</span>
                                                             {% else %}
-                                                                <span style="color: red" class="modal_marger ">未解答</span>
+                                                                <span style="color: red" class="">未解答</span>
                                                             {% endif %}
                                                         </div>
                                                     </div>
-                                                    <div class="row row-no-gutters font_Size modal_marger ">
-                                                        <div class="col-md-12">答对人数：<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                    <div class="row" style="font-size: 0.9rem">
+                                                        <div class="col-md-12">答对人数：<span class="text-info " id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
                                                         <div class="col-md-12">提示：<span class="text-info">{{ i[3] }}</span></div>
                                                         {% if i[7]==1 %}
-                                                            <div class="col-md-12">题目附件:<a class="modal_marger" href="/download/{{ i[8] }}">附件1</a></div>
+                                                            <div class="col-md-12">题目附件:<a class="" href="/download/{{ i[8] }}">附件1</a></div>
                                                         {% endif %}
                                                         {% if i[5]==1 %}
                                                         <div class="col-md-12">
@@ -216,16 +217,22 @@
                                                             </div>
                                                         </div>
                                                         {% endif %}
+
                                                     </div>
-                                                    <div class="row row-no-gutters font_Size modal_marger" id="div{{ i[0] }}">
+                                                <p></p>
+                                                    <div class="row" id="div{{ i[0] }}" style="font-size: 0.9rem">
+
                                                         {% if i[11] !=  None %}
-                                                            <div>
+                                                            <div class="col-md-12">
+
                                                                 <a class="text-success">已解答，获得{{ i[2] }}分</a>
                                                             </div>
                                                         {% else %}
-                                                            <div class="input-group col-md-12 modal_marger btn-group">
-                                                            <label for="flag{{ i[0] }}"></label><input id="flag{{ i[0] }}" type="text" name="flag"  autocomplete="off" placeholder="flag.." >
-                                                                <button type="submit"  class="btn btn-primary" onclick="postflag('{{ i[0] }}','flag{{ i[0] }}')">提交</button>
+                                                            <div class="col-md-12">
+                                                                <div class="input-group">
+                                                                <input id="flag{{ i[0] }}" style="background-color: rgba(0,0,0,0);border-color: #005cbf" type="text" name="flag"  autocomplete="off" placeholder="flag.."  class="form-control">
+                                                                    <a class="input-group-addon btn btn-success" onclick="postflag('{{ i[0] }}','flag{{ i[0] }}')">提交</a>
+                                                                </div>
                                                             </div>
                                                         {% endif %}
 
@@ -271,28 +278,28 @@
                                     </div>
                                     {#模态框#}
                                     <div class="modal fade modal_fix"  id="modal{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-                                        <div class="modal-dialog">
+                                       <div class="modal-dialog">
                                             <div class="modal-content modal_content-ctf" >
                                                 <div class="modal-header">
                                                     <h4 class="modal-title" id="myModalLabel">{{ i[1] }}</h4>
                                                     <button type="button" style="color: white" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                 </div>
                                                 <div class="modal-body ">
-                                                    <div class="row row-no-gutters font_Size modal_marger">
-                                                        <div class="col-md-6">分值:<span class="modal_marger text-info">{{ i[2] }}</span></div>
+                                                    <div class="row row-no-gutters font_Size ">
+                                                        <div class="col-md-6">分值:<span class=" text-info">{{ i[2] }}</span></div>
                                                         <div class="col-md-6 col-md-auto" id="span{{ i[0] }}">
                                                             {% if i[11] != None %}
-                                                                <span  class="text-success modal_marger ">已解答</span>
+                                                                <span  class="text-success ">已解答</span>
                                                             {% else %}
-                                                                <span style="color: red" class="modal_marger ">未解答</span>
+                                                                <span style="color: red" class="">未解答</span>
                                                             {% endif %}
                                                         </div>
                                                     </div>
-                                                    <div class="row row-no-gutters font_Size modal_marger ">
-                                                        <div class="col-md-12">答对人数：<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                    <div class="row" style="font-size: 0.9rem">
+                                                        <div class="col-md-12">答对人数：<span class="text-info " id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
                                                         <div class="col-md-12">提示：<span class="text-info">{{ i[3] }}</span></div>
                                                         {% if i[7]==1 %}
-                                                            <div class="col-md-12">题目附件:<a class="modal_marger" href="/download/{{ i[8] }}">附件1</a></div>
+                                                            <div class="col-md-12">题目附件:<a class="" href="/download/{{ i[8] }}">附件1</a></div>
                                                         {% endif %}
                                                         {% if i[5]==1 %}
                                                         <div class="col-md-12">
@@ -303,16 +310,22 @@
                                                             </div>
                                                         </div>
                                                         {% endif %}
+
                                                     </div>
-                                                    <div class="row row-no-gutters font_Size modal_marger" id="div{{ i[0] }}">
+                                                <p></p>
+                                                    <div class="row" id="div{{ i[0] }}" style="font-size: 0.9rem">
+
                                                         {% if i[11] !=  None %}
-                                                            <div>
+                                                            <div class="col-md-12">
+
                                                                 <a class="text-success">已解答，获得{{ i[2] }}分</a>
                                                             </div>
                                                         {% else %}
-                                                            <div class="input-group col-md-12 modal_marger btn-group">
-                                                                <label for="flag{{ i[0] }}"></label><input id="flag{{ i[0] }}" type="text" name="flag" autocomplete="off" placeholder="flag.." >
-                                                                <button type="submit"  class="btn btn-primary" onclick="postflag('{{ i[0] }}','flag{{ i[0] }}')">提交</button>
+                                                            <div class="col-md-12">
+                                                                <div class="input-group">
+                                                                <input id="flag{{ i[0] }}" style="background-color: rgba(0,0,0,0);border-color: #005cbf" type="text" name="flag"  autocomplete="off" placeholder="flag.."  class="form-control">
+                                                                    <a class="input-group-addon btn btn-success" onclick="postflag('{{ i[0] }}','flag{{ i[0] }}')">提交</a>
+                                                                </div>
                                                             </div>
                                                         {% endif %}
 
@@ -327,6 +340,8 @@
                         {#模态框#}
                     </div>{# 结束row #}
                 </div><!--end tab-pane-->
+
+
                 <!--Crypto-->
                 <div class="tab-pane fade" id="Crypto">
                     <div class="row">
@@ -358,28 +373,28 @@
                                     </div>
                                     {#模态框#}
                                     <div class="modal fade modal_fix"  id="modal{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-                                        <div class="modal-dialog">
+                                       <div class="modal-dialog">
                                             <div class="modal-content modal_content-ctf" >
                                                 <div class="modal-header">
                                                     <h4 class="modal-title" id="myModalLabel">{{ i[1] }}</h4>
                                                     <button type="button" style="color: white" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                 </div>
                                                 <div class="modal-body ">
-                                                    <div class="row row-no-gutters font_Size modal_marger">
-                                                        <div class="col-md-6">分值:<span class="modal_marger text-info">{{ i[2] }}</span></div>
+                                                    <div class="row row-no-gutters font_Size ">
+                                                        <div class="col-md-6">分值:<span class=" text-info">{{ i[2] }}</span></div>
                                                         <div class="col-md-6 col-md-auto" id="span{{ i[0] }}">
                                                             {% if i[11] != None %}
-                                                                <span  class="text-success modal_marger ">已解答</span>
+                                                                <span  class="text-success ">已解答</span>
                                                             {% else %}
-                                                                <span style="color: red" class="modal_marger ">未解答</span>
+                                                                <span style="color: red" class="">未解答</span>
                                                             {% endif %}
                                                         </div>
                                                     </div>
-                                                    <div class="row row-no-gutters font_Size modal_marger ">
-                                                        <div class="col-md-12">答对人数：<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                    <div class="row" style="font-size: 0.9rem">
+                                                        <div class="col-md-12">答对人数：<span class="text-info " id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
                                                         <div class="col-md-12">提示：<span class="text-info">{{ i[3] }}</span></div>
                                                         {% if i[7]==1 %}
-                                                            <div class="col-md-12">题目附件:<a class="modal_marger" href="/download/{{ i[8] }}">附件1</a></div>
+                                                            <div class="col-md-12">题目附件:<a class="" href="/download/{{ i[8] }}">附件1</a></div>
                                                         {% endif %}
                                                         {% if i[5]==1 %}
                                                         <div class="col-md-12">
@@ -390,16 +405,22 @@
                                                             </div>
                                                         </div>
                                                         {% endif %}
+
                                                     </div>
-                                                    <div class="row row-no-gutters font_Size modal_marger" id="div{{ i[0] }}">
+                                                <p></p>
+                                                    <div class="row" id="div{{ i[0] }}" style="font-size: 0.9rem">
+
                                                         {% if i[11] !=  None %}
-                                                            <div>
+                                                            <div class="col-md-12">
+
                                                                 <a class="text-success">已解答，获得{{ i[2] }}分</a>
                                                             </div>
                                                         {% else %}
-                                                            <div class="input-group col-md-12 modal_marger btn-group">
-                                                                <input  id="flag{{ i[0] }}" type="text" name="flag"  autocomplete="off" placeholder="flag.." >
-                                                                <button type="submit"  class="btn btn-primary" onclick="postflag('{{ i[0] }}','flag{{ i[0] }}')">提交</button>
+                                                            <div class="col-md-12">
+                                                                <div class="input-group">
+                                                                <input id="flag{{ i[0] }}" style="background-color: rgba(0,0,0,0);border-color: #005cbf" type="text" name="flag"  autocomplete="off" placeholder="flag.."  class="form-control">
+                                                                    <a class="input-group-addon btn btn-success" onclick="postflag('{{ i[0] }}','flag{{ i[0] }}')">提交</a>
+                                                                </div>
                                                             </div>
                                                         {% endif %}
 
@@ -445,28 +466,28 @@
                                     </div>
                                     {#模态框#}
                                     <div class="modal fade modal_fix"  id="modal{{ i[0] }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-                                        <div class="modal-dialog">
+                                       <div class="modal-dialog">
                                             <div class="modal-content modal_content-ctf" >
                                                 <div class="modal-header">
                                                     <h4 class="modal-title" id="myModalLabel">{{ i[1] }}</h4>
                                                     <button type="button" style="color: white" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                 </div>
                                                 <div class="modal-body ">
-                                                    <div class="row row-no-gutters font_Size modal_marger">
-                                                        <div class="col-md-6">分值:<span class="modal_marger text-info">{{ i[2] }}</span></div>
+                                                    <div class="row row-no-gutters font_Size ">
+                                                        <div class="col-md-6">分值:<span class=" text-info">{{ i[2] }}</span></div>
                                                         <div class="col-md-6 col-md-auto" id="span{{ i[0] }}">
                                                             {% if i[11] != None %}
-                                                                <span  class="text-success modal_marger ">已解答</span>
+                                                                <span  class="text-success ">已解答</span>
                                                             {% else %}
-                                                                <span style="color: red" class="modal_marger ">未解答</span>
+                                                                <span style="color: red" class="">未解答</span>
                                                             {% endif %}
                                                         </div>
                                                     </div>
-                                                    <div class="row row-no-gutters font_Size modal_marger ">
-                                                        <div class="col-md-12">答对人数：<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                    <div class="row" style="font-size: 0.9rem">
+                                                        <div class="col-md-12">答对人数：<span class="text-info " id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
                                                         <div class="col-md-12">提示：<span class="text-info">{{ i[3] }}</span></div>
                                                         {% if i[7]==1 %}
-                                                            <div class="col-md-12">题目附件:<a class="modal_marger" href="/download/{{ i[8] }}">附件1</a></div>
+                                                            <div class="col-md-12">题目附件:<a class="" href="/download/{{ i[8] }}">附件1</a></div>
                                                         {% endif %}
                                                         {% if i[5]==1 %}
                                                         <div class="col-md-12">
@@ -477,16 +498,22 @@
                                                             </div>
                                                         </div>
                                                         {% endif %}
+
                                                     </div>
-                                                    <div class="row row-no-gutters font_Size modal_marger" id="div{{ i[0] }}">
+                                                <p></p>
+                                                    <div class="row" id="div{{ i[0] }}" style="font-size: 0.9rem">
+
                                                         {% if i[11] !=  None %}
-                                                            <div>
+                                                            <div class="col-md-12">
+
                                                                 <a class="text-success">已解答，获得{{ i[2] }}分</a>
                                                             </div>
                                                         {% else %}
-                                                            <div class="input-group col-md-12 modal_marger btn-group">
-                                                                <input  id="flag{{ i[0] }}" type="text" name="flag"  autocomplete="off" placeholder="flag.." >
-                                                                <button type="submit"  class="btn btn-primary" onclick="postflag('{{ i[0] }}','flag{{ i[0] }}')">提交</button>
+                                                            <div class="col-md-12">
+                                                                <div class="input-group">
+                                                                <input id="flag{{ i[0] }}" style="background-color: rgba(0,0,0,0);border-color: #005cbf" type="text" name="flag"  autocomplete="off" placeholder="flag.."  class="form-control">
+                                                                    <a class="input-group-addon btn btn-success" onclick="postflag('{{ i[0] }}','flag{{ i[0] }}')">提交</a>
+                                                                </div>
                                                             </div>
                                                         {% endif %}
 
@@ -538,22 +565,22 @@
                                                     <h4 class="modal-title" id="myModalLabel">{{ i[1] }}</h4>
                                                     <button type="button" style="color: white" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                 </div>
-                                                <div class="modal-body">
-                                                    <div class="row row-no-gutters font_Size modal_marger">
-                                                        <div class="col-md-6">分值:<span class="modal_marger text-info">{{ i[2] }}</span></div>
+                                                <div class="modal-body ">
+                                                    <div class="row row-no-gutters font_Size ">
+                                                        <div class="col-md-6">分值:<span class=" text-info">{{ i[2] }}</span></div>
                                                         <div class="col-md-6 col-md-auto" id="span{{ i[0] }}">
                                                             {% if i[11] != None %}
-                                                                <span  class="text-success modal_marger ">已解答</span>
+                                                                <span  class="text-success ">已解答</span>
                                                             {% else %}
-                                                                <span style="color: red" class="modal_marger ">未解答</span>
+                                                                <span style="color: red" class="">未解答</span>
                                                             {% endif %}
                                                         </div>
                                                     </div>
-                                                    <div class="row row-no-gutters font_Size modal_marger ">
-                                                        <div class="col-md-12">答对人数：<span class="text-info modal_marger" id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
+                                                    <div class="row" style="font-size: 0.9rem">
+                                                        <div class="col-md-12">答对人数：<span class="text-info " id="hsm2{{ i[0] }}">{% if i[10]== None %}0{% else %}{{ i[10] }}{% endif %}</span></div>
                                                         <div class="col-md-12">提示：<span class="text-info">{{ i[3] }}</span></div>
                                                         {% if i[7]==1 %}
-                                                            <div class="col-md-12">题目附件:<a class="modal_marger" href="/download/{{ i[8] }}">附件1</a></div>
+                                                            <div class="col-md-12">题目附件:<a class="" href="/download/{{ i[8] }}">附件1</a></div>
                                                         {% endif %}
                                                         {% if i[5]==1 %}
                                                         <div class="col-md-12">
@@ -564,16 +591,22 @@
                                                             </div>
                                                         </div>
                                                         {% endif %}
+
                                                     </div>
-                                                    <div class="row row-no-gutters font_Size modal_marger" id="div{{ i[0] }}">
+                                                <p></p>
+                                                    <div class="row" id="div{{ i[0] }}" style="font-size: 0.9rem">
+
                                                         {% if i[11] !=  None %}
-                                                            <div>
+                                                            <div class="col-md-12">
+
                                                                 <a class="text-success">已解答，获得{{ i[2] }}分</a>
                                                             </div>
                                                         {% else %}
-                                                            <div class="input-group col-md-12 modal_marger btn-group">
-                                                                <input  id="flag{{ i[0] }}" type="text" name="flag"  autocomplete="off" placeholder="flag.." >
-                                                                <button type="submit"  class="btn btn-primary" onclick="postflag('{{ i[0] }}','flag{{ i[0] }}')">提交</button>
+                                                            <div class="col-md-12">
+                                                                <div class="input-group">
+                                                                <input id="flag{{ i[0] }}" style="background-color: rgba(0,0,0,0);border-color: #005cbf" type="text" name="flag"  autocomplete="off" placeholder="flag.."  class="form-control">
+                                                                    <a class="input-group-addon btn btn-success" onclick="postflag('{{ i[0] }}','flag{{ i[0] }}')">提交</a>
+                                                                </div>
                                                             </div>
                                                         {% endif %}
 
@@ -696,7 +729,7 @@
                 button_res.append('<button class="btn btn-success btn-lg btn-block" style="border-color: #696969" data-toggle="modal" data-target="#modal'+res.challenge_id+'">已解答</button>');
                 var divxxx = $('#div'+res.challenge_id);
                 divxxx.empty();
-                divxxx.append('<div> <a class="text-success">已解答，获得'+res.score+'分</a></div>');
+                divxxx.append('<div class="col-md-12"> <a class="text-success">已解答，获得'+res.score+'分</a></div>');
                 var sum_score_var = $('#sum_score');
                 sum_score = sum_score_var.text();
                 sum_score_int = Number(sum_score)+Number(res.score);
@@ -715,7 +748,7 @@
                count_hsm2_var.text(count_hsm2_int.toString());
                var spanxxx = $('#span'+res.challenge_id);
                 spanxxx.empty();
-                spanxxx.append('<span class="text-success modal_marger ">已解答</span>');
+                spanxxx.append('<span class="text-success">已解答</span>');
                 /*更新排名*/
                 var rank_num = $('#rank_num');
                 rank_num.text(res.ranks.toString())

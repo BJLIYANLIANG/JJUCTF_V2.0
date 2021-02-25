@@ -281,7 +281,6 @@ class Contain:
         return base64.b64encode(str(shell).encode('utf-8')).decode('utf-8')
 
 
-
     def docker_stop_container_by_list(self,container_list):
         for container_id in container_list:
             try:

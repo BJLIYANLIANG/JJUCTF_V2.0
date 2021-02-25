@@ -9,8 +9,6 @@ class MailServer:
         mail_server.close()
 
 
-
-
 email_to = '2621861508@qq.com'
 email_title = 'JJUCTF注册'
 email_content = 'hello world'

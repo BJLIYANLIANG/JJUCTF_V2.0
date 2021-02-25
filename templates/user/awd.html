@@ -1,10 +1,16 @@
 {% include'user/header.html' %}
 <style>
-    .awd-group-card{
+    .awd-group-card-info{
         border: 0.3rem solid #2c3e50;
         background-color: #0d1927;
         color: white;
         font-size: .9rem;
+    }
+    .awd-group-card-status{
+        border: 0.3rem solid #2c3e50;
+        background-color: #0d1927;
+        color: white;
+        font-size: .5rem;
     }
     .modal-header{
         border-bottom: none;
@@ -12,6 +18,11 @@
     .awd-group-card-x{
         min-height: 10rem;
         max-height: 10rem;
+        overflow: auto;
+    }
+    .awd-rank-card-x{
+        min-height: 12.3rem;
+        max-height: 12.3rem;
         overflow: auto;
     }
     .awd-card{
@@ -22,19 +33,21 @@
         width: 30rem;
     }
     .card-body-awd{
-        padding: .3rem;
-        padding-bottom: .7rem;
+        padding-bottom: .1rem;
+        padding-top: .1rem;
     }
+
     .card-competition-notice{
         border: 0.3rem solid #2c3e50;
         background-color: #0d1927;
         color: white;
+        font-size: .9rem;
 
     }
     .card-competition-notice-x{
         overflow-y:auto;
-        min-height: 10rem;
-        max-height: 10rem;
+        min-height: 12.3rem;
+        max-height: 12.3rem;
         width: 100%
     }
 
@@ -63,7 +76,7 @@
     <br>
        <div class="row">
         <div class="col-md-3">
-            <div class="card awd-group-card">
+            <div class="card awd-group-card-info">
                 <div class="card-header text-info">队伍信息</div>
 {#                 # select group_id,name,info,user_id from user_group where group_id=#}
                 <div class="card-body">
@@ -80,7 +93,7 @@
         <div class="col-md-6" >
               <div class="card card-competition-notice">
                   <div class="card-header text-info">比赛公告</div>
-                  <div class="card-body">
+                  <div class="card-body card-body-awd">
                       <div class="row">
                          <div class="col-md-12">
                              <div class="card-competition-notice-x">
@@ -98,52 +111,17 @@
         <div class="col-md-3">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="card awd-group-card">
+                    <div class="card awd-group-card-status">
                 <div class="card-header text-info">解题动态</div>
-                <div class="card-body">
-                    <div class="awd-group-card-x">
-                        <table class="table table-borderless" id="challenge_list" style="color: white;font-size: 0.65rem">
+                <div class="card-body card-body-awd">
+                    <div class="awd-rank-card-x">
+                        <table class="table table-borderless" id="challenge_list">
                             <tbody>
-                            <tr>
-                                <td style="width: 80%">admin战队 <span class="text-danger">攻击了 </span><span>jjusec战队 </span>的 <span></span><span class="text-info">WEB1</span></td>
-                                <td style="width: 20%">18:01:36</td>
+                            <tr style="border-bottom-color: #28a745;border: .2rem">
+                                <td style="width: 85%" class="text-light"><span class="text-primary">fin战队</span><span class="text-danger">攻击了</span><span class="text-primary">jjusfasdfasdfasdfec战队</span>的<span></span><span class="text-info">WEB1</span></td>
+                                <td style="width: 15%" class="text-light">18:01:36</td>
                             </tr>
-                            <tr>
-                                <td style="width: 80%">admin战队 <span class="text-danger">攻击了 </span><span>jjusec战队 </span>的 <span></span><span class="text-info">WEB1</span></td>
-                                <td style="width: 20%">18:01:36</td>
-                            </tr>
-                            <tr>
-                                <td style="width: 80%">admin战队 <span class="text-danger">攻击了 </span><span>jjusec战队 </span>的 <span></span><span class="text-info">WEB1</span></td>
-                                <td style="width: 20%">18:01:36</td>
-                            </tr>
-                            <tr>
-                                <td style="width: 80%">admin战队 <span class="text-danger">攻击了 </span><span>jjusec战队 </span>的 <span></span><span class="text-info">WEB1</span></td>
-                                <td style="width: 20%">18:01:36</td>
-                            </tr>
-                            <tr>
-                                <td style="width: 80%">admin战队 <span class="text-danger">攻击了 </span><span>jjusec战队 </span>的 <span></span><span class="text-info">WEB1</span></td>
-                                <td style="width: 20%">18:01:36</td>
-                            </tr>
-                            <tr>
-                                <td style="width: 80%">admin战队 <span class="text-danger">攻击了 </span><span>jjusec战队 </span>的 <span></span><span class="text-info">WEB1</span></td>
-                                <td style="width: 20%">18:01:36</td>
-                            </tr>
-                            <tr>
-                                <td style="width: 80%">admin战队 <span class="text-danger">攻击了 </span><span>jjusec战队 </span>的 <span></span><span class="text-info">WEB1</span></td>
-                                <td style="width: 20%">18:01:36</td>
-                            </tr>
-                            <tr>
-                                <td style="width: 80%">admin战队 <span class="text-danger">攻击了 </span><span>jjusec战队 </span>的 <span></span><span class="text-info">WEB1</span></td>
-                                <td style="width: 20%">18:01:36</td>
-                            </tr>
-                            <tr>
-                                <td style="width: 80%">admin战队 <span class="text-danger">攻击了 </span><span>jjusec战队 </span>的 <span></span><span class="text-info">WEB1</span></td>
-                                <td style="width: 20%">18:01:36</td>
-                            </tr>
-                            <tr>
-                                <td style="width: 80%">admin战队 <span class="text-danger">攻击了 </span><span>jjusec战队 </span>的 <span></span><span class="text-info">WEB1</span></td>
-                                <td style="width: 20%">18:01:36</td>
-                            </tr>
+
 
                     </tbody>
                     </table>

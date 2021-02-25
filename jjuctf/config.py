@@ -3,7 +3,6 @@ redis_address = 'localhost'
 redis_port = '6379'
 # user='',,host='smtp.163.com'
 
-
 # ===电子邮件配置====
 # 邮件用户
 mail_user = 'hsmcool@163.com'
@@ -11,7 +10,6 @@ mail_user = 'hsmcool@163.com'
 mail_key = 'YAXRVNWCUVZIBNPD'
 # smtp服务器
 mail_host = 'smtp.163.com'
-
 
 
 # ===数据库配置===
