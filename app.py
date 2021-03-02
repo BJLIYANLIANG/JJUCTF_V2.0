@@ -17,11 +17,39 @@ from jjuctf.functions import *
 import random
 import json
 import threading
+from flask_apscheduler import APScheduler # 引入APScheduler
+
+app = Flask(__name__)
+
+# start
+# 任务配置类
+class SchedulerConfig(object):
+    JOBS = [
+        {
+            'id': 'check_awd_status',  # 任务id
+            'func': '__main__:check_awd',  # 任务执行程序
+            'args': None,  # 执行程序参数
+            'trigger': 'interval',  # 任务执行类型，定时器
+            'seconds': 10,  # 任务执行时间，单位秒
+        }
+    ]
+
+
+# 定义任务执行程序
+def check_awd():
+    print("I'm a scheduler!")
+
+#为实例化的flask引入定时任务配置
+app.config.from_object(SchedulerConfig())
+
+
+
+# end
 
 # redis 连接
 redis_instance = redis.Redis(host=redis_address, port=redis_port, decode_responses=True)
 
-app = Flask(__name__)
+
 app.secret_key = '905008'  # session 密钥
 handler = logging.FileHandler('jjuctf.log')
 app.logger.addHandler(handler)
@@ -1954,7 +1982,6 @@ def check_awd_flag():
                 return '500'
         else:
             return '500'
-
     else:
         return '500'
 
@@ -1963,4 +1990,11 @@ def check_awd_flag():
 if __name__ == '__main__':
     # 初始化ip池
     init_ip_pool()
+    # 实例化APScheduler
+    scheduler = APScheduler()  # 实例化APScheduler
+    scheduler.init_app(app)  # 把任务列表载入实例flask
+    scheduler.start()  # 启动任务计划
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+
+    # 适配ipv6
+    # socketio.run(app, host='::', port=5000, debug=True)

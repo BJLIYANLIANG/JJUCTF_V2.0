@@ -19,6 +19,44 @@
     <div class="padding">
             <div class="box">
                 <div class="heading">
+                    <h3 class="title">比赛信息</h3>
+                </div>
+                <div class="box-inner">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>ID</td>
+                            <td>比赛</td>
+                            <td>时间</td>
+                            <td>状态</td>
+                            <td>操作</td>
+                        </tr>
+                        {% for i in CompetitionList %}
+                        <tr>
+                            <td>{{ i[5] }}</td>
+                            <td>{{ i[1] }}</td>
+                            <td>{{ i[3] }}～{{ i[4] }}</td>
+                            <td>
+                                {% if i[0]==1 %}
+                                <div class="text-success">进行中</div>
+                                {% elif i[0]==2 %}
+                                <div class="text-dark">已结束</div>
+                                {% else %}
+                                <div class="text-primary">未开始</div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group"><a href="/competition?id={{ i[0] }}"><button class="btn btn-info">更多</button></a></div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+    </div>
+
+    <div class="padding">
+            <div class="box">
+                <div class="heading">
                     <h3 class="title">CTF</h3>
                 </div>
                 <div class="box-inner">

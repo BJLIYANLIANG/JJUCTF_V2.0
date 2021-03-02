@@ -44,6 +44,8 @@ def check_sql_insert(str):
         return 0
     else:
         return 1
+
+
 def check_is_valid_email(email):
     ex_email = re.compile(r'^[1-9][0-9]{4,10}@.*\..*')
     result = ex_email.match(email)
