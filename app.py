@@ -35,6 +35,7 @@ class SchedulerConfig(object):
     ]
 
 
+
 # 定义任务执行程序
 def check_awd():
     print("I'm a scheduler!")
@@ -1991,9 +1992,9 @@ if __name__ == '__main__':
     # 初始化ip池
     init_ip_pool()
     # 实例化APScheduler
-    scheduler = APScheduler()  # 实例化APScheduler
-    scheduler.init_app(app)  # 把任务列表载入实例flask
-    scheduler.start()  # 启动任务计划
+    # scheduler = APScheduler()  # 实例化APScheduler
+    # scheduler.init_app(app)  # 把任务列表载入实例flask
+    # scheduler.start()  # 启动任务计划
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
 
     # 适配ipv6

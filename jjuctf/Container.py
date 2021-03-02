@@ -178,6 +178,7 @@ class Contain:
         shell = '''awk -F: '{if($1 == "%s") {print $2} }' /etc/shadow''' % (user)
         # print(shell)
         # current_passwd
+        # print('shell:',shell)
         current_passwd = self.docker_exec_get_return(container_id,shell)
         # print('current_passwd:',current_passwd)
         # 修改密码
@@ -188,8 +189,11 @@ class Contain:
                 shell = "wsl openssl passwd -1 '%s'" % (new_passwd)
             else:
                 # Linux 系统
-                shell = "openssl passwd -1 '%s'" % (new_passwd)
+                shell = "openssl passwd -salt '12345678' -1 '%s'" % (new_passwd)
             new_passwd = subprocess.getoutput(shell)
+            new_passwd = new_passwd.replace('/','\/')
+            new_passwd = new_passwd.replace('.','\.')
+            # print('newpasswd:',new_passwd)
             # 修改密码，将旧密码替换成新密码
             shell = "sed -i 's/^%s:%s/%s:%s/g' /etc/shadow"% (user,current_passwd, user, new_passwd)
             # print(shell)
@@ -290,3 +294,8 @@ class Contain:
                 return -1
         return 1
 
+
+#
+# docker = Contain()
+# a= docker.docker_change_passwd('8b151dcff40e302','glzjin','12345678')
+# print(a)
