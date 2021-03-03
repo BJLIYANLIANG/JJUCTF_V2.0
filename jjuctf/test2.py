@@ -31,3 +31,5 @@ class RedisQueue(object):
     def get_nowait(self):
         item = redis_store.lpop(self.key)
         return item
+
+

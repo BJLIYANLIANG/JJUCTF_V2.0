@@ -1322,6 +1322,35 @@ class Mysqld:
             self.conn.rollback()
             return 0
 
+
+
+    def select_awd_instance_id_list(self):
+        sql = 'select id,container_id from awd_exam_instance'
+        try:
+            self.cursor.execute(sql)
+            result = self.cursor.fetchall()
+            if result:
+                return result
+            else:
+                return 0
+        except Exception as e:
+            print(e)
+            return -1
+
+
+    def update_instance_id_list(self,id,flag):
+        # datetime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+        sql = 'update awd_exam_instance set flag="%s" where id=%d'%(flag,int(id))
+        # print(sql)
+        try:
+            self.cursor.execute(sql)
+            self.conn.commit()
+            return 1
+        except Exception as e:
+            print(e)
+            self.conn.rollback()
+            return 0
+
 # a = Mysqld()
-# b = a.insert_awd_challenge_list('test','ddd',50,223,'web1','admin')
+# b = a.select_awd_instance_id_list()
 # print(b)

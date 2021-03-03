@@ -132,6 +132,8 @@ class Contain:
             print(e.output)
             return -1
 
+
+
     def check_awd_status(self,images):
         pass
 

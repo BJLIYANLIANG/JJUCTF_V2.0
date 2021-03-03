@@ -2,17 +2,17 @@
 <project version="4">
   <component name="PublishConfigData" autoUpload="Always" serverName="hsm@192.168.119.130:22" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
-      <paths name="hsm@192.168.0.101:22">
+      <paths name="192.168.119.130">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/hsm/jjuctf" local="$PROJECT_DIR$" />
+            <mapping local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
       <paths name="hsm@192.168.119.130:22">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/pycharm_project_786" local="$PROJECT_DIR$" />
+            <mapping deploy="/tmp/pycharm_project_762" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>

@@ -38,9 +38,32 @@ class SchedulerConfig(object):
 
 # 定义任务执行程序
 def check_awd():
-    print("I'm a scheduler!")
+    # print("I'm a scheduler!")
+    update_awd_flag()
 
+
+def update_awd_flag():
+    mysql = Mysqld()
+    docker = Contain()
+    app.nnn +=1
+    print('第',app.nnn,'轮开始')
+    instance_list = mysql.select_awd_instance_id_list()
+    # ((972, '19f18de054c6'), (973, '149eaca40f72'), (974, 'cc8...
+    for i in instance_list:
+        id = i[0]
+        container_id = i[1]
+        falg = hashlib.md5((str(random.randint(1,1000))+str(random.randint(1,1000))).encode('utf8')).hexdigest()
 #为实例化的flask引入定时任务配置
+        flag = 'flag{%s}'%(falg)
+        # print(flag)
+        docker.insert_awd_flag(container_id,flag,'/flag')
+        mysql.update_instance_id_list(id,flag)
+
+
+
+
+
+
 app.config.from_object(SchedulerConfig())
 
 
@@ -1952,6 +1975,7 @@ def check_awd_flag():
             rel['statuscode'] = '500'
             rel['message'] = 'flag输入为空！'
             return rel
+
         # 防止sql注入
         if check_input(flag) == 0:
             rel['statuscode'] = '500'
@@ -1973,6 +1997,7 @@ def check_awd_flag():
                     rel['statuscode'] = '500'
                     rel['message'] = '不能提交自己的flag!'
                     return rel
+
                 else:
                     rel['statuscode'] = '200'
                     rel['target'] = target_group_name
@@ -1987,15 +2012,26 @@ def check_awd_flag():
         return '500'
 
 
+@app.route('/start_awd')
+def start_awd():
+    # 实例化APScheduler
+    scheduler = APScheduler()  # 实例化APScheduler
+    scheduler.init_app(app)  # 把任务列表载入实例flask
+    scheduler.start()  # 启动任务计划
+    return '200'
+
+
+@app.route('/init_ip_pool')
+def init_ip_pool_by_get():
+    init_ip_pool()
+    return '200'
+
 # 一定要放到最后
 if __name__ == '__main__':
     # 初始化ip池
-    init_ip_pool()
-    # 实例化APScheduler
-    # scheduler = APScheduler()  # 实例化APScheduler
-    # scheduler.init_app(app)  # 把任务列表载入实例flask
-    # scheduler.start()  # 启动任务计划
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
 
+    # socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    # update_awd_flag()
     # 适配ipv6
-    # socketio.run(app, host='::', port=5000, debug=True)
+    app.nnn = 0
+    socketio.run(app, host='::', port=5000, debug=True)
