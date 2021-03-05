@@ -45,8 +45,8 @@ def check_awd():
 def update_awd_flag():
     mysql = Mysqld()
     docker = Contain()
-    app.nnn +=1
-    print('第',app.nnn,'轮开始')
+
+    print('第',app.arrangement,'轮开始')
     instance_list = mysql.select_awd_instance_id_list()
     # ((972, '19f18de054c6'), (973, '149eaca40f72'), (974, 'cc8...
     for i in instance_list:
@@ -57,7 +57,8 @@ def update_awd_flag():
         flag = 'flag{%s}'%(falg)
         # print(flag)
         docker.insert_awd_flag(container_id,flag,'/flag')
-        mysql.update_instance_id_list(id,flag)
+        mysql.update_instance_id_list(id,flag,app.arrangement)
+    app.arrangement += 1
 
 
 
@@ -2012,14 +2013,21 @@ def check_awd_flag():
         return '500'
 
 
-@app.route('/start_awd')
+@app.route('/start_awd_competition')
 def start_awd():
+    # 初始化ip池
+
+    init_ip_pool()
     # 实例化APScheduler
     scheduler = APScheduler()  # 实例化APScheduler
     scheduler.init_app(app)  # 把任务列表载入实例flask
     scheduler.start()  # 启动任务计划
     return '200'
 
+
+@app.route('/awd_index')
+def awd_index():
+    return render_template('admin/man_awd_index.html')
 
 @app.route('/init_ip_pool')
 def init_ip_pool_by_get():
@@ -2029,9 +2037,9 @@ def init_ip_pool_by_get():
 # 一定要放到最后
 if __name__ == '__main__':
     # 初始化ip池
-
-    # socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    app.arrangement = 0
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
     # update_awd_flag()
     # 适配ipv6
-    app.nnn = 0
-    socketio.run(app, host='::', port=5000, debug=True)
+
+    # socketio.run(app, host='::', port=5000, debug=True)

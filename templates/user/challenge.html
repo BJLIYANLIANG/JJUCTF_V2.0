@@ -82,6 +82,7 @@
     .list-group-item-dark.list-group-item-action.active{
         background-color:rgba(13,25,39,0.95);
     }
+
 </style>
 <link rel="stylesheet" href="/static/css/user/challenges.css">
 <div class="container-fluid">
@@ -609,7 +610,7 @@
                                                         {% else %}
                                                             <div class="col-md-12">
                                                                 <div class="input-group">
-                                                                <input id="flag{{ i[0] }}" style="background-color: rgba(0,0,0,0);border-color: #005cbf" type="text" name="flag"  autocomplete="off" placeholder="flag.."  class="form-control">
+                                                                <input id="flag{{ i[0] }}" style="background-color: rgba(0,0,0,0);border-color: #005cbf;color: #87CEFA" type="text" name="flag"  autocomplete="off" placeholder="flag.."  class="form-control">
                                                                     <a class="input-group-addon btn btn-success" onclick="postflag('{{ i[0] }}','flag{{ i[0] }}')">提交</a>
                                                                 </div>
                                                             </div>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="hsm@192.168.119.130:22" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" autoUpload="Always" serverName="hsm@t.hsm.cool:22" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
       <paths name="192.168.119.130">
         <serverdata>
@@ -13,6 +13,13 @@
         <serverdata>
           <mappings>
             <mapping deploy="/tmp/pycharm_project_762" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="hsm@t.hsm.cool:22">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/pycharm_project_89" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>

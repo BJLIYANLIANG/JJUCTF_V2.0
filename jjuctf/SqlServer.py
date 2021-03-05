@@ -1323,7 +1323,7 @@ class Mysqld:
             return 0
 
 
-
+# 查找awd中每个题目的容器id
     def select_awd_instance_id_list(self):
         sql = 'select id,container_id from awd_exam_instance'
         try:
@@ -1337,10 +1337,10 @@ class Mysqld:
             print(e)
             return -1
 
-
-    def update_instance_id_list(self,id,flag):
+# 更新awd实例的flag值
+    def update_instance_id_list(self,id,flag,arrangement):
         # datetime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        sql = 'update awd_exam_instance set flag="%s" where id=%d'%(flag,int(id))
+        sql = 'update awd_exam_instance set flag="%s",arrangement=%d where id=%d'%(flag,int(arrangement),int(id))
         # print(sql)
         try:
             self.cursor.execute(sql)

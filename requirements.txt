@@ -2,6 +2,7 @@ gunicorn~=20.0.4
 Flask~=1.1.2
 PyMySQL~=0.10.1
 pycrypto~=2.6.1
+pycryptodome
 redis~=3.5.3
 Flask-SocketIO~=5.0.1
 eventlet~=0.30.0
@@ -9,3 +10,5 @@ yagmail~=0.14.245
 Flask-APScheduler~=1.11.0
 jsonify~=0.5
 Werkzeug~=1.0.1
+
+
