@@ -735,7 +735,7 @@ def man_ctf_add_exam():
             file_path = request.files['file']
             # file_path.save(os.path.join(app.config['UPLOAD_CTF_FILE'], secure_filename(file_path.filename)))
             # 得到docker-compose文件
-            docker_file = request.files['docker_file']
+            docker_image_id = request.form.get('docker_image_id')
             # 题目备注
             info = request.form.get('info')
             createtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
@@ -746,34 +746,41 @@ def man_ctf_add_exam():
             else:
                 file_flag = 1
                 file_path.save(os.path.join(app.config['UPLOAD_CTF_FILE'], secure_filename(file_path.filename)))
-            if docker_file.filename == '':
-                docker_flag = 0
-            else:
-                # 上传docker zip包
+            # if docker_file.filename == '':
+            #     docker_flag = 0
+            # else:
+            #     # 上传docker zip包
+            #     docker_flag = 1
+            #     docker_file.save(
+            #         os.path.join(app.config['UPLOAD_CTF_CONTAINER'], secure_filename(docker_file.filename)))
+            #     # =======解压zip包=====
+            #     # print(app.config['UPLOAD_CTF_CONTAINER']+docker_file.filename)
+            #     zip = zipfile.ZipFile(app.config['UPLOAD_CTF_CONTAINER'] + docker_file.filename, 'r')
+            #     try:
+            #         zip.extractall(app.config['UPLOAD_CTF_CONTAINER'])
+            #     except:
+            #         return render_template("admin/man_ctf_add_exam.html", message="添加CTF题目失败,解压失败！")
+            #     zip.close()
+            #     # == 解压缩完成 ==
+            #     # 删除上传的zip包
+            #     os.remove(app.config['UPLOAD_CTF_CONTAINER'] + docker_file.filename)
+            docker_file = ''
+
+            if docker_image_id:
                 docker_flag = 1
-                docker_file.save(
-                    os.path.join(app.config['UPLOAD_CTF_CONTAINER'], secure_filename(docker_file.filename)))
-                # =======解压zip包=====
-                # print(app.config['UPLOAD_CTF_CONTAINER']+docker_file.filename)
-                zip = zipfile.ZipFile(app.config['UPLOAD_CTF_CONTAINER'] + docker_file.filename, 'r')
-                try:
-                    zip.extractall(app.config['UPLOAD_CTF_CONTAINER'])
-                except:
-                    return render_template("admin/man_ctf_add_exam.html", message="添加CTF题目失败,解压失败！")
-                zip.close()
-                # == 解压缩完成 ==
-                # 删除上传的zip包
-                os.remove(app.config['UPLOAD_CTF_CONTAINER'] + docker_file.filename)
+
+            else:
+                docker_flag = 0
+
             mysql = Mysqld()
             own_id = mysql.selectAdminIdByAdminName(admin)
             result = mysql.addUserCtfExam(own_id, type, name, hint, score, 0, flag_type, flag, file_flag,
-                                          file_path.filename, docker_flag, docker_file.filename, info)
+                                          file_path.filename, docker_flag, docker_file, info,docker_image_id)
             if result == 1:
                 return redirect(url_for('man_ctf_exam', message="添加成功"))  # 页面跳转
             else:
                 return render_template("admin/man_ctf_add_exam.html", message="添加失败")
         else:
-            # print(own_id)
             return render_template("admin/man_ctf_add_exam.html")
     else:
         return render_template("admin/login.html")

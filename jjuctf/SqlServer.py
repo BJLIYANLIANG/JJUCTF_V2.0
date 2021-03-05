@@ -627,11 +627,11 @@ class Mysqld:
             return 0
 
     def addUserCtfExam(self, own_id, type, name, hint, base_score, status, flag_type, base_flag, file_flag, file_path,
-                       docker_flag, docker_path, info):
+                       docker_flag, docker_path, info,docker_image_id):
         create_time = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-        sql = 'insert into ctf_exam (own_id,type,name,hint,base_score,status,flag_type,base_flag,file_flag,file_path,docker_flag,docker_path,create_time,info) values (%d,%d,"%s","%s",%d,%d,%d,"%s",%d,"%s",%d,"%s","%s","%s")' % (
+        sql = 'insert into ctf_exam (own_id,type,name,hint,base_score,status,flag_type,base_flag,file_flag,file_path,docker_flag,docker_path,create_time,info,docker_image_id) values (%d,%d,"%s","%s",%d,%d,%d,"%s",%d,"%s",%d,"%s","%s","%s","%s")' % (
             own_id, type, name, hint, base_score, status, flag_type, base_flag, file_flag, file_path, docker_flag,
-            docker_path, create_time, info)
+            docker_path, create_time, info,docker_image_id)
         try:
             self.cursor.execute(sql)
             self.conn.commit()
