@@ -25,24 +25,23 @@
           <table id="sample-table-1" class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr>
-                    <th class="center">
+                    <th width="3%" class="center">
                         <label>
                             <input type="checkbox" class="ace" />
                             <span class="lbl"></span>
                         </label>
                     </th>
-                    <th>题目ID</th>
-                    <th>题目状态</th>
-                    <th>题目名称</th>
-                    <th>题目类型</th>
-                    <th>描述</th>
-                    <th>分值</th>
-                    <th>flag类型</th>
-                    <th>基本flag</th>
-                    <th>附件地址</th>
-                    <th>Docker地址</th>
-                    <th>创建时间</th>
-                    <th>创建者ID</th>
+                    <th width="6%">序号</th>
+                    <th width="6%">状态</th>
+                    <th width="10%">题目名称</th>
+                    <th width="4%">题目类型</th>
+{#                    <th>描述</th>#}
+                    <th width="5%">分值</th>
+                    <th width="5%">flag类型</th>
+
+
+                    <th width="15%">创建时间</th>
+                    <th width="7%">创建者ID</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -55,7 +54,7 @@
                             <span class="lbl"></span>
                         </label>
                     </td>
-                    <td>{{ i[0] }}</td>
+                    <td>{{ loop.index }}</td>
                     {% if i[14]==0 %}
                  <td>未开</td>
                 {% else %}
@@ -73,38 +72,43 @@
                     {% elif i[2]==4 %}
                     <td>Pwn</td>
                     {% endif %}
-                    <td>{{ i[4] }}</td>
+{#                    <td>{{ i[4] }}</td>#}
                     <td>{{ 5 }}</td>{# 分值#}
                 {% if i[6]==0 %}
                 <td>静态</td>
-                     <td>{{ i[7] }}</td>
                 {% else %}
                 <td>动态</td>
-                    <td>{{ i[7] }}</td>
                 {% endif %}
-                    {% if i[8]==1 %}
-                    <td>{{ i[9] }}</td>
-                {% else %}
-                 <td>无</td>
-                {% endif %}
-                 {% if i[10]==1%}
-                    <td>{{ i[11] }}</td>
-                {% else %}
-                 <td>无</td>
-                {% endif %}
+{#                    {% if i[8]==1 %}#}
+{#                    <td>{{ i[9] }}</td>#}
+{#                {% else %}#}
+{#                 <td>无</td>#}
+{#                {% endif %}#}
+{#                 {% if i[10]==1%}#}
+{#                    <td>{{ i[11] }}</td>#}
+{#                {% else %}#}
+{#                 <td>无</td>#}
+{#                {% endif %}#}
                     <td>{{ i[12] }}</td>
                     <td>{{ i[1] }}</td>
                     <td style="width: 24%">
-
-                            <button type="button" class="btn  btn-success" onclick="openInstance({{ i[0] }})">
-                              启动实例
+                            <button type="button" class="btn  btn-info" onclick="openInstance({{ i[0] }})">
+                              更多
                             </button>
-                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#change_ctf_exam" >
+                        {% if i[14]==0 %}
+                            <button type="button" class="btn  btn-success" onclick="openInstance({{ i[0] }})">开启</button>
+                        {% else %}
+                            <button type="button" class="btn  btn-primary" onclick="openInstance({{ i[0] }})">
+                              关闭
+                            </button>
+                        {% endif %}
+
+                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#change_ctf_exam" >
 {#                                onclick="fix_ctf_exam({{ i[0] }})#}
-                             修改题目
+                             修改
                             </button>
                               <button type="button" class="btn btn-xs  btn-danger" onclick="delete_ctf_exam({{ i[0] }})">
-                                删除题目
+                                删除
                             </button>
 
 
