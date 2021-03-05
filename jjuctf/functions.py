@@ -71,6 +71,8 @@ def get_random_password(str_user):
     salt = str(random.randint(1,1000))
     salt2 = 'hsmcool'
     return get_md5(salt+str_user+salt2)[:12]
+
+
 def check_awd_status_by_url(url):
     requests.get()
 

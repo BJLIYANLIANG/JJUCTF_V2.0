@@ -297,7 +297,3 @@ class Contain:
         return 1
 
 
-#
-# docker = Contain()
-# a= docker.docker_change_passwd('8b151dcff40e302','glzjin','12345678')
-# print(a)
