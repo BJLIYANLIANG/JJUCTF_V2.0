@@ -10,5 +10,3 @@ yagmail~=0.14.245
 Flask-APScheduler~=1.11.0
 jsonify~=0.5
 Werkzeug~=1.0.1
-
-
