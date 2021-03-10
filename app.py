@@ -2050,3 +2050,5 @@ if __name__ == '__main__':
     # 适配ipv6
 
     # socketio.run(app, host='::', port=5000, debug=True)
+
+
