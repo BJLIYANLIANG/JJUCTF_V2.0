@@ -15,7 +15,7 @@ JJUCTF是一个网络安全靶场，可以提供CTF和AWD两种模式，并且�
 ![](static/image/readme/admin_index.png)
 upload
 ![](static/image/readme/admin_upload.png)
-user
+user0
 ![](static/image/readme/admin_user.png)
 ## 技术栈：
 - 虚拟化：Docker

@@ -61,10 +61,6 @@ def update_awd_flag():
     app.arrangement += 1
 
 
-
-
-
-
 app.config.from_object(SchedulerConfig())
 
 
@@ -2045,7 +2041,7 @@ def init_ip_pool_by_get():
 if __name__ == '__main__':
     # 初始化ip池
     app.arrangement = 0
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=5000, debug=False)
     # update_awd_flag()
     # 适配ipv6
 
