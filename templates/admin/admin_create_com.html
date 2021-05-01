@@ -1,0 +1,50 @@
+{% include "admin/header.html" %}
+<div class="main-container">
+        <div class="padding">
+            <nav class="breadcrumb">
+                <a class="breadcrumb-item" href="/admin">首页</a>
+{#                <a class="breadcrumb-item" href="/admin_competition_list"></a>#}
+                <span class="breadcrumb-item active">创建比赛</span>
+            </nav>
+        </div>
+        <div class="padding">
+            <div class="box">
+                <div class="heading">
+                    <h3 class="title">创建比赛模板</h3>
+                </div>
+                <div class="box-inner">
+                    <form method="post" action="#" class="text-primary">
+                        <input name="id"  hidden>
+                        <div class="form-group ">
+                        <label for="name">比赛名称:</label>
+                            <input type="text" name="name" minlength="4rem" placeholder="请输入比赛名称" id="name">
+                        </div>
+                        <div class="form-group">
+                        <label for="info">比赛简介:</label>
+                            <textarea name="info" id="info" class="form-control" placeholder="请在这里比赛介绍.." rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                        <label for="start" class="">CTF-开始时间:</label>
+                            <input type="datetime-local" name="start_date" id="start">
+                        </div>
+                        <div class="form-group">
+                        <label for="tend">CTF-结束时间:</label>
+                            <input type="datetime-local"  name="end_date" id="tend">
+                        </div>
+                        <div class="form-group">
+                        <label for="autostart" >AWD-开始时间:</label>
+                            <input type="datetime-local" name="start_date" id="autostart">
+                        </div>
+                        <div class="form-group">
+                        <label for="patented">AWD-结束时间:</label>
+                            <input type="datetime-local"  name="end_date" id="patented">
+                        </div>
+                        <div class="btn-group">
+                            <button type="submit"  class="btn btn-info">发布</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+</div>
+{% include "admin/footer.html" %}

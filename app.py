@@ -1945,6 +1945,13 @@ def change_user_info():
     else:
         return redirect(url_for('user',message='用户修改失败'))
 
+# 创建比赛
+@app.route('/admin_create_com',methods=['GET'])
+def admin_create_com():
+    if session.get('user'):
+        return render_template('admin/admin_create_com.html')
+    else:
+        return render_template('admin/login.html')
 
 
 @app.route('/update_user_passwd',methods=['POST'])
